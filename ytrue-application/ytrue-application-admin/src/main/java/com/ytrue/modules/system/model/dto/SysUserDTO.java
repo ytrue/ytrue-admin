@@ -16,7 +16,6 @@ import java.util.Set;
  * @date 2022/12/7 17:01
  */
 @Data
-@Accessors(chain = true)
 public class SysUserDTO {
 
     @ApiModelProperty(value = "id")

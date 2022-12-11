@@ -56,6 +56,12 @@ public class MybatisPlusConfiguration {
     @Component
     public static class MpMetaObjectHandler implements MetaObjectHandler {
 
+
+        private final static String UPDATE_TIME = "updateTime";
+        private final static String CREATE_TIME = "createTime";
+        private final static String CREATE_BY = "createTime";
+        private final static String UPDATE_BY = "createTime";
+
         /**
          * 新增时自动填充
          *
@@ -63,9 +69,10 @@ public class MybatisPlusConfiguration {
          */
         @Override
         public void insertFill(MetaObject metaObject) {
-            setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
-            setFieldValByName("createTime", LocalDateTime.now(), metaObject);
-
+            setFieldValByName(CREATE_TIME, LocalDateTime.now(), metaObject);
+            setFieldValByName(UPDATE_TIME, LocalDateTime.now(), metaObject);
+            setFieldValByName(CREATE_BY, LocalDateTime.now(), metaObject);
+            setFieldValByName(UPDATE_BY, LocalDateTime.now(), metaObject);
         }
 
         /**
@@ -75,7 +82,8 @@ public class MybatisPlusConfiguration {
          */
         @Override
         public void updateFill(MetaObject metaObject) {
-            setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
+            setFieldValByName(UPDATE_TIME, LocalDateTime.now(), metaObject);
+            setFieldValByName(UPDATE_BY, LocalDateTime.now(), metaObject);
         }
     }
 }

@@ -3,7 +3,6 @@ package com.ytrue.modules.quartz.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,7 +14,7 @@ import java.util.Date;
  */
 @Data
 @TableName("schedule_job_log")
-@Accessors(chain = true)
+
 public class ScheduleJobLog implements Serializable {
     private static final long serialVersionUID = -4376161257704055582L;
     /**

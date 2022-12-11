@@ -62,7 +62,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
         // 保存用户
         save(user);
         // 保存用户与部门,角色的关系
-        saveRoleAndJobRelation(sysUserDTO.setId(user.getId()));
+        sysUserDTO.setId(user.getId());
+        saveRoleAndJobRelation(sysUserDTO);
     }
 
 

@@ -11,8 +11,6 @@ import lombok.experimental.Accessors;
  * @date 2022/12/7 15:50
  */
 @Data
-@TableName("sys_role_dept")
-@Accessors(chain = true)
 public class SysRoleDept {
 
     @TableId

@@ -3,10 +3,8 @@ package com.ytrue.modules.system.model;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -17,8 +15,6 @@ import java.time.LocalDateTime;
  * @date 2022/12/7 14:09
  */
 @Data
-@TableName("sys_menu")
-@Accessors(chain = true)
 public class SysMenu implements Serializable {
 
     private static final long serialVersionUID = -2375558178587426862L;
@@ -69,9 +65,11 @@ public class SysMenu implements Serializable {
     @ApiModelProperty(value = "子节点数目", hidden = true)
     private Integer subCount;
 
+    @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建人", hidden = true)
     private String createBy;
 
+    @TableField(fill = FieldFill.UPDATE)
     @ApiModelProperty(value = "更新人", hidden = true)
     private String updateBy;
 

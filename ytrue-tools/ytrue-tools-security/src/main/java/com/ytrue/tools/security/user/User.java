@@ -14,7 +14,7 @@ import java.util.Set;
  * @description User
  */
 @Data
-@Accessors(chain = true)
+
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {

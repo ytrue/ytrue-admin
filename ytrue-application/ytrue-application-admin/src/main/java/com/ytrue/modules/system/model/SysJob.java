@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,7 +19,6 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("sys_job")
-@Accessors(chain = true)
 public class SysJob implements Serializable {
 
     private static final long serialVersionUID = 8557945474976276338L;
@@ -41,9 +39,11 @@ public class SysJob implements Serializable {
     @ApiModelProperty(value = "是否启用")
     private Boolean enabled;
 
+    @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建人", hidden = true)
     private String createBy;
 
+    @TableField(fill = FieldFill.UPDATE)
     @ApiModelProperty(value = "更新人", hidden = true)
     private String updateBy;
 

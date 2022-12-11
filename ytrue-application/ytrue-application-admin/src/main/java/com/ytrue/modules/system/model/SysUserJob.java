@@ -12,7 +12,6 @@ import lombok.experimental.Accessors;
  */
 @Data
 @TableName("sys_user_job")
-@Accessors(chain = true)
 public class SysUserJob {
 
 

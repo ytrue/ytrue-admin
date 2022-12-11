@@ -32,7 +32,7 @@ public class QueryEntity<T> implements Serializable {
     /**
      * 是否是asc
      */
-    private Boolean asc;
+    private Boolean asc = false;
 
 
     /**
@@ -47,6 +47,8 @@ public class QueryEntity<T> implements Serializable {
         // 构建
         additionalQueryWrapper.queryWrapperBuilder(queryWrapper, this.getFields());
 
+
+        System.out.println(orderField);
         // TODO 这里排序要处理
         if (!StrUtil.hasEmpty(orderField)) {
             queryWrapper.orderBy(true, asc, orderField);

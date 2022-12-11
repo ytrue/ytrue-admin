@@ -1,7 +1,9 @@
 package com.ytrue.modules.quartz.service.impl;
 
 import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.common.base.BaseServiceImpl;
 import com.ytrue.modules.quartz.dao.ScheduleJobDao;
 import com.ytrue.modules.quartz.enums.ScheduleStatus;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * @author ytrue
@@ -112,7 +115,9 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateBatch(Long[] jobIds, int status) {
-        Arrays.asList(jobIds).forEach(jobId -> scheduleJobDao.updateById(new ScheduleJob().setStatus(status).setId(jobId)));
+        Arrays.asList(jobIds).forEach(jobId -> scheduleJobDao.update(null,Wrappers.<ScheduleJob>lambdaUpdate().eq(ScheduleJob::getId, jobId).set(ScheduleJob::getStatus, status)));
+
+
     }
 
     /**

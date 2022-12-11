@@ -59,10 +59,10 @@ public class UsernamePasswordAuthenticator extends AbstractPreparableIntegration
         }
 
         User user = new User();
-        user.setUserId(Convert.toStr(sysUser.getId()))
-                .setUsername(sysUser.getUsername())
-                .setPassword(sysUser.getPassword())
-                .setAuthorities(sysPermissionService.getPermission(sysUser));
+        user.setUserId(Convert.toStr(sysUser.getId()));
+        user.setUsername(sysUser.getUsername());
+        user.setPassword(sysUser.getPassword());
+        user.setAuthorities(sysPermissionService.getPermission(sysUser));
 
         // 设置邮箱
         HashMap<String, String> extend = new HashMap<>(16);

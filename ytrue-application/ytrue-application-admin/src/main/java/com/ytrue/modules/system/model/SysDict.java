@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -19,7 +18,6 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("sys_dict")
-@Accessors(chain = true)
 public class SysDict implements Serializable {
 
     private static final long serialVersionUID = -7834091885145301189L;
@@ -35,10 +33,12 @@ public class SysDict implements Serializable {
     @ApiModelProperty(value = "描述")
     private String description;
 
+    @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建人", hidden = true)
     private String createBy;
 
 
+    @TableField(fill = FieldFill.UPDATE)
     @ApiModelProperty(value = "更新人", hidden = true)
     private String updateBy;
 

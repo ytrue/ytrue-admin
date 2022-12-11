@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
  * @description 字段
  */
 @Data
-@Accessors(chain = true)
+
 @EqualsAndHashCode
 public class Field {
     /**

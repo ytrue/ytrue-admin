@@ -8,12 +8,11 @@ import java.util.Set;
 
 /**
  * @author ytrue
- * @description: UserInfoVO
+ * @description: SysUserInfoVO
  * @date 2022/12/8 15:53
  */
 @Data
-@Accessors(chain = true)
-public class UserInfoVO {
+public class SysUserInfoVO {
 
     private SysUser user;
 

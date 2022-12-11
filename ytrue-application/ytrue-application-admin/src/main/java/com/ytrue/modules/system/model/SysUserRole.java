@@ -12,7 +12,6 @@ import lombok.experimental.Accessors;
  */
 @Data
 @TableName("sys_user_role")
-@Accessors(chain = true)
 public class SysUserRole {
 
     @TableId

@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true)
 public class OperationLog implements Serializable {
 
 

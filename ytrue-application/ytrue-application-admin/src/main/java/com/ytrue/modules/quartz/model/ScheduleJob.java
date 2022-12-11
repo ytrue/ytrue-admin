@@ -16,7 +16,7 @@ import java.util.Date;
  */
 @Data
 @TableName("schedule_job")
-@Accessors(chain = true)
+
 public class ScheduleJob implements Serializable {
 
     private static final long serialVersionUID = 9150018026309004044L;

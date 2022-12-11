@@ -1,6 +1,7 @@
 package com.ytrue.modules.system.model;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
  * @date 2022/12/9 9:58
  */
 @Data
+@TableName("sys_log")
 public class SysLog implements Serializable {
 
     private static final long serialVersionUID = 7415492376407370163L;

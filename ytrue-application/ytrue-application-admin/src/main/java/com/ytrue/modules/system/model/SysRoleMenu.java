@@ -12,7 +12,6 @@ import lombok.experimental.Accessors;
  */
 @Data
 @TableName("sys_role_menu")
-@Accessors(chain = true)
 public class SysRoleMenu {
 
     @TableId

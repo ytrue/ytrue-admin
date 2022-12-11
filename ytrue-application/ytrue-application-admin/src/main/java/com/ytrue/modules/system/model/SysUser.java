@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -21,7 +20,6 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("sys_user")
-@Accessors(chain = true)
 public class SysUser {
 
     @TableId
@@ -71,9 +69,11 @@ public class SysUser {
     @ApiModelProperty(value = "最后修改密码的时间")
     private LocalDateTime pwdResetTime;
 
+    @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建人", hidden = true)
     private String createBy;
 
+    @TableField(fill = FieldFill.UPDATE)
     @ApiModelProperty(value = "更新人", hidden = true)
     private String updateBy;
 

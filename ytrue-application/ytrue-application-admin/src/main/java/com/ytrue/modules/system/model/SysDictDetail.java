@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -18,7 +17,6 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("sys_dict_detail")
-@Accessors(chain = true)
 public class SysDictDetail implements Serializable {
     private static final long serialVersionUID = 2075740730368465063L;
 
@@ -38,9 +36,11 @@ public class SysDictDetail implements Serializable {
     @ApiModelProperty(value = "排序")
     private Integer dictSort;
 
+    @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建人", hidden = true)
     private String createBy;
 
+    @TableField(fill = FieldFill.UPDATE)
     @ApiModelProperty(value = "更新人", hidden = true)
     private String updateBy;
 

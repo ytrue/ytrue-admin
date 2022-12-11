@@ -71,7 +71,8 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
         // 更新角色
         save(role);
         // 保存角色与菜单,部门的关系
-        saveMenuAndDeptRelation(sysRoleDTO.setId(role.getId()));
+        sysRoleDTO.setId(role.getId());
+        saveMenuAndDeptRelation(sysRoleDTO);
     }
 
     @Transactional(rollbackFor = Exception.class)

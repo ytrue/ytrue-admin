@@ -4,7 +4,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.tree.Tree;
 import com.ytrue.common.utils.ApiResultResponse;
 import com.ytrue.modules.system.model.SysUser;
-import com.ytrue.modules.system.model.vo.UserInfoVO;
+import com.ytrue.modules.system.model.vo.SysUserInfoVO;
 import com.ytrue.modules.system.service.ISysMenuService;
 import com.ytrue.modules.system.service.ISysPermissionService;
 import com.ytrue.modules.system.service.ISysUserService;
@@ -51,7 +51,7 @@ public class SysLoginController {
     @SysLog
     @ApiOperation("用户信息")
     @GetMapping("/getInfo")
-    public ApiResultResponse<UserInfoVO> getUserInfo() {
+    public ApiResultResponse<SysUserInfoVO> getUserInfo() {
         String username = SecurityUtils.getLoginUser().getUsername();
         // 获取用户
         SysUser sysUser = sysUserService.getUserByUsername(username);
@@ -60,13 +60,12 @@ public class SysLoginController {
         // 权限集合
         Set<String> permissions = sysPermissionService.getPermission(sysUser);
 
-        UserInfoVO userInfoVO = new UserInfoVO();
-        userInfoVO
-                .setUser(sysUser)
-                .setRoles(roles)
-                .setPermissions(permissions);
+        SysUserInfoVO sysUserInfoVO = new SysUserInfoVO();
+        sysUserInfoVO.setUser(sysUser);
+        sysUserInfoVO.setRoles(roles);
+        sysUserInfoVO .setPermissions(permissions);
 
-        return ApiResultResponse.success(userInfoVO);
+        return ApiResultResponse.success(sysUserInfoVO);
     }
 
     @SysLog
