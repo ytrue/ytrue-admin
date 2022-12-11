@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active:
+#      - @profileActive@
+      - dev
+    group:
+      dev:
+        - dev
+        - dev-ytrue
+      prod:
+        - prod

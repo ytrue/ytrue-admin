@@ -1,0 +1,66 @@
+# 针对ytrue配置
+ytrue:
+  # swagger配置
+  document:
+    # 开启文档
+    enabled: true
+    # 是否是线上模式
+    production: false
+    # 认证配置
+    basic:
+      # 开启认证
+      enable: true
+      # 用户名
+      username: yadmin
+      # 密码
+      password: 111111
+    # 全局参数配置
+    global-operation-parameters:
+      # 认证头
+      - name: Authorization1
+        description: 认证头
+        modelRef: String
+        parameter-type: header
+        required: true
+        default-value: Bearer#eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwianRpIjoiRnJpIERlYyAwOSAwOTozNjo0NCBDU1QgMjAyMiIsIm5iZiI6MTY3MDU0OTgwNCwiaWF0IjoxNjcwNTQ5ODA0LCJleHAiOjE2NzA5MDk4MDR9.BFAhzSZr6r9MOipQAQN_omTlCElM4rvR-ExzNsYtOWQ
+        allow-empty-value: false
+    # 分组文档
+    docket:
+      generator:
+        title: 代码生成器
+        base-package: com.ytrue.modules.generator
+        path-regex: /gen.*
+      quartz:
+        title: 定时任务
+        base-package: com.ytrue.modules.quartz
+      system:
+        title: 系统管理
+        base-package: com.ytrue.modules.system
+      login:
+        title: 登录
+        base-package: com.ytrue.security
+  # 安全配置
+  security:
+    auth-type-parameter-name: auth_type
+    authorization-header-parameter-name: Authorization1
+    token-cache-prefix: 'login_auth_tokens:'
+    # 这个必须要与你认证的接口保存一致
+    auth-url: /login
+    ignore-auth:
+      #- /**
+      - /login
+      - /logout
+      - /favicon.ico
+      - /v2/api-docs**
+      - /webjars/**
+      - /doc.html**
+      - /swagger**
+      - /error
+      - /actuator
+      - /actuator/**
+      - /webjars/**
+    jwt:
+      token-expire-time: 360000000
+  # 开启操作日志监听
+  log:
+    enabled: true
