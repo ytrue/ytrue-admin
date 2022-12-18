@@ -19,12 +19,15 @@ public enum ResponseCode implements IBaseExceptionCode {
     UNKNOWN(5001, "未知异常"),
     FAIL(5000, "服务器内部错误"),
     DATA_NOT_FOUND(5004, "数据不存在"),
+
+
     SCHEDULED_TASK_EXISTS(5005, "定时任务已存在"),
     JOB_EXISTS(5006, "岗位已存在"),
     ACCOUNT_EXISTS(5006, "账号已存在"),
-
     HAS_CHILD(5007, "存在子级，请解除后再试"),
-    PARENT_EQ_ITSELF(5008, "父级不能是自己");
+    PARENT_EQ_ITSELF(5008, "父级不能是自己"),
+    HAS_USER_ASSOCIATION(5009, "存在用户关联，请解除后再试"),
+    HAS_ROLE_ASSOCIATION(5010, "存在角色关联，请解除后再试");
 
 
 

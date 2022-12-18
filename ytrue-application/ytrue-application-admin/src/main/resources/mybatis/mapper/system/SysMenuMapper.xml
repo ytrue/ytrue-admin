@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ytrue.modules.system.dao.SysMenuDao">
+
+    <resultMap id="BaseResultMap" type="com.ytrue.modules.system.model.po.SysMenu">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="menuName" column="menu_name" jdbcType="VARCHAR"/>
+        <result property="pid" column="pid" jdbcType="BIGINT"/>
+        <result property="menuSort" column="menu_sort" jdbcType="INTEGER"/>
+        <result property="path" column="path" jdbcType="VARCHAR"/>
+        <result property="component" column="component" jdbcType="VARCHAR"/>
+        <result property="query" column="query" jdbcType="VARCHAR"/>
+        <result property="isFrame" column="is_frame" jdbcType="TINYINT"/>
+        <result property="isCache" column="is_cache" jdbcType="TINYINT"/>
+        <result property="menuType" column="menu_type" jdbcType="CHAR"/>
+        <result property="visible" column="visible" jdbcType="TINYINT"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+        <result property="perms" column="perms" jdbcType="VARCHAR"/>
+        <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="subCount" column="sub_count" jdbcType="INTEGER"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <!--<result property="remark" column="remark" jdbcType="VARCHAR"/>-->
+    </resultMap>
+
+    <!--根据角色ID查询菜单树信息-->
+    <select id="listMenuIdByRoleId" resultType="java.lang.Long">
+        SELECT
+        m.id
+        FROM
+        sys_menu m
+        LEFT JOIN sys_role_menu rm ON m.id = rm.menu_id
+        WHERE
+        rm.role_id = #{roleId}
+        <if test="menuCheckStrictly">
+            AND m.id NOT IN (
+            SELECT
+            m.pid
+            FROM
+            sys_menu m
+            INNER JOIN sys_role_menu rm ON m.id = rm.menu_id
+            AND rm.role_id = #{roleId})
+        </if>
+        ORDER BY
+        m.pid,
+        m.menu_sort
+    </select>
+
+    <!--根据用户ID查询菜单-->
+    <select id="listMenuTreeByUserId" resultMap="BaseResultMap">
+        SELECT DISTINCT m.id,
+                        m.pid,
+                        m.menu_name,
+                        m.path,
+                        m.component,
+                        m.`query`,
+                        m.visible,
+                        m.STATUS,
+                        ifnull(m.perms, '') AS perms,
+                        m.is_frame,
+                        m.is_cache,
+                        m.menu_type,
+                        m.icon,
+                        m.menu_sort,
+                        m.create_time,
+                        m.sub_count
+        FROM sys_menu m
+                 LEFT JOIN sys_role_menu rm ON m.id = rm.menu_id
+                 LEFT JOIN sys_user_role ur ON rm.role_id = ur.role_id
+                 LEFT JOIN sys_role ro ON ur.role_id = ro.id
+                 LEFT JOIN sys_user u ON ur.user_id = u.id
+        WHERE u.id = #{userId}
+          AND m.menu_type IN ('M', 'C')
+          AND m.STATUS = 1
+        ORDER BY m.pid,
+                 m.menu_sort
+    </select>
+</mapper>

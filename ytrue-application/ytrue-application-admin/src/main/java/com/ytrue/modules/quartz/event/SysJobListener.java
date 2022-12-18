@@ -4,7 +4,7 @@ import cn.hutool.core.date.SystemClock;
 import cn.hutool.core.util.StrUtil;
 import com.ytrue.modules.quartz.model.ScheduleJob;
 import com.ytrue.modules.quartz.model.ScheduleJobLog;
-import com.ytrue.modules.quartz.service.ScheduleJobLogService;
+import com.ytrue.modules.quartz.service.IScheduleJobLogService;
 import com.ytrue.modules.quartz.util.SpringBeanTaskUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,17 +23,15 @@ import java.util.Date;
  */
 @Slf4j
 @Component
-@EnableAsync
 @AllArgsConstructor
 public class SysJobListener {
 
-    private final ScheduleJobLogService scheduleJobLogService;
+    private final IScheduleJobLogService scheduleJobLogService;
 
     /**
      * 监听
      * @param event
      */
-    @Async
     @EventListener(ScheduleJobEvent.class)
     public void scheduleJobEventListener(ScheduleJobEvent event) {
         ScheduleJob scheduleJob = event.getScheduleJob();
@@ -43,7 +41,6 @@ public class SysJobListener {
         jobLog.setBeanName(scheduleJob.getBeanName());
         jobLog.setMethodName(scheduleJob.getMethodName());
         jobLog.setParams(scheduleJob.getParams());
-        jobLog.setCreateTime(new Date());
 
         //任务开始时间
         long startTime = SystemClock.now();

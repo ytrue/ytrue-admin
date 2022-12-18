@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ytrue.modules.system.dao.SysRoleDao">
+
+    <resultMap id="BaseResultMap" type="com.ytrue.modules.system.model.po.SysRole">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
+        <result property="roleCode" column="role_code" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="dataScope" column="data_scope" jdbcType="INTEGER"/>
+        <result property="roleSort" column="role_sort" jdbcType="INTEGER"/>
+        <result property="menuCheckStrictly" column="menu_check_strictly" jdbcType="TINYINT"/>
+        <result property="deptCheckStrictly" column="dept_check_strictly" jdbcType="TINYINT"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--根据用户ID查询角色code-->
+    <select id="listRoleCodeByUserId" resultType="java.lang.String">
+        SELECT r.`role_code`
+        FROM sys_role r
+                 LEFT JOIN sys_user_role ur ON ur.role_id = r.id
+                 LEFT JOIN sys_user u ON u.id = ur.user_id
+        WHERE u.id = #{userId}
+    </select>
+</mapper>

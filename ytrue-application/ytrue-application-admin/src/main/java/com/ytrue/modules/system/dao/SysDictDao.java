@@ -1,7 +1,7 @@
 package com.ytrue.modules.system.dao;
 
 import com.ytrue.common.base.IBaseDao;
-import com.ytrue.modules.system.model.SysDict;
+import com.ytrue.modules.system.model.po.SysDict;
 
 /**
  * @author ytrue

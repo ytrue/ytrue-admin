@@ -1,7 +1,7 @@
 package com.ytrue.modules.system.dao;
 
 import com.ytrue.common.base.IBaseDao;
-import com.ytrue.modules.system.model.SysJob;
+import com.ytrue.modules.system.model.po.SysJob;
 
 /**
  * @author ytrue

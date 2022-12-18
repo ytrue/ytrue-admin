@@ -4,10 +4,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.ApiResultResponse;
 import com.ytrue.common.utils.AssertUtils;
-import com.ytrue.modules.system.model.SysMenu;
+import com.ytrue.modules.system.model.po.SysMenu;
 import com.ytrue.modules.system.service.ISysMenuService;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.entity.PageQueryEntity;
+import com.ytrue.tools.query.entity.QueryEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -31,7 +32,6 @@ public class SysMenuController {
 
     private final ISysMenuService sysMenuService;
 
-    @SysLog
     @PostMapping("page")
     @ApiOperation("分页查询")
     public ApiResultResponse<IPage<SysMenu>> page(@RequestBody(required = false) PageQueryEntity<SysMenu> pageQueryEntity) {
@@ -40,14 +40,12 @@ public class SysMenuController {
         return ApiResultResponse.success(page);
     }
 
-    @SysLog
-    @GetMapping("list")
-    @ApiOperation("列表,不包含按钮")
-    public ApiResultResponse<List<SysMenu>> list() {
-        return ApiResultResponse.success(sysMenuService.list());
+    @PostMapping("list")
+    @ApiOperation("列表")
+    public ApiResultResponse<List<SysMenu>> list(@RequestBody(required = false) QueryEntity<SysMenu> queryEntity) {
+        return ApiResultResponse.success(sysMenuService.list(queryEntity));
     }
 
-    @SysLog
     @GetMapping("detail/{id}")
     @ApiOperation("详情")
     public ApiResultResponse<SysMenu> detail(@PathVariable("id") Long id) {

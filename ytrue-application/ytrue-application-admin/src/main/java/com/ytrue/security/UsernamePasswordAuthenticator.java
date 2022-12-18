@@ -4,7 +4,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.modules.system.dao.SysUserDao;
-import com.ytrue.modules.system.model.SysUser;
+import com.ytrue.modules.system.model.po.SysUser;
 import com.ytrue.modules.system.service.impl.SysPermissionServiceImpl;
 import com.ytrue.tools.security.integration.IntegrationAuthenticationEntity;
 import com.ytrue.tools.security.integration.authenticator.AbstractPreparableIntegrationAuthenticator;

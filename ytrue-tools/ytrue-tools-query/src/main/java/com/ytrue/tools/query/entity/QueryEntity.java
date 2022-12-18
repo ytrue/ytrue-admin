@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ytrue.tools.query.builder.AdditionalQueryWrapper;
+import com.ytrue.tools.query.enums.QueryMethod;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -36,6 +37,15 @@ public class QueryEntity<T> implements Serializable {
 
 
     /**
+     * 追加字段 这个field想变成lamb的方式 TODO 待优化成Lambda
+     */
+    public QueryEntity<T> appendField(String field, QueryMethod method, Object value) {
+        fields.add(new Field(field, method, value));
+        return this;
+    }
+
+
+    /**
      * 获得 QueryWrapper
      *
      * @return {@link LambdaQueryWrapper <T>}
@@ -47,8 +57,6 @@ public class QueryEntity<T> implements Serializable {
         // 构建
         additionalQueryWrapper.queryWrapperBuilder(queryWrapper, this.getFields());
 
-
-        System.out.println(orderField);
         // TODO 这里排序要处理
         if (!StrUtil.hasEmpty(orderField)) {
             queryWrapper.orderBy(true, asc, orderField);
@@ -56,5 +64,4 @@ public class QueryEntity<T> implements Serializable {
         // 返回
         return queryWrapper.lambda();
     }
-
 }

@@ -2,12 +2,12 @@ package com.ytrue.modules.system.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ytrue.common.utils.ApiResultResponse;
-import com.ytrue.modules.system.model.SysRole;
+import com.ytrue.modules.system.model.po.SysRole;
 import com.ytrue.modules.system.model.dto.SysRoleDTO;
 import com.ytrue.modules.system.service.ISysRoleService;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.entity.PageQueryEntity;
-import com.ytrue.tools.query.entity.QueryEntity;
+import com.ytrue.tools.security.util.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -31,7 +31,6 @@ public class SysRoleController {
 
     private final ISysRoleService sysRoleService;
 
-    @SysLog
     @PostMapping("page")
     @ApiOperation("分页查询")
     public ApiResultResponse<IPage<SysRole>> page(@RequestBody(required = false) PageQueryEntity<SysRole> pageQueryEntity) {
@@ -40,14 +39,12 @@ public class SysRoleController {
         return ApiResultResponse.success(page);
     }
 
-    @SysLog
     @GetMapping("list")
     @ApiOperation("列表")
-    public ApiResultResponse<List<SysRole>> list(QueryEntity<SysRole> queryEntity) {
-        return ApiResultResponse.success(sysRoleService.list(queryEntity));
+    public ApiResultResponse<List<SysRole>> list() {
+        return ApiResultResponse.success(sysRoleService.list());
     }
 
-    @SysLog
     @GetMapping("detail/{id}")
     @ApiOperation("详情")
     public ApiResultResponse<SysRoleDTO> detail(@PathVariable("id") Long id) {

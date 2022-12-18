@@ -1,9 +1,7 @@
 package com.ytrue.modules.quartz.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ytrue.common.base.IBaseService;
 import com.ytrue.modules.quartz.model.ScheduleJob;
-import com.ytrue.tools.query.entity.PageQueryEntity;
 
 
 /**
@@ -11,7 +9,7 @@ import com.ytrue.tools.query.entity.PageQueryEntity;
  * @date 2021/4/8 15:36
  * @description ScheduleJobService
  */
-public interface ScheduleJobService extends IBaseService<ScheduleJob> {
+public interface IScheduleJobService extends IBaseService<ScheduleJob> {
 
     /**
      * 保存并开始定时任务

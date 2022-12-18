@@ -1,4 +1,4 @@
-package com.ytrue.modules.system.model;
+package com.ytrue.modules.system.model.po;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -7,34 +7,37 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * @author ytrue
- * @description: SysDictDetail
- * @date 2022/12/7 9:05
+ * @description: SysJob
+ * @date 2022/12/7 10:54
  */
 @Data
-@TableName("sys_dict_detail")
-public class SysDictDetail implements Serializable {
-    private static final long serialVersionUID = 2075740730368465063L;
+@TableName("sys_job")
+public class SysJob implements Serializable {
+
+    private static final long serialVersionUID = 8557945474976276338L;
 
     @TableId
     @ApiModelProperty(value = "id")
     private Long id;
 
-    @ApiModelProperty(value = "字典Id", hidden = true)
-    private Long dictId;
+    @NotBlank
+    @ApiModelProperty(value = "岗位名称")
+    private String jobName;
 
-    @ApiModelProperty(value = "字典标签")
-    private String label;
+    @NotNull
+    @ApiModelProperty(value = "岗位排序")
+    private Long jobSort;
 
-    @ApiModelProperty(value = "字典值")
-    private String value;
-
-    @ApiModelProperty(value = "排序")
-    private Integer dictSort;
+    @NotNull
+    @ApiModelProperty(value = "是否启用")
+    private Boolean status;
 
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建人", hidden = true)

@@ -4,6 +4,8 @@ import com.ytrue.tools.security.authentication.dao.LoginAuthenticationProvider;
 import com.ytrue.tools.security.filter.JwtAuthenticationTokenFilter;
 import com.ytrue.tools.security.handler.AccessDeniedHandlerImpl;
 import com.ytrue.tools.security.handler.AuthenticationEntryPointImpl;
+import com.ytrue.tools.security.handler.LogoutHandlerImpl;
+import com.ytrue.tools.security.handler.LogoutSuccessHandlerImpl;
 import com.ytrue.tools.security.integration.IntegrationAuthenticationFilter;
 import com.ytrue.tools.security.integration.authenticator.IntegrationAuthenticator;
 import com.ytrue.tools.security.properties.JwtProperties;
@@ -26,6 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -91,6 +94,20 @@ public class SecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
                 securityProperties(),
                 jwtProperties()
         );
+    }
+
+
+    @Bean
+    @ConditionalOnMissingBean
+    public LogoutHandlerImpl logoutHandler() {
+        return new LogoutHandlerImpl();
+    }
+
+
+    @Bean
+    @ConditionalOnMissingBean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        return new LogoutSuccessHandlerImpl();
     }
 
 
@@ -167,8 +184,9 @@ public class SecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
                 //不通过Session获取SecurityContext
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-
+        // 允许匿名访问URL
         Set<String> ignoreAuth = securityProperties().getIgnoreAuth();
+        ignoreAuth.add(securityProperties().getAuthUrl());
         String[] stringArray = new String[ignoreAuth.size()];
         String[] ignoreAuthArray = ignoreAuth.toArray(stringArray);
         http.authorizeRequests()
@@ -177,6 +195,11 @@ public class SecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();
 
+        // spring security使用X-Frame-Options防止网页被Frame 这里禁用掉
+        http.headers().frameOptions().disable();
+
+        // 这里禁用登出，让用户自定义处理
+        http.logout().disable();
 
         //配置异常处理器
         http.exceptionHandling()

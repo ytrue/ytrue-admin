@@ -1,10 +1,14 @@
 package com.ytrue.modules.quartz.model;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -20,50 +24,32 @@ public class ScheduleJobLog implements Serializable {
     /**
      * 任务日志id
      */
+    @ApiModelProperty(value = "ID")
     @TableId
-
     private Long id;
 
-    /**
-     * 任务id
-     */
-
+    @ApiModelProperty(value = "任务id")
     private Long jobId;
 
-    /**
-     * spring bean名称
-     */
-
+    @ApiModelProperty(value = " spring bean名称")
     private String beanName;
 
-    /**
-     * 方法名
-     */
-
+    @ApiModelProperty(value = "方法名")
     private String methodName;
 
-    /**
-     * 参数
-     */
+    @ApiModelProperty(value = "参数")
     private String params;
 
-    /**
-     * 任务状态    1：成功    0：失败
-     */
+    @ApiModelProperty(value = "任务状态:0=成功,1=失败")
     private Integer status;
 
-    /**
-     * 失败信息
-     */
+    @ApiModelProperty(value = "失败信息")
     private String error;
 
-    /**
-     * 耗时(单位：毫秒)
-     */
+    @ApiModelProperty(value = "耗时(单位：毫秒)")
     private Integer times;
 
-    /**
-     * 创建时间
-     */
-    private Date createTime;
+    @TableField(fill = FieldFill.INSERT)
+    @ApiModelProperty(value = "创建时间")
+    private LocalDateTime createTime;
 }

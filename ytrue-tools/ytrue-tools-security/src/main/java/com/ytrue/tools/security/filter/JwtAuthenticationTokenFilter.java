@@ -54,16 +54,17 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        String userId;
-        try {
-            Jws<Claims> claims = jwtOperation.parseToken(token);
-            userId = claims.getBody().getSubject();
-        } catch (Exception e) {
-            throw new RuntimeException("token非法");
-        }
+       // String userId = "1";
+        String userId = "1";
+//        try {
+//            Jws<Claims> claims = jwtOperation.parseToken(token);
+//            userId = claims.getBody().getSubject();
+//        } catch (Exception e) {
+//            throw new RuntimeException("token非法");
+//        }
 
         String userJsonData = redisTemplate.opsForValue().get(securityProperties.getTokenCachePrefix() + userId);
-        if (StrUtil.isEmpty(userJsonData)){
+        if (StrUtil.isEmpty(userJsonData)) {
             throw new RuntimeException("token非法");
         }
 

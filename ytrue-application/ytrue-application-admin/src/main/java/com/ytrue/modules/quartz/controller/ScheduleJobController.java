@@ -6,7 +6,7 @@ import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.ApiResultResponse;
 import com.ytrue.common.utils.AssertUtils;
 import com.ytrue.modules.quartz.model.ScheduleJob;
-import com.ytrue.modules.quartz.service.ScheduleJobService;
+import com.ytrue.modules.quartz.service.IScheduleJobService;
 import com.ytrue.tools.query.entity.PageQueryEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,10 +27,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/sys/schedule")
 public class ScheduleJobController {
 
-    private final ScheduleJobService scheduleJobService;
+    private final IScheduleJobService scheduleJobService;
 
 
-    @PostMapping("/page")
+    @PostMapping("page")
     @ApiOperation("分页查询数据")
     public ApiResultResponse<IPage<ScheduleJob>> page(@RequestBody(required = false) PageQueryEntity<ScheduleJob> pageQueryEntity) {
 
@@ -39,17 +39,16 @@ public class ScheduleJobController {
     }
 
 
-    @GetMapping("/{jobId}/info")
+    @GetMapping("detail/{id}")
     @ApiOperation("定时任务信息")
-    public ApiResultResponse<ScheduleJob> info(@PathVariable("jobId") Long jobId) {
-        return ApiResultResponse.success(scheduleJobService.getById(jobId));
+    public ApiResultResponse<ScheduleJob> info(@PathVariable("id") Long id) {
+        return ApiResultResponse.success(scheduleJobService.getById(id));
     }
 
 
     @PostMapping
     @ApiOperation("保存定时任务")
     public ApiResultResponse<Object> save(@Validated @RequestBody ScheduleJob scheduleJob) {
-
 
         long dbAlikeCount = scheduleJobService.count(
                 Wrappers.<ScheduleJob>lambdaQuery()
@@ -86,7 +85,7 @@ public class ScheduleJobController {
         return ApiResultResponse.success();
     }
 
-    @PostMapping("/run")
+    @PostMapping("run")
     @ApiOperation("立即执行任务")
     public ApiResultResponse<Object> run(@RequestBody Long[] jobIds) {
         scheduleJobService.run(jobIds);
@@ -94,7 +93,7 @@ public class ScheduleJobController {
     }
 
 
-    @PostMapping("/pause")
+    @PostMapping("pause")
     @ApiOperation("暂停定时任务")
     public ApiResultResponse<Object> pause(@RequestBody Long[] jobIds) {
         scheduleJobService.pause(jobIds);
@@ -102,7 +101,7 @@ public class ScheduleJobController {
     }
 
 
-    @PostMapping("/resume")
+    @PostMapping("resume")
     @ApiOperation("恢复定时任务")
     public ApiResultResponse<Object> resume(@RequestBody Long[] jobIds) {
         scheduleJobService.resume(jobIds);

@@ -14,7 +14,7 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3307/ytrue-mall?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&tinyInt1isBit=false
+    url: jdbc:mysql://127.0.0.1:3306/yadmin?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&tinyInt1isBit=false
     # 账号
     username: root
     # 密码

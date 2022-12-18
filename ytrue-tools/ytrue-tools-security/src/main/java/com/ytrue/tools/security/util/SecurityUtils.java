@@ -18,7 +18,7 @@ public class SecurityUtils {
         try {
             return (LoginUser) getAuthentication().getPrincipal();
         } catch (Exception e) {
-            throw new RuntimeException("获取用户信息异常");
+            throw new RuntimeException("获取用户信息异常",e);
         }
     }
 

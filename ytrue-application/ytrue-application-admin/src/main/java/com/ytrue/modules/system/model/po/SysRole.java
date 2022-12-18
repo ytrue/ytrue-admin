@@ -1,4 +1,4 @@
-package com.ytrue.modules.system.model;
+package com.ytrue.modules.system.model.po;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -25,21 +25,30 @@ public class SysRole implements Serializable {
     private Long id;
 
     @NotBlank
-    @ApiModelProperty(value = "名称")
-    private String name;
+    @ApiModelProperty(value = "角色名称")
+    private String roleName;
 
     @NotBlank
     @ApiModelProperty(value = "角色标识")
-    private String code;
+    private String roleCode;
 
-    @ApiModelProperty(value = "数据权限，全部 、 本级 、 自定义")
-    private String dataScope;
+    @ApiModelProperty(value = "数据范围:1=全部数据权限,2=自定数据权限,3=本部门数据权限,4=本部门及以下数据权限,5=仅本人数据权限")
+    private Integer dataScope;
 
     @ApiModelProperty(value = "排序")
     private Integer roleSort;
 
     @ApiModelProperty(value = "描述")
     private String description;
+
+    @ApiModelProperty(value = "状态:0=禁用,1=正常")
+    private Boolean status;
+
+    @ApiModelProperty(value = "菜单树选择项是否关联显示:0=父子不互相关联显示,1=父子互相关联显示")
+    private Boolean menuCheckStrictly;
+
+    @ApiModelProperty(value = "部门树选择项是否关联显示:0=父子不互相关联显示,1=父子互相关联显示")
+    private Boolean deptCheckStrictly;
 
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建人", hidden = true)

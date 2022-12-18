@@ -2,7 +2,7 @@ package com.ytrue.modules.system.service;
 
 import cn.hutool.core.lang.tree.Tree;
 import com.ytrue.common.base.IBaseService;
-import com.ytrue.modules.system.model.SysMenu;
+import com.ytrue.modules.system.model.po.SysMenu;
 
 import java.util.List;
 
@@ -40,5 +40,5 @@ public interface ISysMenuService extends IBaseService<SysMenu> {
      * @param userId
      * @return
      */
-    public List<Tree<String>> listMenuTreeByUserId(Long userId);
+    List<Tree<String>> listMenuTreeByUserId(Long userId);
 }

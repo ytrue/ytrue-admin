@@ -1,7 +1,7 @@
 package com.ytrue.modules.system.dao;
 
 import com.ytrue.common.base.IBaseDao;
-import com.ytrue.modules.system.model.SysLog;
+import com.ytrue.modules.system.model.po.SysLog;
 
 /**
  * @author ytrue

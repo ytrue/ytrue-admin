@@ -1,16 +1,12 @@
 package com.ytrue.modules.quartz.service.impl;
 
-import cn.hutool.core.date.DateUtil;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.common.base.BaseServiceImpl;
 import com.ytrue.modules.quartz.dao.ScheduleJobDao;
 import com.ytrue.modules.quartz.enums.ScheduleStatus;
 import com.ytrue.modules.quartz.model.ScheduleJob;
-import com.ytrue.modules.quartz.service.ScheduleJobService;
+import com.ytrue.modules.quartz.service.IScheduleJobService;
 import com.ytrue.modules.quartz.service.manager.ScheduleManager;
-import com.ytrue.tools.query.entity.PageQueryEntity;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.CronTrigger;
@@ -20,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * @author ytrue
@@ -31,7 +25,7 @@ import java.util.function.Consumer;
 @Service
 @Slf4j
 @AllArgsConstructor
-public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, ScheduleJob> implements ScheduleJobService, InitializingBean {
+public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, ScheduleJob> implements IScheduleJobService, InitializingBean {
 
 
     private final ScheduleJobDao scheduleJobDao;
@@ -57,22 +51,10 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
         });
     }
 
-    /**
-     * 分页查询
-     *
-     * @param pageQueryEntity
-     * @return
-     */
-    @Override
-    public IPage<ScheduleJob> paginate(PageQueryEntity<ScheduleJob> pageQueryEntity) {
-        pageQueryEntity = Objects.isNull(pageQueryEntity) ? new PageQueryEntity<>() : pageQueryEntity;
-        return page(pageQueryEntity.getPage(), pageQueryEntity.getQueryModel());
-    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void saveAndStart(ScheduleJob scheduleJob) {
-        scheduleJob.setCreateTime(DateUtil.date());
         scheduleJob.setStatus(ScheduleStatus.NORMAL.getType());
         scheduleJobDao.insert(scheduleJob);
 
@@ -115,7 +97,7 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateBatch(Long[] jobIds, int status) {
-        Arrays.asList(jobIds).forEach(jobId -> scheduleJobDao.update(null,Wrappers.<ScheduleJob>lambdaUpdate().eq(ScheduleJob::getId, jobId).set(ScheduleJob::getStatus, status)));
+        Arrays.asList(jobIds).forEach(jobId -> scheduleJobDao.update(null, Wrappers.<ScheduleJob>lambdaUpdate().eq(ScheduleJob::getId, jobId).set(ScheduleJob::getStatus, status)));
 
 
     }

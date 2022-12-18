@@ -3,7 +3,7 @@ package com.ytrue.modules.system.controller;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.tree.Tree;
 import com.ytrue.common.utils.ApiResultResponse;
-import com.ytrue.modules.system.model.SysUser;
+import com.ytrue.modules.system.model.po.SysUser;
 import com.ytrue.modules.system.model.vo.SysUserInfoVO;
 import com.ytrue.modules.system.service.ISysMenuService;
 import com.ytrue.modules.system.service.ISysPermissionService;
@@ -41,14 +41,19 @@ public class SysLoginController {
     private final ISysMenuService sysMenuService;
 
 
-
     @ApiOperation("登录")
     @PostMapping("/login")
     public ApiResultResponse<Map<String, String>> login() {
         return ApiResultResponse.success(loginService.login());
     }
 
-    @SysLog
+    @ApiOperation("登出")
+    @PostMapping("/logout")
+    public ApiResultResponse<Object> logout() {
+        loginService.logout(SecurityUtils.getLoginUser().getUser().getUserId());
+        return ApiResultResponse.success();
+    }
+
     @ApiOperation("用户信息")
     @GetMapping("/getInfo")
     public ApiResultResponse<SysUserInfoVO> getUserInfo() {
@@ -63,18 +68,15 @@ public class SysLoginController {
         SysUserInfoVO sysUserInfoVO = new SysUserInfoVO();
         sysUserInfoVO.setUser(sysUser);
         sysUserInfoVO.setRoles(roles);
-        sysUserInfoVO .setPermissions(permissions);
+        sysUserInfoVO.setPermissions(permissions);
 
         return ApiResultResponse.success(sysUserInfoVO);
     }
 
-    @SysLog
     @ApiOperation("路由信息")
     @GetMapping("getRouters")
     public ApiResultResponse<List<Tree<String>>> getRouters() {
-
         List<Tree<String>> menuTree = sysMenuService.listMenuTreeByUserId(Convert.toLong(SecurityUtils.getLoginUser().getUser().getUserId()));
-
         return ApiResultResponse.success(menuTree);
     }
 

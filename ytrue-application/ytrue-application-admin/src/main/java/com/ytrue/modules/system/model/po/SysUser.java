@@ -1,57 +1,73 @@
-package com.ytrue.modules.system.model;
+package com.ytrue.modules.system.model.po;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * @author ytrue
- * @date 2022-08-04
- * @description 部门实体类
+ * @description: SysUser
+ * @date 2022/12/7 15:20
  */
 @Data
-@TableName("sys_dept")
-public class SysDept implements Serializable {
-
-    private static final long serialVersionUID = 2021887051210043344L;
+@TableName("sys_user")
+public class SysUser {
 
     @TableId
     @ApiModelProperty(value = "id")
     private Long id;
 
-    @ApiModelProperty(value = "上级部门")
-    private Long pid;
+    @ApiModelProperty(value = "用户部门Id")
+    private Long deptId;
 
-    @ApiModelProperty(value = "子节点数目", hidden = true)
-    private Integer subCount;
+    @NotBlank
+    @ApiModelProperty(value = "用户名称")
+    private String username;
 
-    @ApiModelProperty(value = "名称")
-    private String name;
-
-    @ApiModelProperty(value = "负责人")
-    private String leader;
-
-    @ApiModelProperty(value = "联系电话")
-    private String phone;
+    @NotBlank
+    @ApiModelProperty(value = "用户昵称")
+    private String nickName;
 
     @Email
+    @NotBlank
     @ApiModelProperty(value = "邮箱")
     private String email;
 
+    @NotBlank
+    @ApiModelProperty(value = "电话号码")
+    private String phone;
+
+    @ApiModelProperty(value = "用户性别")
+    private Integer gender;
+
+    @ApiModelProperty(value = "头像真实名称")
+    private String avatarName;
+
+    @ApiModelProperty(value = "头像存储的路径")
+    private String avatarPath;
+
+    @ApiModelProperty(value = "密码")
+    @JsonIgnore
+    private String password;
+
     @NotNull
     @ApiModelProperty(value = "是否启用")
-    private Boolean enabled;
+    private Boolean status;
 
-    @ApiModelProperty(value = "排序")
-    private Integer deptSort;
+    @ApiModelProperty(value = "是否为admin账号")
+    private Boolean isAdmin = false;
+
+    @ApiModelProperty(value = "最后修改密码的时间")
+    private LocalDateTime pwdResetTime;
 
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建人", hidden = true)
@@ -64,7 +80,6 @@ public class SysDept implements Serializable {
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;
-
 
     @TableField(fill = FieldFill.UPDATE)
     @ApiModelProperty(value = "更新时间")

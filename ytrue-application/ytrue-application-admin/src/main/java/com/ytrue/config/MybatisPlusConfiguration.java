@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.ytrue.tools.query.interceptor.ConditionInterceptor;
+import com.ytrue.tools.security.util.SecurityUtils;
 import org.apache.ibatis.reflection.MetaObject;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
@@ -59,8 +60,8 @@ public class MybatisPlusConfiguration {
 
         private final static String UPDATE_TIME = "updateTime";
         private final static String CREATE_TIME = "createTime";
-        private final static String CREATE_BY = "createTime";
-        private final static String UPDATE_BY = "createTime";
+        private final static String CREATE_BY = "createBy";
+        private final static String UPDATE_BY = "updateBy";
 
         /**
          * 新增时自动填充
@@ -69,10 +70,13 @@ public class MybatisPlusConfiguration {
          */
         @Override
         public void insertFill(MetaObject metaObject) {
+            if (SecurityUtils.getAuthentication() != null) {
+                setFieldValByName(CREATE_BY, SecurityUtils.getLoginUser().getUsername(), metaObject);
+                setFieldValByName(UPDATE_BY, SecurityUtils.getLoginUser().getUsername(), metaObject);
+            }
             setFieldValByName(CREATE_TIME, LocalDateTime.now(), metaObject);
             setFieldValByName(UPDATE_TIME, LocalDateTime.now(), metaObject);
-            setFieldValByName(CREATE_BY, LocalDateTime.now(), metaObject);
-            setFieldValByName(UPDATE_BY, LocalDateTime.now(), metaObject);
+
         }
 
         /**
@@ -82,8 +86,10 @@ public class MybatisPlusConfiguration {
          */
         @Override
         public void updateFill(MetaObject metaObject) {
+            if (SecurityUtils.getAuthentication() != null) {
+                setFieldValByName(UPDATE_BY, SecurityUtils.getLoginUser().getUsername(), metaObject);
+            }
             setFieldValByName(UPDATE_TIME, LocalDateTime.now(), metaObject);
-            setFieldValByName(UPDATE_BY, LocalDateTime.now(), metaObject);
         }
     }
 }

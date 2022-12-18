@@ -1,10 +1,11 @@
 package com.ytrue.modules.system.dao;
 
 import com.ytrue.common.base.IBaseDao;
-import com.ytrue.modules.system.model.SysMenu;
-import org.apache.ibatis.annotations.Select;
+import com.ytrue.modules.system.model.po.SysMenu;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author ytrue
@@ -15,39 +16,20 @@ public interface SysMenuDao extends IBaseDao<SysMenu> {
 
 
     /**
+     * 根据角色ID查询菜单树信息
+     *
+     * @param roleId            角色ID
+     * @param menuCheckStrictly 菜单树选择项是否关联显示
+     * @return 选中菜单列表
+     */
+    Set<Long> listMenuIdByRoleId(@Param("roleId") Long roleId, @Param("menuCheckStrictly") boolean menuCheckStrictly);
+
+
+    /**
      * 根据用户ID查询菜单
      *
      * @param userId
      * @return
      */
-    @Select("SELECT DISTINCT\n" +
-            "\tm.id,\n" +
-            "\tm.pid,\n" +
-            "\tm.menu_name,\n" +
-            "\tm.path,\n" +
-            "\tm.component,\n" +
-            "\tm.`query`,\n" +
-            "\tm.visible,\n" +
-            "\tm.STATUS,\n" +
-            "\tifnull( m.perms, '' ) AS perms,\n" +
-            "\tm.is_frame,\n" +
-            "\tm.is_cache,\n" +
-            "\tm.menu_type,\n" +
-            "\tm.icon,\n" +
-            "\tm.menu_sort,\n" +
-            "\tm.create_time \n" +
-            "FROM\n" +
-            "\tsys_menu m\n" +
-            "\tLEFT JOIN sys_role_menu rm ON m.id = rm.menu_id\n" +
-            "\tLEFT JOIN sys_user_role ur ON rm.role_id = ur.role_id\n" +
-            "\tLEFT JOIN sys_role ro ON ur.role_id = ro.id\n" +
-            "\tLEFT JOIN sys_user u ON ur.user_id = u.id \n" +
-            "WHERE\n" +
-            "\tu.id = #{userId} \n" +
-            "\tAND m.menu_type IN ( 'M', 'C' ) \n" +
-            "\tAND m.STATUS = 1 \n" +
-            "ORDER BY\n" +
-            "\tm.pid,\n" +
-            "\tm.menu_sort")
-    List<SysMenu> selectMenuTreeByUserId(Long userId);
+    List<SysMenu> listMenuTreeByUserId(Long userId);
 }

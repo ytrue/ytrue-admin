@@ -1,6 +1,6 @@
 package com.ytrue.modules.system.service;
 
-import com.ytrue.modules.system.model.SysUser;
+import com.ytrue.modules.system.model.po.SysUser;
 
 import java.util.Set;
 

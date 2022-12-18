@@ -1,6 +1,5 @@
 package com.ytrue.config;
 
-import com.ytrue.modules.quartz.model.ScheduleJob;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,7 @@ import javax.annotation.Resource;
 /**
  * @author ytrue
  * @date 2021/9/30 14:55
- * @description RedisConfiguration 暂时不要配置
+ * @description RedisConfiguration
  */
 @Slf4j
 @Configuration
@@ -25,9 +24,6 @@ public class RedisConfiguration {
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
-
-        ScheduleJob scheduleJob = new ScheduleJob();
-
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(connectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());

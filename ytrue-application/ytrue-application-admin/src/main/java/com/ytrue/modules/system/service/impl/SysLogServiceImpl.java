@@ -2,7 +2,7 @@ package com.ytrue.modules.system.service.impl;
 
 import com.ytrue.common.base.BaseServiceImpl;
 import com.ytrue.modules.system.dao.SysLogDao;
-import com.ytrue.modules.system.model.SysLog;
+import com.ytrue.modules.system.model.po.SysLog;
 import com.ytrue.modules.system.service.ISysLogService;
 import org.springframework.stereotype.Service;
 

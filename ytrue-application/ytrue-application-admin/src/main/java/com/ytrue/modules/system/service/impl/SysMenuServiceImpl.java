@@ -4,13 +4,19 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNodeConfig;
 import cn.hutool.core.lang.tree.TreeUtil;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.common.base.BaseServiceImpl;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.AssertUtils;
 import com.ytrue.modules.system.dao.SysMenuDao;
+import com.ytrue.modules.system.dao.SysRoleMenuDao;
 import com.ytrue.modules.system.dao.SysUserDao;
-import com.ytrue.modules.system.model.SysMenu;
-import com.ytrue.modules.system.model.SysUser;
+import com.ytrue.modules.system.enums.ComponentType;
+import com.ytrue.modules.system.enums.MenuType;
+import com.ytrue.modules.system.model.po.SysMenu;
+import com.ytrue.modules.system.model.po.SysRoleMenu;
+import com.ytrue.modules.system.model.po.SysUser;
 import com.ytrue.modules.system.service.ISysMenuService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,6 +38,8 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
 
     private final SysMenuDao sysMenuDao;
 
+    private final SysRoleMenuDao sysRoleMenuDao;
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void addMenu(SysMenu sysMenu) {
@@ -43,11 +51,9 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
     @Override
     public void updateMenu(SysMenu sysMenu) {
         AssertUtils.noteEquals(sysMenu.getId(), sysMenu.getPid(), ResponseCode.PARENT_EQ_ITSELF);
-
         // 旧的菜单
         Long oldPid = getById(sysMenu.getId()).getPid();
         Long newPid = sysMenu.getPid();
-
         updateById(sysMenu);
         // 更新父节点中子节点数目
         updateSubCnt(oldPid);
@@ -57,10 +63,13 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
     @Override
     public void removeBatchMenu(List<Long> ids) {
         for (Long id : ids) {
+            // 校验是否存在子级
             SysMenu childMenu = lambdaQuery().eq(SysMenu::getPid, id).one();
             AssertUtils.isNull(childMenu, ResponseCode.HAS_CHILD);
 
-            //  TODO 校验角色绑定或者去解绑角色的关系
+            // 校验角色绑定或者去解绑角色的关系
+            SysRoleMenu sysRoleMenu = sysRoleMenuDao.selectOne(Wrappers.<SysRoleMenu>lambdaQuery().eq(SysRoleMenu::getMenuId, id));
+            AssertUtils.isNull(sysRoleMenu, ResponseCode.HAS_ROLE_ASSOCIATION);
 
             SysMenu menu = getById(id);
             removeById(id);
@@ -92,6 +101,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
     @Override
     public List<Tree<String>> listMenuTreeByUserId(Long userId) {
         SysUser sysUser = sysUserDao.selectById(userId);
+
         AssertUtils.notNull(sysUser, ResponseCode.DATA_NOT_FOUND);
 
         List<SysMenu> menus;
@@ -99,7 +109,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
             menus = lambdaQuery().eq(SysMenu::getStatus, 1).in(SysMenu::getMenuType, "M", "C").orderByAsc(SysMenu::getPid).orderByAsc(SysMenu::getMenuSort).list();
         } else {
             // 根据用户查询
-            menus = sysMenuDao.selectMenuTreeByUserId(userId);
+            menus = sysMenuDao.listMenuTreeByUserId(userId);
         }
 
         //配置
@@ -112,16 +122,23 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
 
             // 不是外链，并且是M path要加/
             String path = sysMenu.getPath();
-            if ("M".equals(sysMenu.getMenuType()) && !sysMenu.getIsFrame()) {
+            if (MenuType.DIRECTORY.getType().equals(sysMenu.getMenuType()) && !sysMenu.getIsFrame()) {
                 path = "/" + path;
             }
             tree.putExtra("path", path);
 
             // 扩展属性 ...
+            tree.putExtra("query", sysMenu.getQuery());
             tree.putExtra("hidden", !sysMenu.getVisible());
-            tree.putExtra("component", sysMenu.getComponent());
+
+            tree.putExtra("component", getComponent(sysMenu));
+            // 如果是ParentView path要去掉/
+            if (getComponent(sysMenu).equals(ComponentType.PARENT_VIEW.getType())){
+                tree.putExtra("path", sysMenu.getPath());
+            }
+
             // 有子菜单并且类型是M
-            if (sysMenu.getSubCount() > 0 && "M".equals(sysMenu.getMenuType())) {
+            if (sysMenu.getSubCount() > 0 && MenuType.DIRECTORY.getType().equals(sysMenu.getMenuType())) {
                 tree.putExtra("alwaysShow", true);
                 tree.putExtra("redirect", "noRedirect");
             }
@@ -135,5 +152,28 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
             }
             tree.putExtra("meta", meta);
         });
+    }
+
+
+    /**
+     * 获取组件信息
+     *
+     * @param menu 菜单信息
+     * @return 组件信息
+     */
+    private String getComponent(SysMenu menu) {
+
+        if (StrUtil.isNotEmpty(menu.getComponent())) {
+            return menu.getComponent();
+        }
+        // 默认LAYOUT
+        String component = ComponentType.LAYOUT.getType();
+
+        if (menu.getPid().intValue() != 0 && menu.getIsFrame()) {
+            component = ComponentType.INNER_LINK.getType();
+        } else if (menu.getPid().intValue() != 0 && MenuType.DIRECTORY.getType().equals(menu.getMenuType())) {
+            component = ComponentType.PARENT_VIEW.getType();
+        }
+        return component;
     }
 }

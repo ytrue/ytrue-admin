@@ -1,8 +1,7 @@
 package com.ytrue.modules.system.dao;
 
 import com.ytrue.common.base.IBaseDao;
-import com.ytrue.modules.system.model.SysRoleMenu;
-import org.apache.ibatis.annotations.Insert;
+import com.ytrue.modules.system.model.po.SysRoleMenu;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Set;
@@ -14,17 +13,12 @@ import java.util.Set;
  */
 public interface SysRoleMenuDao extends IBaseDao<SysRoleMenu> {
 
+
     /**
      * 根据角色id 批量添加角色与菜单关系
-     * <p>
-     * insert into sys_role_menu (role_id,menu_id) values
-     * <foreach collection="menuIds" item="menuId" separator=",">
-     * (#{roleId},#{menuId})
-     * </foreach>
      *
      * @param roleId
      * @param menuIds
      */
-    @Insert("insert into sys_role_menu (role_id,menu_id) values <foreach collection='menuIds' item='menuId' separator=','>(#{roleId},#{menuId})</foreach>")
     void insertBatchRoleMenu(@Param("roleId") Long roleId, @Param("menuIds") Set<Long> menuIds);
 }

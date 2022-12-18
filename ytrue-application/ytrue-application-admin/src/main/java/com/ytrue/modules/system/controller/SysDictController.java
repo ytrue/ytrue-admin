@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.ApiResultResponse;
 import com.ytrue.common.utils.AssertUtils;
-import com.ytrue.modules.system.model.SysDict;
+import com.ytrue.modules.system.model.po.SysDict;
 import com.ytrue.modules.system.service.ISysDictService;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.entity.PageQueryEntity;
@@ -31,7 +31,6 @@ public class SysDictController {
 
     private final ISysDictService sysDictService;
 
-    @SysLog
     @PostMapping("page")
     @ApiOperation("分页")
     public ApiResultResponse<IPage<SysDict>> page(@RequestBody(required = false) PageQueryEntity<SysDict> pageQueryEntity) {
@@ -39,14 +38,12 @@ public class SysDictController {
         return ApiResultResponse.success(page);
     }
 
-    @SysLog
     @GetMapping("list")
     @ApiOperation("列表")
     public ApiResultResponse<List<SysDict>> list() {
         return ApiResultResponse.success(sysDictService.list());
     }
 
-    @SysLog
     @GetMapping("detail/{id}")
     @ApiOperation("详情")
     public ApiResultResponse<SysDict> detail(@PathVariable("id") Long id) {

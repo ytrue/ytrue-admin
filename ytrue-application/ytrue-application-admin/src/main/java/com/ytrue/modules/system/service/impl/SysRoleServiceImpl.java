@@ -5,12 +5,10 @@ import com.ytrue.common.base.BaseServiceImpl;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.AssertUtils;
 import com.ytrue.common.utils.BeanUtils;
-import com.ytrue.modules.system.dao.SysRoleDao;
-import com.ytrue.modules.system.dao.SysRoleDeptDao;
-import com.ytrue.modules.system.dao.SysRoleMenuDao;
-import com.ytrue.modules.system.model.SysRole;
-import com.ytrue.modules.system.model.SysRoleDept;
-import com.ytrue.modules.system.model.SysRoleMenu;
+import com.ytrue.modules.system.dao.*;
+import com.ytrue.modules.system.model.po.SysRole;
+import com.ytrue.modules.system.model.po.SysRoleDept;
+import com.ytrue.modules.system.model.po.SysRoleMenu;
 import com.ytrue.modules.system.model.dto.SysRoleDTO;
 import com.ytrue.modules.system.service.ISysRoleService;
 import lombok.AllArgsConstructor;
@@ -20,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author ytrue
@@ -36,6 +33,10 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
 
     private final SysRoleMenuDao sysRoleMenuDao;
 
+    private final SysDeptDao sysDeptDao;
+
+    private final SysMenuDao sysMenuDao;
+
 
     @Override
     public SysRoleDTO getRoleById(Long id) {
@@ -43,19 +44,9 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
         SysRole role = getById(id);
         AssertUtils.notNull(role, ResponseCode.DATA_NOT_FOUND);
         // 获取对应的菜单
-        Set<Long> menuIds = sysRoleMenuDao
-                .selectList(Wrappers.<SysRoleMenu>lambdaQuery().eq(SysRoleMenu::getRoleId, id))
-                .stream()
-                .map(SysRoleMenu::getMenuId)
-                .collect(Collectors.toSet());
-
+        Set<Long> menuIds = sysMenuDao.listMenuIdByRoleId(id, role.getMenuCheckStrictly());
         // 获取对应的部门
-        Set<Long> deptIds = sysRoleDeptDao
-                .selectList(Wrappers.<SysRoleDept>lambdaQuery().eq(SysRoleDept::getRoleId, id))
-                .stream()
-                .map(SysRoleDept::getDeptId)
-                .collect(Collectors.toSet());
-
+        Set<Long> deptIds = sysDeptDao.listDeptIdByRoleId(id, role.getDeptCheckStrictly());
 
         SysRoleDTO roleDTO = BeanUtils.cgLibCopyBean(role, SysRoleDTO::new);
         roleDTO.setMenuIds(menuIds);
@@ -104,9 +95,13 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
      */
     private void saveMenuAndDeptRelation(SysRoleDTO sysRoleDTO) {
         //保存角色与菜单关系
-        sysRoleMenuDao.insertBatchRoleMenu(sysRoleDTO.getId(), sysRoleDTO.getMenuIds());
-        //保存角色与部门关系
-        sysRoleDeptDao.insertBatchRoleDept(sysRoleDTO.getId(), sysRoleDTO.getDeptIds());
+        if (sysRoleDTO.getMenuIds().size() > 0) {
+            sysRoleMenuDao.insertBatchRoleMenu(sysRoleDTO.getId(), sysRoleDTO.getMenuIds());
+        }
+        if (sysRoleDTO.getDeptIds().size() > 0) {
+            //保存角色与部门关系
+            sysRoleDeptDao.insertBatchRoleDept(sysRoleDTO.getId(), sysRoleDTO.getDeptIds());
+        }
     }
 
     /**

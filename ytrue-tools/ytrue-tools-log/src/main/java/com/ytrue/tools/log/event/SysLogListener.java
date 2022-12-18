@@ -21,7 +21,11 @@ public class SysLogListener {
 
     private final Consumer<OperationLog> consumer;
 
-    @Async
+    /**
+     * 不能采取异步，不然SecurityContextHolder.getContext()获取不到得
+     *
+     * @param event
+     */
     @Order
     @EventListener(SysLogEvent.class)
     public void saveSysLog(SysLogEvent event) {

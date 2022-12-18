@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.ApiResultResponse;
 import com.ytrue.common.utils.AssertUtils;
-import com.ytrue.common.utils.BeanUtils;
-import com.ytrue.modules.system.model.SysDept;
-import com.ytrue.modules.system.model.vo.SysDeptVO;
+import com.ytrue.modules.system.model.po.SysDept;
 import com.ytrue.modules.system.service.ISysDeptService;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.entity.PageQueryEntity;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author ytrue
@@ -33,33 +30,19 @@ public class SysDeptController {
 
     private final ISysDeptService sysDeptService;
 
-    @SysLog
+
     @PostMapping("page")
     @ApiOperation("分页查询")
-    public ApiResultResponse<IPage<SysDeptVO>> page(@RequestBody(required = false) PageQueryEntity<SysDept> pageQueryEntity) {
-        // 这里还要做数据范围过滤 TODO
-        IPage<SysDept> page = sysDeptService.paginate(pageQueryEntity);
-        // 转换一下
-        return ApiResultResponse.success(page.convert(sysDept -> {
-            SysDeptVO sysDeptVO = BeanUtils.cgLibCopyBean(sysDept, SysDeptVO::new);
-            sysDeptVO.setHasChildren(sysDept.getSubCount() > 0);
-            return sysDeptVO;
-        }));
+    public ApiResultResponse<IPage<SysDept>> page(@RequestBody(required = false) PageQueryEntity<SysDept> pageQueryEntity) {
+        return ApiResultResponse.success(sysDeptService.paginate(pageQueryEntity));
     }
 
-    @SysLog
     @PostMapping("list")
     @ApiOperation("列表")
-    public ApiResultResponse<List<SysDeptVO>> list(@RequestBody(required = false) QueryEntity<SysDept> queryEntity) {
-        // 转换
-        List<SysDeptVO> deptVOList = BeanUtils.cgLibCopyList(sysDeptService.list(queryEntity), SysDeptVO::new)
-                .stream()
-                .peek(sysDeptVO -> sysDeptVO.setHasChildren(sysDeptVO.getSubCount() > 0))
-                .collect(Collectors.toList());
-        return ApiResultResponse.success(deptVOList);
+    public ApiResultResponse<List<SysDept>> list(@RequestBody(required = false) QueryEntity<SysDept> queryEntity) {
+        return ApiResultResponse.success(sysDeptService.list(queryEntity));
     }
 
-    @SysLog
     @GetMapping("detail/{id}")
     @ApiOperation("详情")
     public ApiResultResponse<SysDept> detail(@PathVariable("id") Long id) {

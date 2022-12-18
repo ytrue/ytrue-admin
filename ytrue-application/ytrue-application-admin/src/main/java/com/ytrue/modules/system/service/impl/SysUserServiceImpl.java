@@ -8,9 +8,9 @@ import com.ytrue.common.utils.BeanUtils;
 import com.ytrue.modules.system.dao.SysUserDao;
 import com.ytrue.modules.system.dao.SysUserJobDao;
 import com.ytrue.modules.system.dao.SysUserRoleDao;
-import com.ytrue.modules.system.model.SysUser;
-import com.ytrue.modules.system.model.SysUserJob;
-import com.ytrue.modules.system.model.SysUserRole;
+import com.ytrue.modules.system.model.po.SysUser;
+import com.ytrue.modules.system.model.po.SysUserJob;
+import com.ytrue.modules.system.model.po.SysUserRole;
 import com.ytrue.modules.system.model.dto.SysUserDTO;
 import com.ytrue.modules.system.service.ISysUserService;
 import lombok.AllArgsConstructor;
@@ -40,13 +40,10 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
     public SysUserDTO getUserById(Long id) {
         SysUser user = getById(id);
         AssertUtils.notNull(user, ResponseCode.DATA_NOT_FOUND);
-
         // 获取对应的岗位
         Set<Long> jobIds = sysUserJobDao.selectList(Wrappers.<SysUserJob>lambdaQuery().eq(SysUserJob::getUserId, id)).stream().map(SysUserJob::getJobId).collect(Collectors.toSet());
-
         // 获取对应的角色
         Set<Long> roleIds = sysUserRoleDao.selectList(Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getUserId, id)).stream().map(SysUserRole::getRoleId).collect(Collectors.toSet());
-
         SysUserDTO userDTO = BeanUtils.cgLibCopyBean(user, SysUserDTO::new);
         userDTO.setJobIds(jobIds);
         userDTO.setRoleIds(roleIds);
@@ -85,7 +82,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
     public void removeBatchUser(List<Long> ids) {
         // 删除用户
         removeBatchByIds(ids);
-        // 删除角色与菜单,部门的关系
+        // 删除用户与部门,角色的关系
         deleteRoleAndJobRelation(ids);
     }
 
@@ -96,9 +93,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
      */
     private void saveRoleAndJobRelation(SysUserDTO sysUserDTO) {
         //保存用户与岗位关系
-        sysUserJobDao.insertBatchUserJob(sysUserDTO.getId(), sysUserDTO.getJobIds());
+        if (sysUserDTO.getJobIds().size() > 0){
+            sysUserJobDao.insertBatchUserJob(sysUserDTO.getId(), sysUserDTO.getJobIds());
+        }
         //保存户与角色关系
-        sysUserRoleDao.insertBatchUserRole(sysUserDTO.getId(), sysUserDTO.getRoleIds());
+        if (sysUserDTO.getRoleIds().size() > 0){
+            sysUserRoleDao.insertBatchUserRole(sysUserDTO.getId(), sysUserDTO.getRoleIds());
+        }
     }
 
     /**

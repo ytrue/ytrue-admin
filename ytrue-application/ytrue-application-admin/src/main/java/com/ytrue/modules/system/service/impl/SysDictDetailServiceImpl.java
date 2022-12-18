@@ -2,7 +2,7 @@ package com.ytrue.modules.system.service.impl;
 
 import com.ytrue.common.base.BaseServiceImpl;
 import com.ytrue.modules.system.dao.SysDictDetailDao;
-import com.ytrue.modules.system.model.SysDictDetail;
+import com.ytrue.modules.system.model.po.SysDictDetail;
 import com.ytrue.modules.system.service.ISysDictDetailService;
 import org.springframework.stereotype.Service;
 

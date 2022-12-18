@@ -42,7 +42,7 @@ public class SysUserDTO {
     private String phone;
 
     @ApiModelProperty(value = "用户性别")
-    private String gender;
+    private Integer gender;
 
     @ApiModelProperty(value = "头像真实名称")
     private String avatarName;

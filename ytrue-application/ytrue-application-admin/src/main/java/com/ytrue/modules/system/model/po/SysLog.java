@@ -1,4 +1,4 @@
-package com.ytrue.modules.system.model;
+package com.ytrue.modules.system.model.po;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -23,13 +23,11 @@ public class SysLog implements Serializable {
     @ApiModelProperty(value = "id")
     private Long id;
 
-
     @ApiModelProperty(value = "操作IP")
     private String requestIp;
 
     @ApiModelProperty(value = "日志类型 OPT:操作类型;EX:异常类型")
     private String type;
-
 
     @ApiModelProperty(value = "操作描述")
     private String description;

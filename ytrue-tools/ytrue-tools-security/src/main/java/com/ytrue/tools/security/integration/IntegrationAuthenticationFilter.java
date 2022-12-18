@@ -71,6 +71,7 @@ public class IntegrationAuthenticationFilter extends GenericFilterBean implement
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         //匹配和话就进行处理
         if (requestMatcher.matches(request)) {
+
             RequestParameterWrapper requestParameterWrapper = new RequestParameterWrapper(request);
 
             if (requestParameterWrapper.getParameter(PASSWORD) == null) {

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ytrue.modules.system.dao.SysRoleDeptDao">
+
+    <resultMap id="BaseResultMap" type="com.ytrue.modules.system.model.po.SysRoleDept">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="roleId" column="role_id" jdbcType="BIGINT"/>
+            <result property="deptId" column="dept_id" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <!--根据角色id 批量添加角色与部门关系-->
+    <insert id="insertBatchRoleDept">
+        insert into sys_role_dept (role_id,dept_id) values
+        <foreach collection='deptIds' item='deptId' separator=','>
+            (#{roleId},#{deptId})
+        </foreach>
+    </insert>
+</mapper>

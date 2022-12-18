@@ -9,5 +9,5 @@ import com.ytrue.modules.quartz.model.ScheduleJobLog;
  * @date 2021/4/8 15:36
  * @description ScheduleJobLogService
  */
-public interface ScheduleJobLogService extends IBaseService<ScheduleJobLog> {
+public interface IScheduleJobLogService extends IBaseService<ScheduleJobLog> {
 }

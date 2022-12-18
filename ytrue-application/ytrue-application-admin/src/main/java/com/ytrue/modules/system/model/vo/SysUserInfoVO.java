@@ -1,8 +1,7 @@
 package com.ytrue.modules.system.model.vo;
 
-import com.ytrue.modules.system.model.SysUser;
+import com.ytrue.modules.system.model.po.SysUser;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.util.Set;
 

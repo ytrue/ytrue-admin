@@ -9,7 +9,7 @@ ytrue:
     # 认证配置
     basic:
       # 开启认证
-      enable: true
+      enable: false
       # 用户名
       username: yadmin
       # 密码
@@ -17,7 +17,7 @@ ytrue:
     # 全局参数配置
     global-operation-parameters:
       # 认证头
-      - name: Authorization1
+      - name: Authorized
         description: 认证头
         modelRef: String
         parameter-type: header
@@ -26,30 +26,20 @@ ytrue:
         allow-empty-value: false
     # 分组文档
     docket:
-      generator:
-        title: 代码生成器
-        base-package: com.ytrue.modules.generator
-        path-regex: /gen.*
-      quartz:
-        title: 定时任务
-        base-package: com.ytrue.modules.quartz
       system:
         title: 系统管理
         base-package: com.ytrue.modules.system
-      login:
-        title: 登录
-        base-package: com.ytrue.security
+      quartz:
+        title: 定时任务
+        base-package: com.ytrue.modules.quartz
   # 安全配置
   security:
     auth-type-parameter-name: auth_type
-    authorization-header-parameter-name: Authorization1
+    authorization-header-parameter-name: Authorized
     token-cache-prefix: 'login_auth_tokens:'
     # 这个必须要与你认证的接口保存一致
     auth-url: /login
     ignore-auth:
-      #- /**
-      - /login
-      - /logout
       - /favicon.ico
       - /v2/api-docs**
       - /webjars/**

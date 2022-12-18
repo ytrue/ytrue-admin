@@ -1,7 +1,7 @@
 package com.ytrue.modules.system.service;
 
 import com.ytrue.common.base.IBaseService;
-import com.ytrue.modules.system.model.SysDept;
+import com.ytrue.modules.system.model.po.SysDept;
 
 import java.util.List;
 

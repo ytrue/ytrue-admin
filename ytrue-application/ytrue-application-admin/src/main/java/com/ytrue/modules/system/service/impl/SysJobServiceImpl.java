@@ -2,7 +2,7 @@ package com.ytrue.modules.system.service.impl;
 
 import com.ytrue.common.base.BaseServiceImpl;
 import com.ytrue.modules.system.dao.SysJobDao;
-import com.ytrue.modules.system.model.SysJob;
+import com.ytrue.modules.system.model.po.SysJob;
 import com.ytrue.modules.system.service.ISysJobService;
 import org.springframework.stereotype.Service;
 

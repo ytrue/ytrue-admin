@@ -3,10 +3,9 @@ package com.ytrue.modules.system.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.ytrue.modules.system.dao.SysRoleDao;
 import com.ytrue.modules.system.dao.SysUserDao;
-import com.ytrue.modules.system.model.SysUser;
+import com.ytrue.modules.system.model.po.SysUser;
 import com.ytrue.modules.system.service.ISysPermissionService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -34,7 +33,7 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
             roles.add("admin");
             return roles;
         }
-        return sysRoleDao.selectRoleCodeByUserId(user.getId()).stream().filter(StrUtil::isNotEmpty).collect(Collectors.toSet());
+        return sysRoleDao.listRoleCodeByUserId(user.getId()).stream().filter(StrUtil::isNotEmpty).collect(Collectors.toSet());
     }
 
     @Override
@@ -46,7 +45,7 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
             return perms;
         }
         // 返回对应的
-        return sysUserDao.selectPermsByUserId(user.getId()).stream().filter(StrUtil::isNotEmpty).collect(Collectors.toSet());
+        return sysUserDao.listPermsByUserId(user.getId()).stream().filter(StrUtil::isNotEmpty).collect(Collectors.toSet());
     }
 
 

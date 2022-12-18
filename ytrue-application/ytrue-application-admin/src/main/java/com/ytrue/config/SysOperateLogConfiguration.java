@@ -2,7 +2,7 @@ package com.ytrue.config;
 
 import com.ytrue.common.utils.BeanUtils;
 import com.ytrue.modules.system.dao.SysLogDao;
-import com.ytrue.modules.system.model.SysLog;
+import com.ytrue.modules.system.model.po.SysLog;
 import com.ytrue.tools.log.enitiy.OperationLog;
 import com.ytrue.tools.log.event.SysLogListener;
 import com.ytrue.tools.security.util.SecurityUtils;
@@ -29,7 +29,6 @@ public class SysOperateLogConfiguration {
      * @return
      */
     @Bean
-    @ConditionalOnMissingBean
     public SysLogListener sysLogListener(LogService logService) {
         return new SysLogListener(logService::saveLog);
     }

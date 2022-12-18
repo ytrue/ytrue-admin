@@ -1,4 +1,4 @@
-package com.ytrue.modules.system.model;
+package com.ytrue.modules.system.model.po;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;

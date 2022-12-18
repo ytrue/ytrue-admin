@@ -34,7 +34,7 @@ public class SecurityProperties {
     /**
      * 认证的url,也就是集成认证拦截的地址，这个必须要与认证的接口保存一致
      */
-    private String authUrl = "login";
+    private String authUrl = "/login";
 
     /**
      * token缓存到redis的前缀

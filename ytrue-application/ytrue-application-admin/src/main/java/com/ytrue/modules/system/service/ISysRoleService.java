@@ -1,7 +1,7 @@
 package com.ytrue.modules.system.service;
 
 import com.ytrue.common.base.IBaseService;
-import com.ytrue.modules.system.model.SysRole;
+import com.ytrue.modules.system.model.po.SysRole;
 import com.ytrue.modules.system.model.dto.SysRoleDTO;
 
 import java.util.List;

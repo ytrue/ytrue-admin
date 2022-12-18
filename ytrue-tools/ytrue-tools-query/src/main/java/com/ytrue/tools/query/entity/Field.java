@@ -1,9 +1,10 @@
 package com.ytrue.tools.query.entity;
 
 import com.ytrue.tools.query.enums.QueryMethod;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
+import lombok.NoArgsConstructor;
 
 /**
  * @author ytrue
@@ -11,7 +12,8 @@ import lombok.experimental.Accessors;
  * @description 字段
  */
 @Data
-
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode
 public class Field {
     /**
@@ -34,4 +36,11 @@ public class Field {
      * Column 小驼峰转下划线,默认开启
      */
     private Boolean columnToUnderline = true;
+
+
+    public Field(String column, QueryMethod condition, Object value) {
+        this.column = column;
+        this.value = value;
+        this.condition = condition;
+    }
 }

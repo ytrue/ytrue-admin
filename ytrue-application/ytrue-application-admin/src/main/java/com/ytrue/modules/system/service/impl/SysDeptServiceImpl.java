@@ -1,11 +1,17 @@
 package com.ytrue.modules.system.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.common.base.BaseServiceImpl;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.AssertUtils;
 import com.ytrue.modules.system.dao.SysDeptDao;
-import com.ytrue.modules.system.model.SysDept;
+import com.ytrue.modules.system.dao.SysRoleDeptDao;
+import com.ytrue.modules.system.dao.SysUserDao;
+import com.ytrue.modules.system.model.po.SysDept;
+import com.ytrue.modules.system.model.po.SysRoleDept;
+import com.ytrue.modules.system.model.po.SysUser;
 import com.ytrue.modules.system.service.ISysDeptService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +23,12 @@ import java.util.List;
  * @date 2022/12/7 11:46
  */
 @Service
+@AllArgsConstructor
 public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> implements ISysDeptService {
+
+    private final SysUserDao sysUserDao;
+
+    private final SysRoleDeptDao sysRoleDeptDao;
 
     /**
      * 保存部门
@@ -58,9 +69,13 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
             SysDept childDept = lambdaQuery().eq(SysDept::getPid, id).one();
             AssertUtils.isNull(childDept, ResponseCode.HAS_CHILD);
 
-            // 校验用户绑定 TODO
+            // 校验用户绑定
+            SysUser sysUser = sysUserDao.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getDeptId, id));
+            AssertUtils.isNull(sysUser, ResponseCode.HAS_USER_ASSOCIATION);
 
-            // 校验角色绑定 TODO
+            // 校验角色绑定
+            SysRoleDept sysRoleDept = sysRoleDeptDao.selectOne(Wrappers.<SysRoleDept>lambdaQuery().eq(SysRoleDept::getDeptId, id));
+            AssertUtils.isNull(sysRoleDept, ResponseCode.HAS_ROLE_ASSOCIATION);
 
             SysDept dept = getById(id);
             removeById(id);

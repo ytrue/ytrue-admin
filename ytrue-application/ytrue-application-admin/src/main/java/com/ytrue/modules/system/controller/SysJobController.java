@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.ApiResultResponse;
 import com.ytrue.common.utils.AssertUtils;
-import com.ytrue.modules.system.model.SysJob;
+import com.ytrue.modules.system.model.po.SysJob;
 import com.ytrue.modules.system.service.ISysJobService;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.entity.PageQueryEntity;
@@ -31,7 +31,6 @@ public class SysJobController {
 
     private final ISysJobService sysJobService;
 
-    @SysLog
     @PostMapping("page")
     @ApiOperation("分页")
     public ApiResultResponse<IPage<SysJob>> page(@RequestBody(required = false) PageQueryEntity<SysJob> pageQueryEntity) {
@@ -39,14 +38,12 @@ public class SysJobController {
         return ApiResultResponse.success(page);
     }
 
-    @SysLog
     @GetMapping("list")
     @ApiOperation("列表")
     public ApiResultResponse<List<SysJob>> list() {
         return ApiResultResponse.success(sysJobService.list());
     }
 
-    @SysLog
     @GetMapping("detail/{id}")
     @ApiOperation("详情")
     public ApiResultResponse<SysJob> detail(@PathVariable("id") Long id) {
@@ -59,7 +56,7 @@ public class SysJobController {
     @PostMapping
     @ApiOperation("保存")
     public ApiResultResponse<Object> save(@Valid @RequestBody SysJob sysJob) {
-        SysJob job = sysJobService.lambdaQuery().eq(SysJob::getName, sysJob.getName()).one();
+        SysJob job = sysJobService.lambdaQuery().eq(SysJob::getJobName, sysJob.getJobName()).one();
         AssertUtils.isNull(job, ResponseCode.JOB_EXISTS);
         sysJobService.save(sysJob);
         return ApiResultResponse.success();
@@ -71,7 +68,7 @@ public class SysJobController {
     public ApiResultResponse<Object> update(@Valid @RequestBody SysJob sysJob) {
         SysJob job = sysJobService
                 .lambdaQuery()
-                .eq(SysJob::getName, sysJob.getName())
+                .eq(SysJob::getJobName, sysJob.getJobName())
                 .ne(SysJob::getId, sysJob.getId())
                 .one();
         AssertUtils.isNull(job, ResponseCode.JOB_EXISTS);
@@ -83,6 +80,7 @@ public class SysJobController {
     @DeleteMapping
     @ApiOperation("删除")
     public ApiResultResponse<Object> delete(@RequestBody List<Long> ids) {
+        // 需要校验用户与岗位得绑定关系
         sysJobService.removeBatchByIds(ids);
         return ApiResultResponse.success();
     }

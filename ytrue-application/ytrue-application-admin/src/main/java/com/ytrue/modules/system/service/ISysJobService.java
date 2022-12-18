@@ -1,7 +1,7 @@
 package com.ytrue.modules.system.service;
 
 import com.ytrue.common.base.IBaseService;
-import com.ytrue.modules.system.model.SysJob;
+import com.ytrue.modules.system.model.po.SysJob;
 
 /**
  * @author ytrue
