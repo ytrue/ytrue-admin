@@ -2,7 +2,7 @@ package com.ytrue.modules.quartz.config;
 
 
 import com.ytrue.modules.quartz.event.ScheduleJobEvent;
-import com.ytrue.modules.quartz.model.ScheduleJob;
+import com.ytrue.modules.quartz.model.po.ScheduleJob;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.DisallowConcurrentExecution;

@@ -2,6 +2,7 @@ package com.ytrue.modules.system.dao;
 
 import com.ytrue.common.base.IBaseDao;
 import com.ytrue.modules.system.model.po.SysDept;
+import com.ytrue.tools.query.entity.QueryEntity;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Set;
@@ -22,4 +23,7 @@ public interface SysDeptDao extends IBaseDao<SysDept> {
      * @return
      */
     Set<Long> listDeptIdByRoleId(@Param("roleId") Long roleId, @Param("deptCheckStrictly") boolean deptCheckStrictly);
+
+
+    void test(QueryEntity queryEntity);
 }

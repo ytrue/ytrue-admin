@@ -12,8 +12,8 @@ import com.ytrue.common.utils.AssertUtils;
 import com.ytrue.modules.system.dao.SysMenuDao;
 import com.ytrue.modules.system.dao.SysRoleMenuDao;
 import com.ytrue.modules.system.dao.SysUserDao;
-import com.ytrue.modules.system.enums.ComponentType;
-import com.ytrue.modules.system.enums.MenuType;
+import com.ytrue.modules.system.enums.ComponentTypeEnum;
+import com.ytrue.modules.system.enums.MenuTypeEnum;
 import com.ytrue.modules.system.model.po.SysMenu;
 import com.ytrue.modules.system.model.po.SysRoleMenu;
 import com.ytrue.modules.system.model.po.SysUser;
@@ -122,7 +122,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
 
             // 不是外链，并且是M path要加/
             String path = sysMenu.getPath();
-            if (MenuType.DIRECTORY.getType().equals(sysMenu.getMenuType()) && !sysMenu.getIsFrame()) {
+            if (MenuTypeEnum.DIRECTORY.getType().equals(sysMenu.getMenuType()) && !sysMenu.getIsFrame()) {
                 path = "/" + path;
             }
             tree.putExtra("path", path);
@@ -133,12 +133,12 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
 
             tree.putExtra("component", getComponent(sysMenu));
             // 如果是ParentView path要去掉/
-            if (getComponent(sysMenu).equals(ComponentType.PARENT_VIEW.getType())){
+            if (getComponent(sysMenu).equals(ComponentTypeEnum.PARENT_VIEW.getType())){
                 tree.putExtra("path", sysMenu.getPath());
             }
 
             // 有子菜单并且类型是M
-            if (sysMenu.getSubCount() > 0 && MenuType.DIRECTORY.getType().equals(sysMenu.getMenuType())) {
+            if (sysMenu.getSubCount() > 0 && MenuTypeEnum.DIRECTORY.getType().equals(sysMenu.getMenuType())) {
                 tree.putExtra("alwaysShow", true);
                 tree.putExtra("redirect", "noRedirect");
             }
@@ -167,12 +167,12 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
             return menu.getComponent();
         }
         // 默认LAYOUT
-        String component = ComponentType.LAYOUT.getType();
+        String component = ComponentTypeEnum.LAYOUT.getType();
 
         if (menu.getPid().intValue() != 0 && menu.getIsFrame()) {
-            component = ComponentType.INNER_LINK.getType();
-        } else if (menu.getPid().intValue() != 0 && MenuType.DIRECTORY.getType().equals(menu.getMenuType())) {
-            component = ComponentType.PARENT_VIEW.getType();
+            component = ComponentTypeEnum.INNER_LINK.getType();
+        } else if (menu.getPid().intValue() != 0 && MenuTypeEnum.DIRECTORY.getType().equals(menu.getMenuType())) {
+            component = ComponentTypeEnum.PARENT_VIEW.getType();
         }
         return component;
     }

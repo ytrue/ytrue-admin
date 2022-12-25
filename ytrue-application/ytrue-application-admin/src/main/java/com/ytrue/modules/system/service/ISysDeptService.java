@@ -12,6 +12,7 @@ import java.util.List;
  */
 public interface ISysDeptService extends IBaseService<SysDept> {
 
+
     /**
      * 保存部门
      *

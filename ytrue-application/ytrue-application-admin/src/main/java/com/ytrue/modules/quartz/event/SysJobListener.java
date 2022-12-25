@@ -2,18 +2,14 @@ package com.ytrue.modules.quartz.event;
 
 import cn.hutool.core.date.SystemClock;
 import cn.hutool.core.util.StrUtil;
-import com.ytrue.modules.quartz.model.ScheduleJob;
-import com.ytrue.modules.quartz.model.ScheduleJobLog;
+import com.ytrue.modules.quartz.model.po.ScheduleJob;
+import com.ytrue.modules.quartz.model.po.ScheduleJobLog;
 import com.ytrue.modules.quartz.service.IScheduleJobLogService;
 import com.ytrue.modules.quartz.util.SpringBeanTaskUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
 
 
 /**

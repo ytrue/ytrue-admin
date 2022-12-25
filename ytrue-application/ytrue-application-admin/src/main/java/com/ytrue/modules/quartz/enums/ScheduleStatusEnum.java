@@ -6,11 +6,11 @@ import lombok.Getter;
 /**
  * @author ytrue
  * @date 2021/4/8 15:36
- * @description ScheduleStatus
+ * @description ScheduleStatusEnum
  */
 @Getter
 @AllArgsConstructor
-public enum ScheduleStatus {
+public enum ScheduleStatusEnum {
 
     /**
      * 正常

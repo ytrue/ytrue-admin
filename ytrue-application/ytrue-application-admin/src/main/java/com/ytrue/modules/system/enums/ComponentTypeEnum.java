@@ -5,30 +5,28 @@ import lombok.Getter;
 
 /**
  * @author ytrue
- * @description: MenuType
- * @date 2022/12/12 15:13
+ * @description: ComponentTypeEnum
+ * @date 2022/12/12 15:17
  */
 @Getter
 @AllArgsConstructor
-public enum MenuType {
+public enum ComponentTypeEnum {
 
     /**
-     * C菜单
+     * Layout
      */
-    MENU("C"),
+    LAYOUT("Layout"),
 
     /**
-     * M目录
+     * ParentView
      */
-    DIRECTORY("M"),
+    PARENT_VIEW("ParentView"),
 
     /**
-     * F按钮
+     * InnerLink
      */
-    BUTTON("F");
+    INNER_LINK("InnerLink");
 
-    /**
-     * 类型
-     */
+
     private final String type;
 }

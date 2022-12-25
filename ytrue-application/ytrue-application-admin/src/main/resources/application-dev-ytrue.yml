@@ -22,7 +22,7 @@ ytrue:
         modelRef: String
         parameter-type: header
         required: true
-        default-value: Bearer#eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwianRpIjoiRnJpIERlYyAwOSAwOTozNjo0NCBDU1QgMjAyMiIsIm5iZiI6MTY3MDU0OTgwNCwiaWF0IjoxNjcwNTQ5ODA0LCJleHAiOjE2NzA5MDk4MDR9.BFAhzSZr6r9MOipQAQN_omTlCElM4rvR-ExzNsYtOWQ
+        default-value:
         allow-empty-value: false
     # 分组文档
     docket:

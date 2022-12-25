@@ -33,7 +33,7 @@ public enum QueryMethod {
     likeRight,
 
     /**
-     * 日期范围查询 格式 2021-06-05 00:00:00,2021-07-31 11:59:59
+     * 范围查询 [111,222]
      */
-    betweenDate
+    between
 }

@@ -2,7 +2,7 @@ package com.ytrue;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 /**
  * @author ytrue
@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @date 2022/12/6 15:47
  */
 @SpringBootApplication
-@EnableTransactionManagement
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AdminApplication {
 
     /**

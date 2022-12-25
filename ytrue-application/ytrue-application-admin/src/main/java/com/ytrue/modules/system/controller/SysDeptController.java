@@ -1,17 +1,18 @@
 package com.ytrue.modules.system.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.ApiResultResponse;
 import com.ytrue.common.utils.AssertUtils;
+import com.ytrue.modules.system.model.dto.params.SysDeptSearchParams;
 import com.ytrue.modules.system.model.po.SysDept;
 import com.ytrue.modules.system.service.ISysDeptService;
 import com.ytrue.tools.log.annotation.SysLog;
-import com.ytrue.tools.query.entity.PageQueryEntity;
-import com.ytrue.tools.query.entity.QueryEntity;
+import com.ytrue.tools.query.utils.QueryHelp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,21 +31,21 @@ public class SysDeptController {
 
     private final ISysDeptService sysDeptService;
 
-
-    @PostMapping("page")
-    @ApiOperation("分页查询")
-    public ApiResultResponse<IPage<SysDept>> page(@RequestBody(required = false) PageQueryEntity<SysDept> pageQueryEntity) {
-        return ApiResultResponse.success(sysDeptService.paginate(pageQueryEntity));
-    }
-
-    @PostMapping("list")
+    @GetMapping("list")
     @ApiOperation("列表")
-    public ApiResultResponse<List<SysDept>> list(@RequestBody(required = false) QueryEntity<SysDept> queryEntity) {
-        return ApiResultResponse.success(sysDeptService.list(queryEntity));
+    @PreAuthorize("@pms.hasPermission('system:dept:list')")
+    public ApiResultResponse<List<SysDept>> list(SysDeptSearchParams params) {
+
+        LambdaQueryWrapper<SysDept> queryWrapper = QueryHelp.<SysDept>lambdaQueryWrapperBuilder(params)
+                .orderByAsc(SysDept::getDeptSort)
+                .orderByDesc(SysDept::getId);
+
+        return ApiResultResponse.success(sysDeptService.list(queryWrapper));
     }
 
     @GetMapping("detail/{id}")
     @ApiOperation("详情")
+    @PreAuthorize("@pms.hasPermission('system:dept:detail')")
     public ApiResultResponse<SysDept> detail(@PathVariable("id") Long id) {
         SysDept data = sysDeptService.getById(id);
         AssertUtils.notNull(data, ResponseCode.DATA_NOT_FOUND);
@@ -54,7 +55,8 @@ public class SysDeptController {
     @SysLog
     @PostMapping
     @ApiOperation("保存")
-    public ApiResultResponse<Object> save(@Valid @RequestBody SysDept sysDept) {
+    @PreAuthorize("@pms.hasPermission('system:dept:add')")
+    public ApiResultResponse<Object> add(@Valid @RequestBody SysDept sysDept) {
         sysDeptService.addDept(sysDept);
         return ApiResultResponse.success();
     }
@@ -62,6 +64,7 @@ public class SysDeptController {
     @SysLog
     @PutMapping
     @ApiOperation("修改")
+    @PreAuthorize("@pms.hasPermission('system:dept:update')")
     public ApiResultResponse<Object> update(@Valid @RequestBody SysDept sysDept) {
         sysDeptService.updateDept(sysDept);
         return ApiResultResponse.success();
@@ -70,6 +73,7 @@ public class SysDeptController {
     @SysLog
     @DeleteMapping
     @ApiOperation("删除")
+    @PreAuthorize("@pms.hasPermission('system:dept:delete')")
     public ApiResultResponse<Object> delete(@RequestBody List<Long> ids) {
         sysDeptService.removeBatchDept(ids);
         return ApiResultResponse.success();

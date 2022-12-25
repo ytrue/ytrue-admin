@@ -1,7 +1,7 @@
 package com.ytrue.modules.quartz.dao;
 
 import com.ytrue.common.base.IBaseDao;
-import com.ytrue.modules.quartz.model.ScheduleJob;
+import com.ytrue.modules.quartz.model.po.ScheduleJob;
 
 
 /**

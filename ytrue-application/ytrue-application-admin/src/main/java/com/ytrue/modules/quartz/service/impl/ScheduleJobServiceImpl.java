@@ -3,8 +3,8 @@ package com.ytrue.modules.quartz.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.common.base.BaseServiceImpl;
 import com.ytrue.modules.quartz.dao.ScheduleJobDao;
-import com.ytrue.modules.quartz.enums.ScheduleStatus;
-import com.ytrue.modules.quartz.model.ScheduleJob;
+import com.ytrue.modules.quartz.enums.ScheduleStatusEnum;
+import com.ytrue.modules.quartz.model.po.ScheduleJob;
 import com.ytrue.modules.quartz.service.IScheduleJobService;
 import com.ytrue.modules.quartz.service.manager.ScheduleManager;
 import lombok.AllArgsConstructor;
@@ -43,9 +43,9 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
             // 如果定时任务不存在，则创建定时任务
             if (trigger == null) {
                 scheduleManager.createScheduleJob(scheduleJob);
-            } else if (ScheduleStatus.NORMAL.getType().equals(scheduleJob.getStatus())) {
+            } else if (ScheduleStatusEnum.NORMAL.getType().equals(scheduleJob.getStatus())) {
                 scheduleManager.resumeJob(scheduleJob);
-            } else if (ScheduleStatus.PAUSE.getType().equals(scheduleJob.getStatus())) {
+            } else if (ScheduleStatusEnum.PAUSE.getType().equals(scheduleJob.getStatus())) {
                 scheduleManager.pauseJob(scheduleJob);
             }
         });
@@ -55,7 +55,7 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void saveAndStart(ScheduleJob scheduleJob) {
-        scheduleJob.setStatus(ScheduleStatus.NORMAL.getType());
+        scheduleJob.setStatus(ScheduleStatusEnum.NORMAL.getType());
         scheduleJobDao.insert(scheduleJob);
 
         scheduleManager.createScheduleJob(scheduleJob);
@@ -124,7 +124,7 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
     @Transactional(rollbackFor = Exception.class)
     public void pause(Long[] jobIds) {
         this.listByIds(Arrays.asList(jobIds)).forEach(scheduleManager::pauseJob);
-        updateBatch(jobIds, ScheduleStatus.PAUSE.getType());
+        updateBatch(jobIds, ScheduleStatusEnum.PAUSE.getType());
     }
 
     /**
@@ -137,7 +137,7 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
     public void resume(Long[] jobIds) {
         this.listByIds(Arrays.asList(jobIds)).forEach(scheduleManager::resumeJob);
 
-        updateBatch(jobIds, ScheduleStatus.NORMAL.getType());
+        updateBatch(jobIds, ScheduleStatusEnum.NORMAL.getType());
     }
 
 

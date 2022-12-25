@@ -1,17 +1,20 @@
 package com.ytrue.modules.system.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.ytrue.common.entity.Pageable;
 import com.ytrue.common.utils.ApiResultResponse;
+import com.ytrue.modules.system.model.dto.params.SysRoleSearchParams;
 import com.ytrue.modules.system.model.po.SysRole;
 import com.ytrue.modules.system.model.dto.SysRoleDTO;
 import com.ytrue.modules.system.service.ISysRoleService;
 import com.ytrue.tools.log.annotation.SysLog;
-import com.ytrue.tools.query.entity.PageQueryEntity;
-import com.ytrue.tools.security.util.SecurityUtils;
+import com.ytrue.tools.query.utils.QueryHelp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,22 +34,34 @@ public class SysRoleController {
 
     private final ISysRoleService sysRoleService;
 
-    @PostMapping("page")
+    @GetMapping("page")
     @ApiOperation("分页查询")
-    public ApiResultResponse<IPage<SysRole>> page(@RequestBody(required = false) PageQueryEntity<SysRole> pageQueryEntity) {
-        // 这里还要做数据范围过滤 TODO
-        IPage<SysRole> page = sysRoleService.paginate(pageQueryEntity);
-        return ApiResultResponse.success(page);
+    @PreAuthorize("@pms.hasPermission('system:role:page')")
+    public ApiResultResponse<IPage<SysRole>> page(SysRoleSearchParams params, Pageable pageable) {
+
+        LambdaQueryWrapper<SysRole> queryWrapper = QueryHelp.<SysRole>lambdaQueryWrapperBuilder(params)
+                .orderByAsc(SysRole::getRoleSort)
+                .orderByDesc(SysRole::getId);
+
+        return ApiResultResponse.success(sysRoleService.page(pageable.page(), queryWrapper));
     }
 
     @GetMapping("list")
     @ApiOperation("列表")
+    @PreAuthorize("@pms.hasPermission('system:role:list')")
     public ApiResultResponse<List<SysRole>> list() {
-        return ApiResultResponse.success(sysRoleService.list());
+        return ApiResultResponse.success(
+                sysRoleService
+                        .lambdaQuery()
+                        .orderByAsc(SysRole::getRoleSort)
+                        .orderByDesc(SysRole::getId)
+                        .list()
+        );
     }
 
     @GetMapping("detail/{id}")
     @ApiOperation("详情")
+    @PreAuthorize("@pms.hasPermission('system:role:detail')")
     public ApiResultResponse<SysRoleDTO> detail(@PathVariable("id") Long id) {
         return ApiResultResponse.success(sysRoleService.getRoleById(id));
     }
@@ -54,7 +69,8 @@ public class SysRoleController {
     @SysLog
     @PostMapping
     @ApiOperation("保存")
-    public ApiResultResponse<Object> save(@Valid @RequestBody SysRoleDTO sysRoleDTO) {
+    @PreAuthorize("@pms.hasPermission('system:role:add')")
+    public ApiResultResponse<Object> add(@Valid @RequestBody SysRoleDTO sysRoleDTO) {
         sysRoleService.addRole(sysRoleDTO);
         return ApiResultResponse.success();
     }
@@ -62,6 +78,7 @@ public class SysRoleController {
     @SysLog
     @PutMapping
     @ApiOperation("修改")
+    @PreAuthorize("@pms.hasPermission('system:role:update')")
     public ApiResultResponse<Object> update(@Valid @RequestBody SysRoleDTO sysRoleDTO) {
         sysRoleService.updateRole(sysRoleDTO);
         return ApiResultResponse.success();
@@ -70,6 +87,7 @@ public class SysRoleController {
     @SysLog
     @DeleteMapping
     @ApiOperation("删除")
+    @PreAuthorize("@pms.hasPermission('system:role:delete')")
     public ApiResultResponse<Object> delete(@RequestBody List<Long> ids) {
         sysRoleService.removeBatchRole(ids);
         return ApiResultResponse.success();

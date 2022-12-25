@@ -20,7 +20,7 @@ public interface IBaseService<T> extends IService<T> {
      * @param pageQueryEntity
      * @return
      */
-    IPage<T> paginate(PageQueryEntity<T> pageQueryEntity);
+    IPage<T> paginate(PageQueryEntity pageQueryEntity);
 
     /**
      * 条件列表查询
@@ -28,5 +28,5 @@ public interface IBaseService<T> extends IService<T> {
      * @param queryEntity
      * @return
      */
-    List<T> list(QueryEntity<T> queryEntity);
+    List<T> list(QueryEntity queryEntity);
 }

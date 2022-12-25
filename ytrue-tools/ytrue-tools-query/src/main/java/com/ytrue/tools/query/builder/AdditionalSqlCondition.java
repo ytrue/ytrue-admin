@@ -3,7 +3,9 @@ package com.ytrue.tools.query.builder;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
-import com.ytrue.tools.query.entity.Field;
+import com.ytrue.tools.query.entity.Filter;
+import com.ytrue.tools.query.enums.MysqlMethod;
+import com.ytrue.tools.query.enums.Operator;
 import com.ytrue.tools.query.enums.QueryMethod;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Expression;
@@ -18,7 +20,8 @@ import net.sf.jsqlparser.statement.update.Update;
 
 import java.io.StringReader;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author ytrue
@@ -28,13 +31,31 @@ import java.util.HashSet;
 public class AdditionalSqlCondition {
 
     private static final HashMap<QueryMethod, AdditionalCondition> ADDITIONAL_CONDITION_MAP = new HashMap<>();
+    private final static String STATIC_QUOTES = "'";
 
     static {
-        ADDITIONAL_CONDITION_MAP.put(QueryMethod.eq, (stringBuffer, field) -> splicingString(stringBuffer, field, "="));
-        ADDITIONAL_CONDITION_MAP.put(QueryMethod.ne, (stringBuffer, field) -> splicingString(stringBuffer, field, "!="));
-        ADDITIONAL_CONDITION_MAP.put(QueryMethod.like, (stringBuffer, field) -> splicingString(stringBuffer, field, "LIKE", "'%", "%'"));
-        ADDITIONAL_CONDITION_MAP.put(QueryMethod.likeLeft, (stringBuffer, field) -> splicingString(stringBuffer, field, "LIKE", "'%", "'"));
-        ADDITIONAL_CONDITION_MAP.put(QueryMethod.likeRight, (stringBuffer, field) -> splicingString(stringBuffer, field, "LIKE", "'", "%'"));
+        ADDITIONAL_CONDITION_MAP.put(QueryMethod.eq, (stringBuffer, field) -> splicingString(stringBuffer, field, MysqlMethod.EQ.getValue()));
+        ADDITIONAL_CONDITION_MAP.put(QueryMethod.ne, (stringBuffer, field) -> splicingString(stringBuffer, field, MysqlMethod.NE.getValue()));
+        ADDITIONAL_CONDITION_MAP.put(QueryMethod.like, (stringBuffer, field) -> splicingString(stringBuffer, field, MysqlMethod.LIKE.getValue(), "'%", "%'"));
+        ADDITIONAL_CONDITION_MAP.put(QueryMethod.likeLeft, (stringBuffer, field) -> splicingString(stringBuffer, field, MysqlMethod.LIKE.getValue(), "'%", STATIC_QUOTES));
+        ADDITIONAL_CONDITION_MAP.put(QueryMethod.likeRight, (stringBuffer, field) -> splicingString(stringBuffer, field, MysqlMethod.LIKE.getValue(), STATIC_QUOTES, "%'"));
+        // between处理
+        ADDITIONAL_CONDITION_MAP.put(QueryMethod.between, (stringBuffer, filter) -> {
+            Object start = disposeValue(((List<?>) filter.getValue()).get(0));
+            Object end = disposeValue(((List<?>) filter.getValue()).get(1));
+            stringBuffer.append(" ").append(filter.getOperator()).append(" ");
+            if (StrUtil.isNotBlank(filter.getAlias())) {
+                stringBuffer.append(filter.getAlias()).append(".");
+            }
+            stringBuffer.append(filter.getColumn());
+            stringBuffer.append(" ");
+            stringBuffer.append(filter.getCondition());
+            stringBuffer.append(" ");
+            stringBuffer.append(start);
+            stringBuffer.append(" and ");
+            stringBuffer.append(" ");
+            stringBuffer.append(end);
+        });
     }
 
 
@@ -42,13 +63,13 @@ public class AdditionalSqlCondition {
      * 追加条件
      *
      * @param sql
-     * @param fieldList
+     * @param filters
      * @return
      * @throws JSQLParserException
      */
-    public String appendWhereCondition(String sql, HashSet<Field> fieldList) throws JSQLParserException {
+    public String appendWhereCondition(String sql, Set<Filter> filters) throws JSQLParserException {
 
-        String appendWhereConditionString = getCondExpression(fieldList);
+        String appendWhereConditionString = getCondExpression(filters);
 
         if (StrUtil.isBlank(appendWhereConditionString)) {
             return sql;
@@ -138,29 +159,43 @@ public class AdditionalSqlCondition {
 
 
     /**
-     * 处理 fields 转成字符串
+     * 处理 filters 转成字符串
      *
-     * @param fields
+     * @param filters
      * @return
      */
-    private String getCondExpression(HashSet<Field> fields) {
+    private String getCondExpression(Set<Filter> filters) {
 
         //要判断一下是否为空，不然会报空指针异常
-        if (CollUtil.isEmpty(fields)) {
+        if (CollUtil.isEmpty(filters)) {
             return null;
         }
         StringBuffer stringBuffer = new StringBuffer();
 
-        fields.forEach(field -> {
+        filters.forEach(filter -> {
             // 进行匹配
-            AdditionalCondition appendCondition = ADDITIONAL_CONDITION_MAP.get(field.getCondition());
+            AdditionalCondition appendCondition = ADDITIONAL_CONDITION_MAP.get(filter.getCondition());
             Assert.notNull(appendCondition, "类型匹配错误");
-            appendCondition.additional(stringBuffer, field);
+
+            filter.setValue(AdditionalSqlCondition.disposeValue(filter.getValue()));
+            appendCondition.additional(stringBuffer, filter);
 
         });
-        //删除前面的 and
-        String s = stringBuffer.toString();
-        return s.substring(5);
+
+        String s = stringBuffer.toString().trim();
+        //删除前面的 and 或者是 or
+        String and = Operator.and.name();
+        String or = Operator.or.name();
+
+        if (s.startsWith(and)) {
+            s = s.substring(and.length() + 1);
+        }
+
+        if (s.startsWith(or)) {
+            s = s.substring(or.length() + 1);
+        }
+
+        return s;
     }
 
 
@@ -173,37 +208,70 @@ public class AdditionalSqlCondition {
          * 附加条件
          *
          * @param stringBuffer
-         * @param field
+         * @param filter
          */
-        void additional(StringBuffer stringBuffer, Field field);
+        void additional(StringBuffer stringBuffer, Filter filter);
     }
 
     /**
      * 拼接字符串
      *
      * @param stringBuffer
-     * @param field
+     * @param filter
      * @param type
      */
-    private static void splicingString(StringBuffer stringBuffer, Field field, String type) {
-        splicingString(stringBuffer, field, type, "", "");
+    private static void splicingString(StringBuffer stringBuffer, Filter filter, String type) {
+        splicingString(stringBuffer, filter, type, "", "");
     }
 
     /**
      * 拼接字符串
      *
      * @param stringBuffer
-     * @param field
+     * @param filter
      * @param type
      * @param prefixString
      * @param suffixString
      */
-    private static void splicingString(StringBuffer stringBuffer, Field field, String type, String prefixString, String suffixString) {
-        stringBuffer.append(" and ");
-        stringBuffer.append(field.getColumn());
+    private static void splicingString(StringBuffer stringBuffer, Filter filter, String type, String prefixString, String suffixString) {
+
+        stringBuffer.append(" ").append(filter.getOperator()).append(" ");
+        if (StrUtil.isNotBlank(filter.getAlias())) {
+            stringBuffer.append(filter.getAlias()).append(".");
+        }
+        stringBuffer.append(filter.getColumn());
         stringBuffer.append(" ");
         stringBuffer.append(type);
         stringBuffer.append(" ");
-        stringBuffer.append(prefixString).append(field.getValue()).append(suffixString);
+
+
+        Object value = filter.getValue();
+        // 如果是LIKE 要加之前字符串处理的要做掉
+        if (value instanceof String && type.equals(MysqlMethod.LIKE.getValue())) {
+            String str = (String) value;
+            if (str.startsWith(STATIC_QUOTES) && str.endsWith(STATIC_QUOTES)) {
+                value = str.substring(1, str.length() - 1);
+            }
+        }
+
+        stringBuffer.append(prefixString).append(value).append(suffixString);
+    }
+
+
+    /**
+     * 字符串做处理
+     *
+     * @param value
+     * @return
+     */
+    public static Object disposeValue(Object value) {
+        if (value instanceof String) {
+            String str = (String) value;
+            if (!str.startsWith(STATIC_QUOTES) && !str.endsWith(STATIC_QUOTES)) {
+                str = STATIC_QUOTES + str + STATIC_QUOTES;
+            }
+            return str;
+        }
+        return value;
     }
 }

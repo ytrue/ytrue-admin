@@ -39,14 +39,14 @@ public class AssertUtils {
 
 
     /**
-     * 断言 object 为空
+     * 断言true
      *
-     * @param object
-     * @param message
+     * @param expression
+     * @param responseCode
      */
-    public static void isNull(Object object, String message) {
-        if (Objects.nonNull(object)) {
-            reportInvalidArgument(message);
+    public static void isTrue(boolean expression, IBaseExceptionCode responseCode) {
+        if (!expression) {
+            reportInvalidArgument(responseCode);
         }
     }
 
@@ -99,7 +99,7 @@ public class AssertUtils {
      * @param limit
      * @param responseCode
      */
-    public static void lessThanEq(Long value, Long limit, IBaseExceptionCode responseCode) {
+    public static void lessThanEq(long value, long limit, IBaseExceptionCode responseCode) {
         if (value > limit) {
             reportInvalidArgument(responseCode);
         }
@@ -112,7 +112,7 @@ public class AssertUtils {
      * @param limit
      * @param responseCode
      */
-    public static void greaterThanEq(Long value, Long limit, IBaseExceptionCode responseCode) {
+    public static void greaterThanEq(long value, long limit, IBaseExceptionCode responseCode) {
         if (value < limit) {
             reportInvalidArgument(responseCode);
         }

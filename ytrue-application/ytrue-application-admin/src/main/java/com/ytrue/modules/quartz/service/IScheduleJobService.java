@@ -1,7 +1,7 @@
 package com.ytrue.modules.quartz.service;
 
 import com.ytrue.common.base.IBaseService;
-import com.ytrue.modules.quartz.model.ScheduleJob;
+import com.ytrue.modules.quartz.model.po.ScheduleJob;
 
 
 /**

@@ -1,9 +1,7 @@
 package com.ytrue.modules.system.model.po;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 /**
  * @author ytrue

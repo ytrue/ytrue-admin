@@ -8,7 +8,6 @@ import com.ytrue.modules.system.model.vo.SysUserInfoVO;
 import com.ytrue.modules.system.service.ISysMenuService;
 import com.ytrue.modules.system.service.ISysPermissionService;
 import com.ytrue.modules.system.service.ISysUserService;
-import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.security.service.LoginService;
 import com.ytrue.tools.security.util.SecurityUtils;
 import io.swagger.annotations.Api;

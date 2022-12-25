@@ -1,5 +1,6 @@
 package com.ytrue.tools.security.handler;
 
+import com.ytrue.tools.security.excptions.AuthenticationFailureException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
@@ -20,8 +21,6 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
             HttpServletResponse response,
             AccessDeniedException accessDeniedException
     ) {
-
-        // TODO 这里异常类型要替换下，之后全局一次要做code处理
-        throw new RuntimeException("权限不足");
+        throw new AuthenticationFailureException(accessDeniedException);
     }
 }

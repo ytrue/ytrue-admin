@@ -3,6 +3,9 @@ package com.ytrue.security;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ytrue.common.enums.ResponseCode;
+import com.ytrue.common.excptions.LoginFailureException;
+import com.ytrue.common.utils.AssertUtils;
 import com.ytrue.modules.system.dao.SysUserDao;
 import com.ytrue.modules.system.model.po.SysUser;
 import com.ytrue.modules.system.service.impl.SysPermissionServiceImpl;
@@ -10,7 +13,6 @@ import com.ytrue.tools.security.integration.IntegrationAuthenticationEntity;
 import com.ytrue.tools.security.integration.authenticator.AbstractPreparableIntegrationAuthenticator;
 import com.ytrue.tools.security.user.LoginUser;
 import com.ytrue.tools.security.user.User;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -44,26 +46,21 @@ public class UsernamePasswordAuthenticator extends AbstractPreparableIntegration
         String password = entity.getAuthParameter("password");
         // 校验空
         if (StrUtil.isEmpty(username) || StrUtil.isEmpty(password)) {
-            throw new RuntimeException("用户名或者密码不正确!");
+            throw new LoginFailureException(ResponseCode.ACCOUNT_PASSWORD_INCORRECT);
         }
-        // 校验用户名是否存在
+
         SysUser sysUser = sysUserDao.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, username));
-
-        if (sysUser == null) {
-            throw new RuntimeException("登录用户：" + username + " 不存在");
-        }
-
+        // 校验用户名是否存在
+        AssertUtils.notNull(sysUser, ResponseCode.ACCOUNT_NOT_FOUND);
         // 校验密码
-        if (!passwordEncoder.matches(password, sysUser.getPassword())) {
-            throw new BadCredentialsException("密码错误");
-        }
+        AssertUtils.isTrue(passwordEncoder.matches(password, sysUser.getPassword()), ResponseCode.ACCOUNT_PASSWORD_INCORRECT);
 
         User user = new User();
         user.setUserId(Convert.toStr(sysUser.getId()));
         user.setUsername(sysUser.getUsername());
         user.setPassword(sysUser.getPassword());
         user.setAuthorities(sysPermissionService.getPermission(sysUser));
-
+        user.setRoles(sysPermissionService.getRoleCode(sysUser));
         // 设置邮箱
         HashMap<String, String> extend = new HashMap<>(16);
         extend.put("email", sysUser.getEmail());

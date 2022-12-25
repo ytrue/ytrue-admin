@@ -1,5 +1,6 @@
 package com.ytrue.modules.system.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.common.base.BaseServiceImpl;
 import com.ytrue.common.enums.ResponseCode;
@@ -12,7 +13,9 @@ import com.ytrue.modules.system.model.po.SysUser;
 import com.ytrue.modules.system.model.po.SysUserJob;
 import com.ytrue.modules.system.model.po.SysUserRole;
 import com.ytrue.modules.system.model.dto.SysUserDTO;
+import com.ytrue.modules.system.model.vo.SysUserListVO;
 import com.ytrue.modules.system.service.ISysUserService;
+import com.ytrue.tools.query.entity.QueryEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +38,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
     private final SysUserRoleDao sysUserRoleDao;
 
     private final SysUserJobDao sysUserJobDao;
+
+    private final SysUserDao sysUserDao;
+
+    @Override
+    public IPage<SysUserListVO> paginate(IPage<SysUserListVO> page, QueryEntity query) {
+        return sysUserDao.listWithDeptName(page, query);
+    }
 
     @Override
     public SysUserDTO getUserById(Long id) {
@@ -93,11 +103,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
      */
     private void saveRoleAndJobRelation(SysUserDTO sysUserDTO) {
         //保存用户与岗位关系
-        if (sysUserDTO.getJobIds().size() > 0){
+        if (sysUserDTO.getJobIds().size() > 0) {
             sysUserJobDao.insertBatchUserJob(sysUserDTO.getId(), sysUserDTO.getJobIds());
         }
         //保存户与角色关系
-        if (sysUserDTO.getRoleIds().size() > 0){
+        if (sysUserDTO.getRoleIds().size() > 0) {
             sysUserRoleDao.insertBatchUserRole(sysUserDTO.getId(), sysUserDTO.getRoleIds());
         }
     }

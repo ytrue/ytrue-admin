@@ -56,7 +56,7 @@ public class SysUserDTO {
 
     @NotNull
     @ApiModelProperty(value = "是否启用")
-    private Boolean enabled;
+    private Boolean status;
 
     @ApiModelProperty(value = "角色id集合")
     private Set<Long> roleIds;

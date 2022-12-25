@@ -1,5 +1,6 @@
 package com.ytrue.tools.security.handler;
 
+import com.ytrue.tools.security.excptions.AuthenticationFailureException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -20,13 +21,6 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
             HttpServletResponse response,
             AuthenticationException authException
     ) throws RuntimeException {
-
-        //密码对比错误
-        if (authException instanceof BadCredentialsException) {
-            throw new BadCredentialsException(authException.getMessage());
-        }
-
-        // TODO 这里异常类型要替换下，之后全局一次要做code处理
-        throw new InternalAuthenticationServiceException(authException.getMessage(), authException);
+        throw new AuthenticationFailureException(authException);
     }
 }

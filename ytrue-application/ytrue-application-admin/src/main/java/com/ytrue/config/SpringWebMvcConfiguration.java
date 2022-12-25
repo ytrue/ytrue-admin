@@ -68,4 +68,6 @@ public class SpringWebMvcConfiguration implements WebMvcConfigurer {
         converters.removeIf(o -> o instanceof MappingJackson2HttpMessageConverter);
         converters.add(new MappingJackson2HttpMessageConverter(objectMapper));
     }
+
+
 }

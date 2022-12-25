@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ytrue.modules.quartz.dao.ScheduleJobLogDao">
 
-    <resultMap id="BaseResultMap" type="com.ytrue.modules.quartz.model.ScheduleJobLog">
+    <resultMap id="BaseResultMap" type="com.ytrue.modules.quartz.model.po.ScheduleJobLog">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="jobId" column="job_id" jdbcType="BIGINT"/>
             <result property="beanName" column="bean_name" jdbcType="VARCHAR"/>

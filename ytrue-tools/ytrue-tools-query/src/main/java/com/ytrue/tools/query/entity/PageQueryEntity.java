@@ -2,6 +2,7 @@ package com.ytrue.tools.query.entity;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,14 +15,14 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class PageQueryEntity<T> extends QueryEntity<T> implements Serializable {
+public class PageQueryEntity extends QueryEntity implements Serializable {
 
     private static final long serialVersionUID = 6551142650282442009L;
 
     /**
      * 当前页码，默认是1
      */
-    private Integer currentPage = 1;
+    private Integer page = 1;
 
     /**
      * 当前页码，默认是10
@@ -34,8 +35,7 @@ public class PageQueryEntity<T> extends QueryEntity<T> implements Serializable {
      *
      * @return {@link IPage<T>}
      */
-    public IPage<T> getPage() {
-        return new Page<>(currentPage, limit);
-
+    public <T> IPage<T> page() {
+        return new Page<>(page, limit);
     }
 }

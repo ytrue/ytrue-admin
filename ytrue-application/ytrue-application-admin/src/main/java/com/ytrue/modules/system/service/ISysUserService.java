@@ -1,8 +1,11 @@
 package com.ytrue.modules.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ytrue.common.base.IBaseService;
 import com.ytrue.modules.system.model.po.SysUser;
 import com.ytrue.modules.system.model.dto.SysUserDTO;
+import com.ytrue.modules.system.model.vo.SysUserListVO;
+import com.ytrue.tools.query.entity.QueryEntity;
 
 import java.util.List;
 
@@ -12,6 +15,18 @@ import java.util.List;
  * @date 2022/12/7 16:57
  */
 public interface ISysUserService extends IBaseService<SysUser> {
+
+
+    /**
+     * 分页查询
+     *
+     * @param page
+     * @param query
+     * @return
+     */
+    IPage<SysUserListVO> paginate(IPage<SysUserListVO> page, QueryEntity query);
+
+
     /**
      * 根据id获取用户信息
      *

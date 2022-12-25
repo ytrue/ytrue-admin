@@ -2,7 +2,7 @@ package com.ytrue.modules.quartz.util;
 
 import cn.hutool.core.util.StrUtil;
 import com.ytrue.common.utils.SpringContextUtils;
-import com.ytrue.modules.quartz.model.ScheduleJob;
+import com.ytrue.modules.quartz.model.po.ScheduleJob;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ReflectionUtils;
 

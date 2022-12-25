@@ -2,8 +2,8 @@ package com.ytrue.modules.quartz.service.manager;
 
 
 import com.ytrue.modules.quartz.config.QuartzJob;
-import com.ytrue.modules.quartz.enums.ScheduleStatus;
-import com.ytrue.modules.quartz.model.ScheduleJob;
+import com.ytrue.modules.quartz.enums.ScheduleStatusEnum;
+import com.ytrue.modules.quartz.model.po.ScheduleJob;
 import lombok.AllArgsConstructor;
 import org.quartz.*;
 import org.springframework.stereotype.Component;
@@ -78,7 +78,7 @@ public class ScheduleManager {
             scheduler.scheduleJob(jobDetail, trigger);
 
             //暂停任务
-            if (scheduleJob.getStatus().equals(ScheduleStatus.PAUSE.getType())) {
+            if (scheduleJob.getStatus().equals(ScheduleStatusEnum.PAUSE.getType())) {
                 pauseJob(scheduleJob);
             }
         } catch (SchedulerException e) {
@@ -115,7 +115,7 @@ public class ScheduleManager {
             scheduler.rescheduleJob(triggerKey, trigger);
 
             //暂停任务
-            if (scheduleJob.getStatus().equals(ScheduleStatus.PAUSE.getType())) {
+            if (scheduleJob.getStatus().equals(ScheduleStatusEnum.PAUSE.getType())) {
                 pauseJob(scheduleJob);
             }
 

@@ -9,6 +9,7 @@ import com.ytrue.tools.query.entity.PageQueryEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,22 +29,25 @@ public class SysLogController {
 
 
     @PostMapping("page")
-    @ApiOperation("操作日志分页")
-    public ApiResultResponse<IPage<SysLog>> optPage(@RequestBody(required = false) PageQueryEntity<SysLog> pageQueryEntity) {
+    @ApiOperation("分页")
+    @PreAuthorize("@pms.hasPermission('system:log:page')")
+    public ApiResultResponse<IPage<SysLog>> page(@RequestBody(required = false) PageQueryEntity pageQueryEntity) {
         IPage<SysLog> page = sysLogService.paginate(pageQueryEntity);
         return ApiResultResponse.success(page);
     }
 
     @DeleteMapping
     @ApiOperation("删除")
+    @PreAuthorize("@pms.hasPermission('system:log:delete')")
     public ApiResultResponse<Object> delete(@RequestBody List<Long> ids) {
         sysLogService.removeBatchByIds(ids);
         return ApiResultResponse.success();
     }
 
     @DeleteMapping("clear")
-    @ApiOperation("清空日志")
-    public ApiResultResponse<Object> clearEx() {
+    @ApiOperation("清空")
+    @PreAuthorize("@pms.hasPermission('system:log:clear')")
+    public ApiResultResponse<Object> clear() {
         sysLogService.remove(Wrappers.emptyWrapper());
         return ApiResultResponse.success();
     }

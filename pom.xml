@@ -26,8 +26,8 @@
         <spring-boot.version>2.5.6</spring-boot.version>
 
         <!--mysql数据库操作-->
-        <mybatisplus.version>3.5.1</mybatisplus.version>
-        <mysql.version>8.0.16</mysql.version>
+        <mybatisplus.version>3.5.2</mybatisplus.version>
+        <mysql.version>8.0.31</mysql.version>
 
         <!--swagger文档-->
         <knife4j-version>2.0.9</knife4j-version>

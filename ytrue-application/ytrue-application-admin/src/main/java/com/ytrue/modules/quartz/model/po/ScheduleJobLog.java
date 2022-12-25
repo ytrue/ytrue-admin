@@ -1,4 +1,4 @@
-package com.ytrue.modules.quartz.model;
+package com.ytrue.modules.quartz.model.po;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;

@@ -2,7 +2,7 @@ package com.ytrue.modules.quartz.service.impl;
 
 import com.ytrue.common.base.BaseServiceImpl;
 import com.ytrue.modules.quartz.dao.ScheduleJobLogDao;
-import com.ytrue.modules.quartz.model.ScheduleJobLog;
+import com.ytrue.modules.quartz.model.po.ScheduleJobLog;
 import com.ytrue.modules.quartz.service.IScheduleJobLogService;
 import org.springframework.stereotype.Service;
 

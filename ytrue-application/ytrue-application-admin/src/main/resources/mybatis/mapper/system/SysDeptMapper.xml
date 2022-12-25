@@ -5,19 +5,19 @@
 <mapper namespace="com.ytrue.modules.system.dao.SysDeptDao">
 
     <resultMap id="BaseResultMap" type="com.ytrue.modules.system.model.po.SysDept">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="pid" column="pid" jdbcType="BIGINT"/>
-            <result property="subCount" column="sub_count" jdbcType="INTEGER"/>
-            <result property="deptName" column="dept_name" jdbcType="VARCHAR"/>
-            <result property="deptSort" column="dept_sort" jdbcType="INTEGER"/>
-            <result property="leader" column="leader" jdbcType="VARCHAR"/>
-            <result property="email" column="email" jdbcType="VARCHAR"/>
-            <result property="phone" column="phone" jdbcType="VARCHAR"/>
-            <result property="status" column="enabled" jdbcType="TINYINT"/>
-            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
-            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="pid" column="pid" jdbcType="BIGINT"/>
+        <result property="subCount" column="sub_count" jdbcType="INTEGER"/>
+        <result property="deptName" column="dept_name" jdbcType="VARCHAR"/>
+        <result property="deptSort" column="dept_sort" jdbcType="INTEGER"/>
+        <result property="leader" column="leader" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="status" column="enabled" jdbcType="TINYINT"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <!--根据角色ID查询部门id-->

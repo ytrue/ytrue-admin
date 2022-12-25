@@ -2,7 +2,11 @@ package com.ytrue.common.excptions.handler;
 
 
 import com.ytrue.common.base.BaseCodeException;
+import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.ApiResultResponse;
+import com.ytrue.tools.security.excptions.AuthenticationFailureException;
+import com.ytrue.tools.security.excptions.AuthorizationFailureException;
+import com.ytrue.tools.security.excptions.InvalidTokenException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
@@ -58,6 +62,24 @@ public class GlobalExceptionHandle implements ErrorController {
         if (error instanceof BaseCodeException) {
             errorMessage = error.getMessage();
             errorCode = ((BaseCodeException) error).getCode();
+        }
+
+        // 没有的登录
+        if (error instanceof AuthenticationFailureException) {
+            errorMessage = ResponseCode.NO_LOGIN.getMessage();
+            errorCode = ResponseCode.NO_LOGIN.getCode();
+        }
+
+        // 无效token
+        if (error instanceof InvalidTokenException) {
+            errorMessage = ResponseCode.INVALID_TOKEN.getMessage();
+            errorCode = ResponseCode.INVALID_TOKEN.getCode();
+        }
+
+        // 没有权限
+        if (error instanceof AuthorizationFailureException) {
+            errorMessage = error.getMessage();
+            errorCode = ResponseCode.PERMISSION_DENIED.getCode();
         }
 
         return ApiResultResponse.fail(errorCode, errorMessage);

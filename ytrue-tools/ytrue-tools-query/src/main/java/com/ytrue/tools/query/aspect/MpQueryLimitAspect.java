@@ -16,7 +16,6 @@ import java.util.List;
  * @author ytrue
  * @date 2022/8/8 17:18
  * <p>
- * 这个只能通过aop去拦截
  * @description mybatis plus的 selectOne 加上 limit =1
  */
 @Aspect

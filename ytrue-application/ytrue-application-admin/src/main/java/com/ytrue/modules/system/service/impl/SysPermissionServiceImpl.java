@@ -8,6 +8,7 @@ import com.ytrue.modules.system.service.ISysPermissionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -44,8 +45,11 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
             perms.add("*:*:*");
             return perms;
         }
-        // 返回对应的
-        return sysUserDao.listPermsByUserId(user.getId()).stream().filter(StrUtil::isNotEmpty).collect(Collectors.toSet());
+        // 处理下逗号
+        return sysUserDao.listPermsByUserId(user.getId())
+                .stream().filter(StrUtil::isNotEmpty)
+                .flatMap(s -> Arrays.stream(s.trim().split(",")))
+                .collect(Collectors.toSet());
     }
 
 

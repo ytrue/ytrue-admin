@@ -2,6 +2,9 @@ package com.ytrue.tools.security.filter;
 
 import cn.hutool.core.util.StrUtil;
 import com.google.gson.Gson;
+import com.ytrue.tools.security.excptions.AuthenticationFailureException;
+import com.ytrue.tools.security.excptions.AuthorizationFailureException;
+import com.ytrue.tools.security.excptions.InvalidTokenException;
 import com.ytrue.tools.security.properties.SecurityProperties;
 import com.ytrue.tools.security.user.LoginUser;
 import com.ytrue.tools.security.user.User;
@@ -54,18 +57,17 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-       // String userId = "1";
-        String userId = "1";
-//        try {
-//            Jws<Claims> claims = jwtOperation.parseToken(token);
-//            userId = claims.getBody().getSubject();
-//        } catch (Exception e) {
-//            throw new RuntimeException("token非法");
-//        }
+        String userId;
+        try {
+            Jws<Claims> claims = jwtOperation.parseToken(token);
+            userId = claims.getBody().getSubject();
+        } catch (Exception e) {
+            throw new InvalidTokenException("无效token");
+        }
 
         String userJsonData = redisTemplate.opsForValue().get(securityProperties.getTokenCachePrefix() + userId);
         if (StrUtil.isEmpty(userJsonData)) {
-            throw new RuntimeException("token非法");
+            throw new InvalidTokenException("无效token");
         }
 
 
