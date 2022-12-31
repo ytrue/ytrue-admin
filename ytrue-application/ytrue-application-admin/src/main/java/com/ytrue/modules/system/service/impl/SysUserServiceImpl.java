@@ -1,5 +1,6 @@
 package com.ytrue.modules.system.service.impl;
 
+import cn.hutool.core.convert.Convert;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.common.base.BaseServiceImpl;
@@ -52,10 +53,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
     public IPage<SysUserListVO> paginate(IPage<SysUserListVO> page, QueryEntity query) {
         // 处理数据过滤
         Set<Long> deptIds = dataScopeManager.handleDataScope();
-        // TODO 待优化
         if (!deptIds.contains(0L)) {
-            // TODO 后续query库完善替换成in
-            deptIds.forEach(deptId -> query.addFilter(SysUser::getDeptId, QueryMethod.eq, deptId, "u", Operator.or));
+            query.addFilter(SysUser::getDeptId, QueryMethod.in, Convert.toList(deptIds), "u");
         } else {
             query.addFilter(SysUser::getId, QueryMethod.eq, SecurityUtils.getLoginUser().getUser().getUserId(), "u");
         }

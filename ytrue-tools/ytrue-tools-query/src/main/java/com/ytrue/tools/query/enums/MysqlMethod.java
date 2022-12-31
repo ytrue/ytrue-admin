@@ -16,7 +16,7 @@ public enum MysqlMethod {
     EQ("="),
     NE("!="),
     LIKE("LIKE"),
-    BETWEEN("between"),
+    BETWEEN("BetweenAdditionalCondition"),
     IN("in");
 
     private final String value;
