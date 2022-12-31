@@ -64,7 +64,7 @@ public class SysUser {
     private Boolean status;
 
     @ApiModelProperty(value = "是否为admin账号")
-    private Boolean isAdmin = false;
+    private Boolean isAdmin;
 
     @ApiModelProperty(value = "最后修改密码的时间")
     private LocalDateTime pwdResetTime;

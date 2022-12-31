@@ -4,6 +4,7 @@ import com.ytrue.common.base.IBaseService;
 import com.ytrue.modules.system.model.po.SysDept;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author ytrue
@@ -34,4 +35,11 @@ public interface ISysDeptService extends IBaseService<SysDept> {
      * @param ids
      */
     void removeBatchDept(List<Long> ids);
+
+    /**
+     * 根据数据范围获取部门id
+     *
+     * @return
+     */
+    Set<Long> getDeptIdByDataScope();
 }

@@ -5,13 +5,23 @@
 <mapper namespace="com.ytrue.modules.system.dao.SysJobDao">
 
     <resultMap id="BaseResultMap" type="com.ytrue.modules.system.model.po.SysJob">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="jobName" column="job_name" jdbcType="VARCHAR"/>
-            <result property="status" column="status" jdbcType="TINYINT"/>
-            <result property="jobSort" column="job_sort" jdbcType="INTEGER"/>
-            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
-            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="jobName" column="job_name" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+        <result property="jobSort" column="job_sort" jdbcType="INTEGER"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
+
+
+    <!--根据用户id获取对应的岗位-->
+    <select id="listByUserId" resultMap="BaseResultMap">
+        SELECT j.*
+        FROM sys_job j
+                 INNER JOIN sys_user_job AS uj ON j.id = uj.job_id
+                 INNER join sys_user as u on u.id = uj.user_id
+        WHERE u.id = #{userId}
+    </select>
 </mapper>

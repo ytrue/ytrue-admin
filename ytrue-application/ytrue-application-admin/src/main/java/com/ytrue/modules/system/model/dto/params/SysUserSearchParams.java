@@ -25,11 +25,9 @@ public class SysUserSearchParams implements Serializable {
     @ApiModelProperty(value = "电话号码")
     private String phone;
 
-
     @Query(alias = "u")
     @ApiModelProperty(value = "部门id")
     private String deptId;
-
 
     @Query(alias = "u")
     @ApiModelProperty(value = "是否启用")

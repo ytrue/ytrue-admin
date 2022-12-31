@@ -13,7 +13,6 @@ import java.util.Set;
  * @date 2022/12/7 15:29
  */
 @Data
-
 public class SysRoleDTO implements Serializable {
 
     private static final long serialVersionUID = -2368863016297932647L;

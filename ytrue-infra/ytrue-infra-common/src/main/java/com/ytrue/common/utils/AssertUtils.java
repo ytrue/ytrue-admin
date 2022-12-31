@@ -91,6 +91,19 @@ public class AssertUtils {
         }
     }
 
+    /**
+     * 断言 value 和 expect 相等
+     *
+     * @param value
+     * @param expect
+     * @param responseCode
+     */
+    public static void noteEquals(String value, String expect, IBaseExceptionCode responseCode) {
+        if (value.equals(expect)) {
+            reportInvalidArgument(responseCode);
+        }
+    }
+
 
     /**
      * 断言 value 一定小于等于 limit

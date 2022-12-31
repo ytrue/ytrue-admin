@@ -27,11 +27,9 @@ import java.util.List;
 @AllArgsConstructor
 public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, ScheduleJob> implements IScheduleJobService, InitializingBean {
 
-
     private final ScheduleJobDao scheduleJobDao;
 
     private final ScheduleManager scheduleManager;
-
 
     /**
      * 初始化bean时，初始化定时器

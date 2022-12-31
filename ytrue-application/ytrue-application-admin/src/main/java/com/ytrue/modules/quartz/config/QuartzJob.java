@@ -3,6 +3,7 @@ package com.ytrue.modules.quartz.config;
 
 import com.ytrue.modules.quartz.event.ScheduleJobEvent;
 import com.ytrue.modules.quartz.model.po.ScheduleJob;
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.DisallowConcurrentExecution;
@@ -10,7 +11,6 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.springframework.context.ApplicationEventPublisher;
 
-import javax.annotation.Resource;
 
 /**
  * @author ytrue
@@ -19,11 +19,10 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @DisallowConcurrentExecution
+@AllArgsConstructor
 public class QuartzJob implements Job {
 
-
-    @Resource
-    private ApplicationEventPublisher publisher;
+    private final ApplicationEventPublisher publisher;
 
     /**
      * 任务调度参数key

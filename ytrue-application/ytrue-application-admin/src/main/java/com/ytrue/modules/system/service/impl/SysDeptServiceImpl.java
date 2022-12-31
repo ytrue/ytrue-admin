@@ -11,11 +11,13 @@ import com.ytrue.modules.system.model.po.SysDept;
 import com.ytrue.modules.system.model.po.SysRoleDept;
 import com.ytrue.modules.system.model.po.SysUser;
 import com.ytrue.modules.system.service.ISysDeptService;
+import com.ytrue.modules.system.service.manager.DataScopeManager;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author ytrue
@@ -29,6 +31,14 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
     private final SysUserDao sysUserDao;
 
     private final SysRoleDeptDao sysRoleDeptDao;
+
+    private final DataScopeManager dataScopeManager;
+
+
+    @Override
+    public Set<Long> getDeptIdByDataScope() {
+        return dataScopeManager.handleDataScope();
+    }
 
     /**
      * 保存部门

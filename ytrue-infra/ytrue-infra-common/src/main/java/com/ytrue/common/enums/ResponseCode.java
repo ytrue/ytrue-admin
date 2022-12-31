@@ -36,7 +36,10 @@ public enum ResponseCode implements IBaseExceptionCode {
     HAS_CHILD(6004, "存在子级，请解除后再试"),
     PARENT_EQ_ITSELF(6005, "父级不能是自己"),
     HAS_USER_ASSOCIATION(6006, "存在用户关联，请解除后再试"),
-    HAS_ROLE_ASSOCIATION(6017, "存在角色关联，请解除后再试");
+    HAS_ROLE_ASSOCIATION(6017, "存在角色关联，请解除后再试"),
+
+    OLD_PASSWORD_ERROR(6018, "旧密码错误"),
+    NEW_PASS_NOT_EQUAL_OLD_PASS(6019, "新密码不能与旧密码相同");
 
 
     /**

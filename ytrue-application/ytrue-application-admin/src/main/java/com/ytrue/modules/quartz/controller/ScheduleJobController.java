@@ -33,7 +33,6 @@ public class ScheduleJobController {
 
     private final IScheduleJobService scheduleJobService;
 
-
     @GetMapping("page")
     @ApiOperation("分页查询数据")
     @PreAuthorize("@pms.hasPermission('system:schedule:resume')")

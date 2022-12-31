@@ -20,4 +20,13 @@ public interface SysRoleDao extends IBaseDao<SysRole> {
      * @return 角色code列表
      */
     Set<String> listRoleCodeByUserId(Long userId);
+
+
+    /**
+     * 根据用户ID查询角色
+     *
+     * @param userId
+     * @return
+     */
+    Set<SysRole> listByUserId(Long userId);
 }

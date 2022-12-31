@@ -13,6 +13,7 @@ import com.ytrue.tools.security.integration.IntegrationAuthenticationEntity;
 import com.ytrue.tools.security.integration.authenticator.AbstractPreparableIntegrationAuthenticator;
 import com.ytrue.tools.security.user.LoginUser;
 import com.ytrue.tools.security.user.User;
+import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -25,17 +26,14 @@ import java.util.HashMap;
  * @date 2022/12/8 9:10
  */
 @Component
+@AllArgsConstructor
 public class UsernamePasswordAuthenticator extends AbstractPreparableIntegrationAuthenticator {
 
+    private final SysPermissionServiceImpl sysPermissionService;
 
-    @Resource
-    private SysPermissionServiceImpl sysPermissionService;
+    private final   SysUserDao sysUserDao;
 
-    @Resource
-    private SysUserDao sysUserDao;
-
-    @Resource
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     private final static String AUTH_TYPE = "password";
 

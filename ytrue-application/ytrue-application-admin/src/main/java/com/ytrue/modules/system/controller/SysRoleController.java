@@ -1,12 +1,14 @@
 package com.ytrue.modules.system.controller;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.common.entity.Pageable;
 import com.ytrue.common.utils.ApiResultResponse;
+import com.ytrue.modules.system.model.dto.SysRoleDTO;
 import com.ytrue.modules.system.model.dto.params.SysRoleSearchParams;
 import com.ytrue.modules.system.model.po.SysRole;
-import com.ytrue.modules.system.model.dto.SysRoleDTO;
 import com.ytrue.modules.system.service.ISysRoleService;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.utils.QueryHelp;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author ytrue
@@ -38,8 +41,10 @@ public class SysRoleController {
     @ApiOperation("分页查询")
     @PreAuthorize("@pms.hasPermission('system:role:page')")
     public ApiResultResponse<IPage<SysRole>> page(SysRoleSearchParams params, Pageable pageable) {
-
+        // 数据范围限制
+        Set<Long> roleIds = sysRoleService.getRoleIdsByDataScope();
         LambdaQueryWrapper<SysRole> queryWrapper = QueryHelp.<SysRole>lambdaQueryWrapperBuilder(params)
+                .in(CollectionUtil.isNotEmpty(roleIds), SysRole::getId, roleIds)
                 .orderByAsc(SysRole::getRoleSort)
                 .orderByDesc(SysRole::getId);
 
@@ -50,13 +55,11 @@ public class SysRoleController {
     @ApiOperation("列表")
     @PreAuthorize("@pms.hasPermission('system:role:list')")
     public ApiResultResponse<List<SysRole>> list() {
-        return ApiResultResponse.success(
-                sysRoleService
-                        .lambdaQuery()
-                        .orderByAsc(SysRole::getRoleSort)
-                        .orderByDesc(SysRole::getId)
-                        .list()
-        );
+        // 数据范围限制
+        Set<Long> roleIds = sysRoleService.getRoleIdsByDataScope();
+        LambdaQueryWrapper<SysRole> query = Wrappers.<SysRole>lambdaQuery().in(CollectionUtil.isNotEmpty(roleIds), SysRole::getId, roleIds);
+        List<SysRole> roles = sysRoleService.list(query);
+        return ApiResultResponse.success(roles);
     }
 
     @GetMapping("detail/{id}")

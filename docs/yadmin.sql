@@ -11,7 +11,7 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 20/12/2022 15:14:45
+ Date: 29/12/2022 15:19:37
 */
 
 SET NAMES utf8mb4;
@@ -232,7 +232,7 @@ CREATE TABLE `schedule_job`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建日期',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for schedule_job_log
@@ -250,7 +250,12 @@ CREATE TABLE `schedule_job_log`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `job_id`(`job_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 526 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务日志' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of schedule_job_log
+-- ----------------------------
+INSERT INTO `schedule_job_log` VALUES (2, 3, 'sysUserController 1', 'page', NULL, 1, 'org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named \'sysUserController 1\' available', 0, '2022-12-23 16:31:50');
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -270,10 +275,8 @@ CREATE TABLE `sys_dept`  (
   `update_by` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '更新者',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建日期',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `inx_pid`(`pid`) USING BTREE,
-  INDEX `inx_enabled`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 43 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '部门' ROW_FORMAT = Compact;
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '部门' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_dept
@@ -349,17 +352,15 @@ CREATE TABLE `sys_job`  (
   `update_by` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '更新者',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建日期',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uniq_name`(`job_name`) USING BTREE,
-  INDEX `inx_enabled`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '岗位' ROW_FORMAT = Compact;
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '岗位' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_job
 -- ----------------------------
 INSERT INTO `sys_job` VALUES (14, 'java开发', 1, 0, 'admin', '111111', '2022-12-14 16:16:32', '2022-12-19 15:32:51');
 INSERT INTO `sys_job` VALUES (15, 'php开发', 1, 0, 'admin', NULL, '2022-12-14 16:16:37', NULL);
-INSERT INTO `sys_job` VALUES (16, '运维开发', 1, 0, 'admin', NULL, '2022-12-14 16:16:43', NULL);
+INSERT INTO `sys_job` VALUES (16, '运维开发', 1, 0, 'admin', 'admin', '2022-12-14 16:16:43', '2022-12-23 11:42:52');
 
 -- ----------------------------
 -- Table structure for sys_log
@@ -384,7 +385,7 @@ CREATE TABLE `sys_log`  (
   `end_time` datetime(0) NULL DEFAULT NULL COMMENT '完成时间',
   `consuming_time` bigint(20) NULL DEFAULT NULL COMMENT '消耗时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 4716 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 4778 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_log
@@ -466,6 +467,48 @@ INSERT INTO `sys_log` VALUES (4712, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '菜单�
 INSERT INTO `sys_log` VALUES (4713, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '菜单管理-修改', 'com.ytrue.modules.system.controller.SysMenuController', 'update', '/sys/menu', 'PUT', '[{\"id\":1066,\"menuName\":\"任务新增\",\"pid\":110,\"menuSort\":2,\"path\":\"\",\"isFrame\":false,\"isCache\":true,\"menuType\":\"F\",\"visible\":true,\"status\":true,\"perms\":\"system:schedule:add\",\"icon\":\"#\",\"subCount\":0,\"createBy\":\"admin\",\"updateBy\":\"\",\"createTime\":{\"date\":{\"year\":2022,\"month\":12,\"day\":19},\"time\":{\"hour\":16,\"minute\":37,\"second\":17,\"nano\":0}}}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-19 16:39:41', '2022-12-19 16:39:41', 15);
 INSERT INTO `sys_log` VALUES (4714, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '角色管理-修改', 'com.ytrue.modules.system.controller.SysRoleController', 'update', '/sys/role', 'PUT', '[{\"id\":16,\"roleName\":\"测试角色\",\"roleCode\":\"test_role\",\"dataScope\":1,\"roleSort\":0,\"status\":true,\"menuCheckStrictly\":true,\"deptCheckStrictly\":true,\"menuIds\":[1,2,1039,1040,1049,100,101,102,1062,103,1063,1000,104,1064,1001,1065,1002,1066,1003,1067,1068,1069,110,1070,1007,1071,1008,1009,1010,1012,500,1013,1014,1015,1016,1017,1018,1019,1020,1021,1022,1023],\"deptIds\":[]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-19 16:40:14', '2022-12-19 16:40:14', 13);
 INSERT INTO `sys_log` VALUES (4715, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '菜单管理-修改', 'com.ytrue.modules.system.controller.SysMenuController', 'update', '/sys/menu', 'PUT', '[{\"id\":110,\"menuName\":\"定时任务\",\"pid\":2,\"menuSort\":2,\"path\":\"schedule\",\"component\":\"monitor/quartz/index\",\"query\":\"\",\"isFrame\":false,\"isCache\":true,\"menuType\":\"C\",\"visible\":true,\"status\":true,\"perms\":\"monitor:quartz:list\",\"icon\":\"job\",\"subCount\":10,\"createBy\":\"admin\",\"updateBy\":\"admin\",\"createTime\":{\"date\":{\"year\":2022,\"month\":12,\"day\":6},\"time\":{\"hour\":10,\"minute\":48,\"second\":55,\"nano\":0}},\"updateTime\":{\"date\":{\"year\":2022,\"month\":12,\"day\":16},\"time\":{\"hour\":10,\"minute\":28,\"second\":58,\"nano\":0}}}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-20 14:31:01', '2022-12-20 14:31:01', 19);
+INSERT INTO `sys_log` VALUES (4716, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '岗位管理-保存', 'com.ytrue.modules.system.controller.SysJobController', 'add', '/sys/job', 'POST', '[{\"jobName\":\"1212121\",\"jobSort\":0,\"status\":true}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-23 11:38:05', '2022-12-23 11:38:05', 11);
+INSERT INTO `sys_log` VALUES (4717, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '岗位管理-保存', 'com.ytrue.modules.system.controller.SysJobController', 'add', '/sys/job', 'POST', '[{\"jobName\":\"432432432\",\"jobSort\":0,\"status\":true}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-23 11:38:37', '2022-12-23 11:38:37', 3);
+INSERT INTO `sys_log` VALUES (4718, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '岗位管理-删除', 'com.ytrue.modules.system.controller.SysJobController', 'delete', '/sys/job', 'DELETE', '[[18]]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-23 11:38:41', '2022-12-23 11:38:41', 14);
+INSERT INTO `sys_log` VALUES (4719, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '岗位管理-删除', 'com.ytrue.modules.system.controller.SysJobController', 'delete', '/sys/job', 'DELETE', '[[17]]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-23 11:38:44', '2022-12-23 11:38:44', 3);
+INSERT INTO `sys_log` VALUES (4720, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '岗位管理-保存', 'com.ytrue.modules.system.controller.SysJobController', 'add', '/sys/job', 'POST', '[{\"jobName\":\"12321321\",\"jobSort\":0,\"status\":true}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-23 11:38:48', '2022-12-23 11:38:48', 3);
+INSERT INTO `sys_log` VALUES (4721, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '岗位管理-保存', 'com.ytrue.modules.system.controller.SysJobController', 'add', '/sys/job', 'POST', '[{\"jobName\":\"432423432\",\"jobSort\":0,\"status\":true}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-23 11:38:54', '2022-12-23 11:38:54', 4);
+INSERT INTO `sys_log` VALUES (4722, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '岗位管理-保存', 'com.ytrue.modules.system.controller.SysJobController', 'add', '/sys/job', 'POST', '[{\"jobName\":\"4342423432\",\"jobSort\":0,\"status\":true}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-23 11:39:27', '2022-12-23 11:39:27', 5);
+INSERT INTO `sys_log` VALUES (4723, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '岗位管理-删除', 'com.ytrue.modules.system.controller.SysJobController', 'delete', '/sys/job', 'DELETE', '[[21,20,19]]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-23 11:42:17', '2022-12-23 11:42:17', 4);
+INSERT INTO `sys_log` VALUES (4724, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '岗位管理-保存', 'com.ytrue.modules.system.controller.SysJobController', 'add', '/sys/job', 'POST', '[{\"jobName\":\"321321321\",\"jobSort\":0,\"status\":true}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-23 11:42:23', '2022-12-23 11:42:23', 3);
+INSERT INTO `sys_log` VALUES (4725, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '岗位管理-保存', 'com.ytrue.modules.system.controller.SysJobController', 'add', '/sys/job', 'POST', '[{\"jobName\":\"432432432\",\"jobSort\":0,\"status\":true}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-23 11:42:26', '2022-12-23 11:42:26', 5);
+INSERT INTO `sys_log` VALUES (4726, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '岗位管理-修改', 'com.ytrue.modules.system.controller.SysJobController', 'update', '/sys/job', 'PUT', '[{\"id\":23,\"jobName\":\"432432432想先下\",\"jobSort\":0,\"status\":true,\"createBy\":\"admin\",\"createTime\":{\"date\":{\"year\":2022,\"month\":12,\"day\":23},\"time\":{\"hour\":11,\"minute\":42,\"second\":26,\"nano\":0}}}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-23 11:42:30', '2022-12-23 11:42:30', 10);
+INSERT INTO `sys_log` VALUES (4727, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '岗位管理-删除', 'com.ytrue.modules.system.controller.SysJobController', 'delete', '/sys/job', 'DELETE', '[[23]]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-23 11:42:32', '2022-12-23 11:42:32', 5);
+INSERT INTO `sys_log` VALUES (4728, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '岗位管理-删除', 'com.ytrue.modules.system.controller.SysJobController', 'delete', '/sys/job', 'DELETE', '[[22]]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-23 11:42:34', '2022-12-23 11:42:34', 5);
+INSERT INTO `sys_log` VALUES (4729, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '岗位管理-修改', 'com.ytrue.modules.system.controller.SysJobController', 'update', '/sys/job', 'PUT', '[{\"id\":16,\"jobName\":\"运维开发\",\"jobSort\":0,\"status\":true,\"createBy\":\"admin\",\"createTime\":{\"date\":{\"year\":2022,\"month\":12,\"day\":14},\"time\":{\"hour\":16,\"minute\":16,\"second\":43,\"nano\":0}}}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-23 11:42:52', '2022-12-23 11:42:52', 4);
+INSERT INTO `sys_log` VALUES (4730, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '岗位管理-保存', 'com.ytrue.modules.system.controller.SysJobController', 'add', '/sys/job', 'POST', '[{\"jobName\":\"323232\",\"jobSort\":0,\"status\":true}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-23 11:43:30', '2022-12-23 11:43:30', 5);
+INSERT INTO `sys_log` VALUES (4731, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '菜单管理-保存', 'com.ytrue.modules.system.controller.SysMenuController', 'add', '/sys/menu', 'POST', '[{\"menuName\":\"321321321\",\"pid\":0,\"menuSort\":0,\"path\":\"321312\",\"isFrame\":false,\"isCache\":true,\"menuType\":\"M\",\"visible\":true,\"status\":true,\"icon\":\"button\"}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-23 14:38:40', '2022-12-23 14:38:40', 12);
+INSERT INTO `sys_log` VALUES (4732, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '菜单管理-修改', 'com.ytrue.modules.system.controller.SysMenuController', 'update', '/sys/menu', 'PUT', '[{\"id\":1072,\"menuName\":\"321321321休息\",\"pid\":0,\"menuSort\":0,\"path\":\"321312\",\"isFrame\":false,\"isCache\":true,\"menuType\":\"M\",\"visible\":true,\"status\":true,\"icon\":\"button\",\"subCount\":0,\"createBy\":\"admin\",\"updateBy\":\"\",\"createTime\":{\"date\":{\"year\":2022,\"month\":12,\"day\":23},\"time\":{\"hour\":14,\"minute\":38,\"second\":40,\"nano\":0}}}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-23 14:38:45', '2022-12-23 14:38:45', 9);
+INSERT INTO `sys_log` VALUES (4753, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '用户管理-修改', 'com.ytrue.modules.system.controller.SysUserController', 'update', '/sys/user', 'PUT', '[{\"id\":1,\"deptId\":35,\"username\":\"admin\",\"nickName\":\"管理员\",\"email\":\"201507802@qq.com\",\"phone\":\"18888888888\",\"gender\":1,\"avatarName\":\"avatar-20200806032259161.png\",\"avatarPath\":\"/Users/jie/Documents/work/me/admin/eladmin/~/avatar/avatar-20200806032259161.png\",\"status\":true,\"roleIds\":[16,1],\"jobIds\":[14]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-27 09:51:13', '2022-12-27 09:51:13', 19);
+INSERT INTO `sys_log` VALUES (4754, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '用户管理-修改', 'com.ytrue.modules.system.controller.SysUserController', 'update', '/sys/user', 'PUT', '[{\"id\":1,\"deptId\":35,\"username\":\"admin\",\"nickName\":\"管理员\",\"email\":\"201507802@qq.com\",\"phone\":\"18888888888\",\"gender\":1,\"avatarName\":\"avatar-20200806032259161.png\",\"avatarPath\":\"/Users/jie/Documents/work/me/admin/eladmin/~/avatar/avatar-20200806032259161.png\",\"status\":true,\"roleIds\":[16,1],\"jobIds\":[14]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-27 10:13:18', '2022-12-27 10:13:18', 7);
+INSERT INTO `sys_log` VALUES (4755, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '用户管理-修改', 'com.ytrue.modules.system.controller.SysUserController', 'update', '/sys/user', 'PUT', '[{\"id\":1,\"deptId\":35,\"username\":\"admin\",\"nickName\":\"管理员\",\"email\":\"201507802@qq.com\",\"phone\":\"18888888888\",\"gender\":1,\"avatarName\":\"avatar-20200806032259161.png\",\"avatarPath\":\"/Users/jie/Documents/work/me/admin/eladmin/~/avatar/avatar-20200806032259161.png\",\"status\":true,\"roleIds\":[16,1],\"jobIds\":[14]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-27 11:00:30', '2022-12-27 11:00:30', 20);
+INSERT INTO `sys_log` VALUES (4756, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '菜单管理-保存', 'com.ytrue.modules.system.controller.SysMenuController', 'add', '/sys/menu', 'POST', '[{\"menuName\":\"密码重置\",\"pid\":100,\"menuSort\":0,\"isFrame\":false,\"isCache\":true,\"menuType\":\"F\",\"visible\":true,\"status\":true,\"perms\":\"system:user:restPassword\"}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-27 15:23:55', '2022-12-27 15:23:55', 19);
+INSERT INTO `sys_log` VALUES (4757, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '菜单管理-修改', 'com.ytrue.modules.system.controller.SysMenuController', 'update', '/sys/menu', 'PUT', '[{\"id\":1073,\"menuName\":\"密码重置\",\"pid\":100,\"menuSort\":5,\"path\":\"\",\"isFrame\":false,\"isCache\":true,\"menuType\":\"F\",\"visible\":true,\"status\":true,\"perms\":\"system:user:restPassword\",\"icon\":\"#\",\"subCount\":0,\"createBy\":\"admin\",\"updateBy\":\"\",\"createTime\":{\"date\":{\"year\":2022,\"month\":12,\"day\":27},\"time\":{\"hour\":15,\"minute\":23,\"second\":55,\"nano\":0}}}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-27 15:24:07', '2022-12-27 15:24:07', 15);
+INSERT INTO `sys_log` VALUES (4758, '127.0.0.1', 'OPT', 'admin', '用户管理-重置密码', 'com.ytrue.modules.system.controller.SysUserController', 'resetPassword', '/sys/user/resetPassword', 'POST', '[2]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-27 15:35:54', '2022-12-27 15:35:54', 79);
+INSERT INTO `sys_log` VALUES (4759, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '用户管理-重置密码', 'com.ytrue.modules.system.controller.SysUserController', 'resetPassword', '/sys/user/resetPassword', 'POST', '[1]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-27 15:39:14', '2022-12-27 15:39:14', 80);
+INSERT INTO `sys_log` VALUES (4760, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '用户管理-重置密码', 'com.ytrue.modules.system.controller.SysUserController', 'resetPassword', '/sys/user/resetPassword', 'POST', '[6]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-27 15:39:16', '2022-12-27 15:39:16', 76);
+INSERT INTO `sys_log` VALUES (4761, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '用户管理-重置密码', 'com.ytrue.modules.system.controller.SysUserController', 'resetPassword', '/sys/user/resetPassword', 'POST', '[1]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-27 15:39:44', '2022-12-27 15:39:44', 74);
+INSERT INTO `sys_log` VALUES (4762, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '用户管理-重置密码', 'com.ytrue.modules.system.controller.SysUserController', 'resetPassword', '/sys/user/resetPassword', 'POST', '[6]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-27 15:43:17', '2022-12-27 15:43:17', 74);
+INSERT INTO `sys_log` VALUES (4763, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '角色管理-修改', 'com.ytrue.modules.system.controller.SysRoleController', 'update', '/sys/role', 'PUT', '[{\"id\":16,\"roleName\":\"测试角色\",\"roleCode\":\"test_role\",\"dataScope\":4,\"roleSort\":0,\"status\":true,\"menuCheckStrictly\":true,\"deptCheckStrictly\":true,\"menuIds\":[1,2,1039,1040,1049,100,101,102,1062,103,1063,1000,104,1064,1001,1065,1002,1066,1003,1067,1068,1069,110,1070,1007,1071,1008,1009,1010,1012,500,1013,1014,1015,1016,1017,1018,1019,1020,1021,1022,1023],\"deptIds\":[]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-29 09:58:05', '2022-12-29 09:58:05', 20);
+INSERT INTO `sys_log` VALUES (4764, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '角色管理-修改', 'com.ytrue.modules.system.controller.SysRoleController', 'update', '/sys/role', 'PUT', '[{\"id\":16,\"roleName\":\"测试角色\",\"roleCode\":\"test_role\",\"dataScope\":4,\"roleSort\":0,\"status\":true,\"menuCheckStrictly\":true,\"deptCheckStrictly\":true,\"menuIds\":[1,100,101,102,103,1000,104,1001,1002,1003,1007,1008,1009,1010,1012,1013,1014,1015,1016,1017,1018,1019,1020,1021,1022,1023],\"deptIds\":[]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-29 09:58:10', '2022-12-29 09:58:10', 10);
+INSERT INTO `sys_log` VALUES (4765, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '用户管理-修改', 'com.ytrue.modules.system.controller.SysUserController', 'update', '/sys/user', 'PUT', '[{\"id\":1,\"deptId\":35,\"username\":\"admin\",\"nickName\":\"管理员\",\"email\":\"201507802@qq.com\",\"phone\":\"17638273892\",\"gender\":0,\"avatarName\":\"avatar-20200806032259161.png\",\"avatarPath\":\"/Users/jie/Documents/work/me/admin/eladmin/~/avatar/avatar-20200806032259161.png\",\"status\":true,\"roleIds\":[16],\"jobIds\":[14]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-29 09:58:18', '2022-12-29 09:58:18', 12);
+INSERT INTO `sys_log` VALUES (4766, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '用户管理-修改', 'com.ytrue.modules.system.controller.SysUserController', 'update', '/sys/user', 'PUT', '[{\"id\":1,\"deptId\":35,\"username\":\"admin\",\"nickName\":\"管理员\",\"email\":\"201507802@qq.com\",\"phone\":\"17638273892\",\"gender\":0,\"avatarName\":\"avatar-20200806032259161.png\",\"avatarPath\":\"/Users/jie/Documents/work/me/admin/eladmin/~/avatar/avatar-20200806032259161.png\",\"status\":true,\"roleIds\":[16,1],\"jobIds\":[14]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-29 09:58:42', '2022-12-29 09:58:42', 7);
+INSERT INTO `sys_log` VALUES (4767, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '角色管理-修改', 'com.ytrue.modules.system.controller.SysRoleController', 'update', '/sys/role', 'PUT', '[{\"id\":16,\"roleName\":\"测试角色\",\"roleCode\":\"test_role\",\"dataScope\":5,\"roleSort\":0,\"status\":true,\"menuCheckStrictly\":true,\"deptCheckStrictly\":true,\"menuIds\":[1,100,101,102,103,1000,104,1001,1002,1003,1007,1008,1009,1010,1012,1013,1014,1015,1016,1017,1018,1019,1020,1021,1022,1023],\"deptIds\":[]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-29 10:43:41', '2022-12-29 10:43:41', 19);
+INSERT INTO `sys_log` VALUES (4768, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '角色管理-保存', 'com.ytrue.modules.system.controller.SysRoleController', 'add', '/sys/role', 'POST', '[{\"roleName\":\"测试角色2\",\"roleCode\":\"test_role2\",\"dataScope\":2,\"roleSort\":0,\"status\":true,\"menuCheckStrictly\":true,\"deptCheckStrictly\":true,\"menuIds\":[1,100,101,102,103,1000,104,1001,1002,1003,1007,1008,1073,1009,1010,1012,1013,1014,1015,1016,1017,1018,1019,1020,1021,1022,1023],\"deptIds\":[40,41,42]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-29 10:43:55', '2022-12-29 10:43:55', 7);
+INSERT INTO `sys_log` VALUES (4769, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '用户管理-修改', 'com.ytrue.modules.system.controller.SysUserController', 'update', '/sys/user', 'PUT', '[{\"id\":6,\"deptId\":35,\"username\":\"test_admin\",\"nickName\":\"测试账号\",\"email\":\"321321@qq.com\",\"phone\":\"17638728398\",\"gender\":1,\"status\":true,\"roleIds\":[16,18],\"jobIds\":[15]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-29 10:44:04', '2022-12-29 10:44:04', 11);
+INSERT INTO `sys_log` VALUES (4770, '0:0:0:0:0:0:0:1', 'OPT', 'test_admin', '用户管理-修改', 'com.ytrue.modules.system.controller.SysUserController', 'update', '/sys/user', 'PUT', '[{\"id\":6,\"deptId\":35,\"username\":\"test_admin\",\"nickName\":\"测试账号\",\"email\":\"321321@qq.com\",\"phone\":\"17638728398\",\"gender\":1,\"status\":true,\"roleIds\":[16],\"jobIds\":[15]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-29 10:45:12', '2022-12-29 10:45:12', 6);
+INSERT INTO `sys_log` VALUES (4771, '0:0:0:0:0:0:0:1', 'OPT', 'test_admin', '角色管理-修改', 'com.ytrue.modules.system.controller.SysRoleController', 'update', '/sys/role', 'PUT', '[{\"id\":16,\"roleName\":\"测试角色\",\"roleCode\":\"test_role\",\"dataScope\":4,\"roleSort\":0,\"status\":true,\"menuCheckStrictly\":true,\"deptCheckStrictly\":true,\"menuIds\":[1,100,101,102,103,1000,104,1001,1002,1003,1007,1008,1009,1010,1012,1013,1014,1015,1016,1017,1018,1019,1020,1021,1022,1023],\"deptIds\":[]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-29 11:21:21', '2022-12-29 11:21:21', 19);
+INSERT INTO `sys_log` VALUES (4772, '0:0:0:0:0:0:0:1', 'OPT', 'test_admin', '角色管理-修改', 'com.ytrue.modules.system.controller.SysRoleController', 'update', '/sys/role', 'PUT', '[{\"id\":16,\"roleName\":\"测试角色\",\"roleCode\":\"test_role\",\"dataScope\":3,\"roleSort\":0,\"status\":true,\"menuCheckStrictly\":true,\"deptCheckStrictly\":true,\"menuIds\":[1,100,101,102,103,1000,104,1001,1002,1003,1007,1008,1009,1010,1012,1013,1014,1015,1016,1017,1018,1019,1020,1021,1022,1023],\"deptIds\":[]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-29 11:22:22', '2022-12-29 11:22:22', 4);
+INSERT INTO `sys_log` VALUES (4773, '0:0:0:0:0:0:0:1', 'OPT', 'test_admin', '角色管理-修改', 'com.ytrue.modules.system.controller.SysRoleController', 'update', '/sys/role', 'PUT', '[{\"id\":16,\"roleName\":\"测试角色\",\"roleCode\":\"test_role\",\"dataScope\":4,\"roleSort\":0,\"status\":true,\"menuCheckStrictly\":true,\"deptCheckStrictly\":true,\"menuIds\":[1,100,101,102,103,1000,104,1001,1002,1003,1007,1008,1009,1010,1012,1013,1014,1015,1016,1017,1018,1019,1020,1021,1022,1023],\"deptIds\":[]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-29 11:43:43', '2022-12-29 11:43:43', 21);
+INSERT INTO `sys_log` VALUES (4774, '0:0:0:0:0:0:0:1', 'OPT', 'test_admin', '角色管理-修改', 'com.ytrue.modules.system.controller.SysRoleController', 'update', '/sys/role', 'PUT', '[{\"id\":16,\"roleName\":\"测试角色\",\"roleCode\":\"test_role\",\"dataScope\":5,\"roleSort\":0,\"status\":true,\"menuCheckStrictly\":true,\"deptCheckStrictly\":true,\"menuIds\":[1,100,101,102,103,1000,104,1001,1002,1003,1007,1008,1009,1010,1012,1013,1014,1015,1016,1017,1018,1019,1020,1021,1022,1023],\"deptIds\":[]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-29 11:48:53', '2022-12-29 11:48:53', 18);
+INSERT INTO `sys_log` VALUES (4775, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '角色管理-修改', 'com.ytrue.modules.system.controller.SysRoleController', 'update', '/sys/role', 'PUT', '[{\"id\":16,\"roleName\":\"测试角色\",\"roleCode\":\"test_role\",\"dataScope\":4,\"roleSort\":0,\"status\":true,\"menuCheckStrictly\":true,\"deptCheckStrictly\":true,\"menuIds\":[1,100,101,102,103,1000,104,1001,1002,1003,1007,1008,1009,1010,1012,1013,1014,1015,1016,1017,1018,1019,1020,1021,1022,1023],\"deptIds\":[]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-29 14:15:31', '2022-12-29 14:15:31', 19);
+INSERT INTO `sys_log` VALUES (4776, '0:0:0:0:0:0:0:1', 'OPT', 'admin', '角色管理-修改', 'com.ytrue.modules.system.controller.SysRoleController', 'update', '/sys/role', 'PUT', '[{\"id\":18,\"roleName\":\"测试角色2\",\"roleCode\":\"test_role2\",\"dataScope\":2,\"roleSort\":0,\"status\":true,\"menuCheckStrictly\":true,\"deptCheckStrictly\":true,\"menuIds\":[1,100,101,102,103,1000,104,1001,1002,1003,1007,1008,1073,1009,1010,1012,1013,1014,1015,1016,1017,1018,1019,1020,1021,1022,1023],\"deptIds\":[35,36,38,39]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-29 14:56:43', '2022-12-29 14:56:43', 17);
+INSERT INTO `sys_log` VALUES (4777, '0:0:0:0:0:0:0:1', 'OPT', 'test_admin', '角色管理-修改', 'com.ytrue.modules.system.controller.SysRoleController', 'update', '/sys/role', 'PUT', '[{\"id\":16,\"roleName\":\"测试角色\",\"roleCode\":\"test_role\",\"dataScope\":3,\"roleSort\":0,\"status\":true,\"menuCheckStrictly\":true,\"deptCheckStrictly\":true,\"menuIds\":[1,100,101,102,103,1000,104,1001,1002,1003,1007,1008,1009,1010,1012,1013,1014,1015,1016,1017,1018,1019,1020,1021,1022,1023],\"deptIds\":[]}]', '{\"code\":2000,\"message\":\"成功\"}', NULL, NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54', '2022-12-29 14:57:00', '2022-12-29 14:57:00', 6);
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -492,7 +535,7 @@ CREATE TABLE `sys_menu`  (
   `update_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1072 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单权限表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1074 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单权限表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -500,7 +543,7 @@ CREATE TABLE `sys_menu`  (
 INSERT INTO `sys_menu` VALUES (1, '系统管理', 0, 1, 'system', '', '', 0, 1, 'M', 1, 1, '', 'system', 5, 'admin', '2022-12-06 10:48:55', '', NULL);
 INSERT INTO `sys_menu` VALUES (2, '监控管理', 0, 2, 'monitor', '', '', 0, 1, 'M', 1, 1, '', 'monitor', 3, 'admin', '2022-12-06 10:48:55', 'admin', '2022-12-14 17:34:54');
 INSERT INTO `sys_menu` VALUES (3, '系统工具', 0, 3, 'tool', '', '', 0, 1, 'M', 1, 1, '', 'tool', 2, 'admin', '2022-12-06 10:48:55', '', NULL);
-INSERT INTO `sys_menu` VALUES (100, '用户管理', 1, 1, 'user', 'system/user/index', '', 0, 1, 'C', 1, 1, 'system:user:page,system:dept:list', 'user', 4, 'admin', '2022-12-06 10:48:55', 'admin', '2022-12-19 15:56:44');
+INSERT INTO `sys_menu` VALUES (100, '用户管理', 1, 1, 'user', 'system/user/index', '', 0, 1, 'C', 1, 1, 'system:user:page,system:dept:list', 'user', 5, 'admin', '2022-12-06 10:48:55', 'admin', '2022-12-19 15:56:44');
 INSERT INTO `sys_menu` VALUES (101, '角色管理', 1, 2, 'role', 'system/role/index', '', 0, 1, 'C', 1, 1, 'system:role:page', 'peoples', 4, 'admin', '2022-12-06 10:48:55', 'admin', '2022-12-19 15:53:07');
 INSERT INTO `sys_menu` VALUES (102, '菜单管理', 1, 3, 'menu', 'system/menu/index', '', 0, 1, 'C', 1, 1, 'system:menu:list', 'tree-table', 4, 'admin', '2022-12-06 10:48:55', '', NULL);
 INSERT INTO `sys_menu` VALUES (103, '部门管理', 1, 4, 'dept', 'system/dept/index', '', 0, 1, 'C', 1, 1, 'system:dept:list', 'tree', 4, 'admin', '2022-12-06 10:48:55', '111111', '2022-12-19 15:35:11');
@@ -549,6 +592,7 @@ INSERT INTO `sys_menu` VALUES (1068, '任务删除', 110, 0, '', NULL, NULL, 0, 
 INSERT INTO `sys_menu` VALUES (1069, '任务执行', 110, 0, '', NULL, NULL, 0, 1, 'F', 1, 1, 'system:schedule:run', '#', 0, 'admin', '2022-12-19 16:38:33', '', NULL);
 INSERT INTO `sys_menu` VALUES (1070, '任务暂停', 110, 0, '', NULL, NULL, 0, 1, 'F', 1, 1, 'system:schedule:pause', '#', 0, 'admin', '2022-12-19 16:38:57', '', NULL);
 INSERT INTO `sys_menu` VALUES (1071, '任务恢复', 110, 0, '', NULL, NULL, 0, 1, 'F', 1, 1, 'system:schedule:resume', '#', 0, 'admin', '2022-12-19 16:39:28', '', NULL);
+INSERT INTO `sys_menu` VALUES (1073, '密码重置', 100, 5, '', NULL, NULL, 0, 1, 'F', 1, 1, 'system:user:restPassword', '#', 0, 'admin', '2022-12-27 15:23:55', 'admin', '2022-12-27 15:24:07');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -568,16 +612,15 @@ CREATE TABLE `sys_role`  (
   `update_by` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '更新者',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建日期',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uniq_name`(`role_name`) USING BTREE,
-  INDEX `role_name_index`(`role_name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色表' ROW_FORMAT = Compact;
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES (1, '超级管理员', 'admin', '-', 1, 1, 1, 1, 1, NULL, 'admin', '2018-11-23 11:04:37', '2022-12-15 08:50:38');
-INSERT INTO `sys_role` VALUES (16, '测试角色', 'test_role', NULL, 1, 0, 1, 1, 1, 'admin', 'admin', '2022-12-19 16:03:04', '2022-12-19 16:40:14');
+INSERT INTO `sys_role` VALUES (16, '测试角色', 'test_role', NULL, 3, 0, 1, 1, 1, 'admin', 'test_admin', '2022-12-19 16:03:04', '2022-12-29 14:57:00');
+INSERT INTO `sys_role` VALUES (18, '测试角色2', 'test_role2', NULL, 2, 0, 1, 1, 1, 'admin', 'admin', '2022-12-29 10:43:55', '2022-12-29 14:56:43');
 
 -- ----------------------------
 -- Table structure for sys_role_dept
@@ -587,9 +630,16 @@ CREATE TABLE `sys_role_dept`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `role_id` bigint(20) NOT NULL,
   `dept_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `FK7qg6itn5ajdoa9h9o78v9ksur`(`dept_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色部门关联' ROW_FORMAT = Compact;
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色部门关联' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of sys_role_dept
+-- ----------------------------
+INSERT INTO `sys_role_dept` VALUES (11, 18, 35);
+INSERT INTO `sys_role_dept` VALUES (12, 18, 36);
+INSERT INTO `sys_role_dept` VALUES (13, 18, 38);
+INSERT INTO `sys_role_dept` VALUES (14, 18, 39);
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -599,55 +649,65 @@ CREATE TABLE `sys_role_menu`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `menu_id` bigint(20) NOT NULL COMMENT '菜单ID',
   `role_id` bigint(20) NOT NULL COMMENT '角色ID',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `FKcngg2qadojhi3a651a5adkvbq`(`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1538 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色菜单关联' ROW_FORMAT = Compact;
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1915 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色菜单关联' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
-INSERT INTO `sys_role_menu` VALUES (1496, 1, 16);
-INSERT INTO `sys_role_menu` VALUES (1497, 2, 16);
-INSERT INTO `sys_role_menu` VALUES (1498, 1039, 16);
-INSERT INTO `sys_role_menu` VALUES (1499, 1040, 16);
-INSERT INTO `sys_role_menu` VALUES (1500, 1049, 16);
-INSERT INTO `sys_role_menu` VALUES (1501, 100, 16);
-INSERT INTO `sys_role_menu` VALUES (1502, 101, 16);
-INSERT INTO `sys_role_menu` VALUES (1503, 102, 16);
-INSERT INTO `sys_role_menu` VALUES (1504, 1062, 16);
-INSERT INTO `sys_role_menu` VALUES (1505, 103, 16);
-INSERT INTO `sys_role_menu` VALUES (1506, 1063, 16);
-INSERT INTO `sys_role_menu` VALUES (1507, 1000, 16);
-INSERT INTO `sys_role_menu` VALUES (1508, 104, 16);
-INSERT INTO `sys_role_menu` VALUES (1509, 1064, 16);
-INSERT INTO `sys_role_menu` VALUES (1510, 1001, 16);
-INSERT INTO `sys_role_menu` VALUES (1511, 1065, 16);
-INSERT INTO `sys_role_menu` VALUES (1512, 1002, 16);
-INSERT INTO `sys_role_menu` VALUES (1513, 1066, 16);
-INSERT INTO `sys_role_menu` VALUES (1514, 1003, 16);
-INSERT INTO `sys_role_menu` VALUES (1515, 1067, 16);
-INSERT INTO `sys_role_menu` VALUES (1516, 1068, 16);
-INSERT INTO `sys_role_menu` VALUES (1517, 1069, 16);
-INSERT INTO `sys_role_menu` VALUES (1518, 110, 16);
-INSERT INTO `sys_role_menu` VALUES (1519, 1070, 16);
-INSERT INTO `sys_role_menu` VALUES (1520, 1007, 16);
-INSERT INTO `sys_role_menu` VALUES (1521, 1071, 16);
-INSERT INTO `sys_role_menu` VALUES (1522, 1008, 16);
-INSERT INTO `sys_role_menu` VALUES (1523, 1009, 16);
-INSERT INTO `sys_role_menu` VALUES (1524, 1010, 16);
-INSERT INTO `sys_role_menu` VALUES (1525, 1012, 16);
-INSERT INTO `sys_role_menu` VALUES (1526, 500, 16);
-INSERT INTO `sys_role_menu` VALUES (1527, 1013, 16);
-INSERT INTO `sys_role_menu` VALUES (1528, 1014, 16);
-INSERT INTO `sys_role_menu` VALUES (1529, 1015, 16);
-INSERT INTO `sys_role_menu` VALUES (1530, 1016, 16);
-INSERT INTO `sys_role_menu` VALUES (1531, 1017, 16);
-INSERT INTO `sys_role_menu` VALUES (1532, 1018, 16);
-INSERT INTO `sys_role_menu` VALUES (1533, 1019, 16);
-INSERT INTO `sys_role_menu` VALUES (1534, 1020, 16);
-INSERT INTO `sys_role_menu` VALUES (1535, 1021, 16);
-INSERT INTO `sys_role_menu` VALUES (1536, 1022, 16);
-INSERT INTO `sys_role_menu` VALUES (1537, 1023, 16);
+INSERT INTO `sys_role_menu` VALUES (1862, 1, 18);
+INSERT INTO `sys_role_menu` VALUES (1863, 100, 18);
+INSERT INTO `sys_role_menu` VALUES (1864, 101, 18);
+INSERT INTO `sys_role_menu` VALUES (1865, 102, 18);
+INSERT INTO `sys_role_menu` VALUES (1866, 103, 18);
+INSERT INTO `sys_role_menu` VALUES (1867, 1000, 18);
+INSERT INTO `sys_role_menu` VALUES (1868, 104, 18);
+INSERT INTO `sys_role_menu` VALUES (1869, 1001, 18);
+INSERT INTO `sys_role_menu` VALUES (1870, 1002, 18);
+INSERT INTO `sys_role_menu` VALUES (1871, 1003, 18);
+INSERT INTO `sys_role_menu` VALUES (1872, 1007, 18);
+INSERT INTO `sys_role_menu` VALUES (1873, 1008, 18);
+INSERT INTO `sys_role_menu` VALUES (1874, 1073, 18);
+INSERT INTO `sys_role_menu` VALUES (1875, 1009, 18);
+INSERT INTO `sys_role_menu` VALUES (1876, 1010, 18);
+INSERT INTO `sys_role_menu` VALUES (1877, 1012, 18);
+INSERT INTO `sys_role_menu` VALUES (1878, 1013, 18);
+INSERT INTO `sys_role_menu` VALUES (1879, 1014, 18);
+INSERT INTO `sys_role_menu` VALUES (1880, 1015, 18);
+INSERT INTO `sys_role_menu` VALUES (1881, 1016, 18);
+INSERT INTO `sys_role_menu` VALUES (1882, 1017, 18);
+INSERT INTO `sys_role_menu` VALUES (1883, 1018, 18);
+INSERT INTO `sys_role_menu` VALUES (1884, 1019, 18);
+INSERT INTO `sys_role_menu` VALUES (1885, 1020, 18);
+INSERT INTO `sys_role_menu` VALUES (1886, 1021, 18);
+INSERT INTO `sys_role_menu` VALUES (1887, 1022, 18);
+INSERT INTO `sys_role_menu` VALUES (1888, 1023, 18);
+INSERT INTO `sys_role_menu` VALUES (1889, 1, 16);
+INSERT INTO `sys_role_menu` VALUES (1890, 100, 16);
+INSERT INTO `sys_role_menu` VALUES (1891, 101, 16);
+INSERT INTO `sys_role_menu` VALUES (1892, 102, 16);
+INSERT INTO `sys_role_menu` VALUES (1893, 103, 16);
+INSERT INTO `sys_role_menu` VALUES (1894, 1000, 16);
+INSERT INTO `sys_role_menu` VALUES (1895, 104, 16);
+INSERT INTO `sys_role_menu` VALUES (1896, 1001, 16);
+INSERT INTO `sys_role_menu` VALUES (1897, 1002, 16);
+INSERT INTO `sys_role_menu` VALUES (1898, 1003, 16);
+INSERT INTO `sys_role_menu` VALUES (1899, 1007, 16);
+INSERT INTO `sys_role_menu` VALUES (1900, 1008, 16);
+INSERT INTO `sys_role_menu` VALUES (1901, 1009, 16);
+INSERT INTO `sys_role_menu` VALUES (1902, 1010, 16);
+INSERT INTO `sys_role_menu` VALUES (1903, 1012, 16);
+INSERT INTO `sys_role_menu` VALUES (1904, 1013, 16);
+INSERT INTO `sys_role_menu` VALUES (1905, 1014, 16);
+INSERT INTO `sys_role_menu` VALUES (1906, 1015, 16);
+INSERT INTO `sys_role_menu` VALUES (1907, 1016, 16);
+INSERT INTO `sys_role_menu` VALUES (1908, 1017, 16);
+INSERT INTO `sys_role_menu` VALUES (1909, 1018, 16);
+INSERT INTO `sys_role_menu` VALUES (1910, 1019, 16);
+INSERT INTO `sys_role_menu` VALUES (1911, 1020, 16);
+INSERT INTO `sys_role_menu` VALUES (1912, 1021, 16);
+INSERT INTO `sys_role_menu` VALUES (1913, 1022, 16);
+INSERT INTO `sys_role_menu` VALUES (1914, 1023, 16);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -671,21 +731,14 @@ CREATE TABLE `sys_user`  (
   `pwd_reset_time` datetime(0) NULL DEFAULT NULL COMMENT '修改密码的时间',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建日期',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `UK_kpubos9gc2cvtkb0thktkbkes`(`email`) USING BTREE,
-  UNIQUE INDEX `username`(`username`) USING BTREE,
-  UNIQUE INDEX `uniq_username`(`username`) USING BTREE,
-  UNIQUE INDEX `uniq_email`(`email`) USING BTREE,
-  INDEX `FK5rwmryny6jthaaxkogownknqp`(`dept_id`) USING BTREE,
-  INDEX `FKpq2dhypk2qgt68nauh2by22jb`(`avatar_name`) USING BTREE,
-  INDEX `inx_enabled`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统用户' ROW_FORMAT = Compact;
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统用户' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 35, 'admin', '管理员', 1, '18888888888', '201507802@qq.com', 'avatar-20200806032259161.png', '/Users/jie/Documents/work/me/admin/eladmin/~/avatar/avatar-20200806032259161.png', '$2a$10$2qe4.qBJXKLkfUKis1lbzeYirRCQCqNK8YcGFq3kq.iD3inryyYUO', b'1', 1, NULL, 'admin', '2020-05-03 16:38:31', '2018-08-23 09:11:56', '2022-12-14 16:25:29');
-INSERT INTO `sys_user` VALUES (6, 35, 'test_admin', '测试账号', 1, '17638728398', '321321@qq.com', NULL, NULL, '$2a$10$2qe4.qBJXKLkfUKis1lbzeYirRCQCqNK8YcGFq3kq.iD3inryyYUO', b'0', 1, 'admin', 'admin', NULL, '2022-12-19 16:00:51', '2022-12-19 16:06:45');
+INSERT INTO `sys_user` VALUES (1, 35, 'admin', '管理员', 0, '17638273892', '201507802@qq.com', 'avatar-20200806032259161.png', '/Users/jie/Documents/work/me/admin/eladmin/~/avatar/avatar-20200806032259161.png', '$2a$10$Vaa10wntON0EU90ziHTj6egTRSZmEQ/faj9XZ9HoxsIFo8hn43NQ.', b'1', 1, NULL, 'admin', '2020-05-03 16:38:31', '2018-08-23 09:11:56', '2022-12-29 09:58:42');
+INSERT INTO `sys_user` VALUES (6, 35, 'test_admin', '测试账号', 1, '17638728398', '321321@qq.com', NULL, NULL, '$2a$10$KVDsh1Y8W9v0ul.tN6zX4ukdJ6quBO47LEA5bNktmYaY9ZpzMGaq.', b'0', 1, 'admin', 'test_admin', NULL, '2022-12-19 16:00:51', '2022-12-29 10:45:12');
 
 -- ----------------------------
 -- Table structure for sys_user_job
@@ -696,13 +749,13 @@ CREATE TABLE `sys_user_job`  (
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `job_id` bigint(20) NOT NULL COMMENT '岗位ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户岗位关联' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户岗位关联' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_user_job
 -- ----------------------------
-INSERT INTO `sys_user_job` VALUES (8, 1, 14);
-INSERT INTO `sys_user_job` VALUES (15, 6, 15);
+INSERT INTO `sys_user_job` VALUES (27, 1, 14);
+INSERT INTO `sys_user_job` VALUES (29, 6, 15);
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -712,14 +765,14 @@ CREATE TABLE `sys_user_role`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `role_id` bigint(20) NOT NULL COMMENT '角色ID',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `FKq4eq273l04bpu4efj0jd0jb98`(`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户角色关联' ROW_FORMAT = Compact;
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户角色关联' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
-INSERT INTO `sys_user_role` VALUES (7, 1, 1);
-INSERT INTO `sys_user_role` VALUES (14, 6, 16);
+INSERT INTO `sys_user_role` VALUES (28, 1, 16);
+INSERT INTO `sys_user_role` VALUES (29, 1, 1);
+INSERT INTO `sys_user_role` VALUES (32, 6, 16);
 
 SET FOREIGN_KEY_CHECKS = 1;

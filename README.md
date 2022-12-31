@@ -43,7 +43,7 @@ ytrue-admin                                                                     
 │     └── ytrue-tools-document                                                          # knife4j 文档整合             
 │     └── ytrue-tools-security                                                          # spring security + jwt 安全
 │     └── ytrue-tools-log                                                               # 操作日志
-│     └── ytrue-tools-mp-query                                                          # mybatis-plus 条件查询
+│     └── ytrue-tools-query                                                             # 查询增强库
 ```
 # 3.注意
 修改mapstruct 衍射的类 maven 要 clean

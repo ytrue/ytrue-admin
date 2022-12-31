@@ -1,10 +1,11 @@
 package com.ytrue.modules.system.service;
 
 import com.ytrue.common.base.IBaseService;
-import com.ytrue.modules.system.model.po.SysRole;
 import com.ytrue.modules.system.model.dto.SysRoleDTO;
+import com.ytrue.modules.system.model.po.SysRole;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author ytrue
@@ -41,4 +42,21 @@ public interface ISysRoleService extends IBaseService<SysRole> {
      * @param ids
      */
     void removeBatchRole(List<Long> ids);
+
+
+    /**
+     * 根据用户ID查询角色
+     *
+     * @param userId
+     * @return
+     */
+    Set<SysRole> listByUserId(Long userId);
+
+
+    /**
+     * 根据数据范围获取角色id
+     *
+     * @return
+     */
+    Set<Long> getRoleIdsByDataScope();
 }

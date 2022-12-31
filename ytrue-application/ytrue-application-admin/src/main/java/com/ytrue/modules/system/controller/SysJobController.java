@@ -9,6 +9,7 @@ import com.ytrue.common.utils.AssertUtils;
 import com.ytrue.modules.system.model.dto.params.SysJobSearchParams;
 import com.ytrue.modules.system.model.po.SysJob;
 import com.ytrue.modules.system.service.ISysJobService;
+import com.ytrue.modules.system.service.manager.DataScopeManager;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.utils.QueryHelp;
 import io.swagger.annotations.Api;
@@ -35,6 +36,7 @@ public class SysJobController {
 
     private final ISysJobService sysJobService;
 
+    private final DataScopeManager dataScopeManager;
 
     @GetMapping("page")
     @ApiOperation("分页")

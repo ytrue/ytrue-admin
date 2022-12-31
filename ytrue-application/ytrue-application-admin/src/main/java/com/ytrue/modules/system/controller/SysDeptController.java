@@ -1,5 +1,6 @@
 package com.ytrue.modules.system.controller;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.ApiResultResponse;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author ytrue
@@ -35,8 +37,10 @@ public class SysDeptController {
     @ApiOperation("列表")
     @PreAuthorize("@pms.hasPermission('system:dept:list')")
     public ApiResultResponse<List<SysDept>> list(SysDeptSearchParams params) {
-
+        // 数据范围限制
+        Set<Long> deptIds = sysDeptService.getDeptIdByDataScope();
         LambdaQueryWrapper<SysDept> queryWrapper = QueryHelp.<SysDept>lambdaQueryWrapperBuilder(params)
+                .in(CollectionUtil.isNotEmpty(deptIds), SysDept::getId, deptIds)
                 .orderByAsc(SysDept::getDeptSort)
                 .orderByDesc(SysDept::getId);
 

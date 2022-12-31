@@ -15,7 +15,11 @@ import com.ytrue.modules.system.model.po.SysUserRole;
 import com.ytrue.modules.system.model.dto.SysUserDTO;
 import com.ytrue.modules.system.model.vo.SysUserListVO;
 import com.ytrue.modules.system.service.ISysUserService;
+import com.ytrue.modules.system.service.manager.DataScopeManager;
 import com.ytrue.tools.query.entity.QueryEntity;
+import com.ytrue.tools.query.enums.Operator;
+import com.ytrue.tools.query.enums.QueryMethod;
+import com.ytrue.tools.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -41,8 +46,19 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
 
     private final SysUserDao sysUserDao;
 
+    private final DataScopeManager dataScopeManager;
+
     @Override
     public IPage<SysUserListVO> paginate(IPage<SysUserListVO> page, QueryEntity query) {
+        // 处理数据过滤
+        Set<Long> deptIds = dataScopeManager.handleDataScope();
+        // TODO 待优化
+        if (!deptIds.contains(0L)) {
+            // TODO 后续query库完善替换成in
+            deptIds.forEach(deptId -> query.addFilter(SysUser::getDeptId, QueryMethod.eq, deptId, "u", Operator.or));
+        } else {
+            query.addFilter(SysUser::getId, QueryMethod.eq, SecurityUtils.getLoginUser().getUser().getUserId(), "u");
+        }
         return sysUserDao.listWithDeptName(page, query);
     }
 

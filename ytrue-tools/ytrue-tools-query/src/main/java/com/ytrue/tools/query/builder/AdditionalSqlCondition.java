@@ -22,6 +22,9 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author ytrue
@@ -39,6 +42,7 @@ public class AdditionalSqlCondition {
         ADDITIONAL_CONDITION_MAP.put(QueryMethod.like, (stringBuffer, field) -> splicingString(stringBuffer, field, MysqlMethod.LIKE.getValue(), "'%", "%'"));
         ADDITIONAL_CONDITION_MAP.put(QueryMethod.likeLeft, (stringBuffer, field) -> splicingString(stringBuffer, field, MysqlMethod.LIKE.getValue(), "'%", STATIC_QUOTES));
         ADDITIONAL_CONDITION_MAP.put(QueryMethod.likeRight, (stringBuffer, field) -> splicingString(stringBuffer, field, MysqlMethod.LIKE.getValue(), STATIC_QUOTES, "%'"));
+
         // between处理
         ADDITIONAL_CONDITION_MAP.put(QueryMethod.between, (stringBuffer, filter) -> {
             Object start = disposeValue(((List<?>) filter.getValue()).get(0));
@@ -55,6 +59,14 @@ public class AdditionalSqlCondition {
             stringBuffer.append(" and ");
             stringBuffer.append(" ");
             stringBuffer.append(end);
+        });
+
+        // in处理--- TODO 关于这里的处理后期换成策略模式处理，使用map满足不了了，代码太多了
+        ADDITIONAL_CONDITION_MAP.put(QueryMethod.in, new AdditionalCondition() {
+            @Override
+            public void additional(StringBuffer stringBuffer, Filter filter) {
+
+            }
         });
     }
 

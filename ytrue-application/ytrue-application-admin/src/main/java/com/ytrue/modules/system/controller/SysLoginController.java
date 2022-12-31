@@ -3,11 +3,12 @@ package com.ytrue.modules.system.controller;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.tree.Tree;
 import com.ytrue.common.utils.ApiResultResponse;
+import com.ytrue.modules.system.model.po.SysDept;
+import com.ytrue.modules.system.model.po.SysJob;
+import com.ytrue.modules.system.model.po.SysRole;
 import com.ytrue.modules.system.model.po.SysUser;
 import com.ytrue.modules.system.model.vo.SysUserInfoVO;
-import com.ytrue.modules.system.service.ISysMenuService;
-import com.ytrue.modules.system.service.ISysPermissionService;
-import com.ytrue.modules.system.service.ISysUserService;
+import com.ytrue.modules.system.service.*;
 import com.ytrue.tools.security.service.LoginService;
 import com.ytrue.tools.security.util.SecurityUtils;
 import io.swagger.annotations.Api;
@@ -39,6 +40,12 @@ public class SysLoginController {
 
     private final ISysMenuService sysMenuService;
 
+    private final ISysDeptService sysDeptService;
+
+    private final ISysRoleService sysRoleService;
+
+    private final ISysJobService sysJobService;
+
 
     @ApiOperation("登录")
     @PostMapping("/login")
@@ -59,15 +66,24 @@ public class SysLoginController {
         String username = SecurityUtils.getLoginUser().getUsername();
         // 获取用户
         SysUser sysUser = sysUserService.getUserByUsername(username);
-        // 角色集合
-        Set<String> roles = sysPermissionService.getRoleCode(sysUser);
+        // 获取岗位
+        List<SysJob> sysJobs = sysJobService.listByUserId(sysUser.getId());
+        // 获取部门
+        SysDept sysDept = sysDeptService.getById(sysUser.getDeptId());
+        // 获取角色
+        Set<SysRole> sysRoles = sysRoleService.listByUserId(sysUser.getId());
         // 权限集合
         Set<String> permissions = sysPermissionService.getPermission(sysUser);
+        // 角色集合
+        Set<String> roleCodes = sysPermissionService.getRoleCode(sysUser);
 
         SysUserInfoVO sysUserInfoVO = new SysUserInfoVO();
         sysUserInfoVO.setUser(sysUser);
-        sysUserInfoVO.setRoles(roles);
+        sysUserInfoVO.setJobs(sysJobs);
+        sysUserInfoVO.setDept(sysDept);
+        sysUserInfoVO.setRoles(sysRoles);
         sysUserInfoVO.setPermissions(permissions);
+        sysUserInfoVO.setRoleCodes(roleCodes);
 
         return ApiResultResponse.success(sysUserInfoVO);
     }

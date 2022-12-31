@@ -35,5 +35,10 @@ public enum QueryMethod {
     /**
      * 范围查询 [111,222]
      */
-    between
+    between,
+
+    /**
+     * in
+     */
+    in,
 }

@@ -23,7 +23,4 @@ public interface SysDeptDao extends IBaseDao<SysDept> {
      * @return
      */
     Set<Long> listDeptIdByRoleId(@Param("roleId") Long roleId, @Param("deptCheckStrictly") boolean deptCheckStrictly);
-
-
-    void test(QueryEntity queryEntity);
 }
