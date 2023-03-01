@@ -14,9 +14,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -38,9 +38,7 @@ public class SysMenuController {
     @PreAuthorize("@pms.hasPermission('system:menu:list')")
     public ApiResultResponse<List<SysMenu>> list(SysMenuSearchParams params) {
 
-        LambdaQueryWrapper<SysMenu> queryWrapper = QueryHelp.<SysMenu>lambdaQueryWrapperBuilder(params)
-                .orderByAsc(SysMenu::getMenuSort)
-                .orderByDesc(SysMenu::getId);
+        LambdaQueryWrapper<SysMenu> queryWrapper = QueryHelp.<SysMenu>lambdaQueryWrapperBuilder(params).orderByAsc(SysMenu::getMenuSort).orderByDesc(SysMenu::getId);
 
         return ApiResultResponse.success(sysMenuService.list(queryWrapper));
     }
@@ -58,7 +56,7 @@ public class SysMenuController {
     @PostMapping
     @ApiOperation("保存")
     @PreAuthorize("@pms.hasPermission('system:menu:add')")
-    public ApiResultResponse<Object> add(@Valid @RequestBody SysMenu sysMenu) {
+    public ApiResultResponse<Object> add(@Validated @RequestBody SysMenu sysMenu) {
         sysMenuService.addMenu(sysMenu);
         return ApiResultResponse.success();
     }
@@ -67,7 +65,7 @@ public class SysMenuController {
     @PutMapping
     @ApiOperation("修改")
     @PreAuthorize("@pms.hasPermission('system:menu:update')")
-    public ApiResultResponse<Object> update(@Valid @RequestBody SysMenu sysMenu) {
+    public ApiResultResponse<Object> update(@Validated @RequestBody SysMenu sysMenu) {
         sysMenuService.updateMenu(sysMenu);
         return ApiResultResponse.success();
     }

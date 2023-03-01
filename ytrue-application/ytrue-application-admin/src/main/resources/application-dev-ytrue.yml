@@ -49,6 +49,7 @@ ytrue:
       - /actuator
       - /actuator/**
       - /webjars/**
+      - /sys/job
     jwt:
       token-expire-time: 360000000
   # 开启操作日志监听

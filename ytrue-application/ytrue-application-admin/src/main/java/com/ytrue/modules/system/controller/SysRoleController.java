@@ -17,9 +17,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
@@ -43,10 +43,7 @@ public class SysRoleController {
     public ApiResultResponse<IPage<SysRole>> page(SysRoleSearchParams params, Pageable pageable) {
         // 数据范围限制
         Set<Long> roleIds = sysRoleService.getRoleIdsByDataScope();
-        LambdaQueryWrapper<SysRole> queryWrapper = QueryHelp.<SysRole>lambdaQueryWrapperBuilder(params)
-                .in(CollectionUtil.isNotEmpty(roleIds), SysRole::getId, roleIds)
-                .orderByAsc(SysRole::getRoleSort)
-                .orderByDesc(SysRole::getId);
+        LambdaQueryWrapper<SysRole> queryWrapper = QueryHelp.<SysRole>lambdaQueryWrapperBuilder(params).in(CollectionUtil.isNotEmpty(roleIds), SysRole::getId, roleIds).orderByAsc(SysRole::getRoleSort).orderByDesc(SysRole::getId);
 
         return ApiResultResponse.success(sysRoleService.page(pageable.page(), queryWrapper));
     }
@@ -73,7 +70,7 @@ public class SysRoleController {
     @PostMapping
     @ApiOperation("保存")
     @PreAuthorize("@pms.hasPermission('system:role:add')")
-    public ApiResultResponse<Object> add(@Valid @RequestBody SysRoleDTO sysRoleDTO) {
+    public ApiResultResponse<Object> add(@Validated @RequestBody SysRoleDTO sysRoleDTO) {
         sysRoleService.addRole(sysRoleDTO);
         return ApiResultResponse.success();
     }
@@ -82,7 +79,7 @@ public class SysRoleController {
     @PutMapping
     @ApiOperation("修改")
     @PreAuthorize("@pms.hasPermission('system:role:update')")
-    public ApiResultResponse<Object> update(@Valid @RequestBody SysRoleDTO sysRoleDTO) {
+    public ApiResultResponse<Object> update(@Validated @RequestBody SysRoleDTO sysRoleDTO) {
         sysRoleService.updateRole(sysRoleDTO);
         return ApiResultResponse.success();
     }

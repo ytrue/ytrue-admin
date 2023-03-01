@@ -9,8 +9,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
  * @description: AdminApplication
  * @date 2022/12/6 15:47
  */
-@SpringBootApplication
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@SpringBootApplication(scanBasePackages = "com.ytrue")
 public class AdminApplication {
 
     /**

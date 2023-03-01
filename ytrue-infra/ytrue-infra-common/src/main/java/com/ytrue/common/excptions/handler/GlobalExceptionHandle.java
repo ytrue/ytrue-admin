@@ -64,6 +64,20 @@ public class GlobalExceptionHandle implements ErrorController {
             errorCode = ((BaseCodeException) error).getCode();
         }
 
+        /*
+            请求进来 会按照 filter -> interceptor -> controllerAdvice -> aspect -> controller的顺序调用
+
+            当controller返回异常 也会按照controller -> aspect -> controllerAdvice -> interceptor -> filter来依次抛出
+
+            这种Filter发生的404、405、500错误都会到Spring默认的异常处理。
+            如果你在配置文件配置了server.error.path的话，就会使用你配置的异常处理地址，
+            如果没有就会使用你配置的error.path路径地址，如果还是没有，默认使用/error来作为发生异常的处理地址。
+            如果想要替换默认的非Controller异常处理直接实现Spring提供的ErrorController接口就行了
+            而 spring security是基于过滤器实现认证
+            参考文章:
+            https://www.jianshu.com/p/ec932d6091c1
+            https://blog.csdn.net/weixin_43702146/article/details/118606502
+         */
         // 没有的登录
         if (error instanceof AuthenticationFailureException) {
             errorMessage = ResponseCode.NO_LOGIN.getMessage();

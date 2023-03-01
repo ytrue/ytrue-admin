@@ -17,6 +17,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -77,7 +78,7 @@ public class SysJobController {
     @PostMapping
     @ApiOperation("保存")
     @PreAuthorize("@pms.hasPermission('system:job:add')")
-    public ApiResultResponse<Object> add(@Valid @RequestBody SysJob sysJob) {
+    public ApiResultResponse<Object> add(@Validated @RequestBody SysJob sysJob) {
         SysJob job = sysJobService.lambdaQuery().eq(SysJob::getJobName, sysJob.getJobName()).one();
         AssertUtils.isNull(job, ResponseCode.JOB_EXISTS);
         sysJobService.save(sysJob);
@@ -88,7 +89,7 @@ public class SysJobController {
     @PutMapping
     @ApiOperation("修改")
     @PreAuthorize("@pms.hasPermission('system:job:update')")
-    public ApiResultResponse<Object> update(@Valid @RequestBody SysJob sysJob) {
+    public ApiResultResponse<Object> update(@Validated  @RequestBody SysJob sysJob) {
         SysJob job = sysJobService
                 .lambdaQuery()
                 .eq(SysJob::getJobName, sysJob.getJobName())

@@ -14,9 +14,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
@@ -39,10 +39,7 @@ public class SysDeptController {
     public ApiResultResponse<List<SysDept>> list(SysDeptSearchParams params) {
         // 数据范围限制
         Set<Long> deptIds = sysDeptService.getDeptIdByDataScope();
-        LambdaQueryWrapper<SysDept> queryWrapper = QueryHelp.<SysDept>lambdaQueryWrapperBuilder(params)
-                .in(CollectionUtil.isNotEmpty(deptIds), SysDept::getId, deptIds)
-                .orderByAsc(SysDept::getDeptSort)
-                .orderByDesc(SysDept::getId);
+        LambdaQueryWrapper<SysDept> queryWrapper = QueryHelp.<SysDept>lambdaQueryWrapperBuilder(params).in(CollectionUtil.isNotEmpty(deptIds), SysDept::getId, deptIds).orderByAsc(SysDept::getDeptSort).orderByDesc(SysDept::getId);
 
         return ApiResultResponse.success(sysDeptService.list(queryWrapper));
     }
@@ -60,7 +57,7 @@ public class SysDeptController {
     @PostMapping
     @ApiOperation("保存")
     @PreAuthorize("@pms.hasPermission('system:dept:add')")
-    public ApiResultResponse<Object> add(@Valid @RequestBody SysDept sysDept) {
+    public ApiResultResponse<Object> add(@Validated @RequestBody SysDept sysDept) {
         sysDeptService.addDept(sysDept);
         return ApiResultResponse.success();
     }
@@ -69,7 +66,7 @@ public class SysDeptController {
     @PutMapping
     @ApiOperation("修改")
     @PreAuthorize("@pms.hasPermission('system:dept:update')")
-    public ApiResultResponse<Object> update(@Valid @RequestBody SysDept sysDept) {
+    public ApiResultResponse<Object> update(@Validated @RequestBody SysDept sysDept) {
         sysDeptService.updateDept(sysDept);
         return ApiResultResponse.success();
     }

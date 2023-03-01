@@ -22,9 +22,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -52,9 +52,7 @@ public class SysUserController {
     @PreAuthorize("@pms.hasPermission('system:user:page')")
     public ApiResultResponse<IPage<SysUserListVO>> page(SysUserSearchParams params, Pageable pageable) {
 
-        QueryEntity queryEntity = QueryHelp
-                .queryEntityBuilder(params)
-                .addSort(SysUserListVO::getId, false);
+        QueryEntity queryEntity = QueryHelp.queryEntityBuilder(params).addSort(SysUserListVO::getId, false);
 
         return ApiResultResponse.success(sysUserService.paginate(pageable.page(), queryEntity));
     }
@@ -71,7 +69,7 @@ public class SysUserController {
     @PostMapping
     @ApiOperation("保存")
     @PreAuthorize("@pms.hasPermission('system:user:add')")
-    public ApiResultResponse<Object> add(@Valid @RequestBody SysUserDTO sysUserDTO) {
+    public ApiResultResponse<Object> add(@Validated @RequestBody SysUserDTO sysUserDTO) {
         sysUserDTO.setPassword(passwordEncoder.encode(DEFAULT_PASSWORD));
         sysUserService.addUser(sysUserDTO);
         return ApiResultResponse.success();
@@ -81,7 +79,7 @@ public class SysUserController {
     @PutMapping
     @ApiOperation("修改")
     @PreAuthorize("@pms.hasPermission('system:user:update')")
-    public ApiResultResponse<Object> update(@Valid @RequestBody SysUserDTO sysUserDTO) {
+    public ApiResultResponse<Object> update(@Validated @RequestBody SysUserDTO sysUserDTO) {
         sysUserService.updateUser(sysUserDTO);
         return ApiResultResponse.success();
     }
