@@ -1,5 +1,6 @@
 package com.ytrue.config;
 
+
 import com.ytrue.common.utils.BeanUtils;
 import com.ytrue.modules.system.dao.SysLogDao;
 import com.ytrue.modules.system.model.po.SysLog;

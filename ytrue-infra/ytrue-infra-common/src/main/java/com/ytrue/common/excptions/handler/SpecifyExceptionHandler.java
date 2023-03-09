@@ -22,6 +22,8 @@ public class SpecifyExceptionHandler {
     @ExceptionHandler(BindException.class)
     public ApiResultResponse<Object> validExceptionHandler(final Exception e) {
 
+        // TODO 待完善
+
         BindException exception = (BindException) e;
         List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
         for (FieldError error : fieldErrors) {
@@ -37,6 +39,7 @@ public class SpecifyExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ApiResultResponse<Object> constraintViolationExceptionHandler(final Exception e) {
         ConstraintViolationException exception = (ConstraintViolationException) e;
+        // TODO 待完善
         return ApiResultResponse.fail(4000, exception.getMessage());
     }
 }
