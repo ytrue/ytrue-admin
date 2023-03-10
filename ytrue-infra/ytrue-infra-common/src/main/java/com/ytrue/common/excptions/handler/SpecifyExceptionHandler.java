@@ -3,11 +3,12 @@ package com.ytrue.common.excptions.handler;
 import com.ytrue.common.utils.ApiResultResponse;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.List;
 
 /**
  * @author ytrue
@@ -19,27 +20,31 @@ import java.util.List;
 public class SpecifyExceptionHandler {
 
 
+    /**
+     * Validated 注解写在方法上的时候会报这个异常
+     *
+     * @param exception
+     * @return
+     */
     @ExceptionHandler(BindException.class)
-    public ApiResultResponse<Object> validExceptionHandler(final Exception e) {
-
-        // TODO 待完善
-
-        BindException exception = (BindException) e;
-        List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
-        for (FieldError error : fieldErrors) {
-            System.out.println(error.getField());
-            System.out.println(error.getDefaultMessage());
-
-        }
-
-        return ApiResultResponse.fail(4000,"error");
+    public ApiResultResponse<Object> bindExceptionHandler(final BindException exception) {
+        // 这个不是按顺序来的
+        FieldError fieldError = exception.getFieldErrors().stream().findFirst().orElse(null);
+        assert fieldError != null;
+        String message = fieldError.getField() + ": " + fieldError.getDefaultMessage();
+        return ApiResultResponse.fail(4000, message);
     }
 
 
+    /**
+     * Validated 注解写在类上的时候会报这个异常
+     *
+     * @param exception
+     * @return
+     */
     @ExceptionHandler(ConstraintViolationException.class)
-    public ApiResultResponse<Object> constraintViolationExceptionHandler(final Exception e) {
-        ConstraintViolationException exception = (ConstraintViolationException) e;
-        // TODO 待完善
-        return ApiResultResponse.fail(4000, exception.getMessage());
+    public ApiResultResponse<Object> constraintViolationExceptionHandler(final ConstraintViolationException exception) {
+        String message = exception.getConstraintViolations().stream().findFirst().map(ConstraintViolation::getMessage).orElse("");
+        return ApiResultResponse.fail(4000, message);
     }
 }
