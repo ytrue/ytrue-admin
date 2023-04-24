@@ -8,6 +8,8 @@ import com.ytrue.tools.log.enitiy.OperationLog;
 import com.ytrue.tools.log.event.SysLogEvent;
 import com.ytrue.tools.log.utils.SysLogUtils;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -68,78 +70,78 @@ public class SysLogAspect {
      */
     @Before(value = "sysLogAspect()")
     public void recordLog(JoinPoint joinPoint) {
-//        tryCatch((val) -> {
-//            // 获取OperationLog
-//            OperationLog operationLog = get();
-//
-//            String controllerDescription = "";
-//            //获取目标类上的 @Api 注解
-//            Api api = joinPoint.getTarget().getClass().getAnnotation(Api.class);
-//
-//            if (api != null) {
-//                String[] tags = api.tags();
-//                if (tags.length > 0) {
-//                    controllerDescription = tags[0];
-//                }
-//            }
-//
-//            //获取标注在方法上的 SysLog 注解的描述
-//            String controllerMethodDescription = SysLogUtils.getControllerMethodDescription(joinPoint);
-//
-//            //判断这个sysLog注解的value是否为空,等于空就去获取ApiOperation注解的value
-//            if (StrUtil.isEmpty(controllerMethodDescription)) {
-//                //获得切面方法上的指定注解
-//                Class<?> clazz = joinPoint.getTarget().getClass();
-//                String methodName = joinPoint.getSignature().getName();
-//                Class<?>[] parameterTypes = ((MethodSignature) joinPoint.getSignature()).getMethod().getParameterTypes();
-//                Method method;
-//                try {
-//                    method = clazz.getMethod(methodName, parameterTypes);
-//                    controllerMethodDescription = method.getAnnotation(ApiOperation.class).value();
-//                } catch (NoSuchMethodException e) {
-//                    controllerMethodDescription = "";
-//                }
-//            }
-//
-//
-//            //设置操作描述
-//            if (StrUtil.isEmpty(controllerDescription)) {
-//                operationLog.setDescription(controllerMethodDescription);
-//            } else {
-//                operationLog.setDescription(controllerDescription + "-" + controllerMethodDescription);
-//            }
-//
-//            // 设置类名
-//            operationLog.setClassPath(joinPoint.getTarget().getClass().getName());
-//            // 设置获取执行的方法名
-//            operationLog.setActionMethod(joinPoint.getSignature().getName());
-//
-//            // 参数
-//            Object[] args = joinPoint.getArgs();
-//
-//            String strArgs = "";
-//
-//            try {
-//                if (!this.request.getContentType().contains(MULTIPART_FORM_DATA)) {
-//                    Gson gson = new Gson();
-//                    strArgs = gson.toJson(args);
-//                }
-//            } catch (Exception e) {
-//                try {
-//                    strArgs = Arrays.toString(args);
-//                } catch (Exception ex) {
-//                    log.warn("解析参数异常", ex);
-//                }
-//            }
-//            operationLog.setType("OPT");
-//            operationLog.setParams(getText(strArgs));
-//            operationLog.setRequestIp(ServletUtil.getClientIP(request));
-//            operationLog.setRequestUri(URLUtil.getPath(request.getRequestURI()));
-//            operationLog.setHttpMethod(request.getMethod());
-//            operationLog.setBrowser(StrUtil.sub(request.getHeader("user-agent"), 0, 500));
-//            operationLog.setStartTime(LocalDateTime.now());
-//            THREAD_LOCAL.set(operationLog);
-//        });
+        tryCatch((val) -> {
+            // 获取OperationLog
+            OperationLog operationLog = get();
+
+            String controllerDescription = "";
+            //获取目标类上的 @Api 注解
+            Tag tag = joinPoint.getTarget().getClass().getAnnotation(Tag.class);
+
+            if (tag != null) {
+                String name = tag.name();
+                if (StrUtil.isNotEmpty(name)) {
+                    controllerDescription = name;
+                }
+            }
+
+            //获取标注在方法上的 SysLog 注解的描述
+            String controllerMethodDescription = SysLogUtils.getControllerMethodDescription(joinPoint);
+
+            //判断这个sysLog注解的value是否为空,等于空就去获取ApiOperation注解的value
+            if (StrUtil.isEmpty(controllerMethodDescription)) {
+                //获得切面方法上的指定注解
+                Class<?> clazz = joinPoint.getTarget().getClass();
+                String methodName = joinPoint.getSignature().getName();
+                Class<?>[] parameterTypes = ((MethodSignature) joinPoint.getSignature()).getMethod().getParameterTypes();
+                Method method;
+                try {
+                    method = clazz.getMethod(methodName, parameterTypes);
+                    controllerMethodDescription = method.getAnnotation(Operation.class).summary();
+                } catch (NoSuchMethodException e) {
+                    controllerMethodDescription = "";
+                }
+            }
+
+
+            //设置操作描述
+            if (StrUtil.isEmpty(controllerDescription)) {
+                operationLog.setDescription(controllerMethodDescription);
+            } else {
+                operationLog.setDescription(controllerDescription + "-" + controllerMethodDescription);
+            }
+
+            // 设置类名
+            operationLog.setClassPath(joinPoint.getTarget().getClass().getName());
+            // 设置获取执行的方法名
+            operationLog.setActionMethod(joinPoint.getSignature().getName());
+
+            // 参数
+            Object[] args = joinPoint.getArgs();
+
+            String strArgs = "";
+
+            try {
+                if (!this.request.getContentType().contains(MULTIPART_FORM_DATA)) {
+                    Gson gson = new Gson();
+                    strArgs = gson.toJson(args);
+                }
+            } catch (Exception e) {
+                try {
+                    strArgs = Arrays.toString(args);
+                } catch (Exception ex) {
+                    log.warn("解析参数异常", ex);
+                }
+            }
+            operationLog.setType("OPT");
+            operationLog.setParams(getText(strArgs));
+            operationLog.setRequestIp(ServletUtil.getClientIP(request));
+            operationLog.setRequestUri(URLUtil.getPath(request.getRequestURI()));
+            operationLog.setHttpMethod(request.getMethod());
+            operationLog.setBrowser(StrUtil.sub(request.getHeader("user-agent"), 0, 500));
+            operationLog.setStartTime(LocalDateTime.now());
+            THREAD_LOCAL.set(operationLog);
+        });
     }
 
 

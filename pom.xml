@@ -29,6 +29,9 @@
         <mybatisplus.version>3.5.2</mybatisplus.version>
         <mysql.version>8.0.31</mysql.version>
 
+        <!--文档-->
+        <knife4j-version>4.1.0</knife4j-version>
+        <swagger-core-version>2.2.8</swagger-core-version>
 
         <!--jwt-->
         <jjwt.version>0.9.0</jjwt.version>
@@ -84,6 +87,18 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.version}</version>
+            </dependency>
+
+            <!--文档-->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+                <version>${knife4j-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-core</artifactId>
+                <version>${swagger-core-version}</version>
             </dependency>
 
 
