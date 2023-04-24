@@ -11,8 +11,8 @@ import com.ytrue.modules.quartz.model.dto.ScheduleJobSearchParams;
 import com.ytrue.modules.quartz.model.po.ScheduleJob;
 import com.ytrue.modules.quartz.service.IScheduleJobService;
 import com.ytrue.tools.query.utils.QueryHelp;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,14 +27,14 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@Api(tags = "定时任务")
+@Tag(name = "定时任务")
 @RequestMapping("/sys/schedule")
 public class ScheduleJobController {
 
     private final IScheduleJobService scheduleJobService;
 
     @GetMapping("page")
-    @ApiOperation("分页查询数据")
+    @Operation(summary = "分页查询数据")
     @PreAuthorize("@pms.hasPermission('system:schedule:resume')")
     public ApiResultResponse<IPage<ScheduleJob>> page(ScheduleJobSearchParams params, Pageable pageable) {
 
@@ -46,7 +46,7 @@ public class ScheduleJobController {
 
 
     @GetMapping("detail/{id}")
-    @ApiOperation("定时任务信息")
+    @Operation(summary = "定时任务信息")
     @PreAuthorize("@pms.hasPermission('system:schedule:detail')")
     public ApiResultResponse<ScheduleJob> info(@PathVariable("id") Long id) {
         return ApiResultResponse.success(scheduleJobService.getById(id));
@@ -54,7 +54,7 @@ public class ScheduleJobController {
 
 
     @PostMapping
-    @ApiOperation("保存定时任务")
+    @Operation(summary = "保存定时任务")
     @PreAuthorize("@pms.hasPermission('system:schedule:add')")
     public ApiResultResponse<Object> add(@Validated @RequestBody ScheduleJob scheduleJob) {
 
@@ -71,7 +71,7 @@ public class ScheduleJobController {
 
 
     @PutMapping
-    @ApiOperation("修改定时任务")
+    @Operation(summary = "修改定时任务")
     @PreAuthorize("@pms.hasPermission('system:schedule:update')")
     public ApiResultResponse<Object> update(@Validated @RequestBody ScheduleJob scheduleJob) {
 
@@ -88,7 +88,7 @@ public class ScheduleJobController {
 
 
     @DeleteMapping
-    @ApiOperation("删除定时任务")
+    @Operation(summary = "删除定时任务")
     @PreAuthorize("@pms.hasPermission('system:schedule:delete')")
     public ApiResultResponse<Object> delete(@RequestBody Long[] jobIds) {
         scheduleJobService.deleteBatch(jobIds);
@@ -96,7 +96,7 @@ public class ScheduleJobController {
     }
 
     @PostMapping("run")
-    @ApiOperation("立即执行任务")
+    @Operation(summary = "立即执行任务")
     @PreAuthorize("@pms.hasPermission('system:schedule:run')")
     public ApiResultResponse<Object> run(@RequestBody Long[] jobIds) {
         scheduleJobService.run(jobIds);
@@ -105,7 +105,7 @@ public class ScheduleJobController {
 
 
     @PostMapping("pause")
-    @ApiOperation("暂停定时任务")
+    @Operation(summary = "暂停定时任务")
     @PreAuthorize("@pms.hasPermission('system:schedule:pause')")
     public ApiResultResponse<Object> pause(@RequestBody Long[] jobIds) {
         scheduleJobService.pause(jobIds);
@@ -114,7 +114,7 @@ public class ScheduleJobController {
 
 
     @PostMapping("resume")
-    @ApiOperation("恢复定时任务")
+    @Operation(summary = "恢复定时任务")
     @PreAuthorize("@pms.hasPermission('system:schedule:resume')")
     public ApiResultResponse<Object> resume(@RequestBody Long[] jobIds) {
         scheduleJobService.resume(jobIds);

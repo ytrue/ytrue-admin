@@ -12,8 +12,8 @@ import com.ytrue.modules.system.model.po.SysRole;
 import com.ytrue.modules.system.service.ISysRoleService;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.utils.QueryHelp;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,14 +31,14 @@ import java.util.Set;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@Api(tags = "角色管理")
+@Tag(name = "角色管理")
 @RequestMapping("/sys/role")
 public class SysRoleController {
 
     private final ISysRoleService sysRoleService;
 
     @GetMapping("page")
-    @ApiOperation("分页查询")
+    @Operation(summary="分页查询")
     @PreAuthorize("@pms.hasPermission('system:role:page')")
     public ApiResultResponse<IPage<SysRole>> page(SysRoleSearchParams params, Pageable pageable) {
         // 数据范围限制
@@ -49,7 +49,7 @@ public class SysRoleController {
     }
 
     @GetMapping("list")
-    @ApiOperation("列表")
+    @Operation(summary="列表")
     @PreAuthorize("@pms.hasPermission('system:role:list')")
     public ApiResultResponse<List<SysRole>> list() {
         // 数据范围限制
@@ -60,7 +60,7 @@ public class SysRoleController {
     }
 
     @GetMapping("detail/{id}")
-    @ApiOperation("详情")
+    @Operation(summary="详情")
     @PreAuthorize("@pms.hasPermission('system:role:detail')")
     public ApiResultResponse<SysRoleDTO> detail(@PathVariable("id") Long id) {
         return ApiResultResponse.success(sysRoleService.getRoleById(id));
@@ -68,7 +68,7 @@ public class SysRoleController {
 
     @SysLog
     @PostMapping
-    @ApiOperation("保存")
+    @Operation(summary="保存")
     @PreAuthorize("@pms.hasPermission('system:role:add')")
     public ApiResultResponse<Object> add(@Validated @RequestBody SysRoleDTO sysRoleDTO) {
         sysRoleService.addRole(sysRoleDTO);
@@ -77,7 +77,7 @@ public class SysRoleController {
 
     @SysLog
     @PutMapping
-    @ApiOperation("修改")
+    @Operation(summary="修改")
     @PreAuthorize("@pms.hasPermission('system:role:update')")
     public ApiResultResponse<Object> update(@Validated @RequestBody SysRoleDTO sysRoleDTO) {
         sysRoleService.updateRole(sysRoleDTO);
@@ -86,7 +86,7 @@ public class SysRoleController {
 
     @SysLog
     @DeleteMapping
-    @ApiOperation("删除")
+    @Operation(summary="删除")
     @PreAuthorize("@pms.hasPermission('system:role:delete')")
     public ApiResultResponse<Object> delete(@RequestBody List<Long> ids) {
         sysRoleService.removeBatchRole(ids);

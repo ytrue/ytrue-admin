@@ -155,6 +155,7 @@ public class SecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
      * @return JwtAuthenticationTokenFilter
      */
     @Bean
+    @ConditionalOnMissingBean
     public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() {
         return new JwtAuthenticationTokenFilter(stringRedisTemplate, jwtOperation(), securityProperties());
     }

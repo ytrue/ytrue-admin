@@ -6,8 +6,8 @@ import com.ytrue.common.utils.ApiResultResponse;
 import com.ytrue.modules.system.model.po.SysLog;
 import com.ytrue.modules.system.service.ISysLogService;
 import com.ytrue.tools.query.entity.PageQueryEntity;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ import java.util.List;
  * @description: SysLogController
  * @date 2022/12/15 15:38
  */
-@Api(tags = "日志管理")
+@Tag(name = "日志管理")
 @RestController
 @RequestMapping("/sys/log")
 @AllArgsConstructor
@@ -29,7 +29,7 @@ public class SysLogController {
 
 
     @PostMapping("page")
-    @ApiOperation("分页")
+    @Operation(summary="分页")
     @PreAuthorize("@pms.hasPermission('system:log:page')")
     public ApiResultResponse<IPage<SysLog>> page(@RequestBody(required = false) PageQueryEntity pageQueryEntity) {
         IPage<SysLog> page = sysLogService.paginate(pageQueryEntity);
@@ -37,7 +37,7 @@ public class SysLogController {
     }
 
     @DeleteMapping
-    @ApiOperation("删除")
+    @Operation(summary="删除")
     @PreAuthorize("@pms.hasPermission('system:log:delete')")
     public ApiResultResponse<Object> delete(@RequestBody List<Long> ids) {
         sysLogService.removeBatchByIds(ids);
@@ -45,7 +45,7 @@ public class SysLogController {
     }
 
     @DeleteMapping("clear")
-    @ApiOperation("清空")
+    @Operation(summary="清空")
     @PreAuthorize("@pms.hasPermission('system:log:clear')")
     public ApiResultResponse<Object> clear() {
         sysLogService.remove(Wrappers.emptyWrapper());

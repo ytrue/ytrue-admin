@@ -129,15 +129,15 @@ public class SysJobSearchParams implements Serializable {
     private static final long serialVersionUID = -8023936370399354477L;
 
     @Query(condition = QueryMethod.like)
-    @ApiModelProperty(value = "岗位名称")
+    @Schema(title = "岗位名称")
     private String jobName;
 
     @Query
-    @ApiModelProperty(value = "是否启用")
+    @Schema(title = "是否启用")
     private Boolean status;
 
     @Query(condition = QueryMethod.between)
-    @ApiModelProperty(value = "创建时间")
+    @Schema(title = "创建时间")
     private List<String> createTime;
 }
 ```
@@ -153,7 +153,7 @@ DEBUG 10116 --- [nio-7000-exec-1] c.y.m.system.dao.SysJobDao.selectPage    : ==>
 ## 方式三
 ```java
     @GetMapping("page")
-    @ApiOperation("分页")
+    @Operation(summary="分页")
     @PreAuthorize("@pms.hasPermission('system:user:page')")
     public ApiResultResponse<IPage<SysUserListVO>> page(SysUserSearchParams params, Pageable pageable) {
 
@@ -170,19 +170,19 @@ public class SysUserSearchParams implements Serializable {
     private static final long serialVersionUID = -1210636061661488366L;
 
     @Query(condition = QueryMethod.like, alias = "u")
-    @ApiModelProperty(value = "用户名称")
+    @Schema(title = "用户名称")
     private String username;
 
     @Query(condition = QueryMethod.like, alias = "u")
-    @ApiModelProperty(value = "电话号码")
+    @Schema(title = "电话号码")
     private String phone;
 
     @Query(condition = QueryMethod.eq, alias = "u")
-    @ApiModelProperty(value = "是否启用")
+    @Schema(title = "是否启用")
     private Boolean status;
 
     @Query(condition = QueryMethod.between, alias = "u")
-    @ApiModelProperty(value = "创建时间")
+    @Schema(title = "创建时间")
     private List<String> createTime;
 }
 

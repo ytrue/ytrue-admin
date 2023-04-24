@@ -2,7 +2,7 @@ package com.ytrue.modules.system.model.dto.params;
 
 import com.ytrue.tools.query.annotation.Query;
 import com.ytrue.tools.query.enums.QueryMethod;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -20,14 +20,14 @@ public class SysJobSearchParams implements Serializable {
     private static final long serialVersionUID = -8023936370399354477L;
 
     @Query(condition = QueryMethod.like)
-    @ApiModelProperty(value = "岗位名称")
+    @Schema(title = "岗位名称")
     private String jobName;
 
     @Query
-    @ApiModelProperty(value = "是否启用")
+    @Schema(title = "是否启用")
     private Boolean status;
 
     @Query(condition = QueryMethod.between)
-    @ApiModelProperty(value = "创建时间")
+    @Schema(title = "创建时间")
     private List<String> createTime;
 }

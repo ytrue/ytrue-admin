@@ -9,8 +9,8 @@ import com.ytrue.modules.system.model.po.SysMenu;
 import com.ytrue.modules.system.service.ISysMenuService;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.utils.QueryHelp;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,14 +27,14 @@ import java.util.List;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@Api(tags = "菜单管理")
+@Tag(name = "菜单管理")
 @RequestMapping("/sys/menu")
 public class SysMenuController {
 
     private final ISysMenuService sysMenuService;
 
     @GetMapping("list")
-    @ApiOperation("列表")
+    @Operation(summary="列表")
     @PreAuthorize("@pms.hasPermission('system:menu:list')")
     public ApiResultResponse<List<SysMenu>> list(SysMenuSearchParams params) {
 
@@ -44,7 +44,7 @@ public class SysMenuController {
     }
 
     @GetMapping("detail/{id}")
-    @ApiOperation("详情")
+    @Operation(summary="详情")
     @PreAuthorize("@pms.hasPermission('system:menu:detail')")
     public ApiResultResponse<SysMenu> detail(@PathVariable("id") Long id) {
         SysMenu data = sysMenuService.getById(id);
@@ -54,7 +54,7 @@ public class SysMenuController {
 
     @SysLog
     @PostMapping
-    @ApiOperation("保存")
+    @Operation(summary="保存")
     @PreAuthorize("@pms.hasPermission('system:menu:add')")
     public ApiResultResponse<Object> add(@Validated @RequestBody SysMenu sysMenu) {
         sysMenuService.addMenu(sysMenu);
@@ -63,7 +63,7 @@ public class SysMenuController {
 
     @SysLog
     @PutMapping
-    @ApiOperation("修改")
+    @Operation(summary="修改")
     @PreAuthorize("@pms.hasPermission('system:menu:update')")
     public ApiResultResponse<Object> update(@Validated @RequestBody SysMenu sysMenu) {
         sysMenuService.updateMenu(sysMenu);
@@ -72,7 +72,7 @@ public class SysMenuController {
 
     @SysLog
     @DeleteMapping
-    @ApiOperation("删除")
+    @Operation(summary="删除")
     @PreAuthorize("@pms.hasPermission('system:menu:delete')")
     public ApiResultResponse<Object> delete(@RequestBody List<Long> ids) {
         sysMenuService.removeBatchMenu(ids);

@@ -2,7 +2,7 @@ package com.ytrue.modules.system.model.po;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -20,54 +20,54 @@ public class SysLog implements Serializable {
     private static final long serialVersionUID = 7415492376407370163L;
 
     @TableId
-    @ApiModelProperty(value = "id")
+    @Schema(title = "id")
     private Long id;
 
-    @ApiModelProperty(value = "操作IP")
+    @Schema(title = "操作IP")
     private String requestIp;
 
-    @ApiModelProperty(value = "日志类型 OPT:操作类型;EX:异常类型")
+    @Schema(title = "日志类型 OPT:操作类型;EX:异常类型")
     private String type;
 
-    @ApiModelProperty(value = "操作描述")
+    @Schema(title = "操作描述")
     private String description;
 
-    @ApiModelProperty(value = "操作人")
+    @Schema(title = "操作人")
     private String operator;
 
-    @ApiModelProperty(value = "类路径")
+    @Schema(title = "类路径")
     private String classPath;
 
-    @ApiModelProperty(value = "请求类型")
+    @Schema(title = "请求类型")
     private String actionMethod;
 
-    @ApiModelProperty(value = "请求地址")
+    @Schema(title = "请求地址")
     private String requestUri;
 
-    @ApiModelProperty(value = "请求类型 GET;POST;PUT;DELETE;PATCH;TRACE;HEAD;OPTIONS")
+    @Schema(title = "请求类型 GET;POST;PUT;DELETE;PATCH;TRACE;HEAD;OPTIONS")
     private String httpMethod;
 
-    @ApiModelProperty(value = "请求参数")
+    @Schema(title = "请求参数")
     private String params;
 
-    @ApiModelProperty(value = "返回值")
+    @Schema(title = "返回值")
     private String result;
 
-    @ApiModelProperty(value = "异常详情信息")
+    @Schema(title = "异常详情信息")
     private String exDesc;
 
-    @ApiModelProperty(value = "异常描述")
+    @Schema(title = "异常描述")
     private String exDetail;
 
-    @ApiModelProperty(value = "开始时间")
+    @Schema(title = "开始时间")
     private LocalDateTime startTime;
 
-    @ApiModelProperty(value = "结束时间")
+    @Schema(title = "结束时间")
     private LocalDateTime endTime;
 
-    @ApiModelProperty(value = "消耗时间")
+    @Schema(title = "消耗时间")
     private Long consumingTime;
 
-    @ApiModelProperty(value = "浏览器")
+    @Schema(title = "浏览器")
     private String browser;
 }

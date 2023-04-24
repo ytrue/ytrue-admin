@@ -12,8 +12,8 @@ import com.ytrue.modules.system.service.ISysJobService;
 import com.ytrue.modules.system.service.manager.DataScopeManager;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.utils.QueryHelp;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,7 +31,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@Api(tags = "岗位管理")
+@Tag(name = "岗位管理")
 @RequestMapping("/sys/job")
 public class SysJobController {
 
@@ -40,7 +40,7 @@ public class SysJobController {
     private final DataScopeManager dataScopeManager;
 
     @GetMapping("page")
-    @ApiOperation("分页")
+    @Operation(summary="分页")
     @PreAuthorize("@pms.hasPermission('system:job:page')")
     public ApiResultResponse<IPage<SysJob>> page(SysJobSearchParams params, Pageable pageable) {
 
@@ -53,7 +53,7 @@ public class SysJobController {
 
 
     @GetMapping("list")
-    @ApiOperation("列表")
+    @Operation(summary="列表")
     @PreAuthorize("@pms.hasPermission('system:job:list')")
     public ApiResultResponse<List<SysJob>> list() {
         return ApiResultResponse.success(
@@ -66,7 +66,7 @@ public class SysJobController {
     }
 
     @GetMapping("detail/{id}")
-    @ApiOperation("详情")
+    @Operation(summary="详情")
     @PreAuthorize("@pms.hasPermission('system:job:detail')")
     public ApiResultResponse<SysJob> detail(@PathVariable("id") Long id) {
         SysJob data = sysJobService.getById(id);
@@ -76,7 +76,7 @@ public class SysJobController {
 
     @SysLog
     @PostMapping
-    @ApiOperation("保存")
+    @Operation(summary="保存")
     @PreAuthorize("@pms.hasPermission('system:job:add')")
     public ApiResultResponse<Object> add(@Validated @RequestBody SysJob sysJob) {
         SysJob job = sysJobService.lambdaQuery().eq(SysJob::getJobName, sysJob.getJobName()).one();
@@ -87,7 +87,7 @@ public class SysJobController {
 
     @SysLog
     @PutMapping
-    @ApiOperation("修改")
+    @Operation(summary="修改")
     @PreAuthorize("@pms.hasPermission('system:job:update')")
     public ApiResultResponse<Object> update(@Validated  @RequestBody SysJob sysJob) {
         SysJob job = sysJobService
@@ -102,7 +102,7 @@ public class SysJobController {
 
     @SysLog
     @DeleteMapping
-    @ApiOperation("删除")
+    @Operation(summary="删除")
     @PreAuthorize("@pms.hasPermission('system:job:delete')")
     public ApiResultResponse<Object> delete(@RequestBody List<Long> ids) {
         // 需要校验用户与岗位得绑定关系

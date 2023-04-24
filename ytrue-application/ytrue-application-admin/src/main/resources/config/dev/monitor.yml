@@ -1,0 +1,15 @@
+spring:
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:7001
+management:
+  endpoints:
+    web:
+      exposure:
+        #暴露部分端点
+        include: '*'
+  endpoint:
+    health:
+      #显示健康具体信息  默认不会显示详细信息
+      show-details: always

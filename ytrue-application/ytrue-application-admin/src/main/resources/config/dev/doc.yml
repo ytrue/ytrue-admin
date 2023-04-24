@@ -1,0 +1,39 @@
+# 接口文档
+springdoc:
+  swagger-ui:
+    # 自定义swagger前端请求路径，输入http：127.0.0.1:8080/test会自动重定向到swagger页面
+    path: /swagger-ui.html
+    # 是否开启
+    enabled: true
+    # 禁止默认路径
+    disable-swagger-default-url: true
+  # OpenAPI文档相关参数
+  api-docs:
+    # OpenAPI文档开关, true: 开启OpenAPI文档访问功能, false: 关闭。
+    enabled: true
+    # JSON格式的OpenAPI文档的访问路径
+    path: /v3/api-docs
+  # 分组配置
+  group-configs:
+    # 分组名
+    - group: '系统管理'
+      # 按路径匹配
+      # paths-to-match: '/sys/**'
+      # 按包路径匹配
+      packages-to-scan: com.ytrue.modules.system.controller
+    - group: '定时任务'
+      # 按包路径匹配
+      packages-to-scan: com.ytrue.modules.quartz.controller
+# 接口文档增强
+knife4j:
+  # 开启生产环境屏蔽
+  production: false
+  # 是否开启Knife4j增强模式
+  enable: true
+  # 对Knife4j提供的资源提供BasicHttp校验,保护文档
+  basic:
+    enable: true
+    # basic用户名
+    username: ytrue
+    # basic密码
+    password: ytrue

@@ -47,29 +47,6 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
-        <!--swagger文档-->
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-spi</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-schema</artifactId>
-            <scope>compile</scope>
-        </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>io.springfox</groupId>-->
-<!--            <artifactId>springfox-boot-starter</artifactId>-->
-<!--            <version>3.0.0</version>-->
-<!--        </dependency>-->
-
-
         <!--jwt-->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
@@ -79,13 +56,10 @@
         <dependency>
             <groupId>com.ytrue</groupId>
             <artifactId>ytrue-tools-query</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ytrue</groupId>
             <artifactId>ytrue-tools-security</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 

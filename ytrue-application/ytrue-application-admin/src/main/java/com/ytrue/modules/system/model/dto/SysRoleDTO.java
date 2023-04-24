@@ -1,6 +1,6 @@
 package com.ytrue.modules.system.model.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -18,38 +18,38 @@ public class SysRoleDTO implements Serializable {
     private static final long serialVersionUID = -2368863016297932647L;
 
 
-    @ApiModelProperty(value = "id")
+    @Schema(title = "id")
     private Long id;
 
     @NotBlank
-    @ApiModelProperty(value = "角色名称")
+    @Schema(title = "角色名称")
     private String roleName;
 
     @NotBlank
-    @ApiModelProperty(value = "角色标识")
+    @Schema(title = "角色标识")
     private String roleCode;
 
-    @ApiModelProperty(value = "数据范围:1=全部数据权限,2=自定数据权限,3=本部门数据权限,4=本部门及以下数据权限,5=仅本人数据权限")
+    @Schema(title = "数据范围:1=全部数据权限,2=自定数据权限,3=本部门数据权限,4=本部门及以下数据权限,5=仅本人数据权限")
     private Integer dataScope;
 
-    @ApiModelProperty(value = "排序")
+    @Schema(title = "排序")
     private Integer roleSort;
 
-    @ApiModelProperty(value = "描述")
+    @Schema(title = "描述")
     private String description;
 
-    @ApiModelProperty(value = "状态:0=禁用,1=正常")
+    @Schema(title = "状态:0=禁用,1=正常")
     private Boolean status;
 
-    @ApiModelProperty(value = "菜单树选择项是否关联显示:0=父子不互相关联显示,1=父子互相关联显示")
+    @Schema(title = "菜单树选择项是否关联显示:0=父子不互相关联显示,1=父子互相关联显示")
     private Boolean menuCheckStrictly;
 
-    @ApiModelProperty(value = "部门树选择项是否关联显示:0=父子不互相关联显示,1=父子互相关联显示")
+    @Schema(title = "部门树选择项是否关联显示:0=父子不互相关联显示,1=父子互相关联显示")
     private Boolean deptCheckStrictly;
 
-    @ApiModelProperty(value = "菜单id集合")
+    @Schema(title = "菜单id集合")
     private Set<Long> menuIds;
 
-    @ApiModelProperty(value = "部门id集合")
+    @Schema(title = "部门id集合")
     private Set<Long> deptIds;
 }

@@ -4,12 +4,13 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
+
+;
 
 /**
  * @author ytrue
@@ -24,32 +25,32 @@ public class ScheduleJobLog implements Serializable {
     /**
      * 任务日志id
      */
-    @ApiModelProperty(value = "ID")
+    @Schema(title = "ID")
     @TableId
     private Long id;
 
-    @ApiModelProperty(value = "任务id")
+    @Schema(title = "任务id")
     private Long jobId;
 
-    @ApiModelProperty(value = " spring bean名称")
+    @Schema(title = " spring bean名称")
     private String beanName;
 
-    @ApiModelProperty(value = "方法名")
+    @Schema(title = "方法名")
     private String methodName;
 
-    @ApiModelProperty(value = "参数")
+    @Schema(title = "参数")
     private String params;
 
-    @ApiModelProperty(value = "任务状态:0=成功,1=失败")
+    @Schema(title = "任务状态:0=成功,1=失败")
     private Integer status;
 
-    @ApiModelProperty(value = "失败信息")
+    @Schema(title = "失败信息")
     private String error;
 
-    @ApiModelProperty(value = "耗时(单位：毫秒)")
+    @Schema(title = "耗时(单位：毫秒)")
     private Integer times;
 
     @TableField(fill = FieldFill.INSERT)
-    @ApiModelProperty(value = "创建时间")
+    @Schema(title = "创建时间")
     private LocalDateTime createTime;
 }

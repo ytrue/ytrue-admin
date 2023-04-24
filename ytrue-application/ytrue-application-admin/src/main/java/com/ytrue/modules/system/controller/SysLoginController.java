@@ -11,8 +11,8 @@ import com.ytrue.modules.system.model.vo.SysUserInfoVO;
 import com.ytrue.modules.system.service.*;
 import com.ytrue.tools.security.service.LoginService;
 import com.ytrue.tools.security.util.SecurityUtils;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +27,7 @@ import java.util.Set;
  * @description: SysLoginController
  * @date 2022/12/8 9:08
  */
-@Api(tags = "后台登录")
+@Tag(name = "后台登录")
 @RestController
 @AllArgsConstructor
 public class SysLoginController {
@@ -47,20 +47,20 @@ public class SysLoginController {
     private final ISysJobService sysJobService;
 
 
-    @ApiOperation("登录")
+    @Operation(summary="登录")
     @PostMapping("/login")
     public ApiResultResponse<Map<String, String>> login() {
         return ApiResultResponse.success(loginService.login());
     }
 
-    @ApiOperation("登出")
+    @Operation(summary="登出")
     @PostMapping("/logout")
     public ApiResultResponse<Object> logout() {
         loginService.logout(SecurityUtils.getLoginUser().getUser().getUserId());
         return ApiResultResponse.success();
     }
 
-    @ApiOperation("用户信息")
+    @Operation(summary="用户信息")
     @GetMapping("/getInfo")
     public ApiResultResponse<SysUserInfoVO> getUserInfo() {
         String username = SecurityUtils.getLoginUser().getUsername();
@@ -88,7 +88,7 @@ public class SysLoginController {
         return ApiResultResponse.success(sysUserInfoVO);
     }
 
-    @ApiOperation("路由信息")
+    @Operation(summary="路由信息")
     @GetMapping("getRouters")
     public ApiResultResponse<List<Tree<String>>> getRouters() {
         List<Tree<String>> menuTree = sysMenuService.listMenuTreeByUserId(Convert.toLong(SecurityUtils.getLoginUser().getUser().getUserId()));

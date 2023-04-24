@@ -3,7 +3,7 @@ package com.ytrue.modules.system.model.po;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -20,64 +20,64 @@ public class SysMenu implements Serializable {
     private static final long serialVersionUID = -2375558178587426862L;
 
     @TableId
-    @ApiModelProperty(value = "id")
+    @Schema(title = "id")
     private Long id;
 
-    @ApiModelProperty(value = "菜单名称")
+    @Schema(title = "菜单名称")
     private String menuName;
 
-    @ApiModelProperty(value = "父菜单ID")
+    @Schema(title = "父菜单ID")
     private Long pid;
 
-    @ApiModelProperty(value = "显示顺序")
+    @Schema(title = "显示顺序")
     private Integer menuSort;
 
-    @ApiModelProperty(value = "路由地址")
+    @Schema(title = "路由地址")
     private String path;
 
-    @ApiModelProperty(value = "组件路径")
+    @Schema(title = "组件路径")
     private String component;
 
-    @ApiModelProperty(value = "路由参数")
+    @Schema(title = "路由参数")
     private String query;
 
-    @ApiModelProperty(value = " 是否为外链（0是 1否）")
+    @Schema(title = " 是否为外链（0是 1否）")
     private Boolean isFrame;
 
-    @ApiModelProperty(value = "是否缓存（0缓存 1不缓存）")
+    @Schema(title = "是否缓存（0缓存 1不缓存）")
     private Boolean isCache;
 
-    @ApiModelProperty(value = "类型（M目录 C菜单 F按钮）")
+    @Schema(title = "类型（M目录 C菜单 F按钮）")
     private String menuType;
 
-    @ApiModelProperty(value = "显示状态（0显示 1隐藏）")
+    @Schema(title = "显示状态（0显示 1隐藏）")
     private Boolean visible;
 
-    @ApiModelProperty(value = " 菜单状态（0正常 1停用）")
+    @Schema(title = " 菜单状态（0正常 1停用）")
     private Boolean status;
 
-    @ApiModelProperty(value = "权限字符串")
+    @Schema(title = "权限字符串")
     private String perms;
 
-    @ApiModelProperty(value = "菜单图标")
+    @Schema(title = "菜单图标")
     private String icon;
 
-    @ApiModelProperty(value = "子节点数目", hidden = true)
+    @Schema(title = "子节点数目", hidden = true)
     private Integer subCount;
 
     @TableField(fill = FieldFill.INSERT)
-    @ApiModelProperty(value = "创建人", hidden = true)
+    @Schema(title = "创建人", hidden = true)
     private String createBy;
 
     @TableField(fill = FieldFill.UPDATE)
-    @ApiModelProperty(value = "更新人", hidden = true)
+    @Schema(title = "更新人", hidden = true)
     private String updateBy;
 
     @TableField(fill = FieldFill.INSERT)
-    @ApiModelProperty(value = "创建时间")
+    @Schema(title = "创建时间")
     private LocalDateTime createTime;
 
     @TableField(fill = FieldFill.UPDATE)
-    @ApiModelProperty(value = "更新时间")
+    @Schema(title = "更新时间")
     private LocalDateTime updateTime;
 }

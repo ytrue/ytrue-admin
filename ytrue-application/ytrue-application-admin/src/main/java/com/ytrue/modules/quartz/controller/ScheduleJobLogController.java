@@ -12,8 +12,8 @@ import com.ytrue.modules.quartz.model.po.ScheduleJobLog;
 import com.ytrue.modules.quartz.service.IScheduleJobLogService;
 import com.ytrue.tools.query.entity.PageQueryEntity;
 import com.ytrue.tools.query.utils.QueryHelp;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -28,14 +28,14 @@ import java.util.List;
  */
 @RestController
 @AllArgsConstructor
-@Api(tags = "定时任务日志")
+@Tag(name = "定时任务日志")
 @RequestMapping("/sys/scheduleLog")
 public class ScheduleJobLogController {
 
     private final IScheduleJobLogService scheduleJobLogService;
 
     @GetMapping("/page")
-    @ApiOperation("分页")
+    @Operation(summary="分页")
     @PreAuthorize("@pms.hasPermission('system:scheduleLog:page')")
     public ApiResultResponse<IPage<ScheduleJobLog>>  page(ScheduleJobLogSearchParams params, Pageable pageable) {
 
@@ -46,7 +46,7 @@ public class ScheduleJobLogController {
     }
 
     @DeleteMapping
-    @ApiOperation("删除")
+    @Operation(summary="删除")
     @PreAuthorize("@pms.hasPermission('system:scheduleLog:delete')")
     public ApiResultResponse<Object> delete(@RequestBody List<Long> ids) {
         scheduleJobLogService.removeBatchByIds(ids);
@@ -54,7 +54,7 @@ public class ScheduleJobLogController {
     }
 
     @DeleteMapping("clear")
-    @ApiOperation("清空")
+    @Operation(summary="清空")
     @PreAuthorize("@pms.hasPermission('system:scheduleLog:clear')")
     public ApiResultResponse<Object> clear() {
         scheduleJobLogService.remove(Wrappers.emptyWrapper());

@@ -10,8 +10,8 @@ import com.ytrue.modules.system.model.po.SysDept;
 import com.ytrue.modules.system.service.ISysDeptService;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.utils.QueryHelp;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -25,7 +25,7 @@ import java.util.Set;
  * @description: SysDeptController
  * @date 2022/12/7 11:47
  */
-@Api(tags = "部门管理")
+@Tag(name = "部门管理")
 @RestController
 @RequestMapping("sys/dept")
 @AllArgsConstructor
@@ -34,7 +34,7 @@ public class SysDeptController {
     private final ISysDeptService sysDeptService;
 
     @GetMapping("list")
-    @ApiOperation("列表")
+    @Operation(summary="列表")
     @PreAuthorize("@pms.hasPermission('system:dept:list')")
     public ApiResultResponse<List<SysDept>> list(SysDeptSearchParams params) {
         // 数据范围限制
@@ -45,7 +45,7 @@ public class SysDeptController {
     }
 
     @GetMapping("detail/{id}")
-    @ApiOperation("详情")
+    @Operation(summary="详情")
     @PreAuthorize("@pms.hasPermission('system:dept:detail')")
     public ApiResultResponse<SysDept> detail(@PathVariable("id") Long id) {
         SysDept data = sysDeptService.getById(id);
@@ -55,7 +55,7 @@ public class SysDeptController {
 
     @SysLog
     @PostMapping
-    @ApiOperation("保存")
+    @Operation(summary="保存")
     @PreAuthorize("@pms.hasPermission('system:dept:add')")
     public ApiResultResponse<Object> add(@Validated @RequestBody SysDept sysDept) {
         sysDeptService.addDept(sysDept);
@@ -64,7 +64,7 @@ public class SysDeptController {
 
     @SysLog
     @PutMapping
-    @ApiOperation("修改")
+    @Operation(summary="修改")
     @PreAuthorize("@pms.hasPermission('system:dept:update')")
     public ApiResultResponse<Object> update(@Validated @RequestBody SysDept sysDept) {
         sysDeptService.updateDept(sysDept);
@@ -73,7 +73,7 @@ public class SysDeptController {
 
     @SysLog
     @DeleteMapping
-    @ApiOperation("删除")
+    @Operation(summary="删除")
     @PreAuthorize("@pms.hasPermission('system:dept:delete')")
     public ApiResultResponse<Object> delete(@RequestBody List<Long> ids) {
         sysDeptService.removeBatchDept(ids);

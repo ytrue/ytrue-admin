@@ -1,0 +1,8 @@
+spring:
+  # 定时任务
+  quartz:
+    # 数据库
+    job-store-type: jdbc
+    jdbc:
+      # always配置的意思是，每次初始化都会重新生成表(执行一次删除，执行一次创建)，生成后，可以修改为 never
+      initialize-schema: never

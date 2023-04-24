@@ -19,10 +19,7 @@ import java.util.List;
  */
 @EnableWebMvc
 @Configuration
-public class SpringWebMvcConfiguration implements WebMvcConfigurer {
-
-    @Resource
-    private ObjectMapper objectMapper;
+public class SpringWebMvcConfiguration implements WebMvcConfigurer  {
 
     /**
      * doc.html是在jar包里的，需要使用资源处理器注册静态资源，不然会404
@@ -56,18 +53,4 @@ public class SpringWebMvcConfiguration implements WebMvcConfigurer {
                 // 跨域允许时间
                 .maxAge(3600);
     }
-
-
-    /**
-     * 处理全局日期配置 不生效问题
-     *
-     * @param converters
-     */
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.removeIf(o -> o instanceof MappingJackson2HttpMessageConverter);
-        converters.add(new MappingJackson2HttpMessageConverter(objectMapper));
-    }
-
-
 }

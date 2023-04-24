@@ -1,7 +1,7 @@
 package com.ytrue.modules.system.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -18,49 +18,49 @@ import java.util.Set;
 @Data
 public class SysUserDTO {
 
-    @ApiModelProperty(value = "id")
+    @Schema(title = "id")
     private Long id;
 
-    @ApiModelProperty(value = "用户部门Id")
+    @Schema(title = "用户部门Id")
     private Long deptId;
 
     @NotBlank
-    @ApiModelProperty(value = "用户名称")
+    @Schema(title = "用户名称")
     private String username;
 
     @NotBlank
-    @ApiModelProperty(value = "用户昵称")
+    @Schema(title = "用户昵称")
     private String nickName;
 
     @Email
     @NotBlank
-    @ApiModelProperty(value = "邮箱")
+    @Schema(title = "邮箱")
     private String email;
 
     @NotBlank
-    @ApiModelProperty(value = "电话号码")
+    @Schema(title = "电话号码")
     private String phone;
 
-    @ApiModelProperty(value = "用户性别")
+    @Schema(title = "用户性别")
     private Integer gender;
 
-    @ApiModelProperty(value = "头像真实名称")
+    @Schema(title = "头像真实名称")
     private String avatarName;
 
-    @ApiModelProperty(value = "头像存储的路径")
+    @Schema(title = "头像存储的路径")
     private String avatarPath;
 
-    @ApiModelProperty(value = "密码")
+    @Schema(title = "密码")
     @JsonIgnore
     private String password;
 
     @NotNull
-    @ApiModelProperty(value = "是否启用")
+    @Schema(title = "是否启用")
     private Boolean status;
 
-    @ApiModelProperty(value = "角色id集合")
+    @Schema(title = "角色id集合")
     private Set<Long> roleIds;
 
-    @ApiModelProperty(value = "岗位id集合")
+    @Schema(title = "岗位id集合")
     private Set<Long> jobIds;
 }

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -23,65 +23,65 @@ import java.time.LocalDateTime;
 public class SysUser {
 
     @TableId
-    @ApiModelProperty(value = "id")
+    @Schema(title = "id")
     private Long id;
 
-    @ApiModelProperty(value = "用户部门Id")
+    @Schema(title = "用户部门Id")
     private Long deptId;
 
     @NotBlank
-    @ApiModelProperty(value = "用户名称")
+    @Schema(title = "用户名称")
     private String username;
 
     @NotBlank
-    @ApiModelProperty(value = "用户昵称")
+    @Schema(title = "用户昵称")
     private String nickName;
 
     @Email
     @NotBlank
-    @ApiModelProperty(value = "邮箱")
+    @Schema(title = "邮箱")
     private String email;
 
     @NotBlank
-    @ApiModelProperty(value = "电话号码")
+    @Schema(title = "电话号码")
     private String phone;
 
-    @ApiModelProperty(value = "用户性别")
+    @Schema(title = "用户性别")
     private Integer gender;
 
-    @ApiModelProperty(value = "头像真实名称")
+    @Schema(title = "头像真实名称")
     private String avatarName;
 
-    @ApiModelProperty(value = "头像存储的路径")
+    @Schema(title = "头像存储的路径")
     private String avatarPath;
 
-    @ApiModelProperty(value = "密码")
+    @Schema(title = "密码")
     @JsonIgnore
     private String password;
 
     @NotNull
-    @ApiModelProperty(value = "是否启用")
+    @Schema(title = "是否启用")
     private Boolean status;
 
-    @ApiModelProperty(value = "是否为admin账号")
+    @Schema(title = "是否为admin账号")
     private Boolean isAdmin;
 
-    @ApiModelProperty(value = "最后修改密码的时间")
+    @Schema(title = "最后修改密码的时间")
     private LocalDateTime pwdResetTime;
 
     @TableField(fill = FieldFill.INSERT)
-    @ApiModelProperty(value = "创建人", hidden = true)
+    @Schema(title = "创建人", hidden = true)
     private String createBy;
 
     @TableField(fill = FieldFill.UPDATE)
-    @ApiModelProperty(value = "更新人", hidden = true)
+    @Schema(title = "更新人", hidden = true)
     private String updateBy;
 
     @TableField(fill = FieldFill.INSERT)
-    @ApiModelProperty(value = "创建时间")
+    @Schema(title = "创建时间")
     private LocalDateTime createTime;
 
     @TableField(fill = FieldFill.UPDATE)
-    @ApiModelProperty(value = "更新时间")
+    @Schema(title = "更新时间")
     private LocalDateTime updateTime;
 }

@@ -28,10 +28,10 @@ import java.util.TimeZone;
 /**
  * @author ytrue
  * @date 2022/5/30 11:50
- * @description Jackson配置--目前 加入全局日期配置
+ * @description Jackson配置--目前 加入全局日期配置--不建议使用-这里与springdoc集成是有问题的，该问题暂不处理
  */
 
-@Configuration
+// @Configuration
 public class JacksonConfiguration {
 
     /**

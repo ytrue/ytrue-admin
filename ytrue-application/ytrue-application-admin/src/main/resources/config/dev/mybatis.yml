@@ -1,0 +1,24 @@
+# mybatis plus配置
+mybatis-plus:
+  # xml扫描，多个目录用逗号或者分号分隔（告诉 Mapper 所对应的 XML 文件位置）
+  mapper-locations: classpath*:mybatis/mapper/**/*.xml
+  configuration:
+    # 使用Mybatis时，如果查询语句中某些字段值是null的，则这个字段就无法返回，这里可以设置为true
+    call-setters-on-nulls: true
+    # 打印sql语句
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  # 全局配置
+  global-config:
+    # 关闭MP3.0自带的banner
+    banner: false
+    db-config:
+      # 主键类型 0:数据库ID自增 1.未定义 2.用户输入 3 id_worker 4.uuid 5.id_worker字符串表示
+      id-type: AUTO
+      # 默认数据库表下划线命名
+      table-underline: true
+      # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
+      logic-delete-field: flag
+      # 逻辑已删除值(默认为 1)
+      logic-delete-value: 1
+      # 逻辑未删除值(默认为 0)
+      logic-not-delete-value: 0

@@ -1,0 +1,24 @@
+# 针对ytrue配置
+ytrue:
+  # 安全配置
+  security:
+    auth-type-parameter-name: auth_type
+    authorization-header-parameter-name: BearerAuth
+    token-cache-prefix: 'login_auth_tokens:'
+    # 这个必须要与你认证的接口保存一致
+    auth-url: /login
+    ignore-auth:
+      - /favicon.ico
+      - /error
+      - /actuator
+      - /actuator/**
+      - /webjars/**
+      - /v3/api-docs/**
+      - /swagger**
+      - /swagger-ui/**
+      - /doc.html
+    jwt:
+      token-expire-time: 360000000
+  # 开启操作日志监听
+  log:
+    enabled: true
