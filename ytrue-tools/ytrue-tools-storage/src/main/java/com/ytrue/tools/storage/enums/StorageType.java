@@ -1,0 +1,21 @@
+package com.ytrue.tools.storage.enums;
+
+public enum StorageType {
+
+    /**
+     * 阿里云
+     */
+    oss,
+    /**
+     * 本地
+     */
+    local,
+    /**
+     * 七牛云
+     */
+    kodo,
+    /**
+     * 腾讯云
+     */
+    cos;
+}
