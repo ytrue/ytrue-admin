@@ -14,7 +14,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 
 import java.text.SimpleDateFormat;
@@ -32,7 +31,7 @@ import java.util.TimeZone;
  */
 
 // @Configuration
-public class JacksonConfiguration {
+public class JacksonConfig {
 
     /**
      * 默认日期时间格式

@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>com.ytrue</groupId>
-            <artifactId>ytrue-api</artifactId>
+            <artifactId>ytrue-bean</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 

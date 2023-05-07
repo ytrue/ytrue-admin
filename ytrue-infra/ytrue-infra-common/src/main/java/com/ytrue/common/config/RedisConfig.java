@@ -1,7 +1,6 @@
 package com.ytrue.common.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,11 +14,11 @@ import javax.annotation.Resource;
 /**
  * @author ytrue
  * @date 2021/9/30 14:55
- * @description RedisConfiguration
+ * @description RedisConfig
  */
 @Slf4j
 @Configuration
-public class RedisConfiguration {
+public class RedisConfig {
 
     @Resource
     private RedisConnectionFactory connectionFactory;

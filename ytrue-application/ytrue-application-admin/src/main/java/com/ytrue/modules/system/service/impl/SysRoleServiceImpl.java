@@ -3,7 +3,7 @@ package com.ytrue.modules.system.service.impl;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ytrue.common.base.BaseServiceImpl;
+import com.ytrue.db.mybatis.base.BaseServiceImpl;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.AssertUtils;
 import com.ytrue.common.utils.BeanUtils;

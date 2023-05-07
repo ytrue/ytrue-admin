@@ -1,8 +1,7 @@
 package com.ytrue.modules.system.dao;
 
-import com.ytrue.common.base.IBaseDao;
+import com.ytrue.db.mybatis.base.IBaseDao;
 import com.ytrue.modules.system.model.po.SysDept;
-import com.ytrue.tools.query.entity.QueryEntity;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Set;

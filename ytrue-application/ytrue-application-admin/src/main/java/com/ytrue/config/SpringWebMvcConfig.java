@@ -1,25 +1,19 @@
 package com.ytrue.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import javax.annotation.Resource;
-import java.util.List;
-
 /**
  * @author ytrue
  * @date 2022/1/20 14:33
- * @description SpringWebMvcConfiguration spring mvc 配置文件
+ * @description SpringWebMvcConfig spring mvc 配置文件
  */
 @EnableWebMvc
 @Configuration
-public class SpringWebMvcConfiguration implements WebMvcConfigurer  {
+public class SpringWebMvcConfig implements WebMvcConfigurer {
 
     /**
      * doc.html是在jar包里的，需要使用资源处理器注册静态资源，不然会404

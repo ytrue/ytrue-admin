@@ -1,4 +1,4 @@
-package com.ytrue.config;
+package com.ytrue.db.mybatis.config;
 
 import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
@@ -23,9 +23,12 @@ import java.time.LocalDateTime;
  * @MapperScan 指定要变成实现类的接口所在的包，然后包下面的所有接口在编译之后都会生成相应的实现类
  */
 @Configuration
-@MapperScan(value = {"com.ytrue.modules.*.dao"})
+@MapperScan(value = {
+        "com.ytrue.modules.*.dao",
+        "com.ytrue.db.mybatis.dao",
+})
 @EnableTransactionManagement
-public class MybatisPlusConfiguration {
+public class MybatisPlusConfig {
 
 
     /**

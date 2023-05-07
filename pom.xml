@@ -5,15 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ytrue</groupId>
-    <artifactId>yadmin</artifactId>
+    <artifactId>ytrue-admin</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>ytrue-application</module>
         <module>ytrue-service</module>
         <module>ytrue-manager</module>
-        <module>ytrue-api</module>
         <module>ytrue-tools</module>
         <module>ytrue-infra</module>
+        <module>ytrue-bean</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -1,7 +1,8 @@
-package com.ytrue.service;
+package com.ytrue.serviceimpl;
 
-import com.ytrue.api.IGoodsService;
+
 import com.ytrue.manager.GoodsManager;
+import com.ytrue.service.IGoodsService;
 
 /**
  * @author ytrue

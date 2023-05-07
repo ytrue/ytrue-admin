@@ -1,4 +1,4 @@
-package com.ytrue.common.base;
+package com.ytrue.db.mybatis.base;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;

@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Configuration
-public class OperateLogConfiguration {
+public class OperateLogConfig {
 
     /**
      * 自动配置日志监听器组件

@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ytrue.common.entity.Pageable;
+import com.ytrue.db.mybatis.entity.Pageable;
 import com.ytrue.common.utils.ApiResultResponse;
 import com.ytrue.modules.system.model.req.SysRoleReq;
 import com.ytrue.modules.system.model.query.SysRoleQuery;

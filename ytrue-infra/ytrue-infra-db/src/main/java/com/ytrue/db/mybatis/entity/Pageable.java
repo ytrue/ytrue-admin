@@ -1,4 +1,4 @@
-package com.ytrue.common.entity;
+package com.ytrue.db.mybatis.entity;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

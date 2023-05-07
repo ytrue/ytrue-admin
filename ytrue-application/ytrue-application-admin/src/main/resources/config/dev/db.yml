@@ -25,3 +25,4 @@ spring:
       connection-timeout: 30000
       # 判断连接是否有效
       connection-test-query: select 1
+
