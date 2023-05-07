@@ -15,7 +15,7 @@ public interface ISysDeptService extends IBaseService<SysDept> {
 
 
     /**
-     * 保存部门
+     * 保存部门x
      *
      * @param sysDept
      */

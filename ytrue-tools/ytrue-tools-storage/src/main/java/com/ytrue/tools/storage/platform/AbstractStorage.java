@@ -9,6 +9,7 @@ import com.ytrue.tools.storage.StorageFactory;
 import com.ytrue.tools.storage.UploadInfo;
 import com.ytrue.tools.storage.exception.StorageRuntimeException;
 import org.apache.tika.Tika;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -16,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @date 2023/4251 15:40
  * @description IStorage
  */
-public abstract class AbstractStorage implements IStorage {
+public abstract class AbstractStorage implements IStorage, InitializingBean {
 
     @Override
     public FileInfo upload(UploadInfo uploadInfo) {
@@ -80,6 +81,11 @@ public abstract class AbstractStorage implements IStorage {
         return fileInfo;
     }
 
+    /**
+     * 平台
+     *
+     * @return
+     */
     protected abstract String platform();
 
     @Override

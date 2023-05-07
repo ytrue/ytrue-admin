@@ -9,7 +9,7 @@ import org.springframework.beans.factory.InitializingBean;
  * @date 2023/4251 15:40
  * @description IStorage
  */
-public interface IStorage extends InitializingBean {
+public interface IStorage {
 
 
     /**
