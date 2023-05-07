@@ -1,4 +1,4 @@
-package com.ytrue.modules.system.model.dto;
+package com.ytrue.modules.system.model.req;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -9,11 +9,11 @@ import java.util.Set;
 
 /**
  * @author ytrue
- * @description: SysRoleDTO
+ * @description: SysRoleReq
  * @date 2022/12/7 15:29
  */
 @Data
-public class SysRoleDTO implements Serializable {
+public class SysRoleReq implements Serializable {
 
     private static final long serialVersionUID = -2368863016297932647L;
 

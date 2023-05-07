@@ -1,4 +1,4 @@
-package com.ytrue.modules.system.model.dto.params;
+package com.ytrue.modules.system.model.query;
 
 import com.ytrue.tools.query.annotation.Query;
 import com.ytrue.tools.query.enums.QueryMethod;
@@ -10,11 +10,11 @@ import java.util.List;
 
 /**
  * @author ytrue
- * @description: SysUserSearchParams
+ * @description: SysUserQuery
  * @date 2022/12/20 11:11
  */
 @Data
-public class SysUserSearchParams implements Serializable {
+public class SysUserQuery implements Serializable {
     private static final long serialVersionUID = -1210636061661488366L;
 
     @Query(condition = QueryMethod.like, alias = "u")

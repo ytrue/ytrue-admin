@@ -10,15 +10,15 @@ import com.ytrue.common.utils.BeanUtils;
 import com.ytrue.modules.system.dao.SysUserDao;
 import com.ytrue.modules.system.dao.SysUserJobDao;
 import com.ytrue.modules.system.dao.SysUserRoleDao;
+import com.ytrue.modules.system.model.req.SysUserReq;
+import com.ytrue.modules.system.model.res.SysUserDetailRes;
 import com.ytrue.modules.system.model.po.SysUser;
 import com.ytrue.modules.system.model.po.SysUserJob;
 import com.ytrue.modules.system.model.po.SysUserRole;
-import com.ytrue.modules.system.model.dto.SysUserDTO;
-import com.ytrue.modules.system.model.vo.SysUserListVO;
+import com.ytrue.modules.system.model.res.SysUserListRes;
 import com.ytrue.modules.system.service.ISysUserService;
 import com.ytrue.modules.system.service.manager.DataScopeManager;
 import com.ytrue.tools.query.entity.QueryEntity;
-import com.ytrue.tools.query.enums.Operator;
 import com.ytrue.tools.query.enums.QueryMethod;
 import com.ytrue.tools.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
@@ -28,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -50,7 +49,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
     private final DataScopeManager dataScopeManager;
 
     @Override
-    public IPage<SysUserListVO> paginate(IPage<SysUserListVO> page, QueryEntity query) {
+    public IPage<SysUserListRes> paginate(IPage<SysUserListRes> page, QueryEntity query) {
         // 处理数据过滤
         Set<Long> deptIds = dataScopeManager.handleDataScope();
         if (!deptIds.contains(0L)) {
@@ -62,43 +61,43 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
     }
 
     @Override
-    public SysUserDTO getUserById(Long id) {
+    public SysUserDetailRes getUserById(Long id) {
         SysUser user = getById(id);
         AssertUtils.notNull(user, ResponseCode.DATA_NOT_FOUND);
         // 获取对应的岗位
         Set<Long> jobIds = sysUserJobDao.selectList(Wrappers.<SysUserJob>lambdaQuery().eq(SysUserJob::getUserId, id)).stream().map(SysUserJob::getJobId).collect(Collectors.toSet());
         // 获取对应的角色
         Set<Long> roleIds = sysUserRoleDao.selectList(Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getUserId, id)).stream().map(SysUserRole::getRoleId).collect(Collectors.toSet());
-        SysUserDTO userDTO = BeanUtils.cgLibCopyBean(user, SysUserDTO::new);
-        userDTO.setJobIds(jobIds);
-        userDTO.setRoleIds(roleIds);
-        return userDTO;
+        SysUserDetailRes result = BeanUtils.cgLibCopyBean(user, SysUserDetailRes::new);
+        result.setJobIds(jobIds);
+        result.setRoleIds(roleIds);
+        return result;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void addUser(SysUserDTO sysUserDTO) {
-        SysUser user = BeanUtils.cgLibCopyBean(sysUserDTO, SysUser::new);
+    public void addUser(SysUserReq sysUserReq) {
+        SysUser user = BeanUtils.cgLibCopyBean(sysUserReq, SysUser::new);
         // 校验账号是否存在
-        AssertUtils.isNull(lambdaQuery().eq(SysUser::getUsername, sysUserDTO.getUsername()).one(), ResponseCode.ACCOUNT_EXISTS);
+        AssertUtils.isNull(lambdaQuery().eq(SysUser::getUsername, sysUserReq.getUsername()).one(), ResponseCode.ACCOUNT_EXISTS);
         // 保存用户
         save(user);
         // 保存用户与部门,角色的关系
-        sysUserDTO.setId(user.getId());
-        saveRoleAndJobRelation(sysUserDTO);
+        sysUserReq.setId(user.getId());
+        saveRoleAndJobRelation(sysUserReq);
     }
 
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void updateUser(SysUserDTO sysUserDTO) {
-        SysUser user = BeanUtils.cgLibCopyBean(sysUserDTO, SysUser::new);
+    public void updateUser(SysUserReq sysUserReq) {
+        SysUser user = BeanUtils.cgLibCopyBean(sysUserReq, SysUser::new);
         // 删除用户与部门,角色的关系
-        deleteRoleAndJobRelation(Collections.singletonList(sysUserDTO.getId()));
+        deleteRoleAndJobRelation(Collections.singletonList(sysUserReq.getId()));
         // 更新角色
         updateById(user);
         // 保存用户与菜单,部门的关系
-        saveRoleAndJobRelation(sysUserDTO);
+        saveRoleAndJobRelation(sysUserReq);
     }
 
 
@@ -114,16 +113,16 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
     /**
      * 保存用户与部门,角色的关系
      *
-     * @param sysUserDTO
+     * @param sysUserReq
      */
-    private void saveRoleAndJobRelation(SysUserDTO sysUserDTO) {
+    private void saveRoleAndJobRelation(SysUserReq sysUserReq) {
         //保存用户与岗位关系
-        if (sysUserDTO.getJobIds().size() > 0) {
-            sysUserJobDao.insertBatchUserJob(sysUserDTO.getId(), sysUserDTO.getJobIds());
+        if (sysUserReq.getJobIds().size() > 0) {
+            sysUserJobDao.insertBatchUserJob(sysUserReq.getId(), sysUserReq.getJobIds());
         }
         //保存户与角色关系
-        if (sysUserDTO.getRoleIds().size() > 0) {
-            sysUserRoleDao.insertBatchUserRole(sysUserDTO.getId(), sysUserDTO.getRoleIds());
+        if (sysUserReq.getRoleIds().size() > 0) {
+            sysUserRoleDao.insertBatchUserRole(sysUserReq.getId(), sysUserReq.getRoleIds());
         }
     }
 

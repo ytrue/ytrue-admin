@@ -5,12 +5,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.common.entity.Pageable;
 import com.ytrue.common.utils.ApiResultResponse;
-import com.ytrue.modules.quartz.model.dto.ScheduleJobLogSearchParams;
-import com.ytrue.modules.quartz.model.dto.ScheduleJobSearchParams;
-import com.ytrue.modules.quartz.model.po.ScheduleJob;
+import com.ytrue.modules.quartz.model.query.ScheduleJobLogQuery;
 import com.ytrue.modules.quartz.model.po.ScheduleJobLog;
 import com.ytrue.modules.quartz.service.IScheduleJobLogService;
-import com.ytrue.tools.query.entity.PageQueryEntity;
 import com.ytrue.tools.query.utils.QueryHelp;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,7 +34,7 @@ public class ScheduleJobLogController {
     @GetMapping("/page")
     @Operation(summary="分页")
     @PreAuthorize("@pms.hasPermission('system:scheduleLog:page')")
-    public ApiResultResponse<IPage<ScheduleJobLog>>  page(ScheduleJobLogSearchParams params, Pageable pageable) {
+    public ApiResultResponse<IPage<ScheduleJobLog>>  page(ScheduleJobLogQuery params, Pageable pageable) {
 
         LambdaQueryWrapper<ScheduleJobLog> queryWrapper = QueryHelp.<ScheduleJobLog>lambdaQueryWrapperBuilder(params)
                 .orderByDesc(ScheduleJobLog::getId);

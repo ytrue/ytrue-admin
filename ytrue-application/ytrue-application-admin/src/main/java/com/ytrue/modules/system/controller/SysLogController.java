@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,7 +31,7 @@ public class SysLogController {
 
 
     @PostMapping("page")
-    @Operation(summary="分页")
+    @Operation(summary = "分页")
     @PreAuthorize("@pms.hasPermission('system:log:page')")
     public ApiResultResponse<IPage<SysLog>> page(@RequestBody(required = false) PageQueryEntity pageQueryEntity) {
         IPage<SysLog> page = sysLogService.paginate(pageQueryEntity);
@@ -37,15 +39,15 @@ public class SysLogController {
     }
 
     @DeleteMapping
-    @Operation(summary="删除")
+    @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:log:delete')")
-    public ApiResultResponse<Object> delete(@RequestBody List<Long> ids) {
-        sysLogService.removeBatchByIds(ids);
+    public ApiResultResponse<Object> delete(@RequestBody long[] ids) {
+        sysLogService.removeBatchByIds(Collections.singletonList(ids));
         return ApiResultResponse.success();
     }
 
     @DeleteMapping("clear")
-    @Operation(summary="清空")
+    @Operation(summary = "清空")
     @PreAuthorize("@pms.hasPermission('system:log:clear')")
     public ApiResultResponse<Object> clear() {
         sysLogService.remove(Wrappers.emptyWrapper());

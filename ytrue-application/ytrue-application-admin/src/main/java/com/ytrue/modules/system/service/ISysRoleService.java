@@ -1,7 +1,7 @@
 package com.ytrue.modules.system.service;
 
 import com.ytrue.common.base.IBaseService;
-import com.ytrue.modules.system.model.dto.SysRoleDTO;
+import com.ytrue.modules.system.model.req.SysRoleReq;
 import com.ytrue.modules.system.model.po.SysRole;
 
 import java.util.List;
@@ -20,21 +20,21 @@ public interface ISysRoleService extends IBaseService<SysRole> {
      * @param id
      * @return
      */
-    SysRoleDTO getRoleById(Long id);
+    SysRoleReq getRoleById(Long id);
 
     /**
      * 新增角色
      *
-     * @param sysRoleDTO
+     * @param sysRoleReq
      */
-    void addRole(SysRoleDTO sysRoleDTO);
+    void addRole(SysRoleReq sysRoleReq);
 
     /**
      * 修改角色
      *
-     * @param sysRoleDTO
+     * @param sysRoleReq
      */
-    void updateRole(SysRoleDTO sysRoleDTO);
+    void updateRole(SysRoleReq sysRoleReq);
 
     /**
      * 删除角色

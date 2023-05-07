@@ -7,7 +7,7 @@ import com.ytrue.modules.system.model.po.SysDept;
 import com.ytrue.modules.system.model.po.SysJob;
 import com.ytrue.modules.system.model.po.SysRole;
 import com.ytrue.modules.system.model.po.SysUser;
-import com.ytrue.modules.system.model.vo.SysUserInfoVO;
+import com.ytrue.modules.system.model.res.LoginUserInfoRes;
 import com.ytrue.modules.system.service.*;
 import com.ytrue.tools.security.service.LoginService;
 import com.ytrue.tools.security.util.SecurityUtils;
@@ -62,7 +62,7 @@ public class SysLoginController {
 
     @Operation(summary="用户信息")
     @GetMapping("/getInfo")
-    public ApiResultResponse<SysUserInfoVO> getUserInfo() {
+    public ApiResultResponse<LoginUserInfoRes> getUserInfo() {
         String username = SecurityUtils.getLoginUser().getUsername();
         // 获取用户
         SysUser sysUser = sysUserService.getUserByUsername(username);
@@ -77,7 +77,7 @@ public class SysLoginController {
         // 角色集合
         Set<String> roleCodes = sysPermissionService.getRoleCode(sysUser);
 
-        SysUserInfoVO sysUserInfoVO = new SysUserInfoVO();
+        LoginUserInfoRes sysUserInfoVO = new LoginUserInfoRes();
         sysUserInfoVO.setUser(sysUser);
         sysUserInfoVO.setJobs(sysJobs);
         sysUserInfoVO.setDept(sysDept);

@@ -1,4 +1,4 @@
-package com.ytrue.modules.quartz.model.dto;
+package com.ytrue.modules.quartz.model.query;
 
 import com.ytrue.tools.query.annotation.Query;
 import com.ytrue.tools.query.enums.QueryMethod;
@@ -9,11 +9,11 @@ import java.util.List;
 
 /**
  * @author ytrue
- * @description: ScheduleJobLogSearchParams
+ * @description: ScheduleJobLogQuery
  * @date 2022/12/24 10:09
  */
 @Data
-public class ScheduleJobLogSearchParams {
+public class ScheduleJobLogQuery {
 
     @Query
     @Schema(title  = "任务id")

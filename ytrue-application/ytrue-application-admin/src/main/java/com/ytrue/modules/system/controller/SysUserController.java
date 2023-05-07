@@ -5,20 +5,21 @@ import com.ytrue.common.entity.Pageable;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.ApiResultResponse;
 import com.ytrue.common.utils.AssertUtils;
-import com.ytrue.modules.system.model.dto.SysUserDTO;
-import com.ytrue.modules.system.model.dto.operation.PasswordOperationDTO;
-import com.ytrue.modules.system.model.dto.operation.UserProfileOperationDTO;
-import com.ytrue.modules.system.model.dto.params.SysUserSearchParams;
+import com.ytrue.modules.system.model.query.SysUserQuery;
+import com.ytrue.modules.system.model.req.SysUserReq;
+import com.ytrue.modules.system.model.req.UpdatePasswordReq;
+import com.ytrue.modules.system.model.req.UserProfileReq;
+import com.ytrue.modules.system.model.res.SysUserDetailRes;
 import com.ytrue.modules.system.model.po.SysUser;
-import com.ytrue.modules.system.model.vo.SysUserListVO;
+import com.ytrue.modules.system.model.res.SysUserListRes;
 import com.ytrue.modules.system.service.ISysUserService;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.entity.QueryEntity;
 import com.ytrue.tools.query.utils.QueryHelp;
 import com.ytrue.tools.security.service.LoginService;
 import com.ytrue.tools.security.util.SecurityUtils;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,45 +49,45 @@ public class SysUserController {
 
 
     @GetMapping("page")
-    @Operation(summary="分页")
+    @Operation(summary = "分页")
     @PreAuthorize("@pms.hasPermission('system:user:page')")
-    public ApiResultResponse<IPage<SysUserListVO>> page(SysUserSearchParams params, Pageable pageable) {
+    public ApiResultResponse<IPage<SysUserListRes>> page(SysUserQuery params, Pageable pageable) {
 
-        QueryEntity queryEntity = QueryHelp.queryEntityBuilder(params).addSort(SysUserListVO::getId, false);
+        QueryEntity queryEntity = QueryHelp.queryEntityBuilder(params).addSort(SysUserListRes::getId, false);
 
         return ApiResultResponse.success(sysUserService.paginate(pageable.page(), queryEntity));
     }
 
     @GetMapping("detail/{id}")
-    @Operation(summary="详情")
+    @Operation(summary = "详情")
     @PreAuthorize("@pms.hasPermission('system:user:detail')")
-    public ApiResultResponse<SysUserDTO> detail(@PathVariable("id") Long id) {
+    public ApiResultResponse<SysUserDetailRes> detail(@PathVariable("id") Long id) {
         return ApiResultResponse.success(sysUserService.getUserById(id));
     }
 
 
     @SysLog
     @PostMapping
-    @Operation(summary="保存")
+    @Operation(summary = "保存")
     @PreAuthorize("@pms.hasPermission('system:user:add')")
-    public ApiResultResponse<Object> add(@Validated @RequestBody SysUserDTO sysUserDTO) {
-        sysUserDTO.setPassword(passwordEncoder.encode(DEFAULT_PASSWORD));
-        sysUserService.addUser(sysUserDTO);
+    public ApiResultResponse<Object> add(@Validated @RequestBody SysUserReq sysUserReq) {
+        sysUserReq.setPassword(passwordEncoder.encode(DEFAULT_PASSWORD));
+        sysUserService.addUser(sysUserReq);
         return ApiResultResponse.success();
     }
 
     @SysLog
     @PutMapping
-    @Operation(summary="修改")
+    @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:user:update')")
-    public ApiResultResponse<Object> update(@Validated @RequestBody SysUserDTO sysUserDTO) {
-        sysUserService.updateUser(sysUserDTO);
+    public ApiResultResponse<Object> update(@Validated @RequestBody SysUserReq sysUserReq) {
+        sysUserService.updateUser(sysUserReq);
         return ApiResultResponse.success();
     }
 
     @SysLog
     @DeleteMapping
-    @Operation(summary="删除")
+    @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:user:delete')")
     public ApiResultResponse<Object> delete(@RequestBody List<Long> ids) {
         sysUserService.removeBatchUser(ids);
@@ -95,7 +96,7 @@ public class SysUserController {
 
     @SysLog
     @PostMapping("resetPassword")
-    @Operation(summary="重置密码")
+    @Operation(summary = "重置密码")
     @PreAuthorize("@pms.hasPermission('system:user:restPassword')")
     public ApiResultResponse<Object> resetPassword(@RequestParam Long userId) {
         sysUserService.lambdaUpdate().eq(SysUser::getId, userId).set(SysUser::getPassword, passwordEncoder.encode(DEFAULT_PASSWORD)).update();
@@ -103,8 +104,8 @@ public class SysUserController {
     }
 
     @PutMapping("updateUserProfile")
-    @Operation(summary="修改用户信息")
-    public ApiResultResponse<Object> updateProfile(@RequestBody UserProfileOperationDTO operation) {
+    @Operation(summary = "修改用户信息")
+    public ApiResultResponse<Object> updateProfile(@RequestBody UserProfileReq operation) {
         String userId = SecurityUtils.getLoginUser().getUser().getUserId();
 
         SysUser sysUser = sysUserService.getById(userId);
@@ -120,8 +121,8 @@ public class SysUserController {
 
 
     @PutMapping("updatePassword")
-    @Operation(summary="修改密码")
-    public ApiResultResponse<Object> updatePassword(@RequestBody PasswordOperationDTO operation) {
+    @Operation(summary = "修改密码")
+    public ApiResultResponse<Object> updatePassword(@RequestBody UpdatePasswordReq operation) {
         String userId = SecurityUtils.getLoginUser().getUser().getUserId();
 
         SysUser sysUser = sysUserService.getById(userId);

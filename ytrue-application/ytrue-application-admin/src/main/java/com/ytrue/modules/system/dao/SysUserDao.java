@@ -3,7 +3,7 @@ package com.ytrue.modules.system.dao;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ytrue.common.base.IBaseDao;
 import com.ytrue.modules.system.model.po.SysUser;
-import com.ytrue.modules.system.model.vo.SysUserListVO;
+import com.ytrue.modules.system.model.res.SysUserListRes;
 import com.ytrue.tools.query.entity.QueryEntity;
 
 import java.util.Set;
@@ -32,5 +32,5 @@ public interface SysUserDao extends IBaseDao<SysUser> {
      * @param queryEntity
      * @return
      */
-    IPage<SysUserListVO> listWithDeptName(IPage<SysUserListVO> page, QueryEntity queryEntity);
+    IPage<SysUserListRes> listWithDeptName(IPage<SysUserListRes> page, QueryEntity queryEntity);
 }

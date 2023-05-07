@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.ApiResultResponse;
 import com.ytrue.common.utils.AssertUtils;
-import com.ytrue.modules.system.model.dto.params.SysDeptSearchParams;
+import com.ytrue.modules.system.model.query.SysDeptQuery;
 import com.ytrue.modules.system.model.po.SysDept;
 import com.ytrue.modules.system.service.ISysDeptService;
 import com.ytrue.tools.log.annotation.SysLog;
@@ -36,7 +36,7 @@ public class SysDeptController {
     @GetMapping("list")
     @Operation(summary="列表")
     @PreAuthorize("@pms.hasPermission('system:dept:list')")
-    public ApiResultResponse<List<SysDept>> list(SysDeptSearchParams params) {
+    public ApiResultResponse<List<SysDept>> list(SysDeptQuery params) {
         // 数据范围限制
         Set<Long> deptIds = sysDeptService.getDeptIdByDataScope();
         LambdaQueryWrapper<SysDept> queryWrapper = QueryHelp.<SysDept>lambdaQueryWrapperBuilder(params).in(CollectionUtil.isNotEmpty(deptIds), SysDept::getId, deptIds).orderByAsc(SysDept::getDeptSort).orderByDesc(SysDept::getId);

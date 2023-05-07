@@ -1,4 +1,4 @@
-package com.ytrue.modules.system.model.vo;
+package com.ytrue.modules.system.model.res;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 
 /**
  * @author ytrue
- * @description: SysUserListVO
+ * @description: SysUserListRes
  * @date 2022/12/15 11:11
  */
 @Data
-public class SysUserListVO {
+public class SysUserListRes {
 
     @TableId
     @Schema(title = "id")

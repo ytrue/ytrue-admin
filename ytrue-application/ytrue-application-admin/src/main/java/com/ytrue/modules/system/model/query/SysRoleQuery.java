@@ -1,4 +1,4 @@
-package com.ytrue.modules.system.model.dto.params;
+package com.ytrue.modules.system.model.query;
 
 import com.ytrue.tools.query.annotation.Query;
 import com.ytrue.tools.query.enums.QueryMethod;
@@ -6,24 +6,27 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
  * @author ytrue
- * @description: SysMenuSearchParams
+ * @description: SysRoleQuery
  * @date 2022/12/20 11:10
  */
 @Data
-public class SysMenuSearchParams implements Serializable {
-    private static final long serialVersionUID = -760374525244276001L;
+public class SysRoleQuery implements Serializable {
+    private static final long serialVersionUID = -7570626552880302350L;
 
     @Query(condition = QueryMethod.like)
-    @Schema(title = "菜单名称")
-    private String menuName;
+    @Schema(title = "角色名称")
+    private String roleName;
+
+    @Query(condition = QueryMethod.like)
+    @Schema(title = "角色标识")
+    private String roleCode;
 
     @Query
-    @Schema(title = " 菜单状态（0正常 1停用）")
+    @Schema(title = "状态:0=禁用,1=正常")
     private Boolean status;
 
     @Query(condition = QueryMethod.between)

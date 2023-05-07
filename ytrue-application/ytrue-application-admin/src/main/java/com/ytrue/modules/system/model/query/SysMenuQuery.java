@@ -1,4 +1,4 @@
-package com.ytrue.modules.system.model.dto.params;
+package com.ytrue.modules.system.model.query;
 
 import com.ytrue.tools.query.annotation.Query;
 import com.ytrue.tools.query.enums.QueryMethod;
@@ -10,19 +10,19 @@ import java.util.List;
 
 /**
  * @author ytrue
- * @description: SysDeptSearchParams
+ * @description: SysMenuQuery
  * @date 2022/12/20 11:10
  */
 @Data
-public class SysDeptSearchParams implements Serializable {
-    private static final long serialVersionUID = 5230520838989522329L;
+public class SysMenuQuery implements Serializable {
+    private static final long serialVersionUID = -760374525244276001L;
 
     @Query(condition = QueryMethod.like)
-    @Schema(title = "名称")
-    private String deptName;
+    @Schema(title = "菜单名称")
+    private String menuName;
 
     @Query
-    @Schema(title = "是否启用")
+    @Schema(title = " 菜单状态（0正常 1停用）")
     private Boolean status;
 
     @Query(condition = QueryMethod.between)

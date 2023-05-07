@@ -1,4 +1,4 @@
-package com.ytrue.modules.system.model.vo;
+package com.ytrue.modules.system.model.res;
 
 import com.ytrue.modules.system.model.po.SysDept;
 import com.ytrue.modules.system.model.po.SysJob;
@@ -12,11 +12,11 @@ import java.util.Set;
 
 /**
  * @author ytrue
- * @description: SysUserInfoVO
+ * @description: LoginUserInfoRes
  * @date 2022/12/8 15:53
  */
 @Data
-public class SysUserInfoVO {
+public class LoginUserInfoRes {
     @Schema(title = "用户信息")
     private SysUser user;
 

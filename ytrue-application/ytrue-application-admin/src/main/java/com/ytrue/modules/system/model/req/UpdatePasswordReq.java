@@ -1,4 +1,4 @@
-package com.ytrue.modules.system.model.dto.operation;
+package com.ytrue.modules.system.model.req;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
  * @date 2022/12/27 11:28
  */
 @Data
-public class PasswordOperationDTO {
+public class UpdatePasswordReq {
 
     @NotBlank
     @Schema(title = "旧密码")

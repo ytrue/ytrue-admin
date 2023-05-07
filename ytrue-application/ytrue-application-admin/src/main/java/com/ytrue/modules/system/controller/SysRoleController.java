@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.common.entity.Pageable;
 import com.ytrue.common.utils.ApiResultResponse;
-import com.ytrue.modules.system.model.dto.SysRoleDTO;
-import com.ytrue.modules.system.model.dto.params.SysRoleSearchParams;
+import com.ytrue.modules.system.model.req.SysRoleReq;
+import com.ytrue.modules.system.model.query.SysRoleQuery;
 import com.ytrue.modules.system.model.po.SysRole;
 import com.ytrue.modules.system.service.ISysRoleService;
 import com.ytrue.tools.log.annotation.SysLog;
@@ -40,7 +40,7 @@ public class SysRoleController {
     @GetMapping("page")
     @Operation(summary="分页查询")
     @PreAuthorize("@pms.hasPermission('system:role:page')")
-    public ApiResultResponse<IPage<SysRole>> page(SysRoleSearchParams params, Pageable pageable) {
+    public ApiResultResponse<IPage<SysRole>> page(SysRoleQuery params, Pageable pageable) {
         // 数据范围限制
         Set<Long> roleIds = sysRoleService.getRoleIdsByDataScope();
         LambdaQueryWrapper<SysRole> queryWrapper = QueryHelp.<SysRole>lambdaQueryWrapperBuilder(params).in(CollectionUtil.isNotEmpty(roleIds), SysRole::getId, roleIds).orderByAsc(SysRole::getRoleSort).orderByDesc(SysRole::getId);
@@ -62,7 +62,7 @@ public class SysRoleController {
     @GetMapping("detail/{id}")
     @Operation(summary="详情")
     @PreAuthorize("@pms.hasPermission('system:role:detail')")
-    public ApiResultResponse<SysRoleDTO> detail(@PathVariable("id") Long id) {
+    public ApiResultResponse<SysRoleReq> detail(@PathVariable("id") Long id) {
         return ApiResultResponse.success(sysRoleService.getRoleById(id));
     }
 
@@ -70,8 +70,8 @@ public class SysRoleController {
     @PostMapping
     @Operation(summary="保存")
     @PreAuthorize("@pms.hasPermission('system:role:add')")
-    public ApiResultResponse<Object> add(@Validated @RequestBody SysRoleDTO sysRoleDTO) {
-        sysRoleService.addRole(sysRoleDTO);
+    public ApiResultResponse<Object> add(@Validated @RequestBody SysRoleReq sysRoleReq) {
+        sysRoleService.addRole(sysRoleReq);
         return ApiResultResponse.success();
     }
 
@@ -79,8 +79,8 @@ public class SysRoleController {
     @PutMapping
     @Operation(summary="修改")
     @PreAuthorize("@pms.hasPermission('system:role:update')")
-    public ApiResultResponse<Object> update(@Validated @RequestBody SysRoleDTO sysRoleDTO) {
-        sysRoleService.updateRole(sysRoleDTO);
+    public ApiResultResponse<Object> update(@Validated @RequestBody SysRoleReq sysRoleReq) {
+        sysRoleService.updateRole(sysRoleReq);
         return ApiResultResponse.success();
     }
 

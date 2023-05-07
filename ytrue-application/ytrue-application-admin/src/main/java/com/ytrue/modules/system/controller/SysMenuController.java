@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.ApiResultResponse;
 import com.ytrue.common.utils.AssertUtils;
-import com.ytrue.modules.system.model.dto.params.SysMenuSearchParams;
+import com.ytrue.modules.system.model.query.SysMenuQuery;
 import com.ytrue.modules.system.model.po.SysMenu;
 import com.ytrue.modules.system.service.ISysMenuService;
 import com.ytrue.tools.log.annotation.SysLog;
@@ -36,7 +36,7 @@ public class SysMenuController {
     @GetMapping("list")
     @Operation(summary="列表")
     @PreAuthorize("@pms.hasPermission('system:menu:list')")
-    public ApiResultResponse<List<SysMenu>> list(SysMenuSearchParams params) {
+    public ApiResultResponse<List<SysMenu>> list(SysMenuQuery params) {
 
         LambdaQueryWrapper<SysMenu> queryWrapper = QueryHelp.<SysMenu>lambdaQueryWrapperBuilder(params).orderByAsc(SysMenu::getMenuSort).orderByDesc(SysMenu::getId);
 

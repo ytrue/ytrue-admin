@@ -205,7 +205,7 @@ public class SysUserSearchParams implements Serializable {
 ```
 ```xml
     <!--列表查询-->
-    <select id="listWithDeptName" resultType="com.ytrue.modules.system.model.vo.SysUserListVO">
+    <select id="listWithDeptName" resultType="com.ytrue.modules.system.model.dto.res.SysUserListRes">
         SELECT u.id,
                d.dept_name,
                u.username,

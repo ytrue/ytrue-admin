@@ -7,7 +7,7 @@ import com.ytrue.common.entity.Pageable;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.ApiResultResponse;
 import com.ytrue.common.utils.AssertUtils;
-import com.ytrue.modules.quartz.model.dto.ScheduleJobSearchParams;
+import com.ytrue.modules.quartz.model.query.ScheduleJobSearchQuery;
 import com.ytrue.modules.quartz.model.po.ScheduleJob;
 import com.ytrue.modules.quartz.service.IScheduleJobService;
 import com.ytrue.tools.query.utils.QueryHelp;
@@ -36,7 +36,7 @@ public class ScheduleJobController {
     @GetMapping("page")
     @Operation(summary = "分页查询数据")
     @PreAuthorize("@pms.hasPermission('system:schedule:resume')")
-    public ApiResultResponse<IPage<ScheduleJob>> page(ScheduleJobSearchParams params, Pageable pageable) {
+    public ApiResultResponse<IPage<ScheduleJob>> page(ScheduleJobSearchQuery params, Pageable pageable) {
 
         LambdaQueryWrapper<ScheduleJob> queryWrapper = QueryHelp.<ScheduleJob>lambdaQueryWrapperBuilder(params)
                 .orderByDesc(ScheduleJob::getId);

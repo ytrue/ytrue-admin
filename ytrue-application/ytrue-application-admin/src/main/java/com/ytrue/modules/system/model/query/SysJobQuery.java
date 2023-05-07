@@ -1,4 +1,4 @@
-package com.ytrue.modules.system.model.dto.params;
+package com.ytrue.modules.system.model.query;
 
 import com.ytrue.tools.query.annotation.Query;
 import com.ytrue.tools.query.enums.QueryMethod;
@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -15,7 +14,7 @@ import java.util.List;
  * @date 2022/12/20 11:09
  */
 @Data
-public class SysJobSearchParams implements Serializable {
+public class SysJobQuery implements Serializable {
 
     private static final long serialVersionUID = -8023936370399354477L;
 

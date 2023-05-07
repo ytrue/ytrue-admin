@@ -1,22 +1,17 @@
-package com.ytrue.modules.system.model.dto;
+package com.ytrue.modules.system.model.res;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
  * @author ytrue
- * @description: SysUserDTO
+ * @description: SysUserDetailRes
  * @date 2022/12/7 17:01
  */
 @Data
-public class SysUserDTO {
+public class SysUserDetailRes {
 
     @Schema(title = "id")
     private Long id;
@@ -24,20 +19,15 @@ public class SysUserDTO {
     @Schema(title = "用户部门Id")
     private Long deptId;
 
-    @NotBlank
     @Schema(title = "用户名称")
     private String username;
 
-    @NotBlank
     @Schema(title = "用户昵称")
     private String nickName;
 
-    @Email
-    @NotBlank
     @Schema(title = "邮箱")
     private String email;
 
-    @NotBlank
     @Schema(title = "电话号码")
     private String phone;
 
@@ -50,11 +40,6 @@ public class SysUserDTO {
     @Schema(title = "头像存储的路径")
     private String avatarPath;
 
-    @Schema(title = "密码")
-    @JsonIgnore
-    private String password;
-
-    @NotNull
     @Schema(title = "是否启用")
     private Boolean status;
 

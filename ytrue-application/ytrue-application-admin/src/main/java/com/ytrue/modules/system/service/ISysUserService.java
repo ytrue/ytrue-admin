@@ -2,9 +2,10 @@ package com.ytrue.modules.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ytrue.common.base.IBaseService;
+import com.ytrue.modules.system.model.res.SysUserDetailRes;
 import com.ytrue.modules.system.model.po.SysUser;
-import com.ytrue.modules.system.model.dto.SysUserDTO;
-import com.ytrue.modules.system.model.vo.SysUserListVO;
+import com.ytrue.modules.system.model.req.SysUserReq;
+import com.ytrue.modules.system.model.res.SysUserListRes;
 import com.ytrue.tools.query.entity.QueryEntity;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public interface ISysUserService extends IBaseService<SysUser> {
      * @param query
      * @return
      */
-    IPage<SysUserListVO> paginate(IPage<SysUserListVO> page, QueryEntity query);
+    IPage<SysUserListRes> paginate(IPage<SysUserListRes> page, QueryEntity query);
 
 
     /**
@@ -33,21 +34,21 @@ public interface ISysUserService extends IBaseService<SysUser> {
      * @param id
      * @return
      */
-    SysUserDTO getUserById(Long id);
+    SysUserDetailRes getUserById(Long id);
 
     /**
      * 新增用户
      *
-     * @param sysUserDTO
+     * @param sysUserReq
      */
-    void addUser(SysUserDTO sysUserDTO);
+    void addUser(SysUserReq sysUserReq);
 
     /**
      * 修改用户
      *
-     * @param sysUserDTO
+     * @param sysUserReq
      */
-    void updateUser(SysUserDTO sysUserDTO);
+    void updateUser(SysUserReq sysUserReq);
 
     /**
      * 删除用户

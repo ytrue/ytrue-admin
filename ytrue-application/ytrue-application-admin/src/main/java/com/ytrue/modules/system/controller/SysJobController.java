@@ -6,7 +6,7 @@ import com.ytrue.common.entity.Pageable;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.ApiResultResponse;
 import com.ytrue.common.utils.AssertUtils;
-import com.ytrue.modules.system.model.dto.params.SysJobSearchParams;
+import com.ytrue.modules.system.model.query.SysJobQuery;
 import com.ytrue.modules.system.model.po.SysJob;
 import com.ytrue.modules.system.service.ISysJobService;
 import com.ytrue.modules.system.service.manager.DataScopeManager;
@@ -20,7 +20,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -42,7 +41,7 @@ public class SysJobController {
     @GetMapping("page")
     @Operation(summary="分页")
     @PreAuthorize("@pms.hasPermission('system:job:page')")
-    public ApiResultResponse<IPage<SysJob>> page(SysJobSearchParams params, Pageable pageable) {
+    public ApiResultResponse<IPage<SysJob>> page(SysJobQuery params, Pageable pageable) {
 
         LambdaQueryWrapper<SysJob> queryWrapper = QueryHelp.<SysJob>lambdaQueryWrapperBuilder(params)
                 .orderByAsc(SysJob::getJobSort)

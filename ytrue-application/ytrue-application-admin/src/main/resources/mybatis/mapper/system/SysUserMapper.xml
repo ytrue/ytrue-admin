@@ -35,7 +35,7 @@
     </select>
 
     <!--列表查询-->
-    <select id="listWithDeptName" resultType="com.ytrue.modules.system.model.vo.SysUserListVO">
+    <select id="listWithDeptName" resultType="com.ytrue.modules.system.model.res.SysUserListRes">
         SELECT u.id,
                d.dept_name,
                u.username,
