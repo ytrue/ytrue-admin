@@ -16,11 +16,6 @@ import java.util.Set;
 public class SecurityProperties {
 
     /**
-     * 忽略认证接口
-     */
-    private Set<String> ignoreAuth = new HashSet<>();
-
-    /**
      * auth 类型 参数名称
      */
     private String authTypeParameterName = "auth_type";

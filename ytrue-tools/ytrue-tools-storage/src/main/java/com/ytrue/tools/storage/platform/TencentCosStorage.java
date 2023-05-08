@@ -11,6 +11,7 @@ import com.ytrue.tools.storage.FileInfo;
 import com.ytrue.tools.storage.UploadInfo;
 import com.ytrue.tools.storage.enums.StorageType;
 import com.ytrue.tools.storage.exception.StorageRuntimeException;
+import com.ytrue.tools.storage.properties.TencentCosStorageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

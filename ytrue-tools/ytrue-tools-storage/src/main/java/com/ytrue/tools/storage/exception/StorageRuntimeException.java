@@ -1,5 +1,10 @@
 package com.ytrue.tools.storage.exception;
 
+/**
+ * @author ytrue
+ * @date 2023/4251 15:40
+ * @description StorageRuntimeException
+ */
 public class StorageRuntimeException extends RuntimeException {
     public StorageRuntimeException() {
     }

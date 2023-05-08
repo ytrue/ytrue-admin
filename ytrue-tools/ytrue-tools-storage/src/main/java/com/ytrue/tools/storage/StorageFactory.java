@@ -3,6 +3,7 @@ package com.ytrue.tools.storage;
 import cn.hutool.core.util.ReflectUtil;
 import com.ytrue.tools.storage.exception.StorageRuntimeException;
 import com.ytrue.tools.storage.platform.IStorage;
+import com.ytrue.tools.storage.properties.BaseStorageProperties;
 
 import java.util.HashMap;
 import java.util.Map;

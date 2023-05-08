@@ -10,6 +10,7 @@ import com.ytrue.modules.system.model.po.SysDept;
 import com.ytrue.modules.system.service.ISysDeptService;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.utils.QueryHelp;
+import com.ytrue.tools.security.annotation.IgnoreWebSecurity;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
@@ -33,8 +34,9 @@ public class SysDeptController {
 
     private final ISysDeptService sysDeptService;
 
+
     @GetMapping("list")
-    @Operation(summary="列表")
+    @Operation(summary = "列表")
     @PreAuthorize("@pms.hasPermission('system:dept:list')")
     public ApiResultResponse<List<SysDept>> list(SysDeptQuery params) {
         // 数据范围限制
@@ -45,7 +47,7 @@ public class SysDeptController {
     }
 
     @GetMapping("detail/{id}")
-    @Operation(summary="详情")
+    @Operation(summary = "详情")
     @PreAuthorize("@pms.hasPermission('system:dept:detail')")
     public ApiResultResponse<SysDept> detail(@PathVariable("id") Long id) {
         SysDept data = sysDeptService.getById(id);
@@ -55,7 +57,7 @@ public class SysDeptController {
 
     @SysLog
     @PostMapping
-    @Operation(summary="保存")
+    @Operation(summary = "保存")
     @PreAuthorize("@pms.hasPermission('system:dept:add')")
     public ApiResultResponse<Object> add(@Validated @RequestBody SysDept sysDept) {
         sysDeptService.addDept(sysDept);
@@ -64,7 +66,7 @@ public class SysDeptController {
 
     @SysLog
     @PutMapping
-    @Operation(summary="修改")
+    @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:dept:update')")
     public ApiResultResponse<Object> update(@Validated @RequestBody SysDept sysDept) {
         sysDeptService.updateDept(sysDept);
@@ -73,7 +75,7 @@ public class SysDeptController {
 
     @SysLog
     @DeleteMapping
-    @Operation(summary="删除")
+    @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:dept:delete')")
     public ApiResultResponse<Object> delete(@RequestBody List<Long> ids) {
         sysDeptService.removeBatchDept(ids);

@@ -12,6 +12,11 @@ import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 
+/**
+ * @author ytrue
+ * @date 2023/5/7 18:05
+ * @description UploadInfo
+ */
 @Getter
 @Setter
 public class UploadInfo {

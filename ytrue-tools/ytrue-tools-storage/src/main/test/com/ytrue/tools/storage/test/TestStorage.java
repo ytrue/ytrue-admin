@@ -6,6 +6,7 @@ import com.ytrue.tools.storage.StorageFactory;
 import com.ytrue.tools.storage.UploadInfo;
 import com.ytrue.tools.storage.enums.StorageType;
 import com.ytrue.tools.storage.platform.IStorage;
+import com.ytrue.tools.storage.properties.TencentCosStorageProperties;
 import lombok.SneakyThrows;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -21,7 +22,7 @@ public class TestStorage {
     public void test01() throws FileNotFoundException, InstantiationException, IllegalAccessException {
         ApplicationContext ac = new AnnotationConfigApplicationContext(Config.class);
 
-        //LocalStorage localStorage = ac.getBean("localStorage", LocalStorage.class);
+       // LocalStorage localStorage = ac.getBean("localStorage", LocalStorage.class);
         File file = new File("C:\\Users\\Administrator\\Desktop\\测试目录\\my.png");
         UploadInfo uploadInfo = UploadInfo.build(file);
 

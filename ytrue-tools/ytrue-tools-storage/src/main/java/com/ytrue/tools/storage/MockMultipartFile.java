@@ -10,6 +10,12 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 
+
+/**
+ * @author ytrue
+ * @date 2023/5/7 18:05
+ * @description MockMultipartFile
+ */
 @Getter
 public class MockMultipartFile implements MultipartFile {
 

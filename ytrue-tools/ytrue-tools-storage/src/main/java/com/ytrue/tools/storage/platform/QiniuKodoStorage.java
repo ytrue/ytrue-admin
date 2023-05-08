@@ -10,6 +10,7 @@ import com.ytrue.tools.storage.FileInfo;
 import com.ytrue.tools.storage.UploadInfo;
 import com.ytrue.tools.storage.enums.StorageType;
 import com.ytrue.tools.storage.exception.StorageRuntimeException;
+import com.ytrue.tools.storage.properties.QiniuKodoStorageProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;

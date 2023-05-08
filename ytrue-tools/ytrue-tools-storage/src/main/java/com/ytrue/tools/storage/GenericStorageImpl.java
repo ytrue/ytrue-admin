@@ -4,14 +4,14 @@ import com.ytrue.tools.storage.platform.IStorage;
 import lombok.Getter;
 
 /**
- * @author ytrue
+ * @author ytrue  TODO 待完善
  * @date 2023/5/7 18:05
  * @description GenericStorageImpl
  */
 public class GenericStorageImpl implements IStorage {
 
     @Getter
-    private IStorage originalStorage;
+    private final IStorage originalStorage;
 
     public GenericStorageImpl(IStorage storage) {
         this.originalStorage = storage;

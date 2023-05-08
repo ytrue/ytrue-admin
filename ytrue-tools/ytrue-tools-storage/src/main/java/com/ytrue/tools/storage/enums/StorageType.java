@@ -1,5 +1,10 @@
 package com.ytrue.tools.storage.enums;
 
+/**
+ * @author ytrue
+ * @date 2023/4251 15:40
+ * @description StorageType
+ */
 public enum StorageType {
 
     /**

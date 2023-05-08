@@ -6,6 +6,11 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * @author ytrue
+ * @date 2023/5/7 18:05
+ * @description FileInfo
+ */
 @Data
 public class FileInfo implements Serializable {
     private static final long serialVersionUID = -6604255398447349432L;

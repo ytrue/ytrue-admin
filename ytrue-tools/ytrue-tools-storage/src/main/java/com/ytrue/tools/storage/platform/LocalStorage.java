@@ -5,6 +5,7 @@ import com.ytrue.tools.storage.FileInfo;
 import com.ytrue.tools.storage.UploadInfo;
 import com.ytrue.tools.storage.enums.StorageType;
 import com.ytrue.tools.storage.exception.StorageRuntimeException;
+import com.ytrue.tools.storage.properties.LocalStorageProperties;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
