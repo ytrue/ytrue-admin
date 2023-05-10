@@ -41,7 +41,10 @@ public class SysDeptController {
     public ApiResultResponse<List<SysDept>> list(SysDeptQuery params) {
         // 数据范围限制
         Set<Long> deptIds = sysDeptService.getDeptIdByDataScope();
-        LambdaQueryWrapper<SysDept> queryWrapper = QueryHelp.<SysDept>lambdaQueryWrapperBuilder(params).in(CollectionUtil.isNotEmpty(deptIds), SysDept::getId, deptIds).orderByAsc(SysDept::getDeptSort).orderByDesc(SysDept::getId);
+        LambdaQueryWrapper<SysDept> queryWrapper = QueryHelp.<SysDept>lambdaQueryWrapperBuilder(params)
+                .in(CollectionUtil.isNotEmpty(deptIds), SysDept::getId, deptIds)
+                .orderByAsc(SysDept::getDeptSort)
+                .orderByDesc(SysDept::getId);
 
         return ApiResultResponse.success(sysDeptService.list(queryWrapper));
     }

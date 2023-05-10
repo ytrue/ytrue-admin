@@ -1,9 +1,6 @@
 package com.ytrue.tools.storage.test;
 
-import com.ytrue.tools.storage.Config;
-import com.ytrue.tools.storage.FileInfo;
-import com.ytrue.tools.storage.StorageFactory;
-import com.ytrue.tools.storage.UploadInfo;
+import com.ytrue.tools.storage.*;
 import com.ytrue.tools.storage.enums.StorageType;
 import com.ytrue.tools.storage.platform.IStorage;
 import com.ytrue.tools.storage.properties.TencentCosStorageProperties;
@@ -15,26 +12,28 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.concurrent.TimeUnit;
 
 public class TestStorage {
 
     @Test
-    public void test01() throws FileNotFoundException, InstantiationException, IllegalAccessException {
+    public void test01() throws FileNotFoundException, InstantiationException, IllegalAccessException, InterruptedException {
         ApplicationContext ac = new AnnotationConfigApplicationContext(Config.class);
 
-       // LocalStorage localStorage = ac.getBean("localStorage", LocalStorage.class);
-        File file = new File("C:\\Users\\Administrator\\Desktop\\测试目录\\my.png");
-        UploadInfo uploadInfo = UploadInfo.build(file);
 
-
-        IStorage localStorage = StorageFactory.getInstance(StorageType.cos.name(), new TencentCosStorageProperties());
-        FileInfo fileInfo = localStorage.upload(uploadInfo);
-
-        System.out.println(fileInfo);
-
-        System.out.println(localStorage.exists(fileInfo));
-        System.out.println(localStorage.delete(fileInfo));
-        System.out.println(localStorage.exists(fileInfo));
+//       // LocalStorage localStorage = ac.getBean("localStorage", LocalStorage.class);
+//        File file = new File("C:\\Users\\Administrator\\Desktop\\测试目录\\my.png");
+//        UploadInfo uploadInfo = UploadInfo.build(file);
+//
+//
+//        IStorage localStorage = StorageFactory.getInstance(StorageType.cos.name(), new TencentCosStorageProperties());
+//        FileInfo fileInfo = localStorage.upload(uploadInfo);
+//
+//        System.out.println(fileInfo);
+//
+//        System.out.println(localStorage.exists(fileInfo));
+//        System.out.println(localStorage.delete(fileInfo));
+//        System.out.println(localStorage.exists(fileInfo));
 
         //  System.out.println(upload);
 

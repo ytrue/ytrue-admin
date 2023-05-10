@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.ytrue.tools.log.enitiy.OperationLog;
 import com.ytrue.tools.log.event.SysLogEvent;
 import com.ytrue.tools.log.utils.SysLogUtils;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +44,7 @@ public class SysLogAspect {
     private static final ThreadLocal<OperationLog> THREAD_LOCAL = new ThreadLocal<>();
 
     private static final String MULTIPART_FORM_DATA = "multipart/form-data";
+
 
     /***
      * 定义controller切入点拦截规则，拦截SysLog注解的方法
@@ -191,7 +191,9 @@ public class SysLogAspect {
     }
 
     /**
-     * 发送事件
+     * 发送事件  TODO 这里需要加入异步处理，如SysLogListener耗时过长，会阻塞    private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+     * 1,1,1, TimeUnit.SECONDS,new LinkedBlockingDeque<>(100)
+     * );
      *
      * @param operationLog
      */

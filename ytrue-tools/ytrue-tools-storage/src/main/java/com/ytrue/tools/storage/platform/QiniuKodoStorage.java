@@ -29,6 +29,11 @@ public class QiniuKodoStorage extends AbstractStorage {
 
     private final QiniuKodoStorageProperties config;
 
+    /**
+     * 指定资源不存在或已被删除
+     */
+    private final static int RESOURCE_NOT_FOUND_CODE = 612;
+
     @Autowired
     public QiniuKodoStorage(QiniuKodoStorageProperties config) {
         this.config = config;
@@ -77,23 +82,22 @@ public class QiniuKodoStorage extends AbstractStorage {
     }
 
 
-
-
     @Override
     public boolean exists(FileInfo fileInfo) {
         BucketManager manager = getClient().getBucketManager();
         try {
             com.qiniu.storage.model.FileInfo stat = manager.stat(config.getBucket(), "test/6447818aab30cb6d6b11e68e.png");
-            System.out.println(stat);
-            if (stat != null && stat.md5 != null) return true;
+            if (stat == null || stat.md5 == null) {
+                return false;
+            }
+            return true;
         } catch (QiniuException e) {
             // 612 指定资源不存在或已被删除
-            if (e.code() == 612) {
+            if (e.code() == RESOURCE_NOT_FOUND_CODE) {
                 return false;
             }
             throw new StorageRuntimeException("查询文件是否存在失败！" + e.code() + "，" + e.response.toString(), e);
         }
-        return false;
     }
 
     @Override
@@ -111,7 +115,7 @@ public class QiniuKodoStorage extends AbstractStorage {
         try {
             manager.delete(config.getBucket(), filename);
         } catch (QiniuException e) {
-            if (!(e.response != null && e.response.statusCode == 612)) {
+            if (!(e.response != null && e.response.statusCode == RESOURCE_NOT_FOUND_CODE)) {
                 throw e;
             }
         }

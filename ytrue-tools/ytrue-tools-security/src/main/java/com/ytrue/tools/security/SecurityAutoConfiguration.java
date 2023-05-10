@@ -239,7 +239,7 @@ public class SecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
      */
     private Map<String, HashSet<String>> ignoreAuthConfig() {
 
-        Map<String, HashSet<String>> ignoreRequestUrlMap = new HashMap<>();
+        Map<String, HashSet<String>> ignoreRequestUrlMap = new HashMap<>(16);
 
         // 登录的
         String authUrl = securityProperties().getAuthUrl();
