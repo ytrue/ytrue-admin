@@ -7,9 +7,7 @@ import com.ytrue.tools.storage.enums.StorageType;
 import com.ytrue.tools.storage.exception.StorageRuntimeException;
 import com.ytrue.tools.storage.properties.LocalStorageProperties;
 import com.ytrue.tools.storage.utils.PathUtil;
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
@@ -22,12 +20,18 @@ import java.util.function.Consumer;
  * @date 2023/4251 15:40
  * @description IStorage   TODO linux待测试
  */
-
-@Component
-@AllArgsConstructor
 public class LocalStorage extends AbstractStorage {
 
     private final LocalStorageProperties config;
+
+    /**
+     * 固定目录
+     */
+    private static final String FIXED_DIRECTORY = "/static";
+
+    public LocalStorage(LocalStorageProperties config) {
+        this.config = config;
+    }
 
     @Override
     public FileInfo upload(UploadInfo uploadInfo) {
@@ -59,7 +63,7 @@ public class LocalStorage extends AbstractStorage {
 
     @Override
     public boolean delete(FileInfo fileInfo) {
-       return FileUtil.del(new File(getUploadPath(PathUtil.montagePath(fileInfo.getBasePath(), fileInfo.getPath())), fileInfo.getFileName()));
+        return FileUtil.del(new File(getUploadPath(PathUtil.montagePath(fileInfo.getBasePath(), fileInfo.getPath())), fileInfo.getFileName()));
     }
 
     @Override
@@ -68,7 +72,7 @@ public class LocalStorage extends AbstractStorage {
         try (InputStream in = FileUtil.getInputStream(fileInfo.getBasePath() + fileInfo.getPath() + fileInfo.getFileName())) {
             consumer.accept(in);
         } catch (IOException e) {
-            throw new StorageRuntimeException("文件下载失败！platform：" + fileInfo,e);
+            throw new StorageRuntimeException("文件下载失败！platform：" + fileInfo, e);
         }
     }
 
@@ -79,7 +83,7 @@ public class LocalStorage extends AbstractStorage {
 
     @SneakyThrows
     private String getUploadPath(String fileHost) {
-        File file = new File(ResourceUtils.getURL("classpath:").getPath());
+        File file = new File(ResourceUtils.getURL("classpath:").getPath() + FIXED_DIRECTORY);
         if (!file.exists()) {
             file = new File("");
         }

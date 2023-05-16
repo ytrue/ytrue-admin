@@ -10,8 +10,6 @@ import com.ytrue.tools.storage.enums.StorageType;
 import com.ytrue.tools.storage.exception.StorageRuntimeException;
 import com.ytrue.tools.storage.properties.AliyunOssStorageProperties;
 import com.ytrue.tools.storage.utils.PathUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +20,6 @@ import java.util.function.Consumer;
  * @date 2023/4251 15:40
  * @description AliyunOssStorage
  */
-@Component
 public class AliyunOssStorage extends AbstractStorage {
 
 
@@ -30,7 +27,6 @@ public class AliyunOssStorage extends AbstractStorage {
 
     private volatile OSS client;
 
-    @Autowired
     public AliyunOssStorage(AliyunOssStorageProperties config) {
         this.config = config;
     }

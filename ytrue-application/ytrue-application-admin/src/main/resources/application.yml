@@ -1,5 +1,8 @@
 spring:
   profiles:
     active:
-#      - @profileActive@
+      #      - @profileActive@
       - dev
+  main:
+    #允许Bean重复注入，后者覆盖前者
+    allow-bean-definition-overriding: true

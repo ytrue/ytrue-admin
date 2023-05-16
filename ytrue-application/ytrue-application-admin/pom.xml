@@ -41,6 +41,11 @@
             <artifactId>ytrue-tools-log</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.ytrue</groupId>
+            <artifactId>ytrue-tools-storage</artifactId>
+        </dependency>
+
         <!--redis-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -110,10 +115,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <includeSystemScope>true</includeSystemScope>
-                </configuration>
+                <version>2.7.11</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

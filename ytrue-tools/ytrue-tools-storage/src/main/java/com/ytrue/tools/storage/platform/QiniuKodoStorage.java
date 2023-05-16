@@ -12,6 +12,7 @@ import com.ytrue.tools.storage.enums.StorageType;
 import com.ytrue.tools.storage.exception.StorageRuntimeException;
 import com.ytrue.tools.storage.properties.QiniuKodoStorageProperties;
 import com.ytrue.tools.storage.utils.PathUtil;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,6 @@ import java.util.function.Consumer;
  * @date 2023/4251 15:40
  * @description QiniuKodoStorage
  */
-@Component
 public class QiniuKodoStorage extends AbstractStorage {
 
     private final QiniuKodoStorageProperties config;
@@ -38,7 +38,6 @@ public class QiniuKodoStorage extends AbstractStorage {
      */
     private final static int RESOURCE_NOT_FOUND_CODE = 612;
 
-    @Autowired
     public QiniuKodoStorage(QiniuKodoStorageProperties config) {
         this.config = config;
     }

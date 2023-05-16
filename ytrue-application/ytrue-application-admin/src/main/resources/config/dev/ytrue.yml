@@ -20,6 +20,8 @@ ytrue:
         - /swagger**
         - /swagger-ui/**
         - /doc.html
+        - /storage/**
+        - /static/storage/**
   # 开启操作日志监听
   log:
     enabled: true

@@ -2,20 +2,22 @@ package com.ytrue.tools.storage.properties;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@EqualsAndHashCode(callSuper = true)
+@ConfigurationProperties(prefix = "ytrue.storage.oss")
 @Data
-@Component
+@EqualsAndHashCode(callSuper = true)
 public class AliyunOssStorageProperties extends BaseStorageProperties {
 
-    private String bucket = "";
+    private String bucket;
 
-    private String accessKeyId = "";
+    private String accessKeyId;
 
-    private String accessKeySecret = "";
+    private String accessKeySecret;
 
-    private String endPoint = "";
+    private String endPoint;
 
-    private String domain = "";
+    private String domain;
+
+    private String fileHost;
 }

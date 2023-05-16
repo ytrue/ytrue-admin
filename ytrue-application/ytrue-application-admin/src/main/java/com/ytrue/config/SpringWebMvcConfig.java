@@ -25,6 +25,10 @@ public class SpringWebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
         registry.addResourceHandler("/favicon.ico").addResourceLocations("classpath:/static/favicon.ico");
+        // idea本地图片访问
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/storage");
+        // jar后的访问
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/", "file:static/");
     }
 
     /**

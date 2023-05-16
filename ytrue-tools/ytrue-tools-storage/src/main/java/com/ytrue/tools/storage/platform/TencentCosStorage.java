@@ -27,14 +27,12 @@ import java.util.function.Consumer;
  * @date 2023/4251 15:40
  * @description QcloudStorage
  */
-@Component
 public class TencentCosStorage extends AbstractStorage {
 
     private TencentCosStorageProperties config;
 
     private volatile COSClient client;
 
-    @Autowired
     public TencentCosStorage(TencentCosStorageProperties config) {
         this.config = config;
     }

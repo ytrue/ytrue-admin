@@ -2,11 +2,12 @@ package com.ytrue.tools.storage.properties;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@EqualsAndHashCode(callSuper = true)
+@ConfigurationProperties(prefix = "ytrue.storage.kodo")
 @Data
-@Component
+@EqualsAndHashCode(callSuper = true)
 public class QiniuKodoStorageProperties extends BaseStorageProperties {
 
     private String bucket = "";
@@ -16,4 +17,6 @@ public class QiniuKodoStorageProperties extends BaseStorageProperties {
     private String secretKey = "";
 
     private String domain = "";
+
+    private String fileHost = "";
 }
