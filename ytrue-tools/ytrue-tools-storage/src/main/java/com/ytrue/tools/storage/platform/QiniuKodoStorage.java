@@ -20,6 +20,8 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.function.Consumer;
 
 /**
  * @author ytrue
@@ -124,6 +126,15 @@ public class QiniuKodoStorage extends AbstractStorage {
         }
     }
 
+    @Override
+    public void download(FileInfo fileInfo, Consumer<InputStream> consumer) {
+        String url = getClient().getAuth().privateDownloadUrl(fileInfo.getUrl());
+        try (InputStream in = new URL(url).openStream()) {
+            consumer.accept(in);
+        } catch (IOException e) {
+            throw new StorageRuntimeException("文件下载失败！platform：" + fileInfo,e);
+        }
+    }
 
     @Getter
     @Setter

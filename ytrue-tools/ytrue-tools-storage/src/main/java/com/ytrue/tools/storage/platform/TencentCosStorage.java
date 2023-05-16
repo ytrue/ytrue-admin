@@ -5,6 +5,7 @@ import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.http.HttpProtocol;
+import com.qcloud.cos.model.COSObject;
 import com.qcloud.cos.model.ObjectMetadata;
 import com.qcloud.cos.region.Region;
 import com.ytrue.tools.storage.FileInfo;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.Consumer;
 
 /**
  * @author ytrue
@@ -90,6 +92,16 @@ public class TencentCosStorage extends AbstractStorage {
     @Override
     public boolean exists(FileInfo fileInfo) {
         return getClient().doesObjectExist(config.getBucket(), PathUtil.montagePath(fileInfo.getBasePath(), fileInfo.getPath(), fileInfo.getFileName()));
+    }
+
+    @Override
+    public void download(FileInfo fileInfo, Consumer<InputStream> consumer) {
+        COSObject object = getClient().getObject(config.getBucket(), PathUtil.montagePath(fileInfo.getBasePath(), fileInfo.getPath(), fileInfo.getFileName()));
+        try (InputStream in = object.getObjectContent()) {
+            consumer.accept(in);
+        } catch (IOException e) {
+            throw new StorageRuntimeException("文件下载失败！platform：" + fileInfo, e);
+        }
     }
 
     @Override

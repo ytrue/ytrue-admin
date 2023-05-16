@@ -2,6 +2,7 @@ package com.ytrue.tools.storage.platform;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
+import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.ytrue.tools.storage.FileInfo;
 import com.ytrue.tools.storage.UploadInfo;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.Consumer;
 
 /**
  * @author ytrue
@@ -87,6 +89,17 @@ public class AliyunOssStorage extends AbstractStorage {
         OSS client = getClient();
         client.deleteObject(config.getBucket(), PathUtil.montagePath(fileInfo.getBasePath(), fileInfo.getPath(), fileInfo.getFileName()));
         return true;
+    }
+
+
+    @Override
+    public void download(FileInfo fileInfo, Consumer<InputStream> consumer) {
+        OSSObject object = getClient().getObject(config.getBucket(), PathUtil.montagePath(fileInfo.getBasePath(), fileInfo.getPath(), fileInfo.getFileName()));
+        try (InputStream in = object.getObjectContent()) {
+            consumer.accept(in);
+        } catch (IOException e) {
+            throw new StorageRuntimeException("文件下载失败！platform：" + fileInfo,e);
+        }
     }
 
     @Override

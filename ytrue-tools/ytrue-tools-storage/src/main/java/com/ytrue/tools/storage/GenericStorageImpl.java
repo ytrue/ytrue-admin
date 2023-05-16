@@ -10,7 +10,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * @author ytrue  TODO 待完善
@@ -34,6 +36,11 @@ public class GenericStorageImpl implements IStorage {
     @Override
     public boolean exists(FileInfo fileInfo) {
         return originalStorage.exists(fileInfo);
+    }
+
+    @Override
+    public void download(FileInfo fileInfo, Consumer<InputStream> consumer) {
+        originalStorage.download(fileInfo,consumer);
     }
 
     /**

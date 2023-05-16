@@ -4,6 +4,9 @@ import com.ytrue.tools.storage.FileInfo;
 import com.ytrue.tools.storage.UploadInfo;
 import org.springframework.beans.factory.InitializingBean;
 
+import java.io.InputStream;
+import java.util.function.Consumer;
+
 /**
  * @author ytrue
  * @date 2023/4251 15:40
@@ -28,9 +31,13 @@ public interface IStorage {
      */
     boolean exists(FileInfo fileInfo);
 
-    //
-//    void download();
-//
+    /**
+     * 下载
+     *
+     * @param fileInfo
+     * @param consumer
+     */
+    void download(FileInfo fileInfo, Consumer<InputStream> consumer);
 
     /**
      * 删除文件

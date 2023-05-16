@@ -14,6 +14,8 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.function.Consumer;
 
 /**
  * @author ytrue
@@ -58,6 +60,16 @@ public class LocalStorage extends AbstractStorage {
     @Override
     public boolean delete(FileInfo fileInfo) {
        return FileUtil.del(new File(getUploadPath(PathUtil.montagePath(fileInfo.getBasePath(), fileInfo.getPath())), fileInfo.getFileName()));
+    }
+
+    @Override
+    public void download(FileInfo fileInfo, Consumer<InputStream> consumer) {
+        // 待处理 TODO
+        try (InputStream in = FileUtil.getInputStream(fileInfo.getBasePath() + fileInfo.getPath() + fileInfo.getFileName())) {
+            consumer.accept(in);
+        } catch (IOException e) {
+            throw new StorageRuntimeException("文件下载失败！platform：" + fileInfo,e);
+        }
     }
 
     @Override

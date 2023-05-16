@@ -12,6 +12,9 @@ import org.apache.tika.Tika;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
+import java.util.function.Consumer;
+
 /**
  * @author ytrue
  * @date 2023/4251 15:40
@@ -31,6 +34,11 @@ public abstract class AbstractStorage implements IStorage, InitializingBean {
 
     @Override
     public boolean delete(FileInfo fileInfo) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void download(FileInfo fileInfo, Consumer<InputStream> consumer) {
         throw new UnsupportedOperationException();
     }
 
