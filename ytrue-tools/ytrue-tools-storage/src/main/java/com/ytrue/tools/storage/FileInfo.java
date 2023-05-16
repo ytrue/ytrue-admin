@@ -38,12 +38,12 @@ public class FileInfo implements Serializable {
     /**
      * 基础存储路径
      */
-    private String basePath;
+    private String basePath = "";
 
     /**
      * 存储路径
      */
-    private String path;
+    private String path = "";
 
     /**
      * 文件扩展名

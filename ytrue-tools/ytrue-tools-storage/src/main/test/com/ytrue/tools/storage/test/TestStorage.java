@@ -3,7 +3,11 @@ package com.ytrue.tools.storage.test;
 import com.ytrue.tools.storage.*;
 import com.ytrue.tools.storage.enums.StorageType;
 import com.ytrue.tools.storage.platform.IStorage;
+import com.ytrue.tools.storage.properties.AliyunOssStorageProperties;
+import com.ytrue.tools.storage.properties.LocalStorageProperties;
+import com.ytrue.tools.storage.properties.QiniuKodoStorageProperties;
 import com.ytrue.tools.storage.properties.TencentCosStorageProperties;
+import com.ytrue.tools.storage.utils.PathUtil;
 import lombok.SneakyThrows;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -12,30 +16,34 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
 
 public class TestStorage {
 
     @Test
-    public void test01() throws FileNotFoundException, InstantiationException, IllegalAccessException, InterruptedException {
+    public void testPathUtil() {
+
+        PathUtil.montagePath("/test", "test", "test/", "/test/test/");
+        PathUtil.montagePath("\\test", "test", "test\\", "\\test/test\\");
+        PathUtil.montagePath("\\test", "test", "test\\", "\\test\\test\\");
+    }
+
+
+    @Test
+    public void test01() throws FileNotFoundException, InstantiationException, IllegalAccessException, InterruptedException, InvocationTargetException, NoSuchMethodException {
         ApplicationContext ac = new AnnotationConfigApplicationContext(Config.class);
 
 
-//       // LocalStorage localStorage = ac.getBean("localStorage", LocalStorage.class);
-//        File file = new File("C:\\Users\\Administrator\\Desktop\\测试目录\\my.png");
-//        UploadInfo uploadInfo = UploadInfo.build(file);
-//
-//
-//        IStorage localStorage = StorageFactory.getInstance(StorageType.cos.name(), new TencentCosStorageProperties());
-//        FileInfo fileInfo = localStorage.upload(uploadInfo);
-//
-//        System.out.println(fileInfo);
-//
-//        System.out.println(localStorage.exists(fileInfo));
-//        System.out.println(localStorage.delete(fileInfo));
-//        System.out.println(localStorage.exists(fileInfo));
 
-        //  System.out.println(upload);
+        // LocalStorage localStorage = ac.getBean("localStorage", LocalStorage.class);
+        File file = new File("C:\\Users\\Administrator\\Desktop\\TEST\\1111.jpg");
+        UploadInfo uploadInfo = UploadInfo.build(file);
+
+        GenericStorageImpl storage = StorageFactory.getInstance(StorageType.local.name(), new LocalStorageProperties());
+
+
+
 
     }
 

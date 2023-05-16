@@ -78,6 +78,8 @@ public abstract class AbstractStorage implements IStorage, InitializingBean {
             fileInfo.setContentType(tika.detect(fileInfo.getFileName()));
         }
 
+        fileInfo.setPlatform(platform());
+
         return fileInfo;
     }
 
@@ -86,7 +88,7 @@ public abstract class AbstractStorage implements IStorage, InitializingBean {
      *
      * @return
      */
-    protected abstract String platform();
+    public abstract String platform();
 
     @Override
     public void afterPropertiesSet() {

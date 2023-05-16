@@ -8,6 +8,7 @@ import com.ytrue.tools.storage.UploadInfo;
 import com.ytrue.tools.storage.enums.StorageType;
 import com.ytrue.tools.storage.exception.StorageRuntimeException;
 import com.ytrue.tools.storage.properties.AliyunOssStorageProperties;
+import com.ytrue.tools.storage.utils.PathUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -53,11 +54,11 @@ public class AliyunOssStorage extends AbstractStorage {
     @Override
     public FileInfo upload(UploadInfo uploadInfo) {
         FileInfo fileInfo = buildFileInfo(uploadInfo);
-        fileInfo.setPlatform(platform());
 
-        String newFileKey = config.getFileHost() + fileInfo.getPath() + fileInfo.getFileName();
+        String newFileKey = PathUtil.montagePath(config.getFileHost(), fileInfo.getPath(), fileInfo.getFileName());
+
         fileInfo.setBasePath(config.getFileHost());
-        fileInfo.setUrl(config.getDomain() + newFileKey);
+        fileInfo.setUrl(config.getDomain() + "/" + newFileKey);
 
         OSS client = getClient();
         try (InputStream in = uploadInfo.getFileWrapper().getInputStream()) {
@@ -78,18 +79,18 @@ public class AliyunOssStorage extends AbstractStorage {
 
     @Override
     public boolean exists(FileInfo fileInfo) {
-        return getClient().doesObjectExist(config.getBucket(), fileInfo.getBasePath() + fileInfo.getPath() + fileInfo.getFileName());
+        return getClient().doesObjectExist(config.getBucket(), PathUtil.montagePath(fileInfo.getBasePath(), fileInfo.getPath(), fileInfo.getFileName()));
     }
 
     @Override
     public boolean delete(FileInfo fileInfo) {
         OSS client = getClient();
-        client.deleteObject(config.getBucket(), fileInfo.getBasePath() + fileInfo.getPath() + fileInfo.getFileName());
+        client.deleteObject(config.getBucket(), PathUtil.montagePath(fileInfo.getBasePath(), fileInfo.getPath(), fileInfo.getFileName()));
         return true;
     }
 
     @Override
-    protected String platform() {
+    public String platform() {
         return StorageType.oss.name();
     }
 }

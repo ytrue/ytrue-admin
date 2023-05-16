@@ -23,12 +23,13 @@ public class StorageFactory {
      * @param key
      * @return
      */
-    public static IStorage getInstance(String key) {
+    public static GenericStorageImpl getInstance(String key) {
         IStorage storage = storageSingletonObject.get(key);
         if (storage == null) {
             throw new StorageRuntimeException("未定义该类型");
         }
-        return storage;
+        // 增强一下
+        return new GenericStorageImpl(storage);
     }
 
     /**
@@ -38,13 +39,13 @@ public class StorageFactory {
      * @param config
      * @return
      */
-    public static IStorage getInstance(String key, BaseStorageProperties config) {
+    public static GenericStorageImpl getInstance(String key, BaseStorageProperties config) {
         Class<? extends IStorage> storageClass = storageSingletonClassName.get(key);
         if (storageClass == null) {
             throw new StorageRuntimeException("未定义该类型");
         }
         // 反射区构建
-        return ReflectUtil.newInstance(storageClass, config);
+        return new GenericStorageImpl(ReflectUtil.newInstance(storageClass, config));
     }
 
     /**

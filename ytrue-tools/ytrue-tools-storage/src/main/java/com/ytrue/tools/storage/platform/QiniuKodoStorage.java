@@ -11,11 +11,13 @@ import com.ytrue.tools.storage.UploadInfo;
 import com.ytrue.tools.storage.enums.StorageType;
 import com.ytrue.tools.storage.exception.StorageRuntimeException;
 import com.ytrue.tools.storage.properties.QiniuKodoStorageProperties;
+import com.ytrue.tools.storage.utils.PathUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -59,11 +61,12 @@ public class QiniuKodoStorage extends AbstractStorage {
     @Override
     public FileInfo upload(UploadInfo uploadInfo) {
         FileInfo fileInfo = buildFileInfo(uploadInfo);
-        fileInfo.setPlatform(platform());
 
-        String newFileKey = config.getFileHost() + fileInfo.getPath() + fileInfo.getFileName();
+        String newFileKey = PathUtil.montagePath(config.getFileHost(), fileInfo.getPath(), fileInfo.getFileName());
+
         fileInfo.setBasePath(config.getFileHost());
-        fileInfo.setUrl(config.getDomain() + newFileKey);
+        fileInfo.setUrl(config.getDomain() + "/" + newFileKey);
+
 
         try (InputStream in = uploadInfo.getFileWrapper().getInputStream()) {
             QiniuKodoClient client = getClient();
@@ -86,7 +89,7 @@ public class QiniuKodoStorage extends AbstractStorage {
     public boolean exists(FileInfo fileInfo) {
         BucketManager manager = getClient().getBucketManager();
         try {
-            com.qiniu.storage.model.FileInfo stat = manager.stat(config.getBucket(), "test/6447818aab30cb6d6b11e68e.png");
+            com.qiniu.storage.model.FileInfo stat = manager.stat(config.getBucket(), PathUtil.montagePath(fileInfo.getBasePath(), fileInfo.getPath(), fileInfo.getFileName()));
             if (stat == null || stat.md5 == null) {
                 return false;
             }
@@ -104,7 +107,7 @@ public class QiniuKodoStorage extends AbstractStorage {
     public boolean delete(FileInfo fileInfo) {
         BucketManager manager = getClient().getBucketManager();
         try {
-            delete(manager, fileInfo.getBasePath() + fileInfo.getPath() + fileInfo.getFileName());
+            delete(manager, PathUtil.montagePath(fileInfo.getBasePath(), fileInfo.getPath(), fileInfo.getFileName()));
         } catch (QiniuException e) {
             throw new StorageRuntimeException("删除文件失败！" + e.code() + "，" + e.response.toString(), e);
         }
@@ -159,7 +162,7 @@ public class QiniuKodoStorage extends AbstractStorage {
     }
 
     @Override
-    protected String platform() {
+    public String platform() {
         return StorageType.kodo.name();
     }
 
