@@ -1,4 +1,4 @@
-package com.ytrue.tools.storage;
+package com.ytrue.tools.storage.test;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

@@ -2,11 +2,7 @@ package com.ytrue.tools.storage.test;
 
 import com.ytrue.tools.storage.*;
 import com.ytrue.tools.storage.enums.StorageType;
-import com.ytrue.tools.storage.platform.IStorage;
-import com.ytrue.tools.storage.properties.AliyunOssStorageProperties;
 import com.ytrue.tools.storage.properties.LocalStorageProperties;
-import com.ytrue.tools.storage.properties.QiniuKodoStorageProperties;
-import com.ytrue.tools.storage.properties.TencentCosStorageProperties;
 import com.ytrue.tools.storage.utils.PathUtil;
 import lombok.SneakyThrows;
 import org.junit.Test;
@@ -17,7 +13,6 @@ import org.springframework.util.ResourceUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.TimeUnit;
 
 public class TestStorage {
 
