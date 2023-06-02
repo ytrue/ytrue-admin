@@ -3,6 +3,7 @@ package com.ytrue.security;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ytrue.common.constant.RedisKeyPrefix;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.excptions.LoginFailureException;
 import com.ytrue.common.utils.AssertUtils;
@@ -14,6 +15,7 @@ import com.ytrue.tools.security.integration.authenticator.AbstractPreparableInte
 import com.ytrue.tools.security.user.LoginUser;
 import com.ytrue.tools.security.user.User;
 import lombok.AllArgsConstructor;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -31,9 +33,11 @@ public class UsernamePasswordAuthenticator extends AbstractPreparableIntegration
 
     private final SysPermissionServiceImpl sysPermissionService;
 
-    private final   SysUserDao sysUserDao;
+    private final SysUserDao sysUserDao;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final StringRedisTemplate redisTemplate;
 
     private final static String AUTH_TYPE = "password";
 
@@ -42,9 +46,26 @@ public class UsernamePasswordAuthenticator extends AbstractPreparableIntegration
         // 获取用户名称 password ， username
         String username = entity.getAuthParameter("username");
         String password = entity.getAuthParameter("password");
+        // 获取验证码
+        String code = entity.getAuthParameter("code");
+        String uuid = entity.getAuthParameter("uuid");
+
         // 校验空
         if (StrUtil.isEmpty(username) || StrUtil.isEmpty(password)) {
             throw new LoginFailureException(ResponseCode.ACCOUNT_PASSWORD_INCORRECT);
+        }
+
+        // 校验uid
+        if (StrUtil.isEmpty(uuid)) {
+            // 非法操作
+            throw new LoginFailureException(ResponseCode.ILLEGAL_OPERATION);
+        }
+
+        // 校验验证码
+        String captchaValue = redisTemplate.opsForValue().get(RedisKeyPrefix.ADMIN_LOGIN_CAPTCHA + uuid);
+        if (StrUtil.isEmpty(captchaValue) || !captchaValue.equals(code)) {
+            // 验证码错误
+            throw new LoginFailureException(ResponseCode.CAPTCHA_NOT_FOUND);
         }
 
         SysUser sysUser = sysUserDao.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, username));

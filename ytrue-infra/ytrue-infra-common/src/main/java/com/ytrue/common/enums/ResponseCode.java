@@ -24,10 +24,10 @@ public enum ResponseCode implements IBaseExceptionCode {
     ACCOUNT_PASSWORD_INCORRECT(4005, "账号或者密码不正确"),
 
 
-
     UNKNOWN(5001, "未知异常"),
     FAIL(5000, "服务器内部错误"),
     DATA_NOT_FOUND(5004, "数据不存在"),
+    ILLEGAL_OPERATION(5005, "非法操作"),
 
 
     SCHEDULED_TASK_EXISTS(6001, "定时任务已存在"),
@@ -37,9 +37,10 @@ public enum ResponseCode implements IBaseExceptionCode {
     PARENT_EQ_ITSELF(6005, "父级不能是自己"),
     HAS_USER_ASSOCIATION(6006, "存在用户关联，请解除后再试"),
     HAS_ROLE_ASSOCIATION(6017, "存在角色关联，请解除后再试"),
-
     OLD_PASSWORD_ERROR(6018, "旧密码错误"),
-    NEW_PASS_NOT_EQUAL_OLD_PASS(6019, "新密码不能与旧密码相同");
+    NEW_PASS_NOT_EQUAL_OLD_PASS(6019, "新密码不能与旧密码相同"),
+    CAPTCHA_MISS_MATCH(6020, "验证码不存在"),
+    CAPTCHA_NOT_FOUND(6021, "验证码错误");
 
 
     /**

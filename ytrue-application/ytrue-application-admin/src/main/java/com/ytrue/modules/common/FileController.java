@@ -28,7 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileController {
 
 
-    @IgnoreWebSecurity
     @PostMapping("upload")
     @Operation(summary = "文件上传")
     public ApiResultResponse<FileInfo> fileUpload(MultipartFile file) {
