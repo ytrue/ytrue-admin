@@ -9,7 +9,6 @@ import lombok.Getter;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -40,8 +39,14 @@ public class GenericStorageImpl implements IStorage {
 
     @Override
     public void download(FileInfo fileInfo, Consumer<InputStream> consumer) {
-        originalStorage.download(fileInfo,consumer);
+        originalStorage.download(fileInfo, consumer);
     }
+
+    @Override
+    public boolean delete(FileInfo fileInfo) {
+        return originalStorage.delete(fileInfo);
+    }
+
 
     /**
      * 根据url判断是否存在
@@ -53,10 +58,6 @@ public class GenericStorageImpl implements IStorage {
         return originalStorage.exists(getFileInfo(url));
     }
 
-    @Override
-    public boolean delete(FileInfo fileInfo) {
-        return originalStorage.delete(fileInfo);
-    }
 
     /**
      * 根据url删除
@@ -68,8 +69,20 @@ public class GenericStorageImpl implements IStorage {
         return this.delete(getFileInfo(url));
     }
 
+
+    /**
+     * 根据url下载
+     *
+     * @param url
+     * @param consumer
+     */
+    public void download(String url, Consumer<InputStream> consumer) {
+        originalStorage.download(getFileInfo(url), consumer);
+    }
+
     /**
      * 获取fileInfo
+     *
      * @param url
      * @return
      */

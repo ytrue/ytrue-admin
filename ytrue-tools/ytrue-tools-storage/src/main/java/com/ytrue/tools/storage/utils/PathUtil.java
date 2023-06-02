@@ -2,8 +2,6 @@ package com.ytrue.tools.storage.utils;
 
 import cn.hutool.core.util.StrUtil;
 
-import java.io.File;
-
 /**
  * @author ytrue
  * @date 2023/5/7 18:05
@@ -20,8 +18,8 @@ public class PathUtil {
     public static String montagePath(String... strList) {
 
         StringBuilder retStr = new StringBuilder();
-        for (int i = 0; i < strList.length; i++) {
-            String str = strList[i];
+        for (String s : strList) {
+            String str = s;
             // 空白不处理
             if (StrUtil.isBlank(str)) {
                 continue;

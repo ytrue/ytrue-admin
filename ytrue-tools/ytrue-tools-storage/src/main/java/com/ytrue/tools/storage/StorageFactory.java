@@ -3,11 +3,16 @@ package com.ytrue.tools.storage;
 import cn.hutool.core.util.ReflectUtil;
 import com.ytrue.tools.storage.exception.StorageRuntimeException;
 import com.ytrue.tools.storage.platform.IStorage;
-import com.ytrue.tools.storage.properties.BaseStorageProperties;
+import com.ytrue.tools.storage.properties.IStorageProperties;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author ytrue
+ * @date 2023/4251 15:40
+ * @description StorageFactory
+ */
 public class StorageFactory {
 
     public static Map<String, IStorage> storageSingletonObject = new HashMap<>();
@@ -39,7 +44,7 @@ public class StorageFactory {
      * @param config
      * @return
      */
-    public static GenericStorageImpl getInstance(String key, BaseStorageProperties config) {
+    public static GenericStorageImpl getInstance(String key, IStorageProperties config) {
         Class<? extends IStorage> storageClass = storageSingletonClassName.get(key);
         if (storageClass == null) {
             throw new StorageRuntimeException("未定义该类型");
@@ -54,7 +59,7 @@ public class StorageFactory {
      * @param key
      * @param storage
      */
-    public static void putMap(String key, IStorage storage) {
+    public static void registerStorage(String key, IStorage storage) {
         storageSingletonObject.put(key, storage);
         storageSingletonClassName.put(key, storage.getClass());
     }
@@ -64,7 +69,7 @@ public class StorageFactory {
      *
      * @param key
      */
-    public static void removeMap(String key) {
+    public static void removeStorage(String key) {
         storageSingletonObject.remove(key);
         storageSingletonClassName.remove(key);
     }

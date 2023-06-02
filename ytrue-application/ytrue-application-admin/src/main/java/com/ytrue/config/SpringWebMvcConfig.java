@@ -22,8 +22,10 @@ public class SpringWebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 文档相关
         registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+        // favicon.ico
         registry.addResourceHandler("/favicon.ico").addResourceLocations("classpath:/static/favicon.ico");
         // idea本地图片访问
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/storage");

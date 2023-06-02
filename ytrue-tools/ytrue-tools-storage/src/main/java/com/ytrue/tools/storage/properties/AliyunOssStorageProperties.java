@@ -4,10 +4,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ * @author ytrue
+ * @date 2023/4251 15:40
+ * @description AliyunOssStorageProperties
+ */
 @ConfigurationProperties(prefix = "ytrue.storage.oss")
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class AliyunOssStorageProperties extends BaseStorageProperties {
+public class AliyunOssStorageProperties implements IStorageProperties {
 
     private String bucket;
 

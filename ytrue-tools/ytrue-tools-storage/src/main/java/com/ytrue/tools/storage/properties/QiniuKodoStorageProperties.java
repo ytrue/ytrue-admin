@@ -3,12 +3,15 @@ package com.ytrue.tools.storage.properties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
+/**
+ * @author ytrue
+ * @date 2023/4251 15:40
+ * @description QiniuKodoStorageProperties
+ */
 @ConfigurationProperties(prefix = "ytrue.storage.kodo")
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class QiniuKodoStorageProperties extends BaseStorageProperties {
+public class QiniuKodoStorageProperties implements IStorageProperties {
 
     private String bucket = "";
 

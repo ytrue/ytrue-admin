@@ -3,12 +3,15 @@ package com.ytrue.tools.storage.properties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
+/**
+ * @author ytrue
+ * @date 2023/4251 15:40
+ * @description TencentCosStorageProperties
+ */
 @ConfigurationProperties(prefix = "ytrue.storage.cos")
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class TencentCosStorageProperties extends BaseStorageProperties {
+public class TencentCosStorageProperties implements IStorageProperties {
     private String bucket = "";
 
     private String region = "";

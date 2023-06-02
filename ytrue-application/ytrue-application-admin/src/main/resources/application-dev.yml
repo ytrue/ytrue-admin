@@ -6,9 +6,6 @@ spring:
   application:
     # 应用名称
     name: ytrue-admin
-  main:
-    # 允许Bean重复注入，后者覆盖前者
-    allow-bean-definition-overriding: true
   # freemarker配置
   freemarker:
     check-template-location: false

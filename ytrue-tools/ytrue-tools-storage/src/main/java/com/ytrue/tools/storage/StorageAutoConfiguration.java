@@ -11,6 +11,12 @@ import com.ytrue.tools.storage.properties.TencentCosStorageProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
+
+/**
+ * @author ytrue
+ * @date 2023/5/7 18:05
+ * @description StorageAutoConfiguration
+ */
 @EnableConfigurationProperties(value = {
         AliyunOssStorageProperties.class,
         LocalStorageProperties.class,

@@ -3,12 +3,15 @@ package com.ytrue.tools.storage.properties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
+/**
+ * @author ytrue
+ * @date 2023/4251 15:40
+ * @description LocalStorageProperties
+ */
 @ConfigurationProperties(prefix = "ytrue.storage.local")
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class LocalStorageProperties extends BaseStorageProperties {
+public class LocalStorageProperties implements IStorageProperties {
 
     /**
      * 本地存储路径

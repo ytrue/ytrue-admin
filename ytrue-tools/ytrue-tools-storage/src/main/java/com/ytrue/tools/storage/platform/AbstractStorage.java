@@ -100,6 +100,6 @@ public abstract class AbstractStorage implements IStorage, InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        StorageFactory.putMap(platform(), this);
+        StorageFactory.registerStorage(platform(), this);
     }
 }
