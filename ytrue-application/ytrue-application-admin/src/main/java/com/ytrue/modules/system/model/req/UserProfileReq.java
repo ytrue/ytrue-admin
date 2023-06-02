@@ -29,4 +29,7 @@ public class UserProfileReq {
 
     @Schema(title = "用户性别")
     private Integer gender;
+
+    @Schema(title = "用户头像")
+    private String avatarPath;
 }

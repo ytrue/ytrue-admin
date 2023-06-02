@@ -21,9 +21,14 @@ springdoc:
       # paths-to-match: '/sys/**'
       # 按包路径匹配
       packages-to-scan: com.ytrue.modules.system.controller
+
     - group: '定时任务'
       # 按包路径匹配
       packages-to-scan: com.ytrue.modules.quartz.controller
+
+    - group: '通用接口'
+      # 按包路径匹配
+      packages-to-scan: com.ytrue.modules.common
 # 接口文档增强
 knife4j:
   # 开启生产环境屏蔽

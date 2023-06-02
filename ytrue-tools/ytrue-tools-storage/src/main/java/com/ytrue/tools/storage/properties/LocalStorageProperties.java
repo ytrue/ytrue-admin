@@ -21,6 +21,6 @@ public class LocalStorageProperties implements IStorageProperties {
     /**
      * 访问域名
      */
-    private String domain = "http://127.0.0.1:7000";
+    private String domain = "";
 
 }

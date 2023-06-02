@@ -1,6 +1,9 @@
 package com.ytrue.modules.system.controller;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.db.mybatis.entity.Pageable;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.ApiResultResponse;
@@ -18,6 +21,11 @@ import com.ytrue.tools.query.entity.QueryEntity;
 import com.ytrue.tools.query.utils.QueryHelp;
 import com.ytrue.tools.security.service.LoginService;
 import com.ytrue.tools.security.util.SecurityUtils;
+import com.ytrue.tools.storage.FileInfo;
+import com.ytrue.tools.storage.GenericStorageImpl;
+import com.ytrue.tools.storage.StorageFactory;
+import com.ytrue.tools.storage.UploadInfo;
+import com.ytrue.tools.storage.enums.StorageType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -25,6 +33,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -113,9 +122,9 @@ public class SysUserController {
         sysUser.setPhone(operation.getPhone());
         sysUser.setGender(operation.getGender());
         sysUser.setNickName(operation.getNickName());
+        sysUser.setAvatarPath(operation.getAvatarPath());
 
         sysUserService.updateById(sysUser);
-
         return ApiResultResponse.success();
     }
 

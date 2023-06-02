@@ -25,3 +25,7 @@ ytrue:
   # 开启操作日志监听
   log:
     enabled: true
+  storage:
+    local:
+      domain: http://127.0.0.1:7000
+      file-host: storage

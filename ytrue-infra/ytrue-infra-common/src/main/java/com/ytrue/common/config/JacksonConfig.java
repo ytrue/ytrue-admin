@@ -113,7 +113,7 @@ public class JacksonConfig {
         objectMapper.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
         /*
           Date日期类型字符串全局处理, 默认格式为：yyyy-MM-dd HH:mm:ss
-          局部处理某个Date属性字段接收或返回日期格式yyyy-MM-dd, 可采用@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")注解标注该属性
+          局部处理某个Date属性字段接收或返回日期格式yyyy-MM-dd, 可采用@JsonFormat(pattern = "yyyy-MM-dd", timezone=TimeZone.GMT8)注解标注该属性
          */
         objectMapper.setDateFormat(new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT));
 

@@ -4,8 +4,12 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ytrue.common.constant.TimeFormat;
+import com.ytrue.common.constant.TimeZone;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -62,5 +66,7 @@ public class ScheduleJob implements Serializable {
 
     @TableField(fill = FieldFill.UPDATE)
     @Schema(title = "更新时间")
+    @JsonFormat(timezone = TimeZone.GMT8, pattern = TimeFormat.DATE_TIME_FORMAT)
+    @DateTimeFormat(pattern = TimeFormat.DATE_TIME_FORMAT)
     private LocalDateTime updateTime;
 }
