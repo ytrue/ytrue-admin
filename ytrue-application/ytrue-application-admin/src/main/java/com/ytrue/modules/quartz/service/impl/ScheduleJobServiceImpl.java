@@ -95,9 +95,12 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateBatch(Long[] jobIds, int status) {
-        Arrays.asList(jobIds).forEach(jobId -> scheduleJobDao.update(null, Wrappers.<ScheduleJob>lambdaUpdate().eq(ScheduleJob::getId, jobId).set(ScheduleJob::getStatus, status)));
 
-
+        Arrays.asList(jobIds).forEach(jobId -> update(
+                Wrappers.<ScheduleJob>lambdaUpdate()
+                        .eq(ScheduleJob::getId, jobId)
+                        .set(ScheduleJob::getStatus, status))
+        );
     }
 
     /**
