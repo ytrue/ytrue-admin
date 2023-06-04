@@ -49,22 +49,8 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
 
 
     @Override
-    public Set<Long> getRoleIdsByDataScope() {
-        // 处理下数据过滤
-        Set<Long> deptIds = dataScopeManager.handleDataScope();
-        Set<Long> roleIds = new HashSet<>();
-        // 如果包含0呢
-        if (CollectionUtil.isNotEmpty(deptIds)) {
-            if (!deptIds.contains(0L)) {
-                roleIds = sysRoleDeptDao.selectList(Wrappers.<SysRoleDept>lambdaQuery().in(SysRoleDept::getDeptId, deptIds)).stream().map(SysRoleDept::getRoleId).collect(Collectors.toSet());
-                // 要把当前账号的角色放入进去，如果级别包含本人
-                String userId = SecurityUtils.getLoginUser().getUser().getUserId();
-                roleIds.addAll(listByUserId(Convert.toLong(userId)).stream().map(SysRole::getId).collect(Collectors.toSet()));
-            } else {
-                roleIds = deptIds;
-            }
-        }
-        return roleIds;
+    public Set<Long> listCurrentAccountRoleId() {
+        return dataScopeManager.listRoleIdDataScope();
     }
 
 

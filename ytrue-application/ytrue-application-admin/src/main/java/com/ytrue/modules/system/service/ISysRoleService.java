@@ -58,5 +58,5 @@ public interface ISysRoleService extends IBaseService<SysRole> {
      *
      * @return
      */
-    Set<Long> getRoleIdsByDataScope();
+    Set<Long> listCurrentAccountRoleId();
 }

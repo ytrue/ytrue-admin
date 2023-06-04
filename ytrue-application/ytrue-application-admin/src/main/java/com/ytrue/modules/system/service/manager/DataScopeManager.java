@@ -1,6 +1,7 @@
 package com.ytrue.modules.system.service.manager;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.convert.Convert;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.modules.system.dao.SysDeptDao;
 import com.ytrue.modules.system.dao.SysRoleDao;
@@ -38,7 +39,36 @@ public class DataScopeManager {
 
     private final SysDeptDao sysDeptDao;
 
-    public Set<Long> handleDataScope() {
+    /**
+     * 获取当前账号能得到的角色id
+     *
+     * @return
+     */
+    public Set<Long> listRoleIdDataScope() {
+        // 处理下数据过滤
+        Set<Long> deptIds = this.listDeptIdDataScope();
+        Set<Long> roleIds = new HashSet<>();
+        // 如果包含0呢
+        if (CollectionUtil.isNotEmpty(deptIds)) {
+            if (!deptIds.contains(0L)) {
+                roleIds = sysRoleDeptDao.selectList(Wrappers.<SysRoleDept>lambdaQuery().in(SysRoleDept::getDeptId, deptIds)).stream().map(SysRoleDept::getRoleId).collect(Collectors.toSet());
+                // 要把当前账号的角色放入进去，如果级别包含本人
+                String userId = SecurityUtils.getLoginUser().getUser().getUserId();
+
+                roleIds.addAll(sysRoleDao.listByUserId(Convert.toLong(userId)).stream().map(SysRole::getId).collect(Collectors.toSet()));
+            } else {
+                roleIds = deptIds;
+            }
+        }
+        return roleIds;
+    }
+
+    /**
+     * 获取当前账号能得到的部门id
+     *
+     * @return
+     */
+    public Set<Long> listDeptIdDataScope() {
         // 返回的数据
         Set<Long> resultIds = new HashSet<>();
 

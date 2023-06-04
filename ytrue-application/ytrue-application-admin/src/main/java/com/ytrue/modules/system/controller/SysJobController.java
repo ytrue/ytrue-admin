@@ -2,18 +2,17 @@ package com.ytrue.modules.system.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.ytrue.db.mybatis.entity.Pageable;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.ApiResultResponse;
 import com.ytrue.common.utils.AssertUtils;
-import com.ytrue.modules.system.model.query.SysJobQuery;
+import com.ytrue.db.mybatis.entity.Pageable;
 import com.ytrue.modules.system.model.po.SysJob;
+import com.ytrue.modules.system.model.query.SysJobQuery;
 import com.ytrue.modules.system.service.ISysJobService;
-import com.ytrue.modules.system.service.manager.DataScopeManager;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.utils.QueryHelp;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,10 +35,9 @@ public class SysJobController {
 
     private final ISysJobService sysJobService;
 
-    private final DataScopeManager dataScopeManager;
 
     @GetMapping("page")
-    @Operation(summary="分页")
+    @Operation(summary = "分页")
     @PreAuthorize("@pms.hasPermission('system:job:page')")
     public ApiResultResponse<IPage<SysJob>> page(SysJobQuery params, Pageable pageable) {
 
@@ -52,7 +50,7 @@ public class SysJobController {
 
 
     @GetMapping("list")
-    @Operation(summary="列表")
+    @Operation(summary = "列表")
     @PreAuthorize("@pms.hasPermission('system:job:list')")
     public ApiResultResponse<List<SysJob>> list() {
         return ApiResultResponse.success(
@@ -65,7 +63,7 @@ public class SysJobController {
     }
 
     @GetMapping("detail/{id}")
-    @Operation(summary="详情")
+    @Operation(summary = "详情")
     @PreAuthorize("@pms.hasPermission('system:job:detail')")
     public ApiResultResponse<SysJob> detail(@PathVariable("id") Long id) {
         SysJob data = sysJobService.getById(id);
@@ -75,7 +73,7 @@ public class SysJobController {
 
     @SysLog
     @PostMapping
-    @Operation(summary="保存")
+    @Operation(summary = "保存")
     @PreAuthorize("@pms.hasPermission('system:job:add')")
     public ApiResultResponse<Object> add(@Validated @RequestBody SysJob sysJob) {
         SysJob job = sysJobService.lambdaQuery().eq(SysJob::getJobName, sysJob.getJobName()).one();
@@ -86,9 +84,9 @@ public class SysJobController {
 
     @SysLog
     @PutMapping
-    @Operation(summary="修改")
+    @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:job:update')")
-    public ApiResultResponse<Object> update(@Validated  @RequestBody SysJob sysJob) {
+    public ApiResultResponse<Object> update(@Validated @RequestBody SysJob sysJob) {
         SysJob job = sysJobService
                 .lambdaQuery()
                 .eq(SysJob::getJobName, sysJob.getJobName())
@@ -101,7 +99,7 @@ public class SysJobController {
 
     @SysLog
     @DeleteMapping
-    @Operation(summary="删除")
+    @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:job:delete')")
     public ApiResultResponse<Object> delete(@RequestBody List<Long> ids) {
         // 需要校验用户与岗位得绑定关系

@@ -51,7 +51,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
     @Override
     public IPage<SysUserListRes> paginate(IPage<SysUserListRes> page, QueryEntity query) {
         // 处理数据过滤
-        Set<Long> deptIds = dataScopeManager.handleDataScope();
+        Set<Long> deptIds = dataScopeManager.listDeptIdDataScope();
         if (!deptIds.contains(0L)) {
             query.addFilter(SysUser::getDeptId, QueryMethod.in, Convert.toList(deptIds), "u");
         } else {

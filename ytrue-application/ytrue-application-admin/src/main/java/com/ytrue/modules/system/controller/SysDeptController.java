@@ -40,7 +40,7 @@ public class SysDeptController {
     @PreAuthorize("@pms.hasPermission('system:dept:list')")
     public ApiResultResponse<List<SysDept>> list(SysDeptQuery params) {
         // 数据范围限制
-        Set<Long> deptIds = sysDeptService.getDeptIdByDataScope();
+        Set<Long> deptIds = sysDeptService.listCurrentAccountDeptId();
         LambdaQueryWrapper<SysDept> queryWrapper = QueryHelp.<SysDept>lambdaQueryWrapperBuilder(params)
                 .in(CollectionUtil.isNotEmpty(deptIds), SysDept::getId, deptIds)
                 .orderByAsc(SysDept::getDeptSort)

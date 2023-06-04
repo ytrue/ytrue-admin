@@ -34,17 +34,19 @@ public class SysMenuController {
     private final ISysMenuService sysMenuService;
 
     @GetMapping("list")
-    @Operation(summary="列表")
+    @Operation(summary = "列表")
     @PreAuthorize("@pms.hasPermission('system:menu:list')")
     public ApiResultResponse<List<SysMenu>> list(SysMenuQuery params) {
 
-        LambdaQueryWrapper<SysMenu> queryWrapper = QueryHelp.<SysMenu>lambdaQueryWrapperBuilder(params).orderByAsc(SysMenu::getMenuSort).orderByDesc(SysMenu::getId);
+        LambdaQueryWrapper<SysMenu> queryWrapper = QueryHelp.<SysMenu>lambdaQueryWrapperBuilder(params)
+                .orderByAsc(SysMenu::getMenuSort)
+                .orderByDesc(SysMenu::getId);
 
         return ApiResultResponse.success(sysMenuService.list(queryWrapper));
     }
 
     @GetMapping("detail/{id}")
-    @Operation(summary="详情")
+    @Operation(summary = "详情")
     @PreAuthorize("@pms.hasPermission('system:menu:detail')")
     public ApiResultResponse<SysMenu> detail(@PathVariable("id") Long id) {
         SysMenu data = sysMenuService.getById(id);
@@ -54,7 +56,7 @@ public class SysMenuController {
 
     @SysLog
     @PostMapping
-    @Operation(summary="保存")
+    @Operation(summary = "保存")
     @PreAuthorize("@pms.hasPermission('system:menu:add')")
     public ApiResultResponse<Object> add(@Validated @RequestBody SysMenu sysMenu) {
         sysMenuService.addMenu(sysMenu);
@@ -63,7 +65,7 @@ public class SysMenuController {
 
     @SysLog
     @PutMapping
-    @Operation(summary="修改")
+    @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:menu:update')")
     public ApiResultResponse<Object> update(@Validated @RequestBody SysMenu sysMenu) {
         sysMenuService.updateMenu(sysMenu);
@@ -72,7 +74,7 @@ public class SysMenuController {
 
     @SysLog
     @DeleteMapping
-    @Operation(summary="删除")
+    @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:menu:delete')")
     public ApiResultResponse<Object> delete(@RequestBody List<Long> ids) {
         sysMenuService.removeBatchMenu(ids);

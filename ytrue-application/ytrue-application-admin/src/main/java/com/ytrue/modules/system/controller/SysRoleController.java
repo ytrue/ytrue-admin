@@ -42,8 +42,11 @@ public class SysRoleController {
     @PreAuthorize("@pms.hasPermission('system:role:page')")
     public ApiResultResponse<IPage<SysRole>> page(SysRoleQuery params, Pageable pageable) {
         // 数据范围限制
-        Set<Long> roleIds = sysRoleService.getRoleIdsByDataScope();
-        LambdaQueryWrapper<SysRole> queryWrapper = QueryHelp.<SysRole>lambdaQueryWrapperBuilder(params).in(CollectionUtil.isNotEmpty(roleIds), SysRole::getId, roleIds).orderByAsc(SysRole::getRoleSort).orderByDesc(SysRole::getId);
+        Set<Long> roleIds = sysRoleService.listCurrentAccountRoleId();
+        LambdaQueryWrapper<SysRole> queryWrapper = QueryHelp.<SysRole>lambdaQueryWrapperBuilder(params)
+                .in(CollectionUtil.isNotEmpty(roleIds), SysRole::getId, roleIds)
+                .orderByAsc(SysRole::getRoleSort)
+                .orderByDesc(SysRole::getId);
 
         return ApiResultResponse.success(sysRoleService.page(pageable.page(), queryWrapper));
     }
@@ -53,8 +56,10 @@ public class SysRoleController {
     @PreAuthorize("@pms.hasPermission('system:role:list')")
     public ApiResultResponse<List<SysRole>> list() {
         // 数据范围限制
-        Set<Long> roleIds = sysRoleService.getRoleIdsByDataScope();
-        LambdaQueryWrapper<SysRole> query = Wrappers.<SysRole>lambdaQuery().in(CollectionUtil.isNotEmpty(roleIds), SysRole::getId, roleIds);
+        Set<Long> roleIds = sysRoleService.listCurrentAccountRoleId();
+        LambdaQueryWrapper<SysRole> query = Wrappers.<SysRole>lambdaQuery()
+                .in(CollectionUtil.isNotEmpty(roleIds), SysRole::getId, roleIds);
+
         List<SysRole> roles = sysRoleService.list(query);
         return ApiResultResponse.success(roles);
     }

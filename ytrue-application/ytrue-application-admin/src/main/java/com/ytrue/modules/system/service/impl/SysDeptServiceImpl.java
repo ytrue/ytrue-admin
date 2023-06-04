@@ -36,8 +36,8 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
 
 
     @Override
-    public Set<Long> getDeptIdByDataScope() {
-        return dataScopeManager.handleDataScope();
+    public Set<Long> listCurrentAccountDeptId() {
+        return dataScopeManager.listDeptIdDataScope();
     }
 
     /**

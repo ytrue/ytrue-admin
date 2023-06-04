@@ -41,5 +41,5 @@ public interface ISysDeptService extends IBaseService<SysDept> {
      *
      * @return
      */
-    Set<Long> getDeptIdByDataScope();
+    Set<Long> listCurrentAccountDeptId();
 }

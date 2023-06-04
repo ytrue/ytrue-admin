@@ -91,7 +91,10 @@ public class SysLoginController {
     @Operation(summary="路由信息")
     @GetMapping("getRouters")
     public ApiResultResponse<List<Tree<String>>> getRouters() {
-        List<Tree<String>> menuTree = sysMenuService.listMenuTreeByUserId(Convert.toLong(SecurityUtils.getLoginUser().getUser().getUserId()));
+        List<Tree<String>> menuTree = sysMenuService.listMenuTreeByUserId(
+                Convert.toLong(
+                        SecurityUtils.getLoginUser().getUser().getUserId()
+                ));
         return ApiResultResponse.success(menuTree);
     }
 
