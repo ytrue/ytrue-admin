@@ -27,5 +27,5 @@ ytrue:
     enabled: true
   storage:
     local:
-      domain: http://127.0.0.1:7000
+      domain: http://192.168.110.139:7000
       file-host: storage

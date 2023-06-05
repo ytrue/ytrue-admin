@@ -41,7 +41,7 @@ public class SysLogAspect {
     @Resource
     private HttpServletRequest request;
 
-    private static final ThreadLocal<OperationLog> THREAD_LOCAL = new ThreadLocal<>();
+    private static final ThreadLocal<OperationLog> THREAD_LOCAL = ThreadLocal.withInitial(OperationLog::new);
 
     private static final String MULTIPART_FORM_DATA = "multipart/form-data";
 
@@ -54,14 +54,6 @@ public class SysLogAspect {
 
     }
 
-    private OperationLog get() {
-        OperationLog sysLog = THREAD_LOCAL.get();
-        if (sysLog == null) {
-            return new OperationLog();
-        }
-        return sysLog;
-    }
-
 
     /**
      * 前置
@@ -72,7 +64,7 @@ public class SysLogAspect {
     public void recordLog(JoinPoint joinPoint) {
         tryCatch((val) -> {
             // 获取OperationLog
-            OperationLog operationLog = get();
+            OperationLog operationLog = THREAD_LOCAL.get();
 
             String controllerDescription = "";
             //获取目标类上的 @Api 注解
@@ -154,7 +146,7 @@ public class SysLogAspect {
     @AfterReturning(returning = "ret", pointcut = "sysLogAspect()")
     public void doAfterReturning(Object ret) {
         tryCatch((aaa) -> {
-            OperationLog operationLog = get();
+            OperationLog operationLog = THREAD_LOCAL.get();
             operationLog.setResult(new Gson().toJson(ret));
             publishEvent(operationLog);
         });
@@ -170,7 +162,7 @@ public class SysLogAspect {
     @AfterThrowing(pointcut = "sysLogAspect()", throwing = "e")
     public void doAfterThrowable(Throwable e) {
         tryCatch((aaa) -> {
-            OperationLog operationLog = get();
+            OperationLog operationLog = THREAD_LOCAL.get();
             operationLog.setType("EX");
             // 异常对象
             operationLog.setExDetail(SysLogUtils.getStackTrace(e));

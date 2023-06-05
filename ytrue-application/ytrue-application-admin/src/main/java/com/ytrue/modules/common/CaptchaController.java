@@ -8,6 +8,8 @@ import com.ytrue.common.enums.CaptchaTypeEnum;
 import com.ytrue.common.utils.ApiResultResponse;
 import com.ytrue.common.utils.CaptchaUtil;
 import com.ytrue.tools.security.annotation.IgnoreWebSecurity;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2023-06-02 14:32
  * @description CaptchaController
  */
+@Tag(name = "验证码")
 @RestController
 @AllArgsConstructor
 public class CaptchaController {
@@ -29,6 +32,7 @@ public class CaptchaController {
     private final StringRedisTemplate redisTemplate;
 
     @IgnoreWebSecurity
+    @Operation(summary = "获取验证码")
     @GetMapping("/captcha")
     public ApiResultResponse<Map<String, Object>> captcha() {
 
