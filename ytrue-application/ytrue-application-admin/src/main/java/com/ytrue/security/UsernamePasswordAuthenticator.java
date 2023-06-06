@@ -3,7 +3,7 @@ package com.ytrue.security;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ytrue.common.constant.RedisKeyPrefix;
+import com.ytrue.common.enums.RedisKeyPrefixEnum;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.excptions.LoginFailureException;
 import com.ytrue.common.utils.AssertUtils;
@@ -19,7 +19,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 
 /**
@@ -62,7 +61,7 @@ public class UsernamePasswordAuthenticator extends AbstractPreparableIntegration
         }
 
         // 校验验证码
-        String captchaValue = redisTemplate.opsForValue().get(RedisKeyPrefix.ADMIN_LOGIN_CAPTCHA + uuid);
+        String captchaValue = redisTemplate.opsForValue().get(RedisKeyPrefixEnum.ADMIN_LOGIN_CAPTCHA.getValue() + uuid);
         if (StrUtil.isEmpty(captchaValue) || !captchaValue.equals(code)) {
             // 验证码错误
             throw new LoginFailureException(ResponseCode.CAPTCHA_NOT_FOUND);

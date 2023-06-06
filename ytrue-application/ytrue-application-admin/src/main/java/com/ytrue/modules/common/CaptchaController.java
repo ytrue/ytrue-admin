@@ -2,7 +2,7 @@ package com.ytrue.modules.common;
 
 import cn.hutool.core.util.IdUtil;
 import com.wf.captcha.base.Captcha;
-import com.ytrue.common.constant.RedisKeyPrefix;
+import com.ytrue.common.enums.RedisKeyPrefixEnum;
 import com.ytrue.common.constant.StrPool;
 import com.ytrue.common.enums.CaptchaTypeEnum;
 import com.ytrue.common.utils.ApiResultResponse;
@@ -46,7 +46,7 @@ public class CaptchaController {
         }
 
         // 缓存,2分钟过期
-        redisTemplate.opsForValue().set(RedisKeyPrefix.ADMIN_LOGIN_CAPTCHA + uuid, captchaValue, 2L, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(RedisKeyPrefixEnum.ADMIN_LOGIN_CAPTCHA.getValue() + uuid, captchaValue, 2L, TimeUnit.MINUTES);
 
         // 验证码信息
         Map<String, Object> result = new HashMap<String, Object>(2) {{
