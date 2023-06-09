@@ -52,7 +52,7 @@ public class MpQueryLimitAspect {
                     lastSqlField.setAccessible(true);
                     SharedString sharedString = (SharedString) lastSqlField.get(wrapper);
 
-                    String lastSql = sharedString.getStringValue();
+                    String lastSql = sharedString.getStringValue().toUpperCase();
                     if (!lastSql.contains(LIMIT)) {
                         lastSql += LIMIT_ONE;
                     }
