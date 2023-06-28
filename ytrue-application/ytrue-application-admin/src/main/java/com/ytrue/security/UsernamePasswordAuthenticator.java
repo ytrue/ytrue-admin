@@ -80,7 +80,7 @@ public class UsernamePasswordAuthenticator extends AbstractPreparableIntegration
         user.setAuthorities(sysPermissionService.getPermission(sysUser));
         user.setRoles(sysPermissionService.getRoleCode(sysUser));
         // 设置邮箱
-        HashMap<String, String> extend = new HashMap<>(16);
+        HashMap<String, String> extend = new HashMap<>(2);
         extend.put("email", sysUser.getEmail());
         user.setExtend(extend);
 

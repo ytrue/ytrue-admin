@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ytrue.common.constant.TimeFormat;
+import com.ytrue.common.constant.DataFormat;
 import com.ytrue.common.constant.TimeZone;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -68,7 +68,7 @@ public class SysUser {
     private Boolean status;
 
     @Schema(title = "是否为admin账号")
-    private Boolean isAdmin;
+    private Boolean admin;
 
     @Schema(title = "最后修改密码的时间")
     private LocalDateTime pwdResetTime;
@@ -83,13 +83,13 @@ public class SysUser {
 
     @TableField(fill = FieldFill.INSERT)
     @Schema(title = "创建时间")
-    @JsonFormat(timezone = TimeZone.GMT8,pattern = TimeFormat.DATE_TIME_FORMAT)
-    @DateTimeFormat(pattern = TimeFormat.DATE_TIME_FORMAT)
+    @JsonFormat(timezone = TimeZone.GMT8,pattern = DataFormat.DATE_TIME_FORMAT)
+    @DateTimeFormat(pattern = DataFormat.DATE_TIME_FORMAT)
     private LocalDateTime createTime;
 
     @TableField(fill = FieldFill.UPDATE)
     @Schema(title = "更新时间")
-    @JsonFormat(timezone = TimeZone.GMT8,pattern = TimeFormat.DATE_TIME_FORMAT)
-    @DateTimeFormat(pattern = TimeFormat.DATE_TIME_FORMAT)
+    @JsonFormat(timezone = TimeZone.GMT8,pattern = DataFormat.DATE_TIME_FORMAT)
+    @DateTimeFormat(pattern = DataFormat.DATE_TIME_FORMAT)
     private LocalDateTime updateTime;
 }

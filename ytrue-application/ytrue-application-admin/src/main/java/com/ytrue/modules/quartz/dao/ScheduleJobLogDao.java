@@ -1,6 +1,6 @@
 package com.ytrue.modules.quartz.dao;
 
-import com.ytrue.db.mybatis.base.IBaseDao;
+import com.ytrue.db.base.IBaseDao;
 import com.ytrue.modules.quartz.model.po.ScheduleJobLog;
 
 /**

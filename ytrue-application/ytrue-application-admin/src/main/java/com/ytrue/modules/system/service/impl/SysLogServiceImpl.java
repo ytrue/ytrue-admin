@@ -1,6 +1,6 @@
 package com.ytrue.modules.system.service.impl;
 
-import com.ytrue.db.mybatis.base.BaseServiceImpl;
+import com.ytrue.db.base.BaseServiceImpl;
 import com.ytrue.modules.system.dao.SysLogDao;
 import com.ytrue.modules.system.model.po.SysLog;
 import com.ytrue.modules.system.service.ISysLogService;

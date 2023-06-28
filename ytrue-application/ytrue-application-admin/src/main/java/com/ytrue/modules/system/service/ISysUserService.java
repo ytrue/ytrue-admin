@@ -1,7 +1,7 @@
 package com.ytrue.modules.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.ytrue.db.mybatis.base.IBaseService;
+import com.ytrue.db.base.IBaseService;
 import com.ytrue.modules.system.model.res.SysUserDetailRes;
 import com.ytrue.modules.system.model.po.SysUser;
 import com.ytrue.modules.system.model.req.SysUserReq;

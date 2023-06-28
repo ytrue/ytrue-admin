@@ -1,6 +1,6 @@
 package com.ytrue.modules.quartz.service.impl;
 
-import com.ytrue.db.mybatis.base.BaseServiceImpl;
+import com.ytrue.db.base.BaseServiceImpl;
 import com.ytrue.modules.quartz.dao.ScheduleJobLogDao;
 import com.ytrue.modules.quartz.model.po.ScheduleJobLog;
 import com.ytrue.modules.quartz.service.IScheduleJobLogService;

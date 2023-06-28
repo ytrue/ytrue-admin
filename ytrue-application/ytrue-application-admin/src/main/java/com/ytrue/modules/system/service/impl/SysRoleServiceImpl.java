@@ -1,9 +1,7 @@
 package com.ytrue.modules.system.service.impl;
 
-import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.convert.Convert;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ytrue.db.mybatis.base.BaseServiceImpl;
+import com.ytrue.db.base.BaseServiceImpl;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.AssertUtils;
 import com.ytrue.common.utils.BeanUtils;
@@ -14,16 +12,13 @@ import com.ytrue.modules.system.model.po.SysRoleDept;
 import com.ytrue.modules.system.model.po.SysRoleMenu;
 import com.ytrue.modules.system.service.ISysRoleService;
 import com.ytrue.modules.system.service.manager.DataScopeManager;
-import com.ytrue.tools.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author ytrue

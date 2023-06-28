@@ -53,13 +53,23 @@ public class LoginServiceImpl implements LoginService {
         String userId = user1.getUserId();
 
         //加入缓存
-        redisTemplate.opsForValue().set(securityProperties.getTokenCachePrefix() + userId, new Gson().toJson(user1), jwtProperties.getTokenExpireTime(), TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set(
+                securityProperties.getTokenCachePrefix() + userId,
+                new Gson().toJson(user1),
+                jwtProperties.getTokenExpireTime(),
+                TimeUnit.MILLISECONDS
+        );
 
         //把token响应给前端，使用map是未来后期扩展，这里还会加入过期事件，刷新token等...
-        HashMap<String, String> map = new HashMap<>(16);
-        map.put("token", jwtOperation.createToken(userId));
-        map.put("expireTime", jwtProperties.getTokenExpireTime().toString());
-        return map;
+        HashMap<String, String> resultMap = new HashMap<>(2);
+
+        // 自定义载体
+        HashMap<String, Object> claimsMap = new HashMap<>(2);
+        claimsMap.put("userId", userId);
+
+        resultMap.put("token", jwtOperation.createToken(claimsMap));
+        resultMap.put("expireTime", jwtProperties.getTokenExpireTime().toString());
+        return resultMap;
     }
 
     /**

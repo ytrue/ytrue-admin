@@ -77,7 +77,7 @@ public class DataScopeManager {
         SysUser sysUser = sysUserDao.selectById(SecurityUtils.getLoginUser().getUser().getUserId());
 
         // 超级管理员不做限制
-        if (sysUser.getIsAdmin()) {
+        if (sysUser.getAdmin()) {
             return Collections.emptySet();
         }
         // 获取角色集合

@@ -1,7 +1,7 @@
 package com.ytrue.modules.system.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ytrue.db.mybatis.base.BaseServiceImpl;
+import com.ytrue.db.base.BaseServiceImpl;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.AssertUtils;
 import com.ytrue.modules.system.dao.SysDeptDao;

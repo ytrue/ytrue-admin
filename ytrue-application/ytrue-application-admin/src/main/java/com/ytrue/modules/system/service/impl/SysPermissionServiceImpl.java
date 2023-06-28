@@ -5,6 +5,7 @@ import com.ytrue.modules.system.dao.SysRoleDao;
 import com.ytrue.modules.system.dao.SysUserDao;
 import com.ytrue.modules.system.model.po.SysUser;
 import com.ytrue.modules.system.service.ISysPermissionService;
+import com.ytrue.tools.security.permission.PermissionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,9 +30,9 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
     @Override
     public Set<String> getRoleCode(SysUser user) {
         // 管理员拥有所有权限
-        if (user.getIsAdmin()) {
+        if (user.getAdmin()) {
             Set<String> roles = new HashSet<>();
-            roles.add("admin");
+            roles.add(PermissionService.SUPER_ADMIN);
             return roles;
         }
         return sysRoleDao.listRoleCodeByUserId(user.getId()).stream().filter(StrUtil::isNotEmpty).collect(Collectors.toSet());
@@ -40,9 +41,9 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
     @Override
     public Set<String> getPermission(SysUser user) {
         // 管理员拥有所有权限
-        if (user.getIsAdmin()) {
+        if (user.getAdmin()) {
             Set<String> perms = new HashSet<>();
-            perms.add("*:*:*");
+            perms.add(PermissionService.ALL_PERMISSION);
             return perms;
         }
         // 处理下逗号
@@ -51,6 +52,5 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
                 .flatMap(s -> Arrays.stream(s.trim().split(",")))
                 .collect(Collectors.toSet());
     }
-
 
 }

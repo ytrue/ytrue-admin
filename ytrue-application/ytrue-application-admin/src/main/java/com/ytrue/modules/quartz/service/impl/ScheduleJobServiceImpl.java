@@ -1,7 +1,7 @@
 package com.ytrue.modules.quartz.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ytrue.db.mybatis.base.BaseServiceImpl;
+import com.ytrue.db.base.BaseServiceImpl;
 import com.ytrue.modules.quartz.dao.ScheduleJobDao;
 import com.ytrue.modules.quartz.enums.ScheduleStatusEnum;
 import com.ytrue.modules.quartz.model.po.ScheduleJob;

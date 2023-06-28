@@ -21,8 +21,6 @@ ytrue-admin                                                                     
 │
 ├── ytrue-service                                                                # 业务逻辑层
 │
-├── ytrue-manager                                                                # 通用处理层
-
 ├── ytrue-bean                                                                   # java bean
 │              ├── po                                                            #  
 │              ├── req                                                           #  

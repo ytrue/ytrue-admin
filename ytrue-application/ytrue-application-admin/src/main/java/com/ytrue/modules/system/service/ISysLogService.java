@@ -1,6 +1,6 @@
 package com.ytrue.modules.system.service;
 
-import com.ytrue.db.mybatis.base.IBaseService;
+import com.ytrue.db.base.IBaseService;
 import com.ytrue.modules.system.model.po.SysLog;
 
 /**

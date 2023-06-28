@@ -6,7 +6,7 @@ import cn.hutool.core.lang.tree.TreeNodeConfig;
 import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ytrue.db.mybatis.base.BaseServiceImpl;
+import com.ytrue.db.base.BaseServiceImpl;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.AssertUtils;
 import com.ytrue.modules.system.dao.SysMenuDao;
@@ -105,7 +105,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
         AssertUtils.notNull(sysUser, ResponseCode.DATA_NOT_FOUND);
 
         List<SysMenu> menus;
-        if (sysUser.getIsAdmin()) {
+        if (sysUser.getAdmin()) {
             menus = lambdaQuery().eq(SysMenu::getStatus, 1).in(SysMenu::getMenuType, "M", "C").orderByAsc(SysMenu::getPid).orderByAsc(SysMenu::getMenuSort).list();
         } else {
             // 根据用户查询

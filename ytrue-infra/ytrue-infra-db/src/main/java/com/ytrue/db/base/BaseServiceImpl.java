@@ -1,4 +1,4 @@
-package com.ytrue.db.mybatis.base;
+package com.ytrue.db.base;
 
 import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;

@@ -1,7 +1,7 @@
 package com.ytrue.serviceimpl;
 
 
-import com.ytrue.manager.GoodsManager;
+
 import com.ytrue.service.IGoodsService;
 
 /**
@@ -10,6 +10,4 @@ import com.ytrue.service.IGoodsService;
  * @date 2022/12/6 16:51
  */
 public class GoodsServiceImpl implements IGoodsService {
-
-    private GoodsManager goodsManager;
 }

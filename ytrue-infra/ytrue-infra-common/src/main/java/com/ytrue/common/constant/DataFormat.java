@@ -3,9 +3,9 @@ package com.ytrue.common.constant;
 /**
  * @author ytrue
  * @date 2023-06-02 10:37
- * @description TimeFormat
+ * @description DataFormat
  */
-public interface TimeFormat {
+public interface DataFormat {
 
     /**
      * 默认日期时间格式

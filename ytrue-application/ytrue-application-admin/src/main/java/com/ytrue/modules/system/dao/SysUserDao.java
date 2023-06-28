@@ -1,7 +1,7 @@
 package com.ytrue.modules.system.dao;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.ytrue.db.mybatis.base.IBaseDao;
+import com.ytrue.db.base.IBaseDao;
 import com.ytrue.modules.system.model.po.SysUser;
 import com.ytrue.modules.system.model.res.SysUserListRes;
 import com.ytrue.tools.query.entity.QueryEntity;

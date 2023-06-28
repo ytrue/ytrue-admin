@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ytrue.common.enums.ResponseCode;
 import com.ytrue.common.utils.ApiResultResponse;
 import com.ytrue.common.utils.AssertUtils;
-import com.ytrue.db.mybatis.entity.Pageable;
+import com.ytrue.db.entity.Pageable;
 import com.ytrue.modules.system.model.po.SysJob;
 import com.ytrue.modules.system.model.query.SysJobQuery;
 import com.ytrue.modules.system.service.ISysJobService;

@@ -1,7 +1,7 @@
 package com.ytrue.modules.system.service;
 
 import cn.hutool.core.lang.tree.Tree;
-import com.ytrue.db.mybatis.base.IBaseService;
+import com.ytrue.db.base.IBaseService;
 import com.ytrue.modules.system.model.po.SysMenu;
 
 import java.util.List;

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ytrue.common.constant.TimeFormat;
+import com.ytrue.common.constant.DataFormat;
 import com.ytrue.common.constant.TimeZone;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -53,14 +53,14 @@ public class SysJob implements Serializable {
 
     @TableField(fill = FieldFill.INSERT)
     @Schema(title = "创建时间")
-    @JsonFormat(timezone = TimeZone.GMT8,pattern = TimeFormat.DATE_TIME_FORMAT)
-    @DateTimeFormat(pattern = TimeFormat.DATE_TIME_FORMAT)
+    @JsonFormat(timezone = TimeZone.GMT8,pattern = DataFormat.DATE_TIME_FORMAT)
+    @DateTimeFormat(pattern = DataFormat.DATE_TIME_FORMAT)
     private LocalDateTime createTime;
 
 
     @TableField(fill = FieldFill.UPDATE)
     @Schema(title = "更新时间")
-    @JsonFormat(timezone = TimeZone.GMT8,pattern = TimeFormat.DATE_TIME_FORMAT)
-    @DateTimeFormat(pattern = TimeFormat.DATE_TIME_FORMAT)
+    @JsonFormat(timezone = TimeZone.GMT8,pattern = DataFormat.DATE_TIME_FORMAT)
+    @DateTimeFormat(pattern = DataFormat.DATE_TIME_FORMAT)
     private LocalDateTime updateTime;
 }

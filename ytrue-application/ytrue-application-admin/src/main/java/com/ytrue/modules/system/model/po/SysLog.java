@@ -3,7 +3,7 @@ package com.ytrue.modules.system.model.po;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ytrue.common.constant.TimeFormat;
+import com.ytrue.common.constant.DataFormat;
 import com.ytrue.common.constant.TimeZone;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -64,13 +64,13 @@ public class SysLog implements Serializable {
     private String exDetail;
 
     @Schema(title = "开始时间")
-    @JsonFormat(timezone = TimeZone.GMT8,pattern = TimeFormat.DATE_TIME_FORMAT)
-    @DateTimeFormat(pattern = TimeFormat.DATE_TIME_FORMAT)
+    @JsonFormat(timezone = TimeZone.GMT8,pattern = DataFormat.DATE_TIME_FORMAT)
+    @DateTimeFormat(pattern = DataFormat.DATE_TIME_FORMAT)
     private LocalDateTime startTime;
 
     @Schema(title = "结束时间")
-    @JsonFormat(timezone = TimeZone.GMT8,pattern = TimeFormat.DATE_TIME_FORMAT)
-    @DateTimeFormat(pattern = TimeFormat.DATE_TIME_FORMAT)
+    @JsonFormat(timezone = TimeZone.GMT8,pattern = DataFormat.DATE_TIME_FORMAT)
+    @DateTimeFormat(pattern = DataFormat.DATE_TIME_FORMAT)
     private LocalDateTime endTime;
 
     @Schema(title = "消耗时间")

@@ -1,4 +1,4 @@
-package com.ytrue.db.mybatis.config;
+package com.ytrue.db.config;
 
 import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;

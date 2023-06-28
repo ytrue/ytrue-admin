@@ -2,8 +2,6 @@ package com.ytrue.tools.security.filter;
 
 import cn.hutool.core.util.StrUtil;
 import com.google.gson.Gson;
-import com.ytrue.tools.security.excptions.AuthenticationFailureException;
-import com.ytrue.tools.security.excptions.AuthorizationFailureException;
 import com.ytrue.tools.security.excptions.InvalidTokenException;
 import com.ytrue.tools.security.properties.SecurityProperties;
 import com.ytrue.tools.security.user.LoginUser;
@@ -17,6 +15,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -49,6 +48,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
+        // 获取token
         String token = request.getHeader(securityProperties.getAuthorizationHeaderParameterName());
 
         //如果header没有token就是直接放行
@@ -57,10 +57,19 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             return;
         }
 
+        // 获取去掉前缀的token
+        token = jwtOperation.getOriginalToken(token);
+
         String userId;
         try {
-            Jws<Claims> claims = jwtOperation.parseToken(token);
-            userId = claims.getBody().getSubject();
+            // 获取jwt的载体
+            Claims claims = jwtOperation.parseToken(token);
+            userId = jwtOperation.getValue(claims, "userId");
+
+            // 再次验证一下
+            if (StrUtil.isBlank(userId)) {
+                throw new InvalidTokenException("无效token");
+            }
         } catch (Exception e) {
             throw new InvalidTokenException("无效token");
         }
@@ -69,7 +78,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         if (StrUtil.isEmpty(userJsonData)) {
             throw new InvalidTokenException("无效token");
         }
-
 
         User user = new Gson().fromJson(userJsonData, User.class);
 

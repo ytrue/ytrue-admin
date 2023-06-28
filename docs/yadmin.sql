@@ -724,7 +724,7 @@ CREATE TABLE `sys_user`  (
   `avatar_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '头像地址',
   `avatar_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '头像真实路径',
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '密码',
-  `is_admin` bit(1) NULL DEFAULT b'0' COMMENT '是否为admin账号:1=是,0=否',
+  `admin` tinyint(1) NULL DEFAULT 0 COMMENT '是否为admin账号:1=是,0=否',
   `status` tinyint(1) NULL DEFAULT NULL COMMENT '状态:1=启用,0=禁用',
   `create_by` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建者',
   `update_by` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '更新者',

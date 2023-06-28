@@ -10,7 +10,6 @@
     <modules>
         <module>ytrue-application</module>
         <module>ytrue-service</module>
-        <module>ytrue-manager</module>
         <module>ytrue-tools</module>
         <module>ytrue-infra</module>
         <module>ytrue-bean</module>
