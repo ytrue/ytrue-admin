@@ -22,12 +22,12 @@ import java.util.List;
 public class MpQueryLimitAspect {
 
 
-    private final static String LIMIT_ONE = " limit 1";
-    private final static String LIMIT = " limit";
+    private final static String LIMIT_ONE = " LIMIT 1";
+    private final static String LIMIT = " LIMIT";
 
 
     @Pointcut("execution(public * com.baomidou.mybatisplus.extension.service.impl.ServiceImpl.getOne(..)) || " +
-            "execution(public * com.baomidou.mybatisplus.core.mapper.BaseMapper.selectOne(..)))")
+              "execution(public * com.baomidou.mybatisplus.core.mapper.BaseMapper.selectOne(..)))")
     public void appendLimit() {
     }
 
@@ -42,7 +42,7 @@ public class MpQueryLimitAspect {
         if (methodArgs.length > 0) {
             // 如果第一个参数是 AbstractWrapper 类型
             if (methodArgs[0] instanceof AbstractWrapper) {
-                // 操作处理
+
                 AbstractWrapper wrapper = (AbstractWrapper) methodArgs[0];
 
                 // 获取对应的字段

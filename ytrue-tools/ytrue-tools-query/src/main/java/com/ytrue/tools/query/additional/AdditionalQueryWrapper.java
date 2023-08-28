@@ -1,6 +1,7 @@
-package com.ytrue.tools.query.builder;
+package com.ytrue.tools.query.additional;
 
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ytrue.tools.query.entity.Filter;
@@ -8,7 +9,6 @@ import com.ytrue.tools.query.entity.QueryEntity;
 import com.ytrue.tools.query.entity.Sort;
 import com.ytrue.tools.query.enums.Operator;
 import com.ytrue.tools.query.enums.QueryMethod;
-import com.ytrue.tools.query.utils.EmptyUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.util.HashMap;
@@ -27,11 +27,19 @@ public class AdditionalQueryWrapper {
     static {
         APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.eq, (queryWrapper, filter) -> queryWrapper.eq(filter.getColumn(), filter.getValue()));
         APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.ne, (queryWrapper, filter) -> queryWrapper.ne(filter.getColumn(), filter.getValue()));
+
+        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.gt, (queryWrapper, filter) -> queryWrapper.gt(filter.getColumn(), filter.getValue()));
+        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.lt, (queryWrapper, filter) -> queryWrapper.lt(filter.getColumn(), filter.getValue()));
+        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.ge, (queryWrapper, filter) -> queryWrapper.gt(filter.getColumn(), filter.getValue()));
+        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.le, (queryWrapper, filter) -> queryWrapper.le(filter.getColumn(), filter.getValue()));
+
+
         APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.like, (queryWrapper, filter) -> queryWrapper.like(filter.getColumn(), filter.getValue()));
         APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.likeLeft, (queryWrapper, filter) -> queryWrapper.likeLeft(filter.getColumn(), filter.getValue()));
         APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.likeRight, (queryWrapper, filter) -> queryWrapper.likeRight(filter.getColumn(), filter.getValue()));
         APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.between, (queryWrapper, filter) -> queryWrapper.between(filter.getColumn(), ((List<?>) filter.getValue()).get(0), ((List<?>) filter.getValue()).get(1)));
         APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.in, (queryWrapper, filter) -> queryWrapper.in(filter.getColumn(), filter.getValue()));
+        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.notin, (queryWrapper, filter) -> queryWrapper.notIn(filter.getColumn(), filter.getValue()));
     }
 
 
@@ -50,7 +58,7 @@ public class AdditionalQueryWrapper {
         if (!CollectionUtils.isEmpty(filters)) {
             filters.forEach(filter -> {
                 // 如果是null就不处理
-                if (EmptyUtils.isEmpty(filter.getValue())) {
+                if (ObjectUtil.isNull(filter.getValue())) {
                     return;
                 }
                 // 进行匹配

@@ -1,7 +1,7 @@
 package com.ytrue.tools.query.interceptor;
 
-import com.ytrue.tools.query.builder.AdditionalSqlCondition;
-import com.ytrue.tools.query.builder.AdditionalSqlSort;
+import com.ytrue.tools.query.additional.AdditionalSqlCondition;
+import com.ytrue.tools.query.additional.AdditionalSqlSort;
 import com.ytrue.tools.query.entity.Filter;
 import com.ytrue.tools.query.entity.QueryEntity;
 import com.ytrue.tools.query.entity.Sort;
@@ -45,7 +45,8 @@ public class ConditionInterceptor implements Interceptor {
 
         // 如果是多个参数 这里就要处理
         if (value instanceof MapperMethod.ParamMap) {
-            ((MapperMethod.ParamMap) value).forEach((k, v) -> {
+            MapperMethod.ParamMap paramMap = (MapperMethod.ParamMap) value;
+            paramMap.forEach((k, v) -> {
                 if (v instanceof QueryEntity) {
                     queryEntitySet.add((QueryEntity) v);
                 }
@@ -66,7 +67,6 @@ public class ConditionInterceptor implements Interceptor {
         // 附加sql条件
         AdditionalSqlCondition additionalSqlCondition = new AdditionalSqlCondition();
         String appendWhereConditionSql = additionalSqlCondition.appendWhereCondition(sql, filterSet);
-
         //如果是原来的sql 那就不用处理了
         if (!sql.equals(appendWhereConditionSql)) {
             // 替换之前的sql

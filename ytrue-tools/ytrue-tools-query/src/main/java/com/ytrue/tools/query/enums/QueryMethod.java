@@ -41,4 +41,14 @@ public enum QueryMethod {
      * in
      */
     in,
+
+    notin,
+
+    gt,
+
+    lt,
+
+    ge,
+
+    le,
 }

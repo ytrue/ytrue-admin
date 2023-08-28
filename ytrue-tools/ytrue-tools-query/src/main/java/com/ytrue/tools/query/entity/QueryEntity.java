@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.LambdaUtils;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
-import com.ytrue.tools.query.builder.AdditionalQueryWrapper;
-import com.ytrue.tools.query.builder.AdditionalSqlCondition;
-import com.ytrue.tools.query.builder.AdditionalSqlSort;
+import com.ytrue.tools.query.additional.AdditionalQueryWrapper;
+import com.ytrue.tools.query.additional.AdditionalSqlCondition;
+import com.ytrue.tools.query.additional.AdditionalSqlSort;
 import com.ytrue.tools.query.enums.Operator;
 import com.ytrue.tools.query.enums.QueryMethod;
 import lombok.Data;
@@ -121,6 +121,9 @@ public class QueryEntity implements Serializable {
         return new QueryEntityBuilder();
     }
 
+    /**
+     * 构建者模式
+     */
     public static final class QueryEntityBuilder {
         private LinkedHashSet<Filter> filters = new LinkedHashSet<>();
         private LinkedHashSet<Sort> sorts = new LinkedHashSet<>();
@@ -209,6 +212,12 @@ public class QueryEntity implements Serializable {
         filters.add(new Filter(getFieldName(func), method, value, alias, operator));
         return this;
     }
+
+    public <T> QueryEntity addFilter(String str, QueryMethod method, Object value, String alias, Operator operator) {
+        filters.add(new Filter(str, method, value, alias, operator));
+        return this;
+    }
+
 
     /**
      * 追加排序

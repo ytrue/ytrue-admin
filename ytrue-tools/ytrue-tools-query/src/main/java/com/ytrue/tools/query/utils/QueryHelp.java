@@ -1,17 +1,21 @@
 package com.ytrue.tools.query.utils;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.ytrue.tools.query.additional.AdditionalQueryWrapper;
 import com.ytrue.tools.query.annotation.Query;
-import com.ytrue.tools.query.builder.AdditionalQueryWrapper;
-import com.ytrue.tools.query.entity.QueryEntity;
 import com.ytrue.tools.query.entity.Filter;
+import com.ytrue.tools.query.entity.QueryEntity;
 import com.ytrue.tools.query.enums.QueryMethod;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  * @author ytrue
@@ -27,7 +31,7 @@ public class QueryHelp {
     }
 
     /**
-     * po =>> QueryWrapper
+     * po or queryEntity  =>> QueryWrapper
      *
      * @param query
      * @param <T>
@@ -35,9 +39,19 @@ public class QueryHelp {
      */
     public static <T> QueryWrapper<T> queryWrapperBuilder(Object query) {
         QueryWrapper<T> queryWrapper = new QueryWrapper<>();
-        queryWrapperBuilder(queryWrapper, query);
+
+        if (query instanceof QueryEntity) {
+            // 进行构建
+            AdditionalQueryWrapper additionalQueryWrapper = new AdditionalQueryWrapper();
+            additionalQueryWrapper.queryWrapperBuilder(queryWrapper, (QueryEntity) query);
+
+        } else {
+            queryWrapperBuilder(queryWrapper, query);
+        }
+
         return queryWrapper;
     }
+
 
     /**
      * po =>> QueryWrapper
@@ -51,6 +65,7 @@ public class QueryHelp {
         // 构建
         additionalQueryWrapper.queryWrapperBuilder(queryWrapper, queryEntityBuilder(query));
     }
+
 
     /**
      * po =>> fields
@@ -77,7 +92,6 @@ public class QueryHelp {
         try {
             // 循环处理
             for (Field field : fields) {
-                boolean accessible = field.isAccessible();
                 // 设置对象的访问权限，保证对private的属性的访
                 field.setAccessible(true);
                 Query q = field.getAnnotation(Query.class);
@@ -91,7 +105,7 @@ public class QueryHelp {
                     // 获取值
                     Object value = field.get(query);
                     // 如果是null就不处理
-                    if (EmptyUtils.isEmpty(value)) {
+                    if (ObjectUtil.isNull(value)) {
                         continue;
                     }
                     // 构建

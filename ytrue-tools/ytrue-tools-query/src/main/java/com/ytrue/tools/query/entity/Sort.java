@@ -1,6 +1,5 @@
 package com.ytrue.tools.query.entity;
 
-import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -2,7 +2,6 @@ package com.ytrue.tools.query.entity;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
