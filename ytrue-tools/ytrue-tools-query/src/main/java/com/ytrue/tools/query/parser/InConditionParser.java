@@ -1,7 +1,7 @@
 package com.ytrue.tools.query.parser;
 
 import com.ytrue.tools.query.entity.Filter;
-import com.ytrue.tools.query.utils.ExpressionGenerator;
+import com.ytrue.tools.query.util.ExpressionGenerator;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
 import net.sf.jsqlparser.expression.operators.relational.InExpression;
@@ -22,7 +22,7 @@ public class InConditionParser implements ConditionParser {
         // 强转list,如果强转不了，这里抛移除
         List<?> valueList = (List<?>) filter.getValue();
         // 创建左侧表达式
-        Expression leftExpression = ExpressionGenerator.generateExpression(getColumnAlias(filter));
+        Expression leftExpression = ExpressionGenerator.generateExpression(filter.getColumnAlias());
 
         // 创建值列表
         List<Expression> inValueDataList = new ArrayList<>();

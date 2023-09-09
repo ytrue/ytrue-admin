@@ -8,7 +8,7 @@ import com.ytrue.common.utils.ApiResultResponse;
 import com.ytrue.modules.quartz.model.query.ScheduleJobLogQuery;
 import com.ytrue.modules.quartz.model.po.ScheduleJobLog;
 import com.ytrue.modules.quartz.service.IScheduleJobLogService;
-import com.ytrue.tools.query.utils.QueryHelp;
+import com.ytrue.tools.query.util.QueryHelp;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;

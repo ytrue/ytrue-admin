@@ -1,4 +1,4 @@
-package com.ytrue.tools.query.utils;
+package com.ytrue.tools.query.util;
 
 
 import net.sf.jsqlparser.expression.DoubleValue;

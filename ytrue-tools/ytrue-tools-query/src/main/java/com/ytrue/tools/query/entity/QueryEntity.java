@@ -180,39 +180,52 @@ public class QueryEntity implements Serializable {
      * 追加字段--有用到指定的再加了...
      */
     public QueryEntity addFilter(String column, QueryMethod method, Object value) {
-        filters.add(new Filter(column, method, value));
-        return this;
+        return this.addFilter(column, method, value, "", Operator.and);
     }
+
 
     /**
      * 追加字段
      */
     public <T> QueryEntity addFilter(SFunction<T, ?> func, QueryMethod method, Object value) {
-        return addFilter(func, method, value, "", Operator.and);
+        return this.addFilter(func, method, value, "", Operator.and);
     }
 
     /**
      * 追加字段
      */
     public <T> QueryEntity addFilter(SFunction<T, ?> func, QueryMethod method, Object value, String alias) {
-        return addFilter(func, method, value, alias, Operator.and);
+        return this.addFilter(func, method, value, alias, Operator.and);
     }
 
     /**
      * 追加字段
      */
     public <T> QueryEntity addFilter(SFunction<T, ?> func, QueryMethod method, Object value, Operator operator) {
-        return addFilter(func, method, value, "", operator);
+        return this.addFilter(func, method, value, "", operator);
+
+
     }
 
     /**
      * 追加字段
      */
     public <T> QueryEntity addFilter(SFunction<T, ?> func, QueryMethod method, Object value, String alias, Operator operator) {
-        filters.add(new Filter(getFieldName(func), method, value, alias, operator));
-        return this;
+        return this.addFilter(getFieldName(func), method, value, alias, operator);
     }
 
+
+    /**
+     * 最全的
+     *
+     * @param str
+     * @param method
+     * @param value
+     * @param alias
+     * @param operator
+     * @param <T>
+     * @return
+     */
     public <T> QueryEntity addFilter(String str, QueryMethod method, Object value, String alias, Operator operator) {
         filters.add(new Filter(str, method, value, alias, operator));
         return this;
@@ -227,8 +240,7 @@ public class QueryEntity implements Serializable {
      * @return
      */
     public QueryEntity addSort(String column, boolean isAsc) {
-        sorts.add(new Sort(column, isAsc));
-        return this;
+        return this.addSort(column, isAsc, "");
     }
 
     /**
@@ -239,8 +251,7 @@ public class QueryEntity implements Serializable {
      * @return
      */
     public <T> QueryEntity addSort(SFunction<T, ?> func, boolean isAsc) {
-        sorts.add(new Sort(getFieldName(func), isAsc));
-        return this;
+        return this.addSort(getFieldName(func), isAsc, "");
     }
 
     /**
@@ -251,8 +262,13 @@ public class QueryEntity implements Serializable {
      * @return
      */
     public <T> QueryEntity addSort(SFunction<T, ?> func, boolean isAsc, String alias) {
-        sorts.add(new Sort(getFieldName(func), isAsc, alias));
+        return this.addSort(getFieldName(func), isAsc, alias);
+    }
+
+    public <T> QueryEntity addSort(String column, boolean isAsc, String alias) {
+        sorts.add(new Sort(column, isAsc, alias));
         return this;
     }
+
 
 }

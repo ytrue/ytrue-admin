@@ -8,7 +8,7 @@ import com.ytrue.modules.system.model.query.SysMenuQuery;
 import com.ytrue.modules.system.model.po.SysMenu;
 import com.ytrue.modules.system.service.ISysMenuService;
 import com.ytrue.tools.log.annotation.SysLog;
-import com.ytrue.tools.query.utils.QueryHelp;
+import com.ytrue.tools.query.util.QueryHelp;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;

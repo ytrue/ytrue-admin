@@ -1,5 +1,6 @@
 package com.ytrue.tools.query.entity;
 
+import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,5 +34,15 @@ public class Sort {
     public Sort(String column, Boolean asc) {
         this.column = column;
         this.asc = asc;
+    }
+
+    public String getColumnAlias() {
+
+        String column = this.getColumn();
+
+        if (StrUtil.isNotBlank(this.getAlias())) {
+            column = this.getAlias() + "." + column;
+        }
+        return column;
     }
 }

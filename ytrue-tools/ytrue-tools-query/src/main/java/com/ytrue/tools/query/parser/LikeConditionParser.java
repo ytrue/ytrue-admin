@@ -2,9 +2,8 @@ package com.ytrue.tools.query.parser;
 
 import com.baomidou.mybatisplus.core.toolkit.sql.StringEscape;
 import com.ytrue.tools.query.entity.Filter;
-import com.ytrue.tools.query.enums.Operator;
 import com.ytrue.tools.query.enums.QueryMethod;
-import com.ytrue.tools.query.utils.ExpressionGenerator;
+import com.ytrue.tools.query.util.ExpressionGenerator;
 import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.StringValue;
@@ -20,7 +19,7 @@ public class LikeConditionParser implements ConditionParser {
     @Override
     public Expression parser(Filter filter) throws Exception {
         // 创建左侧表达式
-        Expression leftExpression = ExpressionGenerator.generateExpression(getColumnAlias(filter));
+        Expression leftExpression = ExpressionGenerator.generateExpression(filter.getColumnAlias());
 
 
         // 这个模糊查询基本都是字符串

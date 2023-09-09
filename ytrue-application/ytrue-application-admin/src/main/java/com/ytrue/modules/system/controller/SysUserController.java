@@ -15,7 +15,7 @@ import com.ytrue.modules.system.model.res.SysUserListRes;
 import com.ytrue.modules.system.service.ISysUserService;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.entity.QueryEntity;
-import com.ytrue.tools.query.utils.QueryHelp;
+import com.ytrue.tools.query.util.QueryHelp;
 import com.ytrue.tools.security.service.LoginService;
 import com.ytrue.tools.security.util.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;

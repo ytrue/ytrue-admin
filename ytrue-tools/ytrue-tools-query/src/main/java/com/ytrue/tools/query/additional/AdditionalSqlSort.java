@@ -81,10 +81,7 @@ public class AdditionalSqlSort {
         for (Sort sort : sorts) {
             OrderByElement orderByElement = new OrderByElement();
 
-            String column = sort.getColumn();
-            if (StrUtil.isNotBlank(sort.getAlias())) {
-                column = sort.getAlias() + "." + column;
-            }
+            String column = sort.getColumnAlias();
             orderByElement.setExpression(CCJSqlParserUtil.parseExpression(column));
             orderByElement.setAsc(sort.getAsc());
             orderByElements.add(orderByElement);

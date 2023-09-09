@@ -10,7 +10,7 @@ import com.ytrue.common.utils.AssertUtils;
 import com.ytrue.modules.quartz.model.query.ScheduleJobSearchQuery;
 import com.ytrue.modules.quartz.model.po.ScheduleJob;
 import com.ytrue.modules.quartz.service.IScheduleJobService;
-import com.ytrue.tools.query.utils.QueryHelp;
+import com.ytrue.tools.query.util.QueryHelp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;

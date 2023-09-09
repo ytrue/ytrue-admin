@@ -10,7 +10,7 @@ import com.ytrue.modules.system.model.po.SysJob;
 import com.ytrue.modules.system.model.query.SysJobQuery;
 import com.ytrue.modules.system.service.ISysJobService;
 import com.ytrue.tools.log.annotation.SysLog;
-import com.ytrue.tools.query.utils.QueryHelp;
+import com.ytrue.tools.query.util.QueryHelp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;

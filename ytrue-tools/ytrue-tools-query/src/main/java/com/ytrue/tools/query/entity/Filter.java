@@ -1,5 +1,6 @@
 package com.ytrue.tools.query.entity;
 
+import cn.hutool.core.util.StrUtil;
 import com.ytrue.tools.query.enums.Operator;
 import com.ytrue.tools.query.enums.QueryMethod;
 import lombok.Data;
@@ -73,4 +74,18 @@ public class Filter {
         this.operator = operator;
     }
 
+    /**
+     * 获取字段别名
+     *
+     * @return
+     */
+    public String getColumnAlias() {
+
+        String column = this.getColumn();
+
+        if (StrUtil.isNotBlank(this.getAlias())) {
+            column = this.getAlias() + "." + column;
+        }
+        return column;
+    }
 }

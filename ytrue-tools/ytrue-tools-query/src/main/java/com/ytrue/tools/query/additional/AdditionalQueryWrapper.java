@@ -12,6 +12,7 @@ import com.ytrue.tools.query.enums.QueryMethod;
 import org.springframework.util.CollectionUtils;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -25,22 +26,23 @@ public class AdditionalQueryWrapper {
     private static final HashMap<QueryMethod, AppendQueryWrapper> APPEND_QUERY_WRAPPER_MAP = new HashMap<>();
 
     static {
-        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.eq, (queryWrapper, filter) -> queryWrapper.eq(filter.getColumn(), filter.getValue()));
-        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.ne, (queryWrapper, filter) -> queryWrapper.ne(filter.getColumn(), filter.getValue()));
+        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.eq, (queryWrapper, filter) -> queryWrapper.eq(filter.getColumnAlias(), filter.getValue()));
+        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.ne, (queryWrapper, filter) -> queryWrapper.ne(filter.getColumnAlias(), filter.getValue()));
 
-        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.gt, (queryWrapper, filter) -> queryWrapper.gt(filter.getColumn(), filter.getValue()));
-        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.lt, (queryWrapper, filter) -> queryWrapper.lt(filter.getColumn(), filter.getValue()));
-        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.ge, (queryWrapper, filter) -> queryWrapper.gt(filter.getColumn(), filter.getValue()));
-        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.le, (queryWrapper, filter) -> queryWrapper.le(filter.getColumn(), filter.getValue()));
+        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.gt, (queryWrapper, filter) -> queryWrapper.gt(filter.getColumnAlias(), filter.getValue()));
+        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.lt, (queryWrapper, filter) -> queryWrapper.lt(filter.getColumnAlias(), filter.getValue()));
+        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.ge, (queryWrapper, filter) -> queryWrapper.gt(filter.getColumnAlias(), filter.getValue()));
+        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.le, (queryWrapper, filter) -> queryWrapper.le(filter.getColumnAlias(), filter.getValue()));
 
 
-        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.like, (queryWrapper, filter) -> queryWrapper.like(filter.getColumn(), filter.getValue()));
-        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.likeLeft, (queryWrapper, filter) -> queryWrapper.likeLeft(filter.getColumn(), filter.getValue()));
-        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.likeRight, (queryWrapper, filter) -> queryWrapper.likeRight(filter.getColumn(), filter.getValue()));
-        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.between, (queryWrapper, filter) -> queryWrapper.between(filter.getColumn(), ((List<?>) filter.getValue()).get(0), ((List<?>) filter.getValue()).get(1)));
-        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.in, (queryWrapper, filter) -> queryWrapper.in(filter.getColumn(), filter.getValue()));
-        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.notin, (queryWrapper, filter) -> queryWrapper.notIn(filter.getColumn(), filter.getValue()));
+        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.like, (queryWrapper, filter) -> queryWrapper.like(filter.getColumnAlias(), filter.getValue()));
+        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.likeLeft, (queryWrapper, filter) -> queryWrapper.likeLeft(filter.getColumnAlias(), filter.getValue()));
+        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.likeRight, (queryWrapper, filter) -> queryWrapper.likeRight(filter.getColumnAlias(), filter.getValue()));
+        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.between, (queryWrapper, filter) -> queryWrapper.between(filter.getColumnAlias(), ((List<?>) filter.getValue()).get(0), ((List<?>) filter.getValue()).get(1)));
+        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.in, (queryWrapper, filter) -> queryWrapper.in(filter.getColumnAlias(), filter.getValue()));
+        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.notin, (queryWrapper, filter) -> queryWrapper.notIn(filter.getColumnAlias(), filter.getValue()));
     }
+
 
 
     /**
@@ -50,9 +52,36 @@ public class AdditionalQueryWrapper {
      * @param queryEntity
      */
     public void queryWrapperBuilder(QueryWrapper<?> queryWrapper, QueryEntity queryEntity) {
-
         Set<Filter> filters = queryEntity.getFilters();
         Set<Sort> sorts = queryEntity.getSorts();
+
+        queryWrapperBuilder(queryWrapper, filters);
+        queryWrapperBuilder(queryWrapper, sorts);
+    }
+
+
+    public void queryWrapperBuilder(QueryWrapper<?> queryWrapper, Set<?> filterOrSortSet) {
+
+        // 空处理
+        if (queryWrapper == null) {
+            throw new NullPointerException("queryWrapper  is null");
+        }
+        // 要判断一下是否为空，不然会报空指针异常
+        if (CollectionUtils.isEmpty(filterOrSortSet)) {
+            return;
+        }
+
+        Set<Filter> filters = new LinkedHashSet<>();
+        Set<Sort> sorts = new LinkedHashSet<>();
+        // 循环处理下数据
+        filterOrSortSet.forEach(item -> {
+            if (item instanceof Filter) {
+                filters.add((Filter) item);
+            }
+            if (item instanceof Sort) {
+                sorts.add((Sort) item);
+            }
+        });
 
         //要判断一下是否为空，不然会报空指针异常
         if (!CollectionUtils.isEmpty(filters)) {
@@ -75,8 +104,7 @@ public class AdditionalQueryWrapper {
         //要判断一下是否为空，不然会报空指针异常
         if (!CollectionUtils.isEmpty(sorts)) {
             sorts.forEach(filter -> {
-                // 进行匹配
-                sorts.forEach(sort -> queryWrapper.orderBy(StrUtil.isNotBlank(sort.getColumn()), sort.getAsc(), sort.getColumn()));
+                sorts.forEach(sort -> queryWrapper.orderBy(StrUtil.isNotBlank(sort.getColumnAlias()), sort.getAsc(), sort.getColumn()));
             });
         }
     }

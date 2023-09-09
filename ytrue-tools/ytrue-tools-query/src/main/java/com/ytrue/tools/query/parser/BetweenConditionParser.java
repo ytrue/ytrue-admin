@@ -1,7 +1,7 @@
 package com.ytrue.tools.query.parser;
 
 import com.ytrue.tools.query.entity.Filter;
-import com.ytrue.tools.query.utils.ExpressionGenerator;
+import com.ytrue.tools.query.util.ExpressionGenerator;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.operators.relational.Between;
 
@@ -28,7 +28,7 @@ public class BetweenConditionParser implements ConditionParser {
         Object end = escapeStringValue(list.get(1));
 
         // 创建左侧表达式
-        Expression leftExpression = ExpressionGenerator.generateExpression(getColumnAlias(filter));
+        Expression leftExpression = ExpressionGenerator.generateExpression(filter.getColumnAlias());
         // 创建右侧表达式
 
         // 创建 Between 对象表示 BETWEEN 条件

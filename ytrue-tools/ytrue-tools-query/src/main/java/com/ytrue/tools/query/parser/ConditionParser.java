@@ -1,6 +1,5 @@
 package com.ytrue.tools.query.parser;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.sql.StringEscape;
 import com.ytrue.tools.query.entity.Filter;
 import net.sf.jsqlparser.expression.Expression;
@@ -17,6 +16,7 @@ public interface ConditionParser {
      *
      * @param filter
      * @return
+     * @throws Exception
      */
     Expression parser(Filter filter) throws Exception;
 
@@ -38,21 +38,5 @@ public interface ConditionParser {
             return str;
         }
         return value;
-    }
-
-    /**
-     * 获取字段别名
-     *
-     * @param filter
-     * @return
-     */
-    default String getColumnAlias(Filter filter) {
-
-        String column = filter.getColumn();
-
-        if (StrUtil.isNotBlank(filter.getAlias())) {
-            column = filter.getAlias() + "." + column;
-        }
-        return column;
     }
 }

@@ -1,4 +1,4 @@
-package com.ytrue.tools.query.utils;
+package com.ytrue.tools.query.util;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -12,10 +12,7 @@ import com.ytrue.tools.query.enums.QueryMethod;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author ytrue
@@ -39,12 +36,12 @@ public class QueryHelp {
      */
     public static <T> QueryWrapper<T> queryWrapperBuilder(Object query) {
         QueryWrapper<T> queryWrapper = new QueryWrapper<>();
-
+        AdditionalQueryWrapper additionalQueryWrapper = new AdditionalQueryWrapper();
+        // 进行构建
         if (query instanceof QueryEntity) {
-            // 进行构建
-            AdditionalQueryWrapper additionalQueryWrapper = new AdditionalQueryWrapper();
             additionalQueryWrapper.queryWrapperBuilder(queryWrapper, (QueryEntity) query);
-
+        } else if (query instanceof Set<?>) {
+            additionalQueryWrapper.queryWrapperBuilder(queryWrapper, (Set<?>) query);
         } else {
             queryWrapperBuilder(queryWrapper, query);
         }

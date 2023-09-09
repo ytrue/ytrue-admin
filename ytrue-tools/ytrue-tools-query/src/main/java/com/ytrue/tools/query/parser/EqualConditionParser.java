@@ -1,7 +1,7 @@
 package com.ytrue.tools.query.parser;
 
 import com.ytrue.tools.query.entity.Filter;
-import com.ytrue.tools.query.utils.ExpressionGenerator;
+import com.ytrue.tools.query.util.ExpressionGenerator;
 import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
@@ -17,7 +17,7 @@ public class EqualConditionParser implements ConditionParser {
         // 创建左侧表达式
 
 
-        Expression leftExpression = ExpressionGenerator.generateExpression(getColumnAlias(filter));
+        Expression leftExpression = ExpressionGenerator.generateExpression(filter.getColumnAlias());
 
 
         // 创建右侧表达式
