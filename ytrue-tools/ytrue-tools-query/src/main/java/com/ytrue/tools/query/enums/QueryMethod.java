@@ -37,6 +37,8 @@ public enum QueryMethod {
      */
     between,
 
+    notBetween,
+
     /**
      * in
      */
@@ -51,4 +53,6 @@ public enum QueryMethod {
     ge,
 
     le,
+
+
 }

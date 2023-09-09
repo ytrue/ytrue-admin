@@ -15,7 +15,7 @@ import java.util.List;
 public class BetweenConditionParser implements ConditionParser {
 
     @Override
-    public Expression parser(Filter filter) throws Exception {
+    public Between parser(Filter filter) throws Exception {
         // 强转list，暂不不定义其他的
         List<?> list = (List<?>) filter.getValue();
 

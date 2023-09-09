@@ -38,7 +38,10 @@ public class AdditionalQueryWrapper {
         APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.like, (queryWrapper, filter) -> queryWrapper.like(filter.getColumnAlias(), filter.getValue()));
         APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.likeLeft, (queryWrapper, filter) -> queryWrapper.likeLeft(filter.getColumnAlias(), filter.getValue()));
         APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.likeRight, (queryWrapper, filter) -> queryWrapper.likeRight(filter.getColumnAlias(), filter.getValue()));
+
         APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.between, (queryWrapper, filter) -> queryWrapper.between(filter.getColumnAlias(), ((List<?>) filter.getValue()).get(0), ((List<?>) filter.getValue()).get(1)));
+        APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.notBetween, (queryWrapper, filter) -> queryWrapper.notBetween(filter.getColumnAlias(), ((List<?>) filter.getValue()).get(0), ((List<?>) filter.getValue()).get(1)));
+
         APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.in, (queryWrapper, filter) -> queryWrapper.in(filter.getColumnAlias(), filter.getValue()));
         APPEND_QUERY_WRAPPER_MAP.put(QueryMethod.notin, (queryWrapper, filter) -> queryWrapper.notIn(filter.getColumnAlias(), filter.getValue()));
     }

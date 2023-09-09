@@ -28,6 +28,7 @@ public class ConditionParserFactory {
         CONDITION_PARSER_MAP.put(QueryMethod.in, new InConditionParser());
         CONDITION_PARSER_MAP.put(QueryMethod.notin, new NotInConditionParser());
         CONDITION_PARSER_MAP.put(QueryMethod.between, new BetweenConditionParser());
+        CONDITION_PARSER_MAP.put(QueryMethod.notBetween, new NotBetweenConditionParser());
     }
 
     public static ConditionParser getInstance(QueryMethod queryMethod) {
