@@ -1,8 +1,8 @@
 package com.ytrue.tools.security;
 
 import com.ytrue.tools.security.annotation.IgnoreWebSecurity;
-import com.ytrue.tools.security.authentication.dao.LoginAuthenticationProvider;
 import com.ytrue.tools.security.constant.HttpRequestType;
+import com.ytrue.tools.security.dao.LoginAuthenticationProvider;
 import com.ytrue.tools.security.filter.JwtAuthenticationTokenFilter;
 import com.ytrue.tools.security.handler.AccessDeniedHandlerImpl;
 import com.ytrue.tools.security.handler.AuthenticationEntryPointImpl;
@@ -17,20 +17,30 @@ import com.ytrue.tools.security.service.LoginService;
 import com.ytrue.tools.security.service.impl.LoginServiceImpl;
 import com.ytrue.tools.security.service.impl.UserDetailsServiceImpl;
 import com.ytrue.tools.security.util.JwtOperation;
+import jakarta.annotation.Resource;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
-
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -40,7 +50,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -48,8 +57,11 @@ import java.util.*;
  * @date 2022/5/12 14:05
  * @description SecurityAutoConfiguration
  */
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
+@Configuration
+@EnableMethodSecurity
+public class SecurityAutoConfiguration implements ApplicationContextAware {
+
+    private ApplicationContext applicationContext;
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
@@ -100,9 +112,10 @@ public class SecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     @ConditionalOnMissingBean
-    public LoginService loginService() throws Exception {
-
-        return new LoginServiceImpl(this.authenticationManager(), stringRedisTemplate, jwtOperation(), securityProperties(), jwtProperties());
+    public LoginService loginService(HttpSecurity httpSecurity) throws Exception {
+        // 这个玩法不知道对不对
+        AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class).build();
+        return new LoginServiceImpl(authenticationManager, stringRedisTemplate, jwtOperation(), securityProperties(), jwtProperties());
     }
 
 
@@ -142,10 +155,9 @@ public class SecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
      * @return UserDetailsService
      */
     @Bean
-    @Override
     public UserDetailsService userDetailsService() {
         // WebSecurityConfigurerAdapter类有已经有ApplicationContext，不要再去实现 getApplicationContextAware，不然会空指针
-        Map<String, IntegrationAuthenticator> integrationAuthenticatorMap = getApplicationContext().getBeansOfType(IntegrationAuthenticator.class);
+        Map<String, IntegrationAuthenticator> integrationAuthenticatorMap = applicationContext.getBeansOfType(IntegrationAuthenticator.class);
 
         ArrayList<IntegrationAuthenticator> integrationAuthenticators = new ArrayList<>();
 
@@ -181,54 +193,71 @@ public class SecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
 
 
     /**
+     * SecurityContextHolder还有其他两种模式，分别为
+     * SecurityContextHolder.MODE_GLOBAL
+     * SecurityContextHolder.MODE_INHERITABLETHREADLOCAL
+     * 前者表示SecurityContextHolder对象的全局的，应用中所有线程都可以访问；
+     * 后者用于线程有父子关系的情境中，线程希望自己的子线程和自己有相同的安全性
+     *
+     * @return
+     */
+    @Bean
+    public InitializingBean initializingBean() {
+        return () -> SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+    }
+
+    /**
      * 进行配置
      *
      * @param http
      * @throws Exception
      */
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
                 //关闭csrf
-                .csrf().disable()
+                .csrf(AbstractHttpConfigurer::disable)
                 //不通过Session获取SecurityContext
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // 获取配置
         Map<String, HashSet<String>> ignoreAuthConfig = ignoreAuthConfig();
         // 允许匿名访问
-        http.authorizeRequests()
-                .antMatchers(HttpMethod.GET, ignoreAuthConfig.get(HttpRequestType.GET).toArray(new String[0])).anonymous()
-                .antMatchers(HttpMethod.POST, ignoreAuthConfig.get(HttpRequestType.POST).toArray(new String[0])).anonymous()
-                .antMatchers(HttpMethod.DELETE, ignoreAuthConfig.get(HttpRequestType.DELETE).toArray(new String[0])).anonymous()
-                .antMatchers(HttpMethod.PUT, ignoreAuthConfig.get(HttpRequestType.PUT).toArray(new String[0])).anonymous()
-                .antMatchers(HttpMethod.HEAD, ignoreAuthConfig.get(HttpRequestType.HEAD).toArray(new String[0])).anonymous()
-                .antMatchers(HttpMethod.PATCH, ignoreAuthConfig.get(HttpRequestType.PATCH).toArray(new String[0])).anonymous()
-                .antMatchers(HttpMethod.OPTIONS, ignoreAuthConfig.get(HttpRequestType.OPTIONS).toArray(new String[0])).anonymous()
-                .antMatchers(HttpMethod.TRACE, ignoreAuthConfig.get(HttpRequestType.TRACE).toArray(new String[0])).anonymous()
-                .antMatchers(ignoreAuthConfig.get(HttpRequestType.PATTERN).toArray(new String[0])).anonymous()
+        http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry.requestMatchers(
+                        HttpMethod.GET, ignoreAuthConfig.get(HttpRequestType.GET).toArray(new String[0]))
+                .anonymous().requestMatchers(HttpMethod.POST, ignoreAuthConfig.get(HttpRequestType.POST).toArray(new String[0]))
+                .anonymous().requestMatchers(HttpMethod.DELETE, ignoreAuthConfig.get(HttpRequestType.DELETE).toArray(new String[0]))
+                .anonymous().requestMatchers(HttpMethod.PUT, ignoreAuthConfig.get(HttpRequestType.PUT).toArray(new String[0]))
+                .anonymous().requestMatchers(HttpMethod.HEAD, ignoreAuthConfig.get(HttpRequestType.HEAD).toArray(new String[0]))
+                .anonymous().requestMatchers(HttpMethod.PATCH, ignoreAuthConfig.get(HttpRequestType.PATCH).toArray(new String[0]))
+                .anonymous().requestMatchers(HttpMethod.OPTIONS, ignoreAuthConfig.get(HttpRequestType.OPTIONS).toArray(new String[0]))
+                .anonymous().requestMatchers(HttpMethod.TRACE, ignoreAuthConfig.get(HttpRequestType.TRACE).toArray(new String[0]))
+                .anonymous().requestMatchers(ignoreAuthConfig.get(HttpRequestType.PATTERN).toArray(new String[0])).anonymous()
                 // 除上面外的所有请求全部需要鉴权认证
-                .anyRequest().authenticated();
+                .anyRequest().authenticated());
+
 
         // spring security使用X-Frame-Options防止网页被Frame 这里禁用掉
-        http.headers().frameOptions().disable();
-
+        http.headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
         // 这里禁用登出，让用户自定义处理
-        http.logout().disable();
+        http.logout(AbstractHttpConfigurer::disable);
 
         //配置异常处理器
-        http.exceptionHandling()
+        http.exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer
                 //配置认证失败处理器
                 .authenticationEntryPoint(authenticationEntryPoint())
                 //配置授权失败处理器
-                .accessDeniedHandler(accessDeniedHandler());
+                .accessDeniedHandler(accessDeniedHandler()));
 
         //添加过滤器
         http.addFilterBefore(integrationAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationTokenFilter(), IntegrationAuthenticationFilter.class);
 
         //允许跨域
-        http.cors();
+        http.cors(AbstractHttpConfigurer::disable);
+
+        return http.build();
     }
 
 
@@ -300,4 +329,8 @@ public class SecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
         return new HashSet<>();
     }
 
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 }

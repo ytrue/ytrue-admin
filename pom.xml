@@ -1,68 +1,64 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ytrue</groupId>
     <artifactId>ytrue-admin</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>ytrue-application</module>
-        <module>ytrue-service</module>
-        <module>ytrue-tools</module>
-        <module>ytrue-infra</module>
-        <module>ytrue-bean</module>
-    </modules>
     <packaging>pom</packaging>
 
+    <name>ytrue-admin</name>
+    <modules>
+        <module>ytrue-app</module>
+        <module>ytrue-bean</module>
+        <module>ytrue-infra</module>
+        <module>ytrue-service</module>
+        <module>ytrue-tools</module>
+    </modules>
+
+
     <properties>
-        <java.version>1.8</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.compilerVersion>17</maven.compiler.compilerVersion>
+        <java.version>17</java.version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!--spring boot版本-->
-        <spring-boot.version>2.7.10</spring-boot.version>
-
+        <spring-boot.version>3.1.2</spring-boot.version>
+        <!--hutool工具库-->
+        <hutool.version>5.8.21</hutool.version>
         <!--mysql数据库操作-->
-        <mybatisplus.version>3.5.2</mybatisplus.version>
+        <mybatisplus.version>3.5.3.1</mybatisplus.version>
         <mysql.version>8.0.31</mysql.version>
-
-        <!--文档-->
-        <knife4j-version>4.1.0</knife4j-version>
-        <swagger-core-version>2.2.8</swagger-core-version>
-
         <!--jwt-->
         <jjwt.version>0.9.0</jjwt.version>
-
-        <!--简化get 和set-->
-        <lombok-version>1.18.26</lombok-version>
+        <!--文档-->
+        <knife4j.version>4.2.0</knife4j.version>
+        <swagger-core.version>2.2.8</swagger-core.version>
+        <!--图形验证码-->
+        <easy-captcha.version>1.6.2</easy-captcha.version>
         <!-- ytrue-tools-->
         <ytrue-tools-version>1.0-SNAPSHOT</ytrue-tools-version>
+        <revision>1.0-SNAPSHOT</revision>
+        <!--定时任务-->
+        <xxl-job>2.4.0</xxl-job>
     </properties>
 
-
     <dependencies>
-        <!--springboot starter-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-
-        <!--lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok-version}</version>
+            <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.8.11</version>
+            <version>${hutool.version}</version>
         </dependency>
     </dependencies>
-
 
     <dependencyManagement>
         <dependencies>
@@ -74,8 +70,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
-
             <!--数据库操作-->
             <dependency>
                 <groupId>com.baomidou</groupId>
@@ -87,27 +81,6 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.version}</version>
             </dependency>
-
-            <!--文档-->
-            <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
-                <version>${knife4j-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger.core.v3</groupId>
-                <artifactId>swagger-core</artifactId>
-                <version>${swagger-core-version}</version>
-            </dependency>
-
-
-            <!--jwt-->
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
-                <version>${jjwt.version}</version>
-            </dependency>
-
             <!--spring admin 监控-->
             <dependency>
                 <groupId>de.codecentric</groupId>
@@ -119,12 +92,22 @@
                 <artifactId>spring-boot-admin-starter-client</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
-
+            <!--文档-->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-core</artifactId>
+                <version>${swagger-core.version}</version>
+            </dependency>
             <!-- Java图形验证码 -->
             <dependency>
                 <groupId>com.github.whvcse</groupId>
                 <artifactId>easy-captcha</artifactId>
-                <version>1.6.2</version>
+                <version>${easy-captcha.version}</version>
             </dependency>
 
             <!--ytrue-tools-->
@@ -145,11 +128,6 @@
             </dependency>
             <dependency>
                 <groupId>com.ytrue</groupId>
-                <artifactId>ytrue-tools-document</artifactId>
-                <version>${ytrue-tools-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ytrue</groupId>
                 <artifactId>ytrue-tools-log</artifactId>
                 <version>${ytrue-tools-version}</version>
             </dependency>
@@ -160,21 +138,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.0</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-
 </project>

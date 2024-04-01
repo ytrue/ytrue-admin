@@ -1,7 +1,6 @@
 package com.ytrue.tools.security.permission;
 
 import cn.hutool.core.util.StrUtil;
-import com.ytrue.tools.security.user.LoginUser;
 import com.ytrue.tools.security.util.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;

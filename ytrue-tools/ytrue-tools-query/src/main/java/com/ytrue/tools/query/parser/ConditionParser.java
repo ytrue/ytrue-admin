@@ -1,5 +1,6 @@
 package com.ytrue.tools.query.parser;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.sql.StringEscape;
 import com.ytrue.tools.query.entity.Filter;
 import net.sf.jsqlparser.expression.Expression;
@@ -29,8 +30,7 @@ public interface ConditionParser {
      * @return
      */
     default Object escapeStringValue(Object value) {
-        if (value instanceof String) {
-            String str = (String) value;
+        if (value instanceof String str) {
             // 特殊字符转义
             str = StringEscape.escapeRawString(str);
             // 自动加单引号

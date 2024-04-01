@@ -1,26 +1,30 @@
 package com.ytrue.tools.log.aspect;
 
+import cn.hutool.core.thread.ThreadFactoryBuilder;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
-import cn.hutool.extra.servlet.ServletUtil;
 import com.google.gson.Gson;
 import com.ytrue.tools.log.enitiy.OperationLog;
 import com.ytrue.tools.log.event.SysLogEvent;
-import com.ytrue.tools.log.utils.SysLogUtils;
+import com.ytrue.tools.log.util.SysLogUtil;
+import io.micrometer.common.util.StringUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.ApplicationContext;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
@@ -44,6 +48,18 @@ public class SysLogAspect {
     private static final ThreadLocal<OperationLog> THREAD_LOCAL = ThreadLocal.withInitial(OperationLog::new);
 
     private static final String MULTIPART_FORM_DATA = "multipart/form-data";
+
+    /**
+     * 线程池
+     */
+    private static final ThreadPoolExecutor SYS_LOG_EVENT_PUSH_THREAD_POOL_EXECUTOR = new ThreadPoolExecutor(
+            1,
+            Runtime.getRuntime().availableProcessors(),
+            60L,
+            TimeUnit.SECONDS,
+            new LinkedBlockingDeque<>(),
+            ThreadFactoryBuilder.create().setNamePrefix("sys_log_event_push_thread-").build()
+    );
 
 
     /***
@@ -78,7 +94,7 @@ public class SysLogAspect {
             }
 
             //获取标注在方法上的 SysLog 注解的描述
-            String controllerMethodDescription = SysLogUtils.getControllerMethodDescription(joinPoint);
+            String controllerMethodDescription = SysLogUtil.getControllerMethodDescription(joinPoint);
 
             //判断这个sysLog注解的value是否为空,等于空就去获取ApiOperation注解的value
             if (StrUtil.isEmpty(controllerMethodDescription)) {
@@ -127,13 +143,39 @@ public class SysLogAspect {
             }
             operationLog.setType("OPT");
             operationLog.setParams(getText(strArgs));
-            operationLog.setRequestIp(ServletUtil.getClientIP(request));
+            operationLog.setRequestIp(getClientIP(request));
             operationLog.setRequestUri(URLUtil.getPath(request.getRequestURI()));
             operationLog.setHttpMethod(request.getMethod());
             operationLog.setBrowser(StrUtil.sub(request.getHeader("user-agent"), 0, 500));
             operationLog.setStartTime(LocalDateTime.now());
             THREAD_LOCAL.set(operationLog);
         });
+    }
+
+
+    /**
+     * 获取ip
+     *
+     * @param request
+     * @return
+     */
+    public static String getClientIP(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        String unKnown = "unKnown";
+        if (StringUtils.isNotEmpty(ip) && !unKnown.equalsIgnoreCase(ip)) {
+            //多次反向代理后会有多个ip值，第一个ip才是真实ip
+            int index = ip.indexOf(",");
+            if (index != -1) {
+                return ip.substring(0, index);
+            } else {
+                return ip;
+            }
+        }
+        ip = request.getHeader("X-Real-IP");
+        if (StringUtils.isNotEmpty(ip) && !unKnown.equalsIgnoreCase(ip)) {
+            return ip;
+        }
+        return request.getRemoteAddr();
     }
 
 
@@ -165,7 +207,7 @@ public class SysLogAspect {
             OperationLog operationLog = THREAD_LOCAL.get();
             operationLog.setType("EX");
             // 异常对象
-            operationLog.setExDetail(SysLogUtils.getStackTrace(e));
+            operationLog.setExDetail(SysLogUtil.getStackTrace(e));
             // 异常信息
             operationLog.setExDesc(e.getMessage());
             publishEvent(operationLog);
@@ -183,17 +225,21 @@ public class SysLogAspect {
     }
 
     /**
-     * 发送事件  TODO 这里需要加入异步处理，如SysLogListener耗时过长，会阻塞    private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
-     * 1,1,1, TimeUnit.SECONDS,new LinkedBlockingDeque<>(100)
-     * );
+     * 发送事件
      *
      * @param operationLog
      */
     private void publishEvent(OperationLog operationLog) {
-        operationLog.setEndTime(LocalDateTime.now());
-        operationLog.setConsumingTime(operationLog.getStartTime().until(operationLog.getEndTime(), ChronoUnit.MILLIS));
-        applicationContext.publishEvent(new SysLogEvent(operationLog));
-        THREAD_LOCAL.remove();
+        SYS_LOG_EVENT_PUSH_THREAD_POOL_EXECUTOR.execute(() -> {
+            try {
+                operationLog.setEndTime(LocalDateTime.now());
+                operationLog.setConsumingTime(operationLog.getStartTime().until(operationLog.getEndTime(), ChronoUnit.MILLIS));
+                applicationContext.publishEvent(new SysLogEvent(operationLog));
+                THREAD_LOCAL.remove();
+            } catch (Exception exception) {
+                log.error("SysLogAspect get error", exception);
+            }
+        });
     }
 
 

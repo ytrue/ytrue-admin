@@ -3,6 +3,7 @@ package com.ytrue.tools.query.additional;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.ytrue.tools.query.entity.Sort;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserManager;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
@@ -22,6 +23,7 @@ import java.util.Set;
  * @description: 追加sql排序
  * @date 2022/12/22 9:41
  */
+@Slf4j
 public class AdditionalSqlSort {
 
 
@@ -42,10 +44,12 @@ public class AdditionalSqlSort {
         }
 
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
+
+        log.info("AdditionalSqlSort parse before sql {}", sql);
+
         Statement statement = parserManager.parse(new StringReader(sql));
 
-        if (statement instanceof Select) {
-            Select select = (Select) statement;
+        if (statement instanceof Select select) {
             PlainSelect plainSelect = (PlainSelect) select.getSelectBody();
 
             List<OrderByElement> oldOrderByElements = plainSelect.getOrderByElements();

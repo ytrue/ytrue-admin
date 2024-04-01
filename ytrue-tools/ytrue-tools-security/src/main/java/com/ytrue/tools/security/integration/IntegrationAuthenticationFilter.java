@@ -11,13 +11,14 @@ import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.GenericFilterBean;
 
-import javax.annotation.Resource;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+import jakarta.annotation.Resource;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -186,10 +187,10 @@ public class IntegrationAuthenticationFilter extends GenericFilterBean implement
 
         public void addParameter(String name, Object value) {
             if (value != null) {
-                if (value instanceof String[]) {
-                    params.put(name, (String[]) value);
-                } else if (value instanceof String) {
-                    params.put(name, new String[]{(String) value});
+                if (value instanceof String[] strArray) {
+                    params.put(name, strArray);
+                } else if (value instanceof String str) {
+                    params.put(name, new String[]{str});
                 } else {
                     params.put(name, new String[]{String.valueOf(value)});
                 }

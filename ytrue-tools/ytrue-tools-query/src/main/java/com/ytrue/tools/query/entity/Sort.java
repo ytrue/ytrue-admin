@@ -36,6 +36,11 @@ public class Sort {
         this.asc = asc;
     }
 
+    /**
+     * 获取字段别名
+     *
+     * @return
+     */
     public String getColumnAlias() {
 
         String column = this.getColumn();

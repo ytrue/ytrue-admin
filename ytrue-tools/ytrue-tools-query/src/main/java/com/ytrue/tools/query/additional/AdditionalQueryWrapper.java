@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * @author ytrue
@@ -47,7 +49,6 @@ public class AdditionalQueryWrapper {
     }
 
 
-
     /**
      * QueryWrapper 构建
      *
@@ -78,11 +79,11 @@ public class AdditionalQueryWrapper {
         Set<Sort> sorts = new LinkedHashSet<>();
         // 循环处理下数据
         filterOrSortSet.forEach(item -> {
-            if (item instanceof Filter) {
-                filters.add((Filter) item);
+            if (item instanceof Filter filter) {
+                filters.add(filter);
             }
-            if (item instanceof Sort) {
-                sorts.add((Sort) item);
+            if (item instanceof Sort sort) {
+                sorts.add(sort);
             }
         });
 

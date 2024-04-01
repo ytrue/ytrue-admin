@@ -3,9 +3,6 @@ package com.ytrue.tools.security.properties;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * @author ytrue
  * @date 2022/5/10 17:27

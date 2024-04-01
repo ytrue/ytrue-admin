@@ -53,6 +53,4 @@ public enum QueryMethod {
     ge,
 
     le,
-
-
 }

@@ -22,12 +22,12 @@ public class ExpressionGenerator {
      */
     public static Expression generateExpression(Object value) throws Exception {
         Expression expression;
-        if (value instanceof String) {
+        if (value instanceof String str) {
             // 字符串类型
-            expression = new StringValue((String) value);
-        } else if (value instanceof Boolean) {
+            expression = new StringValue(str);
+        } else if (value instanceof Boolean b) {
             // 布尔类型,这里要转换成数组，true = 1, false = 0
-            long i = (Boolean) value ? 1L : 0L;
+            long i = b ? 1L : 0L;
             expression = new LongValue(i);
         } else if (value instanceof Double) {
             // 浮点类型

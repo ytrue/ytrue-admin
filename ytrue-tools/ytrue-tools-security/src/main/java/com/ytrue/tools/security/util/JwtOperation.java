@@ -8,10 +8,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
+
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
-import java.util.*;
+import java.util.Base64;
+import java.util.Date;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author ytrue
@@ -66,16 +70,11 @@ public class JwtOperation {
 
 
         //转成大写判断
-        switch (jwtProperties.getJwtAlg().toUpperCase()) {
-            case "HS256":
-                jwtAlg = SignatureAlgorithm.HS256;
-                break;
-            case "HS384":
-                jwtAlg = SignatureAlgorithm.HS384;
-                break;
-            default:
-                jwtAlg = SignatureAlgorithm.HS512;
-        }
+        jwtAlg = switch (jwtProperties.getJwtAlg().toUpperCase()) {
+            case "HS256" -> SignatureAlgorithm.HS256;
+            case "HS384" -> SignatureAlgorithm.HS384;
+            default -> SignatureAlgorithm.HS512;
+        };
     }
 
 

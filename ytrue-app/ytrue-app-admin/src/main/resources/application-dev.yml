@@ -1,0 +1,188 @@
+# spring相关的配置
+spring:
+  # freemarker配置
+  freemarker:
+    check-template-location: false
+  # 数据库连接设置
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/crmeb?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&tinyInt1isBit=false&allowPublicKeyRetrieval=true
+    # 账号
+    username: root
+    # 密码
+    password: root
+    # Hikari 连接池配置
+    hikari:
+      # 最小空闲连接数量
+      minimum-idle: 5
+      # 空闲连接存活最大时间，默认600000（10分钟）
+      idle-timeout: 180000
+      # 连接池最大连接数，默认是10
+      maximum-pool-size: 10
+      # 此属性控制从池返回的连接的默认自动提交行为,默认值：true
+      auto-commit: true
+      # 连接池名称
+      pool-name: MyHikariCP
+      # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      max-lifetime: 1800000
+      # 数据库连接超时时间,默认30秒，即30000
+      connection-timeout: 30000
+      # 判断连接是否有效
+      connection-test-query: select 1
+  data:
+    # redis配置
+    redis:
+      # 地址
+      host: 159.75.90.21
+      # redis端口号
+      port: 6379
+      # 指定数据库，默认为0
+      database: 1
+      # 连接超时时间，单位毫秒，默认为0
+      timeout: 30000
+      # 是否启用SSL连接，默认false
+      ssl:
+        enabled: false
+      # jedis客户端连接方式是基于tcp的阻塞式连接方式,
+      # lettuce客户端连接方式是基于netty的多路复用异步非阻塞的连接方案
+      # 这里选择 lettuce
+      lettuce:
+        pool:
+          # 最大活跃连接数，默认8个
+          max-active: 8
+          # 最大空闲连接数，默认8个。
+          max-idle: 8
+          # 获取连接的最大等待时间，默认-1，表示无限制，单位毫秒。默认值可能会因为获取不到连接，导致事务无法提交，数据库被锁，大量线程处于等待状态的情况。
+          max-wait: -1
+          # 最小空闲连接数，默认0
+          min-idle: 0
+
+  # 使用Spring cache
+  cache:
+    # 使用redis作为缓存
+    type: redis
+
+  # spring boot admin 配置
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:7001
+
+
+
+# mybatis plus配置
+mybatis-plus:
+  # xml扫描，多个目录用逗号或者分号分隔（告诉 Mapper 所对应的 XML 文件位置）
+  mapper-locations:
+    - classpath*:mapper/*.xml
+    - classpath*:mapper/**/*.xml
+  configuration:
+    # 使用Mybatis时，如果查询语句中某些字段值是null的，则这个字段就无法返回，这里可以设置为true
+    call-setters-on-nulls: true
+    # 打印sql语句
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  # 全局配置
+  global-config:
+    # 关闭MP3.0自带的banner
+    banner: false
+    db-config:
+      # 主键类型 0:数据库ID自增 1.未定义 2.用户输入 3 id_worker 4.uuid 5.id_worker字符串表示
+      id-type: AUTO
+      # 默认数据库表下划线命名
+      table-underline: true
+      # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
+      logic-delete-field: delete_flag
+      # 逻辑已删除值(默认为 1)
+      logic-delete-value: 1
+      # 逻辑未删除值(默认为 0)
+      logic-not-delete-value: 0
+
+# ytrue 库的配置
+ytrue:
+  # 安全配置
+  security:
+    auth-type-parameter-name: auth_type
+    authorization-header-parameter-name: BearerAuth
+    token-cache-prefix: 'login_auth_tokens:'
+    # 这个必须要与你认证的接口保存一致
+    auth-url: /login
+    jwt:
+      token-expire-time: 360000000
+    ignoring:
+      pattern:
+        - /favicon.ico
+        - /error
+        - /actuator
+        - /actuator/**
+        - /webjars/**
+        - /v3/api-docs/**
+        - /swagger**
+        - /swagger-ui/**
+        - /doc.html
+        - /storage/**
+        - /static/storage/**
+  # 开启操作日志监听
+  log:
+    enabled: true
+  # 文件存储
+  storage:
+    local:
+      domain: http://127.0.0.1:${server.port}
+      file-host: storage
+
+
+# 接口文档
+springdoc:
+  swagger-ui:
+    # 自定义swagger前端请求路径，输入http：127.0.0.1:8080/test会自动重定向到swagger页面
+    path: /swagger-ui.html
+    # 是否开启
+    enabled: true
+    # 禁止默认路径
+    disable-swagger-default-url: true
+  # OpenAPI文档相关参数
+  api-docs:
+    # OpenAPI文档开关, true: 开启OpenAPI文档访问功能, false: 关闭。
+    enabled: true
+    # JSON格式的OpenAPI文档的访问路径
+    path: /v3/api-docs
+  # 分组配置
+  group-configs:
+    # 分组名
+    - group: '商城管理端接口'
+      # 按路径匹配
+      # paths-to-match: '/sys/**'
+      # 按包路径匹配
+      packages-to-scan:
+        - com.ytrue
+# 接口文档增强
+knife4j:
+  # 开启生产环境屏蔽
+  production: false
+  # 是否开启Knife4j增强模式
+  enable: true
+  # 对Knife4j提供的资源提供BasicHttp校验,保护文档
+  basic:
+    enable: true
+    # basic用户名
+    username: ytrue
+    # basic密码
+    password: ytrue
+
+# 暴露给监控的设置
+management:
+  endpoints:
+    web:
+      exposure:
+        #暴露部分端点
+        include: '*'
+  endpoint:
+    health:
+      #显示健康具体信息  默认不会显示详细信息
+      show-details: always
+
+# 设置日志级别
+logging:
+  level:
+    com.ytrue: info

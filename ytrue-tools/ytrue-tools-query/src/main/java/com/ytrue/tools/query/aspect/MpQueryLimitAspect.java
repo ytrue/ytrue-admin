@@ -41,10 +41,7 @@ public class MpQueryLimitAspect {
         // 如果有参数
         if (methodArgs.length > 0) {
             // 如果第一个参数是 AbstractWrapper 类型
-            if (methodArgs[0] instanceof AbstractWrapper) {
-
-                AbstractWrapper wrapper = (AbstractWrapper) methodArgs[0];
-
+            if (methodArgs[0] instanceof AbstractWrapper wrapper) {
                 // 获取对应的字段
                 Field lastSqlField = getAllFields(wrapper).stream().filter(field -> "lastSql".equals(field.getName())).findFirst().orElse(null);
 

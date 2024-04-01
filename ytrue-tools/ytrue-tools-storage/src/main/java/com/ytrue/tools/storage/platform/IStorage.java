@@ -1,8 +1,7 @@
 package com.ytrue.tools.storage.platform;
 
-import com.ytrue.tools.storage.FileInfo;
-import com.ytrue.tools.storage.UploadInfo;
-import org.springframework.beans.factory.InitializingBean;
+import com.ytrue.tools.storage.model.FileInfo;
+import com.ytrue.tools.storage.model.UploadInfo;
 
 import java.io.InputStream;
 import java.util.function.Consumer;

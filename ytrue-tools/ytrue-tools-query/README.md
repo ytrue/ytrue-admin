@@ -1,6 +1,7 @@
 # ytrue-tools-query的使用
 
 ## 方式1
+
 ```java
     @PostMapping("page")
     public ApiResultResponse<IPage<SysLog>> page(@RequestBody(required = false) PageQueryEntity pageQueryEntity) {
@@ -8,6 +9,7 @@
         return ApiResultResponse.success(page);
     }
 ```
+
 ```java
  /**
      * 分页
@@ -21,7 +23,9 @@
         return page(pageQueryEntity.page(), pageQueryEntity.lambdaQueryWrapperBuilder());
     }
 ```
+
 前端请求
+
 ```text
 http://127.0.0.1:7878/dev-api/sys/log/page
 参数
@@ -76,7 +80,9 @@ http://127.0.0.1:7878/dev-api/sys/log/page
     ]
 }
 ```
+
 生成对应的sql
+
 ```text
 DEBUG 10116 --- [nio-7000-exec-4] c.y.m.s.d.SysLogDao.selectPage_mpCount   : ==>  Preparing: SELECT COUNT(*) AS total FROM sys_log WHERE (operator LIKE ? AND request_ip = ? AND type = ? AND start_time BETWEEN ? AND ?)
 DEBUG 10116 --- [nio-7000-exec-4] c.y.m.s.d.SysLogDao.selectPage_mpCount   : ==> Parameters: %admin%(String), 0:0:0:0:0:0:0:1(String), OPT(String), 2022-12-12(String), 2023-01-21(String)
@@ -108,9 +114,11 @@ DEBUG 10116 --- [nio-7000-exec-4] c.y.m.system.dao.SysLogDao.selectPage    : <==
     }
 
 ```
+
 QueryEntity和PageQueryEntity请求参数基本一致，就是不需要page和limit
 
 ## 方式2
+
 ```java
     @GetMapping("page")
     public ApiResultResponse<IPage<SysJob>> page(SysJobSearchParams params, Pageable pageable) {
@@ -122,6 +130,7 @@ QueryEntity和PageQueryEntity请求参数基本一致，就是不需要page和li
         return ApiResultResponse.success(sysJobService.page(pageable.page(), queryWrapper));
     }
 ```
+
 ```java
 @Data
 public class SysJobSearchParams implements Serializable {
@@ -141,16 +150,22 @@ public class SysJobSearchParams implements Serializable {
     private List<String> createTime;
 }
 ```
+
 前端请求
+
 ```java
 http://127.0.0.1:7878/dev-api/sys/job/page?jobName=java%E5%BC%80%E5%8F%91&status=true&createTime%5B0%5D=2022-12-04&createTime%5B1%5D=2023-01-04&page=1&limit=10
 ```
+
 生成对应的sql
+
 ```text
 DEBUG 10116 --- [nio-7000-exec-1] c.y.m.system.dao.SysJobDao.selectPage    : ==>  Preparing: SELECT id,job_name,job_sort,status,create_by,update_by,create_time,update_time FROM sys_job WHERE (job_name LIKE ? AND status = ? AND create_time BETWEEN ? AND ?) ORDER BY job_sort ASC,id DESC LIMIT ?
 DEBUG 10116 --- [nio-7000-exec-1] c.y.m.system.dao.SysJobDao.selectPage    : ==> Parameters: %java开发%(String), true(Boolean), 2022-12-04(String), 2023-01-04(String), 10(Long)
 ```
+
 ## 方式三
+
 ```java
     @GetMapping("page")
     @Operation(summary="分页")
@@ -164,6 +179,7 @@ DEBUG 10116 --- [nio-7000-exec-1] c.y.m.system.dao.SysJobDao.selectPage    : ==>
         return ApiResultResponse.success(sysUserService.paginate(pageable.page(), queryEntity));
     }
 ```
+
 ```java
 @Data
 public class SysUserSearchParams implements Serializable {
@@ -187,12 +203,14 @@ public class SysUserSearchParams implements Serializable {
 }
 
 ```
+
 ```java
     @Override
     public IPage<SysUserListVO> paginate(IPage<SysUserListVO> page, QueryEntity query) {
         return sysUserDao.listWithDeptName(page, query);
     }
 ```
+
 ```java
      /**
      * 列表查询
@@ -203,6 +221,7 @@ public class SysUserSearchParams implements Serializable {
      */
     IPage<SysUserListVO> listWithDeptName(IPage<SysUserListVO> page, QueryEntity queryEntity);
 ```
+
 ```xml
     <!--列表查询-->
     <select id="listWithDeptName" resultType="com.ytrue.modules.system.model.dto.res.SysUserListRes">
@@ -220,11 +239,15 @@ public class SysUserSearchParams implements Serializable {
                  LEFT JOIN sys_dept d ON u.dept_id = d.id
     </select>
 ```
+
 前端请求
+
 ```text
 http://127.0.0.1:7878/dev-api/sys/user/page?username=test_admin&phone=17638728398&createTime%5B0%5D=2022-12-14&createTime%5B1%5D=2023-01-19&page=1&limit=10
 ```
+
 生成对应的sql
+
 ```text
 DEBUG 10116 --- [nio-7000-exec-7] c.y.m.s.d.S.listWithDeptName_mpCount     : ==>  Preparing: SELECT COUNT(*) AS total FROM sys_user u WHERE u.username LIKE '%test_admin%' AND u.phone LIKE '%17638728398%' AND u.create_time BETWEEN '2022-12-14' AND '2023-01-19' ORDER BY id DESC
 DEBUG 10116 --- [nio-7000-exec-7] c.y.m.s.d.S.listWithDeptName_mpCount     : ==> Parameters: 
@@ -233,6 +256,8 @@ DEBUG 10116 --- [nio-7000-exec-7] c.y.m.s.dao.SysUserDao.listWithDeptName  : ==>
 DEBUG 10116 --- [nio-7000-exec-7] c.y.m.s.dao.SysUserDao.listWithDeptName  : ==> Parameters: 10(Long)
 DEBUG 10116 --- [nio-7000-exec-7] c.y.m.s.dao.SysUserDao.listWithDeptName  : <==      Total: 1
 ```
+
 ## 其他功能
+
 1. mybatis plus的 selectOne 自动加上 limit =1 对应源码文件 MpQueryLimitAspect.java
 2. 更多完整使用自行看源码

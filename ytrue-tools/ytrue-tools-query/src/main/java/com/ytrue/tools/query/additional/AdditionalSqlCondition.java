@@ -20,6 +20,7 @@ import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.statement.update.Update;
 
 import java.io.StringReader;
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -28,7 +29,6 @@ import java.util.Set;
  * @description 对sql语句附加条件处理
  */
 public class AdditionalSqlCondition {
-
 
     /**
      * 追加条件
@@ -42,7 +42,6 @@ public class AdditionalSqlCondition {
 
         ExpressionWrap expressionWrap = getCondExpression(filters);
 
-
         if (expressionWrap == null || expressionWrap.getExpression() == null) {
             return sql;
         }
@@ -50,13 +49,12 @@ public class AdditionalSqlCondition {
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         Statement statement = parserManager.parse(new StringReader(sql));
 
-
-        if (statement instanceof Select) {
-            return parseSelect((Select) statement, expressionWrap);
-        } else if (statement instanceof Update) {
-            return parseUpdate((Update) statement, expressionWrap);
-        } else if (statement instanceof Delete) {
-            return parseDelete((Delete) statement, expressionWrap);
+        if (statement instanceof Select select) {
+            return parseSelect(select, expressionWrap);
+        } else if (statement instanceof Update update) {
+            return parseUpdate(update, expressionWrap);
+        } else if (statement instanceof Delete delete) {
+            return parseDelete(delete, expressionWrap);
         } else {
             return sql;
         }
@@ -72,7 +70,6 @@ public class AdditionalSqlCondition {
      * @throws JSQLParserException
      */
     private String parseDelete(Delete delete, ExpressionWrap expressionWrap) throws JSQLParserException {
-
         if (delete.getWhere() == null) {
             delete.setWhere(expressionWrap.getExpression());
         } else {
@@ -85,6 +82,7 @@ public class AdditionalSqlCondition {
         return delete.toString();
     }
 
+
     /**
      * 针对 Update 类型的处理
      *
@@ -94,7 +92,6 @@ public class AdditionalSqlCondition {
      * @throws JSQLParserException
      */
     private String parseUpdate(Update update, ExpressionWrap expressionWrap) throws JSQLParserException {
-
         if (update.getWhere() == null) {
             update.setWhere(expressionWrap.getExpression());
         } else {
@@ -103,6 +100,7 @@ public class AdditionalSqlCondition {
                 update.setWhere(expression1);
             }
         }
+
         return update.toString();
     }
 
@@ -163,6 +161,13 @@ public class AdditionalSqlCondition {
         ExpressionWrap expressionWrap = new ExpressionWrap();
 
         filters.forEach(filter -> {
+            // 这里针对集合空处理
+            if (filter.getValue() instanceof Collection<?> collection) {
+                if (CollUtil.isEmpty(collection)) {
+                    return;
+                }
+            }
+
             ConditionParser conditionParser = ConditionParserFactory.getInstance(filter.getCondition());
             try {
                 Expression expression = conditionParser.parser(filter);

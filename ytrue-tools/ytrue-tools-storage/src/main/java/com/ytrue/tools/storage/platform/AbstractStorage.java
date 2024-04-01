@@ -4,14 +4,17 @@ import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import com.ytrue.tools.storage.FileInfo;
+import com.ytrue.tools.storage.model.FileInfo;
 import com.ytrue.tools.storage.StorageFactory;
-import com.ytrue.tools.storage.UploadInfo;
+import com.ytrue.tools.storage.model.UploadInfo;
 import com.ytrue.tools.storage.exception.StorageRuntimeException;
+import com.ytrue.tools.storage.utils.ContentTypeUtil;
+import lombok.SneakyThrows;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.function.Consumer;
 
@@ -48,12 +51,12 @@ public abstract class AbstractStorage implements IStorage, InitializingBean {
      * @param uploadInfo
      * @return
      */
+    @SneakyThrows
     protected FileInfo buildFileInfo(UploadInfo uploadInfo) {
         MultipartFile file = uploadInfo.getFileWrapper();
         if (file == null) {
             throw new StorageRuntimeException("文件不允许为 null ！");
         }
-
         FileInfo fileInfo = new FileInfo();
         // 设置时间
         fileInfo.setCreateTime(LocalDateTimeUtil.now());
@@ -67,6 +70,17 @@ public abstract class AbstractStorage implements IStorage, InitializingBean {
         fileInfo.setAttr(uploadInfo.getAttr());
         // 设置path
         fileInfo.setPath(uploadInfo.getPath());
+        // 设置平台
+        fileInfo.setPlatform(platform());
+        // 设置文件Content-Type内容类型
+        Tika tika1 = new Tika();
+        fileInfo.setContentType(tika1.detect(uploadInfo.getFileWrapper().getInputStream()));
+
+        // 设置文件后缀
+        if (StrUtil.isBlank(fileInfo.getExt())) {
+            String s = ContentTypeUtil.getFileType(fileInfo.getContentType()).get(0);
+            fileInfo.setExt(s.substring(1));
+        }
 
         // 设置文件名称
         if (StrUtil.isNotBlank(uploadInfo.getUploadFilename())) {
@@ -76,17 +90,15 @@ public abstract class AbstractStorage implements IStorage, InitializingBean {
             fileInfo.setFileName(IdUtil.objectId() + (StrUtil.isEmpty(fileInfo.getExt()) ? StrUtil.EMPTY : "." + fileInfo.getExt()));
         }
 
-        // 设置文件Content-Type内容类型
-        if (uploadInfo.getContentType() != null) {
+        /*if (uploadInfo.getContentType() != null) {
             fileInfo.setContentType(uploadInfo.getContentType());
         } else if (uploadInfo.getFileWrapper().getContentType() != null) {
             fileInfo.setContentType(uploadInfo.getFileWrapper().getContentType());
         } else {
             Tika tika = new Tika();
             fileInfo.setContentType(tika.detect(fileInfo.getFileName()));
-        }
+        }*/
 
-        fileInfo.setPlatform(platform());
 
         return fileInfo;
     }

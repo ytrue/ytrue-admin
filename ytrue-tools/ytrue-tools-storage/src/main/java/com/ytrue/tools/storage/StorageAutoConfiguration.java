@@ -1,6 +1,6 @@
 package com.ytrue.tools.storage;
 
-import com.ytrue.tools.storage.platform.AliyunOssStorage;
+import com.ytrue.tools.storage.platform.AliYunOssStorage;
 import com.ytrue.tools.storage.platform.LocalStorage;
 import com.ytrue.tools.storage.platform.QiniuKodoStorage;
 import com.ytrue.tools.storage.platform.TencentCosStorage;
@@ -25,8 +25,8 @@ import org.springframework.context.annotation.Bean;
 })
 public class StorageAutoConfiguration {
     @Bean
-    public AliyunOssStorage aliyunOssStorage(AliyunOssStorageProperties aliyunOssStorageProperties) {
-        return new AliyunOssStorage(aliyunOssStorageProperties);
+    public AliYunOssStorage aliyunOssStorage(AliyunOssStorageProperties aliyunOssStorageProperties) {
+        return new AliYunOssStorage(aliyunOssStorageProperties);
     }
 
 

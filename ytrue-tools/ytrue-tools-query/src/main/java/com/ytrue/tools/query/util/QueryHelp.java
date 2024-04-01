@@ -8,6 +8,7 @@ import com.ytrue.tools.query.additional.AdditionalQueryWrapper;
 import com.ytrue.tools.query.annotation.Query;
 import com.ytrue.tools.query.entity.Filter;
 import com.ytrue.tools.query.entity.QueryEntity;
+import com.ytrue.tools.query.enums.Operator;
 import com.ytrue.tools.query.enums.QueryMethod;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,7 +29,7 @@ public class QueryHelp {
     }
 
     /**
-     * po or queryEntity  =>> QueryWrapper
+     * po or queryEntity or Set<Filter> or Set<Sort>  =>> QueryWrapper
      *
      * @param query
      * @param <T>
@@ -38,14 +39,14 @@ public class QueryHelp {
         QueryWrapper<T> queryWrapper = new QueryWrapper<>();
         AdditionalQueryWrapper additionalQueryWrapper = new AdditionalQueryWrapper();
         // 进行构建
-        if (query instanceof QueryEntity) {
-            additionalQueryWrapper.queryWrapperBuilder(queryWrapper, (QueryEntity) query);
-        } else if (query instanceof Set<?>) {
-            additionalQueryWrapper.queryWrapperBuilder(queryWrapper, (Set<?>) query);
+        if (query instanceof QueryEntity queryEntity) {
+            additionalQueryWrapper.queryWrapperBuilder(queryWrapper, queryEntity);
+            // 是 set<Filter> 就处理
+        } else if (query instanceof Set<?> set) {
+            additionalQueryWrapper.queryWrapperBuilder(queryWrapper, set);
         } else {
             queryWrapperBuilder(queryWrapper, query);
         }
-
         return queryWrapper;
     }
 
@@ -91,24 +92,31 @@ public class QueryHelp {
             for (Field field : fields) {
                 // 设置对象的访问权限，保证对private的属性的访
                 field.setAccessible(true);
-                Query q = field.getAnnotation(Query.class);
-                if (q != null) {
-                    // 获取字段
-                    String column = StrUtil.isBlank(q.column()) ? field.getName() : q.column();
-                    // 获取别名
-                    String alias = q.alias();
-                    // 获取条件类型
-                    QueryMethod condition = q.condition();
-                    // 获取值
-                    Object value = field.get(query);
-                    // 如果是null就不处理
-                    if (ObjectUtil.isNull(value)) {
-                        continue;
+                //  Query q = field.getAnnotation(Query.class);
+                Query[] queryList = field.getAnnotationsByType(Query.class);
+
+                for (Query q : queryList) {
+                    if (q != null) {
+                        // 获取字段
+                        String column = StrUtil.isBlank(q.column()) ? field.getName() : q.column();
+                        // 获取别名
+                        String alias = q.alias();
+                        // 获取条件类型
+                        QueryMethod condition = q.condition();
+
+                        // 获取连接条件
+                        Operator operator = q.operator();
+                        // 获取值
+                        Object value = field.get(query);
+                        // 如果是null就不处理
+                        if (ObjectUtil.isNull(value)) {
+                            continue;
+                        }
+                        // 构建
+                        // 小驼峰转下划线
+                        column = StrUtil.toUnderlineCase(column);
+                        filterList.add(new Filter(column, condition, value, alias, operator));
                     }
-                    // 构建
-                    // 小驼峰转下划线
-                    column = StrUtil.toUnderlineCase(column);
-                    filterList.add(new Filter(column, condition, value, alias));
                 }
             }
         } catch (Exception e) {

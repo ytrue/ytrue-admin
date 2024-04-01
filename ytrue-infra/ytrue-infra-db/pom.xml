@@ -1,34 +1,51 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>ytrue-admin</artifactId>
-        <groupId>com.ytrue</groupId>
-        <version>1.0-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.ytrue</groupId>
+        <artifactId>ytrue-infra</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
 
     <artifactId>ytrue-infra-db</artifactId>
+    <packaging>jar</packaging>
+
+    <name>ytrue-infra-db</name>
+
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>com.ytrue</groupId>
             <artifactId>ytrue-bean</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${revision}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.ytrue</groupId>
+            <artifactId>ytrue-tools-query</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.ytrue</groupId>
-            <artifactId>ytrue-infra-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <artifactId>ytrue-tools-security</artifactId>
+        </dependency>
+
+        <!--数据库操作-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
     </dependencies>
-
 </project>

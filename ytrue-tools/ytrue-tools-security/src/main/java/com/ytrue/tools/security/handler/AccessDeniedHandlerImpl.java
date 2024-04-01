@@ -1,11 +1,15 @@
 package com.ytrue.tools.security.handler;
 
-import com.ytrue.tools.security.excptions.AuthenticationFailureException;
+import com.ytrue.tools.security.excptions.AccessDeniedFailureException;
+import com.ytrue.tools.security.util.ServletWebRequestUtil;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 
 /**
  * @author ytrue
@@ -16,11 +20,12 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
 
 
     @Override
-    public void handle(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            AccessDeniedException accessDeniedException
-    ) {
-        throw new AuthenticationFailureException(accessDeniedException);
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws ServletException, IOException {
+        // springboot3没有办法直接抛异常了
+        ServletWebRequestUtil.errorPathForward(
+                request,
+                response,
+                new AccessDeniedFailureException(accessDeniedException),
+                4003);
     }
 }

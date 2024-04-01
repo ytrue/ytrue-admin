@@ -1,23 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>ytrue-tools</artifactId>
         <groupId>com.ytrue</groupId>
+        <artifactId>ytrue-tools</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>ytrue-tools-security</artifactId>
+    <packaging>jar</packaging>
+
+    <name>ytrue-tools-security</name>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -39,19 +40,34 @@
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
         </dependency>
 
-        <!-- 必须有这个jar 才能提示 -->
+        <!--
+        spring-boot-autoconfigure模块：
+        作用：该模块提供了自动配置的功能，使得Spring Boot应用程序可以根据类路径上的依赖和配置来自动配置各种组件。
+        这样，开发者可以轻松地使用Spring Boot的默认配置，减少手动配置的工作量。
+        工作原理：spring-boot-autoconfigure模块通过查找并加载类路径下的META-INF/spring.factories文件中的自动配置类（@Configuration注解标记的类）
+        ，然后根据条件判断是否将其应用到应用程序中。自动配置类通常会提供一组默认的Bean定义和配置，以满足特定场景下的需求。
+        自定义配置：如果需要修改或扩展Spring Boot的默认自动配置行为，可以通过创建自己的自动配置类，并将其添加到META-INF/spring.factories文件中，或通过@Import注解将其引入。
+
+        spring-boot-configuration-processor模块：
+        作用：该模块用于处理和生成配置元数据，帮助IDE和其他工具在编写配置文件时提供智能提示和验证等功能。它生成用于配置属性绑定的元数据，以及用于配置文件的文档和验证元数据。
+        工作原理：开发者可以在自己的配置类中使用@ConfigurationProperties注解定义配置属性，
+        然后通过spring-boot-configuration-processor模块来处理这些注解，
+        并生成相关的元数据。IDE（如IntelliJ IDEA、Eclipse等）
+        和其他工具可以利用这些元数据为开发者提供提示和验证功能。-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
@@ -59,4 +75,16 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

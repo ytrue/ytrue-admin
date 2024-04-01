@@ -7,22 +7,21 @@ import com.ytrue.tools.security.properties.SecurityProperties;
 import com.ytrue.tools.security.user.LoginUser;
 import com.ytrue.tools.security.user.User;
 import com.ytrue.tools.security.util.JwtOperation;
+import com.ytrue.tools.security.util.ServletWebRequestUtil;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -60,7 +59,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         // 获取去掉前缀的token
         token = jwtOperation.getOriginalToken(token);
 
-        String userId;
+        String userId = null;
         try {
             // 获取jwt的载体
             Claims claims = jwtOperation.parseToken(token);
@@ -71,12 +70,14 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 throw new InvalidTokenException("无效token");
             }
         } catch (Exception e) {
-            throw new InvalidTokenException("无效token");
+            ServletWebRequestUtil.errorPathForward(request, response, e, 4001);
+            return;
         }
 
         String userJsonData = redisTemplate.opsForValue().get(securityProperties.getTokenCachePrefix() + userId);
         if (StrUtil.isEmpty(userJsonData)) {
-            throw new InvalidTokenException("无效token");
+            ServletWebRequestUtil.errorPathForward(request, response, new InvalidTokenException("无效token"), 4001);
+            return;
         }
 
         User user = new Gson().fromJson(userJsonData, User.class);

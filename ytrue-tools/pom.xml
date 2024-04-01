@@ -1,27 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>ytrue-admin</artifactId>
         <groupId>com.ytrue</groupId>
+        <artifactId>ytrue-admin</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>ytrue-tools</artifactId>
     <packaging>pom</packaging>
+
+    <name>ytrue-tools</name>
+
     <modules>
-        <module>ytrue-tools-security</module>
         <module>ytrue-tools-log</module>
         <module>ytrue-tools-query</module>
+        <module>ytrue-tools-security</module>
         <module>ytrue-tools-storage</module>
-        <module>ytrue-tools-sms</module>
     </modules>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
-
 </project>

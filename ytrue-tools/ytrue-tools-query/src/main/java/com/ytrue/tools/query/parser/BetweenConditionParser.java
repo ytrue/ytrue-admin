@@ -39,6 +39,7 @@ public class BetweenConditionParser implements ConditionParser {
         Expression endValue = ExpressionGenerator.generateExpression(end);
         betweenCondition.setBetweenExpressionStart(startValue);
         betweenCondition.setBetweenExpressionEnd(endValue);
+
         return betweenCondition;
     }
 }

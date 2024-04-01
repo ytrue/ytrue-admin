@@ -6,19 +6,15 @@ import com.qiniu.storage.Configuration;
 import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
-import com.ytrue.tools.storage.FileInfo;
-import com.ytrue.tools.storage.UploadInfo;
+import com.ytrue.tools.storage.model.FileInfo;
+import com.ytrue.tools.storage.model.UploadInfo;
 import com.ytrue.tools.storage.enums.StorageType;
 import com.ytrue.tools.storage.exception.StorageRuntimeException;
 import com.ytrue.tools.storage.properties.QiniuKodoStorageProperties;
 import com.ytrue.tools.storage.utils.PathUtil;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -131,7 +127,7 @@ public class QiniuKodoStorage extends AbstractStorage {
         try (InputStream in = new URL(url).openStream()) {
             consumer.accept(in);
         } catch (IOException e) {
-            throw new StorageRuntimeException("文件下载失败！platform：" + fileInfo,e);
+            throw new StorageRuntimeException("文件下载失败！platform：" + fileInfo, e);
         }
     }
 

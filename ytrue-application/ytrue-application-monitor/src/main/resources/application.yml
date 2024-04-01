@@ -1,8 +1,0 @@
-server:
-  port: 7001
-spring:
-  application:
-    name: yadmin-monitor
-  thymeleaf:
-    check-template: false
-    check-template-location: false

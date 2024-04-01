@@ -16,6 +16,7 @@ import net.sf.jsqlparser.JSQLParserException;
 import org.apache.ibatis.reflection.property.PropertyNamer;
 import org.springframework.util.CollectionUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -29,6 +30,7 @@ import java.util.Set;
 @Data
 public class QueryEntity implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -4364862339415897353L;
 
     /**
@@ -156,12 +158,13 @@ public class QueryEntity implements Serializable {
         }
     }
 
+
     /**
-     * sql
+     * 获取自定义SQL 简化自定义XML复杂情况
      *
      * @return
      */
-    public String toSql() {
+    public String getCustomSql() {
         try {
             AdditionalSqlCondition additionalSqlCondition = new AdditionalSqlCondition();
             AdditionalSqlSort additionalSqlSort = new AdditionalSqlSort();

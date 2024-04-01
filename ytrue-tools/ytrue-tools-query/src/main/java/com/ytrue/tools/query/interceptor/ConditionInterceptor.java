@@ -44,18 +44,17 @@ public class ConditionInterceptor implements Interceptor {
         LinkedHashSet<QueryEntity> queryEntitySet = new LinkedHashSet<>();
 
         // 如果是多个参数 这里就要处理
-        if (value instanceof MapperMethod.ParamMap) {
-            MapperMethod.ParamMap paramMap = (MapperMethod.ParamMap) value;
+        if (value instanceof MapperMethod.ParamMap paramMap) {
             paramMap.forEach((k, v) -> {
-                if (v instanceof QueryEntity) {
-                    queryEntitySet.add((QueryEntity) v);
+                if (v instanceof QueryEntity queryEntity) {
+                    queryEntitySet.add(queryEntity);
                 }
             });
         }
 
         //只有一个参数，直接加入就行
-        if (value instanceof QueryEntity) {
-            queryEntitySet.add((QueryEntity) value);
+        if (value instanceof QueryEntity queryEntity) {
+            queryEntitySet.add(queryEntity);
         }
         // 获取全部的Filter
         LinkedHashSet<Filter> filterSet = new LinkedHashSet<>();

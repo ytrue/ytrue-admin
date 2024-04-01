@@ -15,11 +15,7 @@ public class EqualConditionParser implements ConditionParser {
     @Override
     public Expression parser(Filter filter) throws Exception {
         // 创建左侧表达式
-
-
         Expression leftExpression = ExpressionGenerator.generateExpression(filter.getColumnAlias());
-
-
         // 创建右侧表达式
         Expression rightExpression = ExpressionGenerator.generateExpression(filter.getValue());
         // 创建 EqualsTo 对象来表示等于条件

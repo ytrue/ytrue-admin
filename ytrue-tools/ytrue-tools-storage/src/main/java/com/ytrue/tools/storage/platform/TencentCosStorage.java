@@ -8,16 +8,13 @@ import com.qcloud.cos.http.HttpProtocol;
 import com.qcloud.cos.model.COSObject;
 import com.qcloud.cos.model.ObjectMetadata;
 import com.qcloud.cos.region.Region;
-import com.ytrue.tools.storage.FileInfo;
-import com.ytrue.tools.storage.UploadInfo;
+import com.ytrue.tools.storage.model.FileInfo;
+import com.ytrue.tools.storage.model.UploadInfo;
 import com.ytrue.tools.storage.enums.StorageType;
 import com.ytrue.tools.storage.exception.StorageRuntimeException;
 import com.ytrue.tools.storage.properties.TencentCosStorageProperties;
 import com.ytrue.tools.storage.utils.PathUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.function.Consumer;

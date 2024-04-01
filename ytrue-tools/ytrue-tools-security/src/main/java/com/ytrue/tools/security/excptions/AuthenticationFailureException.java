@@ -18,5 +18,6 @@ public class AuthenticationFailureException extends RuntimeException {
 
     public AuthenticationFailureException(Throwable cause) {
         super(cause);
+
     }
 }

@@ -3,6 +3,8 @@ package com.ytrue.tools.storage;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
+import com.ytrue.tools.storage.model.FileInfo;
+import com.ytrue.tools.storage.model.UploadInfo;
 import com.ytrue.tools.storage.platform.AbstractStorage;
 import com.ytrue.tools.storage.platform.IStorage;
 import lombok.Getter;
@@ -14,7 +16,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * @author ytrue  TODO 待完善
+ * @author ytrue
  * @date 2023/5/7 18:05
  * @description GenericStorageImpl
  */
@@ -97,8 +99,8 @@ public class GenericStorageImpl implements IStorage {
         fileInfo.setFileName(fileName);
         fileInfo.setExt(FileUtil.getSuffix(fileName));
         // 设置平台
-        if (originalStorage instanceof AbstractStorage) {
-            fileInfo.setPlatform(((AbstractStorage) originalStorage).platform());
+        if (originalStorage instanceof AbstractStorage abstractStorage) {
+            fileInfo.setPlatform(abstractStorage.platform());
         }
         Optional<MediaType> mediaType = MediaTypeFactory.getMediaType(fileName);
         fileInfo.setContentType(mediaType.orElse(MediaType.APPLICATION_OCTET_STREAM).toString());

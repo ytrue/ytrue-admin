@@ -1,8 +1,8 @@
 package com.ytrue.tools.storage.platform;
 
 import cn.hutool.core.io.FileUtil;
-import com.ytrue.tools.storage.FileInfo;
-import com.ytrue.tools.storage.UploadInfo;
+import com.ytrue.tools.storage.model.FileInfo;
+import com.ytrue.tools.storage.model.UploadInfo;
 import com.ytrue.tools.storage.enums.StorageType;
 import com.ytrue.tools.storage.exception.StorageRuntimeException;
 import com.ytrue.tools.storage.properties.LocalStorageProperties;
@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 /**
  * @author ytrue
  * @date 2023/4251 15:40
- * @description IStorage   TODO linux待测试
+ * @description IStorage
  */
 public class LocalStorage extends AbstractStorage {
 
@@ -68,7 +68,6 @@ public class LocalStorage extends AbstractStorage {
 
     @Override
     public void download(FileInfo fileInfo, Consumer<InputStream> consumer) {
-        // 待处理 TODO
         try (InputStream in = FileUtil.getInputStream(fileInfo.getBasePath() + fileInfo.getPath() + fileInfo.getFileName())) {
             consumer.accept(in);
         } catch (IOException e) {

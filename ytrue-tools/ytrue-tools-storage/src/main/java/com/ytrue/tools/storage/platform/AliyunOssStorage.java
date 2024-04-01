@@ -4,8 +4,8 @@ import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.ObjectMetadata;
-import com.ytrue.tools.storage.FileInfo;
-import com.ytrue.tools.storage.UploadInfo;
+import com.ytrue.tools.storage.model.FileInfo;
+import com.ytrue.tools.storage.model.UploadInfo;
 import com.ytrue.tools.storage.enums.StorageType;
 import com.ytrue.tools.storage.exception.StorageRuntimeException;
 import com.ytrue.tools.storage.properties.AliyunOssStorageProperties;
@@ -18,22 +18,22 @@ import java.util.function.Consumer;
 /**
  * @author ytrue
  * @date 2023/4251 15:40
- * @description AliyunOssStorage
+ * @description AliYunOssStorage
  */
-public class AliyunOssStorage extends AbstractStorage {
+public class AliYunOssStorage extends AbstractStorage {
 
 
     private final AliyunOssStorageProperties config;
 
     private volatile OSS client;
 
-    public AliyunOssStorage(AliyunOssStorageProperties config) {
+    public AliYunOssStorage(AliyunOssStorageProperties config) {
         this.config = config;
     }
 
 
     /**
-     * 单例模式运行，不需要每次使用完再销毁了
+     * 单例模式运行，不需要每次使用完再销毁了,这个在spring模式下面才能提现作用
      *
      * @return
      */
@@ -94,7 +94,7 @@ public class AliyunOssStorage extends AbstractStorage {
         try (InputStream in = object.getObjectContent()) {
             consumer.accept(in);
         } catch (IOException e) {
-            throw new StorageRuntimeException("文件下载失败！platform：" + fileInfo,e);
+            throw new StorageRuntimeException("文件下载失败！platform：" + fileInfo, e);
         }
     }
 
