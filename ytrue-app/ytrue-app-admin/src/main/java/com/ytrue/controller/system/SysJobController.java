@@ -14,7 +14,7 @@ import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.util.QueryHelp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -29,7 +29,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Tag(name = "岗位管理")
 @RequestMapping("/sys/job")
 public class SysJobController {
@@ -76,7 +76,7 @@ public class SysJobController {
     @PostMapping
     @Operation(summary = "保存")
     @PreAuthorize("@pms.hasPermission('system:job:add')")
-    public ServerResponseEntity<Object> add(@Validated @RequestBody SysJob sysJob) {
+    public ServerResponseEntity<Void> add(@Validated @RequestBody SysJob sysJob) {
         SysJob job = sysJobService.lambdaQuery().eq(SysJob::getJobName, sysJob.getJobName()).one();
         AssertUtil.isNull(job, ServerResponseCode.error("岗位已存在"));
         sysJobService.save(sysJob);
@@ -87,7 +87,7 @@ public class SysJobController {
     @PutMapping
     @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:job:update')")
-    public ServerResponseEntity<Object> update(@Validated @RequestBody SysJob sysJob) {
+    public ServerResponseEntity<Void> update(@Validated @RequestBody SysJob sysJob) {
         SysJob job = sysJobService
                 .lambdaQuery()
                 .eq(SysJob::getJobName, sysJob.getJobName())
@@ -102,7 +102,7 @@ public class SysJobController {
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:job:delete')")
-    public ServerResponseEntity<Object> delete(@RequestBody List<Long> ids) {
+    public ServerResponseEntity<Void> delete(@RequestBody List<Long> ids) {
         // 需要校验用户与岗位得绑定关系
         sysJobService.removeBatchByIds(ids);
         return ServerResponseEntity.success();

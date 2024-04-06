@@ -12,7 +12,7 @@ import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.util.QueryHelp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -27,7 +27,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Tag(name = "菜单管理")
 @RequestMapping("/sys/menu")
 public class SysMenuController {
@@ -59,7 +59,7 @@ public class SysMenuController {
     @PostMapping
     @Operation(summary = "保存")
     @PreAuthorize("@pms.hasPermission('system:menu:add')")
-    public ServerResponseEntity<Object> add(@Validated @RequestBody SysMenu sysMenu) {
+    public ServerResponseEntity<Void> add(@Validated @RequestBody SysMenu sysMenu) {
         sysMenuService.addMenu(sysMenu);
         return ServerResponseEntity.success();
     }
@@ -68,7 +68,7 @@ public class SysMenuController {
     @PutMapping
     @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:menu:update')")
-    public ServerResponseEntity<Object> update(@Validated @RequestBody SysMenu sysMenu) {
+    public ServerResponseEntity<Void> update(@Validated @RequestBody SysMenu sysMenu) {
         sysMenuService.updateMenu(sysMenu);
         return ServerResponseEntity.success();
     }
@@ -77,7 +77,7 @@ public class SysMenuController {
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:menu:delete')")
-    public ServerResponseEntity<Object> delete(@RequestBody List<Long> ids) {
+    public ServerResponseEntity<Void> delete(@RequestBody List<Long> ids) {
         sysMenuService.removeBatchMenu(ids);
         return ServerResponseEntity.success();
     }

@@ -1,6 +1,6 @@
 package com.ytrue.tools.security.user;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class LoginUser implements UserDetails, Serializable {
 
     private static final long serialVersionUID = -1977241509435137545L;

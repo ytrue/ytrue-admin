@@ -1,18 +1,18 @@
 package com.ytrue.controller.system;
 
-import com.ytrue.infra.core.response.ResponseCodeEnum;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.ytrue.infra.core.response.ServerResponseEntity;
-import com.ytrue.infra.core.util.AssertUtil;
 import com.ytrue.bean.dataobject.system.SysDept;
 import com.ytrue.bean.query.system.SysDeptQuery;
+import com.ytrue.infra.core.response.ResponseCodeEnum;
+import com.ytrue.infra.core.response.ServerResponseEntity;
+import com.ytrue.infra.core.util.AssertUtil;
 import com.ytrue.service.system.SysDeptService;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.util.QueryHelp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +28,7 @@ import java.util.Set;
 @Tag(name = "部门管理")
 @RestController
 @RequestMapping("sys/dept")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysDeptController {
 
     private final SysDeptService sysDeptService;
@@ -61,7 +61,7 @@ public class SysDeptController {
     @PostMapping
     @Operation(summary = "保存")
     @PreAuthorize("@pms.hasPermission('system:dept:add')")
-    public ServerResponseEntity<Object> add(@Validated @RequestBody SysDept sysDept) {
+    public ServerResponseEntity<Void> add(@Validated @RequestBody SysDept sysDept) {
         sysDeptService.addDept(sysDept);
         return ServerResponseEntity.success();
     }
@@ -70,7 +70,7 @@ public class SysDeptController {
     @PutMapping
     @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:dept:update')")
-    public ServerResponseEntity<Object> update(@Validated @RequestBody SysDept sysDept) {
+    public ServerResponseEntity<Void> update(@Validated @RequestBody SysDept sysDept) {
         sysDeptService.updateDept(sysDept);
         return ServerResponseEntity.success();
     }
@@ -79,7 +79,7 @@ public class SysDeptController {
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:dept:delete')")
-    public ServerResponseEntity<Object> delete(@RequestBody List<Long> ids) {
+    public ServerResponseEntity<Void> delete(@RequestBody List<Long> ids) {
         sysDeptService.removeBatchDept(ids);
         return ServerResponseEntity.success();
     }

@@ -10,7 +10,7 @@ import com.ytrue.infra.core.util.CaptchaUtil;
 import com.ytrue.tools.security.annotation.IgnoreWebSecurity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Tag(name = "验证码")
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CaptchaController {
 
     private final StringRedisTemplate redisTemplate;

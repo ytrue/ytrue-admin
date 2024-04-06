@@ -22,7 +22,7 @@ import com.ytrue.manager.DataScopeManager;
 import com.ytrue.tools.query.entity.QueryEntity;
 import com.ytrue.tools.query.enums.QueryMethod;
 import com.ytrue.tools.security.util.SecurityUtils;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
  * @date 2022/12/7 16:58
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> implements SysUserService {
 
 

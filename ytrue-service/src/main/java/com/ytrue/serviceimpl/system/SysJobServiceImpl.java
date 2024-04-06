@@ -4,7 +4,7 @@ import com.ytrue.infra.db.base.BaseServiceImpl;
 import com.ytrue.infra.db.dao.system.SysJobDao;
 import com.ytrue.bean.dataobject.system.SysJob;
 import com.ytrue.service.system.SysJobService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * @date 2022/12/7 10:56
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysJobServiceImpl extends BaseServiceImpl<SysJobDao, SysJob> implements SysJobService {
 
     @Override

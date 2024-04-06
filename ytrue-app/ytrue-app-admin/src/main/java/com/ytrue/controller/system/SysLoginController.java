@@ -13,7 +13,7 @@ import com.ytrue.tools.security.service.LoginService;
 import com.ytrue.tools.security.util.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,21 +29,15 @@ import java.util.Set;
  */
 @Tag(name = "后台登录")
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysLoginController {
 
     private final LoginService loginService;
-
     private final SysPermissionService sysPermissionService;
-
     private final SysUserService sysUserService;
-
     private final SysMenuService sysMenuService;
-
     private final SysDeptService sysDeptService;
-
     private final SysRoleService sysRoleService;
-
     private final SysJobService sysJobService;
 
     @Operation(summary = "登录")
@@ -54,7 +48,7 @@ public class SysLoginController {
 
     @Operation(summary = "登出")
     @PostMapping("/logout")
-    public ServerResponseEntity<Object> logout() {
+    public ServerResponseEntity<Void> logout() {
         loginService.logout(SecurityUtils.getLoginUser().getUser().getUserId());
         return ServerResponseEntity.success();
     }

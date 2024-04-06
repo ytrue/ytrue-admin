@@ -5,7 +5,7 @@ import com.ytrue.tools.query.entity.Filter;
 import com.ytrue.tools.query.enums.Operator;
 import com.ytrue.tools.query.parser.ConditionParser;
 import com.ytrue.tools.query.parser.ConditionParserFactory;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.sf.jsqlparser.JSQLParserException;
@@ -196,7 +196,7 @@ public class AdditionalSqlCondition {
 
 
     @Data
-    @AllArgsConstructor
+    @RequiredArgsConstructor
     @NoArgsConstructor
     private static class ExpressionWrap {
         private Operator firstOperator;

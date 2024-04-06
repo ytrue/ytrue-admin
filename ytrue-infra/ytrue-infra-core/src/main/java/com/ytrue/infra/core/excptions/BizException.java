@@ -4,6 +4,8 @@ package com.ytrue.infra.core.excptions;
 import com.ytrue.infra.core.base.BaseCodeException;
 import com.ytrue.infra.core.base.IServerResponseCode;
 
+import java.io.Serial;
+
 /**
  * @author ytrue
  * @date 2022/5/28 10:10
@@ -12,6 +14,7 @@ import com.ytrue.infra.core.base.IServerResponseCode;
 public class BizException extends BaseCodeException {
 
 
+    @Serial
     private static final long serialVersionUID = 1922140199999930024L;
 
     public BizException(String message) {

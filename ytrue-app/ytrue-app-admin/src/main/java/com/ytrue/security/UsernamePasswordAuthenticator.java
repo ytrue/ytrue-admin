@@ -14,7 +14,7 @@ import com.ytrue.tools.security.integration.IntegrationAuthenticationEntity;
 import com.ytrue.tools.security.integration.authenticator.AbstractPreparableIntegrationAuthenticator;
 import com.ytrue.tools.security.user.LoginUser;
 import com.ytrue.tools.security.user.User;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -27,15 +27,12 @@ import java.util.HashMap;
  * @date 2022/12/8 9:10
  */
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UsernamePasswordAuthenticator extends AbstractPreparableIntegrationAuthenticator {
 
     private final SysPermissionService sysPermissionService;
-
     private final SysUserService sysUserService;
-
     private final PasswordEncoder passwordEncoder;
-
     private final StringRedisTemplate redisTemplate;
 
     private final static String AUTH_TYPE = "password";

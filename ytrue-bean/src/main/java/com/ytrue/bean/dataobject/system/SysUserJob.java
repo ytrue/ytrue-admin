@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.ytrue.bean.dataobject.BaseIdEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * @author ytrue
  * @description: SysUserJob
  * @date 2022/12/7 17:19
  */
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("sys_user_job")

@@ -16,7 +16,7 @@ import com.ytrue.bean.dataobject.system.SysRole;
 import com.ytrue.bean.dataobject.system.SysRoleDept;
 
 import com.ytrue.tools.security.util.SecurityUtils;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * @date 2022/12/29 9:06
  */
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DataScopeManager {
 
     private final SysUserDao sysUserDao;

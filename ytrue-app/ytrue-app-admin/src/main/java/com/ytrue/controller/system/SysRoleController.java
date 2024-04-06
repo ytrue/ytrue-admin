@@ -15,7 +15,7 @@ import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.util.QueryHelp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -31,7 +31,7 @@ import java.util.Set;
  */
 @Slf4j
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Tag(name = "角色管理")
 @RequestMapping("/sys/role")
 public class SysRoleController {
@@ -76,7 +76,7 @@ public class SysRoleController {
     @PostMapping
     @Operation(summary = "保存")
     @PreAuthorize("@pms.hasPermission('system:role:add')")
-    public ServerResponseEntity<Object> add(@Validated @RequestBody SysRoleReq sysRoleReq) {
+    public ServerResponseEntity<Void> add(@Validated @RequestBody SysRoleReq sysRoleReq) {
         sysRoleService.addRole(sysRoleReq);
         return ServerResponseEntity.success();
     }
@@ -85,7 +85,7 @@ public class SysRoleController {
     @PutMapping
     @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:role:update')")
-    public ServerResponseEntity<Object> update(@Validated @RequestBody SysRoleReq sysRoleReq) {
+    public ServerResponseEntity<Void> update(@Validated @RequestBody SysRoleReq sysRoleReq) {
         sysRoleService.updateRole(sysRoleReq);
         return ServerResponseEntity.success();
     }
@@ -94,7 +94,7 @@ public class SysRoleController {
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:role:delete')")
-    public ServerResponseEntity<Object> delete(@RequestBody List<Long> ids) {
+    public ServerResponseEntity<Void> delete(@RequestBody List<Long> ids) {
         sysRoleService.removeBatchRole(ids);
         return ServerResponseEntity.success();
     }

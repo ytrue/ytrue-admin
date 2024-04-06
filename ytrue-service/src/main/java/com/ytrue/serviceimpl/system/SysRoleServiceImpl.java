@@ -12,7 +12,7 @@ import com.ytrue.infra.db.base.BaseServiceImpl;
 import com.ytrue.infra.db.dao.system.*;
 import com.ytrue.manager.DataScopeManager;
 import com.ytrue.service.system.SysRoleService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import  com.ytrue.infra.core.response.ResponseCodeEnum;
@@ -26,7 +26,7 @@ import java.util.Set;
  * @date 2022/12/7 15:23
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> implements SysRoleService {
 
 

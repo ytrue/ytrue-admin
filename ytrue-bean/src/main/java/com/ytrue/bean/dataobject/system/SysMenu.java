@@ -4,6 +4,7 @@ import com.ytrue.bean.dataobject.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.io.Serial;
 
@@ -12,6 +13,7 @@ import java.io.Serial;
  * @description: SysMenu
  * @date 2022/12/7 14:09
  */
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class SysMenu extends BaseEntity {

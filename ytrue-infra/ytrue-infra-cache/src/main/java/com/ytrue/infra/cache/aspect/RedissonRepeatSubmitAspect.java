@@ -5,7 +5,7 @@ import com.ytrue.infra.cache.annotation.RedissonRepeatSubmit;
 import com.ytrue.infra.cache.excptions.RedissonRepeatSubmitException;
 import com.ytrue.infra.core.util.SpelParserUtil;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 @Order(-9)
 @Slf4j
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RedissonRepeatSubmitAspect {
 
     private final RedissonClient redissonClient;

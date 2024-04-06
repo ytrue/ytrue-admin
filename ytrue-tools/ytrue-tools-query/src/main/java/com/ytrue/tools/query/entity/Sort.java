@@ -1,7 +1,7 @@
 package com.ytrue.tools.query.entity;
 
 import cn.hutool.core.util.StrUtil;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
  * @date 2022/12/20 9:15
  */
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 public class Sort {
 

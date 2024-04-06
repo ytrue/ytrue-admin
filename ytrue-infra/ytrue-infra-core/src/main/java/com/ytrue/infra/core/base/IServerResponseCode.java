@@ -7,13 +7,13 @@ public interface IServerResponseCode {
      *
      * @return
      */
-    String getCode();
+    String code();
 
     /**
      * 获取message
      *
      * @return
      */
-    String getMessage();
+    String message();
 
 }

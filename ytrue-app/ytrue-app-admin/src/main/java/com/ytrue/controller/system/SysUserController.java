@@ -20,7 +20,7 @@ import com.ytrue.tools.security.service.LoginService;
 import com.ytrue.tools.security.util.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
@@ -36,15 +36,12 @@ import java.util.List;
 @Tag(name = "用户管理")
 @RestController
 @RequestMapping("sys/user")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysUserController {
 
     private final SysUserService sysUserService;
-
     private final PasswordEncoder passwordEncoder;
-
     private final LoginService loginService;
-
     private final static String DEFAULT_PASSWORD = "111111";
 
 
@@ -70,7 +67,7 @@ public class SysUserController {
     @PostMapping
     @Operation(summary = "保存")
     @PreAuthorize("@pms.hasPermission('system:user:add')")
-    public ServerResponseEntity<Object> add(@Validated @RequestBody SysUserReq sysUserReq) {
+    public ServerResponseEntity<Void> add(@Validated @RequestBody SysUserReq sysUserReq) {
         sysUserReq.setPassword(passwordEncoder.encode(DEFAULT_PASSWORD));
         sysUserService.addUser(sysUserReq);
         return ServerResponseEntity.success();
@@ -80,7 +77,7 @@ public class SysUserController {
     @PutMapping
     @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:user:update')")
-    public ServerResponseEntity<Object> update(@Validated @RequestBody SysUserReq sysUserReq) {
+    public ServerResponseEntity<Void> update(@Validated @RequestBody SysUserReq sysUserReq) {
         sysUserService.updateUser(sysUserReq);
         return ServerResponseEntity.success();
     }
@@ -89,7 +86,7 @@ public class SysUserController {
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:user:delete')")
-    public ServerResponseEntity<Object> delete(@RequestBody List<Long> ids) {
+    public ServerResponseEntity<Void> delete(@RequestBody List<Long> ids) {
         sysUserService.removeBatchUser(ids);
         return ServerResponseEntity.success();
     }
@@ -98,14 +95,14 @@ public class SysUserController {
     @PostMapping("resetPassword")
     @Operation(summary = "重置密码")
     @PreAuthorize("@pms.hasPermission('system:user:restPassword')")
-    public ServerResponseEntity<Object> resetPassword(@RequestParam Long userId) {
+    public ServerResponseEntity<Void> resetPassword(@RequestParam Long userId) {
         sysUserService.lambdaUpdate().eq(SysUser::getId, userId).set(SysUser::getPassword, passwordEncoder.encode(DEFAULT_PASSWORD)).update();
         return ServerResponseEntity.success();
     }
 
     @PutMapping("updateUserProfile")
     @Operation(summary = "修改用户信息")
-    public ServerResponseEntity<Object> updateProfile(@RequestBody UserProfileReq operation) {
+    public ServerResponseEntity<Void> updateProfile(@RequestBody UserProfileReq operation) {
         String userId = SecurityUtils.getLoginUser().getUser().getUserId();
 
         SysUser sysUser = sysUserService.getById(userId);
@@ -122,7 +119,7 @@ public class SysUserController {
 
     @PutMapping("updatePassword")
     @Operation(summary = "修改密码")
-    public ServerResponseEntity<Object> updatePassword(@RequestBody UpdatePasswordReq operation) {
+    public ServerResponseEntity<Void> updatePassword(@RequestBody UpdatePasswordReq operation) {
         String userId = SecurityUtils.getLoginUser().getUser().getUserId();
 
         SysUser sysUser = sysUserService.getById(userId);

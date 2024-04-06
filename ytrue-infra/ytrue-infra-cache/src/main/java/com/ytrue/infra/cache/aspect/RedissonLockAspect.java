@@ -5,7 +5,7 @@ import com.ytrue.infra.cache.annotation.RedissonLock;
 import com.ytrue.infra.cache.enums.RedissonLockTypeEnum;
 import com.ytrue.infra.cache.excptions.RedissonLockException;
 import com.ytrue.infra.core.util.SpelParserUtil;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 @Order(-15)
 @Slf4j
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RedissonLockAspect {
     private final RedissonClient redissonClient;
 

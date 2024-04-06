@@ -18,7 +18,7 @@ import com.ytrue.infra.db.dao.system.SysMenuDao;
 import com.ytrue.infra.db.dao.system.SysRoleMenuDao;
 import com.ytrue.infra.db.dao.system.SysUserDao;
 import com.ytrue.service.system.SysMenuService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import  com.ytrue.infra.core.response.ResponseCodeEnum;
@@ -32,7 +32,7 @@ import java.util.List;
  * @date 2022/12/7 14:11
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> implements SysMenuService {
 
     private final SysUserDao sysUserDao;

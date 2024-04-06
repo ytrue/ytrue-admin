@@ -7,7 +7,7 @@ import com.ytrue.infra.db.dao.system.SysRoleDao;
 import com.ytrue.infra.db.dao.system.SysUserDao;
 import com.ytrue.service.system.SysPermissionService;
 import com.ytrue.tools.security.permission.PermissionService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * @date 2022/12/8 15:35
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysPermissionServiceImpl implements SysPermissionService {
 
     private final SysRoleDao sysRoleDao;

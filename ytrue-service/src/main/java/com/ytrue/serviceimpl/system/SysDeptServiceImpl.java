@@ -12,7 +12,7 @@ import com.ytrue.infra.db.dao.system.SysRoleDeptDao;
 import com.ytrue.infra.db.dao.system.SysUserDao;
 import com.ytrue.manager.DataScopeManager;
 import com.ytrue.service.system.SysDeptService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +25,7 @@ import java.util.Set;
  * @date 2022/12/7 11:46
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> implements SysDeptService {
 
     private final SysUserDao sysUserDao;

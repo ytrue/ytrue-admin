@@ -4,7 +4,7 @@ import com.ytrue.infra.core.base.BaseCodeException;
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.infra.core.util.ThrowableUtil;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
@@ -24,7 +24,7 @@ import java.util.Map;
  */
 @Controller
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @CrossOrigin
 public class GlobalExceptionHandle implements ErrorController {
 
@@ -41,7 +41,7 @@ public class GlobalExceptionHandle implements ErrorController {
      */
     @RequestMapping("error")
     @ResponseBody
-    public ServerResponseEntity<Object> error(HttpServletResponse response, WebRequest req) {
+    public ServerResponseEntity<Void> error(HttpServletResponse response, WebRequest req) {
         //设置200，方便前端处理
         response.setStatus(200);
         Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(req, ErrorAttributeOptions.of(ErrorAttributeOptions.Include.EXCEPTION, ErrorAttributeOptions.Include.MESSAGE, ErrorAttributeOptions.Include.STACK_TRACE, ErrorAttributeOptions.Include.BINDING_ERRORS));

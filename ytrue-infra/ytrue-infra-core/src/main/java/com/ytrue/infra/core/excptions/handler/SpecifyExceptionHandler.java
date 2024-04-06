@@ -29,7 +29,7 @@ public class SpecifyExceptionHandler {
      * @return
      */
     @ExceptionHandler(BindException.class)
-    public ServerResponseEntity<Object> bindExceptionHandler(final BindException exception) {
+    public ServerResponseEntity<Void> bindExceptionHandler(final BindException exception) {
         // 这个不是按顺序来的
         FieldError fieldError = exception.getFieldErrors().stream().findFirst().orElse(null);
         assert fieldError != null;
@@ -45,16 +45,16 @@ public class SpecifyExceptionHandler {
      * @return
      */
     @ExceptionHandler(ConstraintViolationException.class)
-    public ServerResponseEntity<Object> constraintViolationExceptionHandler(final ConstraintViolationException exception) {
+    public ServerResponseEntity<Void> constraintViolationExceptionHandler(final ConstraintViolationException exception) {
         String message = exception.getConstraintViolations().stream().findFirst().map(ConstraintViolation::getMessage).orElse("");
         return ServerResponseEntity.fail("4000", message);
     }
 
     @ExceptionHandler(Exception.class)
-    public ServerResponseEntity<Object> exceptionHandler(final Exception error) {
+    public ServerResponseEntity<Void> exceptionHandler(final Exception error) {
 
         String errorMessage = error.getMessage();
-        String errorCode = ResponseCodeEnum.FAIL.getCode();
+        String errorCode = ResponseCodeEnum.FAIL.code();
 
         if (error instanceof BaseCodeException baseCodeException) {
             errorCode = baseCodeException.getCode();

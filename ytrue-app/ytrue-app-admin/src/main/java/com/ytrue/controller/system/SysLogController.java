@@ -9,7 +9,7 @@ import com.ytrue.service.system.SysLogService;
 import com.ytrue.tools.query.entity.PageQueryEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +23,7 @@ import java.util.List;
 @Tag(name = "日志管理")
 @RestController
 @RequestMapping("/sys/log")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysLogController {
 
     private final SysLogService sysLogService;
@@ -40,7 +40,7 @@ public class SysLogController {
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:log:delete')")
-    public ServerResponseEntity<Object> delete(@RequestBody List<Long> ids) {
+    public ServerResponseEntity<Void> delete(@RequestBody List<Long> ids) {
         sysLogService.removeBatchByIds(ids);
         return ServerResponseEntity.success();
     }
@@ -48,7 +48,7 @@ public class SysLogController {
     @DeleteMapping("clear")
     @Operation(summary = "清空")
     @PreAuthorize("@pms.hasPermission('system:log:clear')")
-    public ServerResponseEntity<Object> clear() {
+    public ServerResponseEntity<Void> clear() {
         sysLogService.remove(Wrappers.emptyWrapper());
         return ServerResponseEntity.success();
     }

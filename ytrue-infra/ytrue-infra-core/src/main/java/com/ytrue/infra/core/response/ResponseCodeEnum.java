@@ -27,12 +27,12 @@ public enum ResponseCodeEnum implements IServerResponseCode {
     }
 
     @Override
-    public String getCode() {
+    public String code() {
         return this.code;
     }
 
     @Override
-    public String getMessage() {
+    public String message() {
         return this.message;
     }
 }

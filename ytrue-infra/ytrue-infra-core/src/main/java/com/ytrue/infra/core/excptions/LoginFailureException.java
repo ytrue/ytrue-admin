@@ -4,6 +4,8 @@ package com.ytrue.infra.core.excptions;
 import com.ytrue.infra.core.base.BaseCodeException;
 import com.ytrue.infra.core.base.IServerResponseCode;
 
+import java.io.Serial;
+
 
 /**
  * @author ytrue
@@ -11,6 +13,7 @@ import com.ytrue.infra.core.base.IServerResponseCode;
  * @date 2022/12/21 9:23
  */
 public class LoginFailureException extends BaseCodeException {
+    @Serial
     private static final long serialVersionUID = -3913654692436161922L;
 
     public LoginFailureException() {

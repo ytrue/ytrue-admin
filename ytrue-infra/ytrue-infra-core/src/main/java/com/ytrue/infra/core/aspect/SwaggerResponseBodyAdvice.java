@@ -3,7 +3,7 @@ package com.ytrue.infra.core.aspect;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.core.MethodParameter;
@@ -24,7 +24,7 @@ import java.util.Map;
  */
 @ConditionalOnExpression(value = "${springdoc.api-docs.enable:true} or ${knife4j.production:true}")
 @ControllerAdvice
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class SwaggerResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 

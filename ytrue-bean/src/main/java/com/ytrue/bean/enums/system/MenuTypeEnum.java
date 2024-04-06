@@ -1,6 +1,6 @@
 package com.ytrue.bean.enums.system;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -9,7 +9,7 @@ import lombok.Getter;
  * @date 2022/12/12 15:13
  */
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum MenuTypeEnum {
 
     /**

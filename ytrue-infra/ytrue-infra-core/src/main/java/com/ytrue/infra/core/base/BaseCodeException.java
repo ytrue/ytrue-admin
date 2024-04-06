@@ -3,14 +3,17 @@ package com.ytrue.infra.core.base;
 import com.ytrue.infra.core.response.ResponseCodeEnum;
 import lombok.Getter;
 
+import java.io.Serial;
+
 @Getter
 public abstract class BaseCodeException extends RuntimeException {
 
+    @Serial
     private static final long serialVersionUID = 5873796476107436739L;
     /**
      * 状态码
      */
-    private String code = ResponseCodeEnum.FAIL.getCode();
+    private String code = ResponseCodeEnum.FAIL.code();
 
     public BaseCodeException() {
     }
@@ -29,8 +32,8 @@ public abstract class BaseCodeException extends RuntimeException {
     }
 
     public BaseCodeException(IServerResponseCode responseCode) {
-        super(responseCode.getMessage());
-        this.code = responseCode.getCode();
+        super(responseCode.message());
+        this.code = responseCode.code();
     }
 
 }
