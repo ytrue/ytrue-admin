@@ -25,11 +25,10 @@ import java.util.stream.Collectors;
 public class SysPermissionServiceImpl implements SysPermissionService {
 
     private final SysRoleDao sysRoleDao;
-
     private final SysUserDao sysUserDao;
 
     @Override
-    public Set<String> getRoleCode(SysUser user) {
+    public Set<String> listRoleCodeBySysUser(SysUser user) {
 
         // 管理员拥有所有权限
         if (user.getAdmin()) {
@@ -37,11 +36,11 @@ public class SysPermissionServiceImpl implements SysPermissionService {
             roles.add(PermissionService.SUPER_ADMIN);
             return roles;
         }
-        return sysRoleDao.selectRoleCodeByUserId(user.getId()).stream().filter(StrUtil::isNotEmpty).collect(Collectors.toSet());
+        return sysRoleDao.selectRoleCodeBySysUserId(user.getId()).stream().filter(StrUtil::isNotEmpty).collect(Collectors.toSet());
     }
 
     @Override
-    public Set<String> getPermission(SysUser user) {
+    public Set<String> listPermissionBySysUser(SysUser user) {
         // 管理员拥有所有权限
         if (user.getAdmin()) {
             Set<String> perms = new HashSet<>();
@@ -49,7 +48,7 @@ public class SysPermissionServiceImpl implements SysPermissionService {
             return perms;
         }
         // 处理下逗号
-        return sysUserDao.selectPermsByUserId(user.getId())
+        return sysUserDao.selectPermsBySysUserId(user.getId())
                 .stream().filter(StrUtil::isNotEmpty)
                 .flatMap(s -> Arrays.stream(s.trim().split(StrPool.COMMA)))
                 .collect(Collectors.toSet());

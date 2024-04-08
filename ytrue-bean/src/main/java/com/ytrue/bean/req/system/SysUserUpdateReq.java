@@ -1,27 +1,16 @@
 package com.ytrue.bean.req.system;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Set;
 
-/**
- * @author ytrue
- * @description: SysUserDetailResp
- * @date 2022/12/7 17:01
- */
 @Data
-public class SysUserReq implements Serializable {
+public class SysUserUpdateReq {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     @Schema(description = "id")
     private Long id;
@@ -29,9 +18,6 @@ public class SysUserReq implements Serializable {
     @Schema(description = "用户部门Id")
     private Long deptId;
 
-    @NotBlank
-    @Schema(description = "用户名称")
-    private String username;
 
     @NotBlank
     @Schema(description = "用户昵称")
@@ -56,7 +42,6 @@ public class SysUserReq implements Serializable {
     private String avatarPath;
 
     @Schema(description = "密码")
-    @JsonIgnore
     private String password;
 
     @NotNull

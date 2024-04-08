@@ -1,9 +1,10 @@
 package com.ytrue.service.system;
 
+import com.ytrue.bean.req.system.SysRoleAddReq;
 import com.ytrue.bean.resp.system.SysRoleDetailResp;
 import com.ytrue.infra.db.base.IBaseService;
 import com.ytrue.bean.dataobject.system.SysRole;
-import com.ytrue.bean.req.system.SysRoleReq;
+import com.ytrue.bean.req.system.SysRoleUpdateReq;
 
 import java.util.List;
 import java.util.Set;
@@ -26,23 +27,23 @@ public interface SysRoleService extends IBaseService<SysRole> {
     /**
      * 新增角色
      *
-     * @param sysRoleReq
+     * @param requestParam
      */
-    void addRole(SysRoleReq sysRoleReq);
+    void addSysRole(SysRoleAddReq requestParam);
 
     /**
      * 修改角色
      *
-     * @param sysRoleReq
+     * @param requestParam
      */
-    void updateRole(SysRoleReq sysRoleReq);
+    void updateSysRole(SysRoleUpdateReq requestParam);
 
     /**
      * 删除角色
      *
      * @param ids
      */
-    void removeBatchRoleByIds(List<Long> ids);
+    void removeBatchSysRoleByIds(List<Long> ids);
 
 
     /**
@@ -51,7 +52,7 @@ public interface SysRoleService extends IBaseService<SysRole> {
      * @param userId
      * @return
      */
-    Set<SysRole> listByUserId(Long userId);
+    Set<SysRole> listBySysUserId(Long userId);
 
 
     /**

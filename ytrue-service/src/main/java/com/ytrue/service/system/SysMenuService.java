@@ -40,7 +40,7 @@ public interface SysMenuService extends IBaseService<SysMenu> {
      * @param userId
      * @return
      */
-    List<Tree<String>> listMenuTreeByUserId(Long userId);
+    List<Tree<String>> listMenuTreeBySysUserId(Long userId);
 
     /**
      * 根据用户id获取菜单列表
@@ -48,5 +48,5 @@ public interface SysMenuService extends IBaseService<SysMenu> {
      * @param userId
      * @return
      */
-    List<SysMenu> listByUserId(Long userId);
+    List<SysMenu> listBySysUserId(Long userId);
 }

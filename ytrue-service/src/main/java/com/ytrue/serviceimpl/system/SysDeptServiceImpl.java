@@ -33,9 +33,7 @@ import java.util.Set;
 public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> implements SysDeptService {
 
     private final SysUserDao sysUserDao;
-
     private final SysRoleDeptDao sysRoleDeptDao;
-
     private final DataScopeManager dataScopeManager;
 
 
@@ -72,12 +70,12 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateSysDept(SysDeptUpdateReq requestParam) {
-        // 校验父级不能是自己
-        AssertUtil.numberNotEquals(requestParam.getId(), requestParam.getPid(), ServerResponseCode.error("父级不能是自己"));
-
         // 获取id的部门
         SysDept sysDept = getById(requestParam.getId());
-        AssertUtil.notNull(sysDept, ResponseCodeEnum.DATA_NOT_FOUND);
+        AssertUtil.notNull(sysDept, ResponseCodeEnum.ILLEGAL_OPERATION);
+
+        // 校验父级不能是自己
+        AssertUtil.numberNotEquals(requestParam.getId(), requestParam.getPid(), ServerResponseCode.error("父级不能是自己"));
 
         // 获取id
         Long oldPid = sysDept.getPid();

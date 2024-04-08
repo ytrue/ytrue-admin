@@ -63,7 +63,7 @@ public class SysJobController {
     @GetMapping("detail/{id}")
     @Operation(summary = "详情")
     @PreAuthorize("@pms.hasPermission('system:job:detail')")
-    public ServerResponseEntity<SysJob> detail(@PathVariable("id") Long id) {
+    public ServerResponseEntity<SysJob> getSysJobById(@PathVariable("id") Long id) {
         return ServerResponseEntity.success(sysJobService.getSysJobById(id));
     }
 

@@ -4,24 +4,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Set;
 
-/**
- * @author ytrue
- * @description: SysRoleReq
- * @date 2022/12/7 15:29
- */
 @Data
-public class SysRoleReq implements Serializable {
+public class SysRoleAddReq {
 
-    @Serial
-    private static final long serialVersionUID = -2368863016297932647L;
-
-
-    @Schema(description = "id")
-    private Long id;
 
     @NotBlank
     @Schema(description = "角色名称")

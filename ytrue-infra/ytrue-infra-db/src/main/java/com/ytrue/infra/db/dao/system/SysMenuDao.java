@@ -46,7 +46,7 @@ public interface SysMenuDao extends IBaseDao<SysMenu> {
                     m.menu_sort
             </script>
             """)
-    Set<Long> selectMenuIdsByRoleId(@Param("roleId") Long roleId, @Param("menuCheckStrictly") boolean menuCheckStrictly);
+    Set<Long> selectMenuIdsBySysRoleId(@Param("roleId") Long roleId, @Param("menuCheckStrictly") boolean menuCheckStrictly);
 
 
     /**
@@ -86,5 +86,5 @@ public interface SysMenuDao extends IBaseDao<SysMenu> {
                         m.menu_sort
             </script>
             """)
-    List<SysMenu> selectMenusByUserId(@Param("userId") Long userId);
+    List<SysMenu> selectMenusBySysUserId(@Param("userId") Long userId);
 }

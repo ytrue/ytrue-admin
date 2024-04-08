@@ -1,24 +1,11 @@
 package com.ytrue.bean.req.system;
 
-
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-import jakarta.validation.constraints.NotBlank;
-
-import java.io.Serial;
-import java.io.Serializable;
-
-/**
- * @author ytrue
- * @description: 密码修改操作
- * @date 2022/12/27 11:28
- */
 @Data
-public class UpdatePasswordReq implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class SysUserUpdatePasswordReq {
 
     @NotBlank
     @Schema(description = "旧密码")

@@ -6,7 +6,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.bean.dataobject.system.SysRole;
 import com.ytrue.bean.query.system.SysRolePageQuery;
-import com.ytrue.bean.req.system.SysRoleReq;
+import com.ytrue.bean.req.system.SysRoleAddReq;
+import com.ytrue.bean.req.system.SysRoleUpdateReq;
 import com.ytrue.bean.resp.system.SysRoleDetailResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.service.system.SysRoleService;
@@ -75,8 +76,8 @@ public class SysRoleController {
     @PostMapping
     @Operation(summary = "保存")
     @PreAuthorize("@pms.hasPermission('system:role:add')")
-    public ServerResponseEntity<Void> add(@Validated @RequestBody SysRoleReq sysRoleReq) {
-        sysRoleService.addRole(sysRoleReq);
+    public ServerResponseEntity<Void> addSysRole(@Validated @RequestBody SysRoleAddReq requestParam) {
+        sysRoleService.addSysRole(requestParam);
         return ServerResponseEntity.success();
     }
 
@@ -84,8 +85,8 @@ public class SysRoleController {
     @PutMapping
     @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:role:update')")
-    public ServerResponseEntity<Void> update(@Validated @RequestBody SysRoleReq sysRoleReq) {
-        sysRoleService.updateRole(sysRoleReq);
+    public ServerResponseEntity<Void> updateSysRole(@Validated @RequestBody SysRoleUpdateReq requestParam) {
+        sysRoleService.updateSysRole(requestParam);
         return ServerResponseEntity.success();
     }
 
@@ -93,8 +94,8 @@ public class SysRoleController {
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:role:delete')")
-    public ServerResponseEntity<Void> delete(@RequestBody List<Long> ids) {
-        sysRoleService.removeBatchRoleByIds(ids);
+    public ServerResponseEntity<Void> removeBatchSysRoleByIds(@RequestBody List<Long> ids) {
+        sysRoleService.removeBatchSysRoleByIds(ids);
         return ServerResponseEntity.success();
     }
 

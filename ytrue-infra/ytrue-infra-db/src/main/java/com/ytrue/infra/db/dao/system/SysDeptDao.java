@@ -1,7 +1,7 @@
 package com.ytrue.infra.db.dao.system;
 
-import com.ytrue.infra.db.base.IBaseDao;
 import com.ytrue.bean.dataobject.system.SysDept;
+import com.ytrue.infra.db.base.IBaseDao;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
@@ -47,5 +47,5 @@ public interface SysDeptDao extends IBaseDao<SysDept> {
             </script>
             """)
     @ResultType(Long.class)
-    Set<Long> selectDeptIdsByRoleId(@Param("roleId") Long roleId, @Param("deptCheckStrictly") boolean deptCheckStrictly);
+    Set<Long> selectDeptIdsBySysRoleId(@Param("roleId") Long roleId, @Param("deptCheckStrictly") boolean deptCheckStrictly);
 }

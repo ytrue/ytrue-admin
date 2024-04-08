@@ -20,7 +20,7 @@ public interface SysJobService extends IBaseService<SysJob> {
      * @param userId
      * @return
      */
-    List<SysJob> listByUserId(Long userId);
+    List<SysJob> listBySysUserId(Long userId);
 
     /**
      * 新增岗位

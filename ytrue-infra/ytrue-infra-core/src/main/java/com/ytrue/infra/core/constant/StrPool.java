@@ -86,6 +86,6 @@ public interface StrPool {
     /**
      * 默认密码
      */
-    String defaultPwd = "123456";
+    String DEFAULT_PASSWORD = "111111";
 
 }

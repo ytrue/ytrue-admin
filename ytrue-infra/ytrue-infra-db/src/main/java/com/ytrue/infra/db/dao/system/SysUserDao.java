@@ -32,7 +32,7 @@ public interface SysUserDao extends IBaseDao<SysUser> {
                     WHERE ur.user_id = #{userId}
             </script>
             """)
-    Set<String> selectPermsByUserId(Long userId);
+    Set<String> selectPermsBySysUserId(Long userId);
 
 
     /**

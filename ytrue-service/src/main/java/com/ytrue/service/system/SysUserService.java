@@ -1,11 +1,13 @@
 package com.ytrue.service.system;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.ytrue.infra.db.base.IBaseService;
 import com.ytrue.bean.dataobject.system.SysUser;
-import com.ytrue.bean.req.system.SysUserReq;
+import com.ytrue.bean.req.system.SysUserAddReq;
+import com.ytrue.bean.req.system.SysUserUpdatePasswordReq;
+import com.ytrue.bean.req.system.SysUserUpdateReq;
 import com.ytrue.bean.resp.system.SysUserDetailResp;
 import com.ytrue.bean.resp.system.SysUserListResp;
+import com.ytrue.infra.db.base.IBaseService;
 import com.ytrue.tools.query.entity.QueryEntity;
 
 import java.util.List;
@@ -39,16 +41,16 @@ public interface SysUserService extends IBaseService<SysUser> {
     /**
      * 新增用户
      *
-     * @param sysUserReq
+     * @param requestParam
      */
-    void addUser(SysUserReq sysUserReq);
+    void addSysUser(SysUserAddReq requestParam);
 
     /**
      * 修改用户
      *
-     * @param sysUserReq
+     * @param requestParam
      */
-    void updateUser(SysUserReq sysUserReq);
+    void updateSysUser(SysUserUpdateReq requestParam);
 
     /**
      * 删除用户
@@ -57,11 +59,18 @@ public interface SysUserService extends IBaseService<SysUser> {
      */
     void removeBatchUserByIds(List<Long> ids);
 
+
     /**
-     * 根据用户名获取
+     * 修改当前用户密码
      *
-     * @param username
-     * @return
+     * @param requestParam
      */
-    SysUser getUserByUsername(String username);
+    void updateSysUserPassword(SysUserUpdatePasswordReq requestParam);
+
+    /**
+     * 重置密码
+     *
+     * @param userId
+     */
+    void resetSysUserPassword(Long userId);
 }

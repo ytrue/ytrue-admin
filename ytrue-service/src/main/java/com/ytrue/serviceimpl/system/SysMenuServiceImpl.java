@@ -1,6 +1,5 @@
 package com.ytrue.serviceimpl.system;
 
-import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNodeConfig;
 import cn.hutool.core.lang.tree.TreeUtil;
@@ -11,6 +10,7 @@ import com.ytrue.bean.dataobject.system.SysRoleMenu;
 import com.ytrue.bean.dataobject.system.SysUser;
 import com.ytrue.bean.enums.system.ComponentTypeEnum;
 import com.ytrue.bean.enums.system.MenuTypeEnum;
+import com.ytrue.infra.core.response.ResponseCodeEnum;
 import com.ytrue.infra.core.response.ServerResponseCode;
 import com.ytrue.infra.core.util.AssertUtil;
 import com.ytrue.infra.db.base.BaseServiceImpl;
@@ -21,7 +21,6 @@ import com.ytrue.service.system.SysMenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import  com.ytrue.infra.core.response.ResponseCodeEnum;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +35,6 @@ import java.util.List;
 public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> implements SysMenuService {
 
     private final SysUserDao sysUserDao;
-
     private final SysRoleMenuDao sysRoleMenuDao;
 
     @Transactional(rollbackFor = Exception.class)
@@ -83,9 +81,6 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
      * @param menuId
      */
     private void updateSubCnt(long menuId) {
-        if (menuId == 0) {
-            return;
-        }
         Long count = lambdaQuery().eq(SysMenu::getPid, menuId).count();
         // 更新
         lambdaUpdate().eq(SysMenu::getId, menuId).set(SysMenu::getSubCount, count).update();
@@ -98,16 +93,16 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
      * @return
      */
     @Override
-    public List<Tree<String>> listMenuTreeByUserId(Long userId) {
+    public List<Tree<String>> listMenuTreeBySysUserId(Long userId) {
         // 获取菜单
-        List<SysMenu> menus = listByUserId(userId);
+        List<SysMenu> menus = listBySysUserId(userId);
 
         //配置
         TreeNodeConfig treeNodeConfig = new TreeNodeConfig();
         //转换器
         return TreeUtil.build(menus, "0", treeNodeConfig, (sysMenu, tree) -> {
-            tree.setId(Convert.toStr(sysMenu.getId()));
-            tree.setParentId(Convert.toStr(sysMenu.getPid()));
+            tree.setId(String.valueOf(sysMenu.getId()));
+            tree.setParentId(String.valueOf(sysMenu.getPid()));
             tree.setName(sysMenu.getPath());
 
             // 不是外链，并且是M path要加/
@@ -145,7 +140,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
     }
 
     @Override
-    public List<SysMenu> listByUserId(Long userId) {
+    public List<SysMenu> listBySysUserId(Long userId) {
         SysUser sysUser = sysUserDao.selectById(userId);
         AssertUtil.notNull(sysUser, ResponseCodeEnum.DATA_NOT_FOUND);
 
@@ -159,7 +154,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
         }
 
         // 不然就是普通的账号
-        return baseMapper.selectMenusByUserId(userId);
+        return baseMapper.selectMenusBySysUserId(userId);
     }
 
 

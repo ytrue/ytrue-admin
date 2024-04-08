@@ -1,28 +1,22 @@
 package com.ytrue.manager;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.convert.Convert;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ytrue.infra.db.dao.system.SysDeptDao;
-
-
-import com.ytrue.infra.db.dao.system.SysRoleDao;
-import com.ytrue.infra.db.dao.system.SysRoleDeptDao;
-import com.ytrue.infra.db.dao.system.SysUserDao;
-import com.ytrue.bean.enums.system.DataScopeEnum;
-import com.ytrue.bean.dataobject.system.SysUser;
 import com.ytrue.bean.dataobject.system.SysDept;
 import com.ytrue.bean.dataobject.system.SysRole;
 import com.ytrue.bean.dataobject.system.SysRoleDept;
-
+import com.ytrue.bean.dataobject.system.SysUser;
+import com.ytrue.bean.enums.system.DataScopeEnum;
+import com.ytrue.infra.db.dao.system.SysDeptDao;
+import com.ytrue.infra.db.dao.system.SysRoleDao;
+import com.ytrue.infra.db.dao.system.SysRoleDeptDao;
+import com.ytrue.infra.db.dao.system.SysUserDao;
 import com.ytrue.tools.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -35,11 +29,8 @@ import java.util.stream.Collectors;
 public class DataScopeManager {
 
     private final SysUserDao sysUserDao;
-
     private final SysRoleDao sysRoleDao;
-
     private final SysRoleDeptDao sysRoleDeptDao;
-
     private final SysDeptDao sysDeptDao;
 
     /**
@@ -52,13 +43,12 @@ public class DataScopeManager {
         Set<Long> deptIds = this.listDeptIdDataScope();
         Set<Long> roleIds = new HashSet<>();
         // 如果包含0呢
-        if (CollectionUtil.isNotEmpty(deptIds)) {
+        if (CollUtil.isNotEmpty(deptIds)) {
             if (!deptIds.contains(0L)) {
                 roleIds = sysRoleDeptDao.selectList(Wrappers.<SysRoleDept>lambdaQuery().in(SysRoleDept::getDeptId, deptIds)).stream().map(SysRoleDept::getRoleId).collect(Collectors.toSet());
                 // 要把当前账号的角色放入进去，如果级别包含本人
                 String userId = SecurityUtils.getLoginUser().getUser().getUserId();
-
-                roleIds.addAll(sysRoleDao.selectByUserId(Convert.toLong(userId)).stream().map(SysRole::getId).collect(Collectors.toSet()));
+                roleIds.addAll(sysRoleDao.selectBySysUserId(Long.valueOf(userId)).stream().map(SysRole::getId).collect(Collectors.toSet()));
             } else {
                 roleIds = deptIds;
             }
@@ -88,7 +78,7 @@ public class DataScopeManager {
 
         // 判断是否包含全部数据,包含就不处理了
         SysRole sysRole1 = roleList.stream().filter(sysRole -> sysRole.getDataScope().equals(DataScopeEnum.DATA_SCOPE_ALL.getValue())).findFirst().orElse(null);
-        if (null != sysRole1) {
+        if (Objects.nonNull(sysRole1)) {
             return Collections.emptySet();
         }
 
@@ -145,11 +135,16 @@ public class DataScopeManager {
         HashSet<Long> resultIds = new HashSet<>();
         resultIds.add(deptId);
         Set<Long> ids = sysDeptDao.selectList(Wrappers.<SysDept>lambdaQuery().eq(SysDept::getPid, deptId)).stream().map(SysDept::getId).collect(Collectors.toSet());
-        if (CollectionUtil.isNotEmpty(ids)) {
-            resultIds.addAll(ids);
-            for (Long id : ids) {
-                resultIds.addAll(getDeptAndChildIds(id));
-            }
+
+        // 为空就返回了
+        if (CollUtil.isEmpty(ids)) {
+            return resultIds;
+        }
+
+
+        resultIds.addAll(ids);
+        for (Long id : ids) {
+            resultIds.addAll(getDeptAndChildIds(id));
         }
         return resultIds;
     }

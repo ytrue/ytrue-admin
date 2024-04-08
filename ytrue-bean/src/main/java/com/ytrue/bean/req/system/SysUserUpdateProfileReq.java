@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @date 2022/12/27 11:28
  */
 @Data
-public class UserProfileReq implements Serializable {
+public class SysUserUpdateProfileReq implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

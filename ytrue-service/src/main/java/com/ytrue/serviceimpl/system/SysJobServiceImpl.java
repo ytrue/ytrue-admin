@@ -32,8 +32,8 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDao, SysJob> implem
     private final SysUserJobDao sysUserJobDao;
 
     @Override
-    public List<SysJob> listByUserId(Long userId) {
-        return baseMapper.selectByUserId(userId);
+    public List<SysJob> listBySysUserId(Long userId) {
+        return baseMapper.selectBySysUserId(userId);
     }
 
     @Override
@@ -50,8 +50,10 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDao, SysJob> implem
 
     @Override
     public void updateSysJob(SysJobUpdateReq requestParam) {
-        SysJob job = this.lambdaQuery().eq(SysJob::getJobName, requestParam.getJobName()).ne(SysJob::getId, requestParam.getId()).one();
+        SysJob data = this.getById(requestParam.getId());
+        AssertUtil.notNull(data, ResponseCodeEnum.ILLEGAL_OPERATION);
 
+        SysJob job = this.lambdaQuery().eq(SysJob::getJobName, requestParam.getJobName()).ne(SysJob::getId, requestParam.getId()).one();
         AssertUtil.isNull(job, ServerResponseCode.error("岗位已存在"));
 
         BeanUtils.copyProperties(requestParam, job);

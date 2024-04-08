@@ -1,40 +1,33 @@
-package com.ytrue.bean.dataobject.system;
+package com.ytrue.bean.req.system;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.ytrue.bean.dataobject.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
-import java.time.LocalDateTime;
+import java.util.Set;
 
-/**
- * @author ytrue
- * @description: SysUser
- * @date 2022/12/7 15:20
- */
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("sys_user")
-public class SysUser extends BaseEntity {
-
+public class SysUserAddReq {
 
     @Schema(description = "用户部门Id")
     private Long deptId;
 
-
+    @NotBlank
     @Schema(description = "用户名称")
     private String username;
 
-
+    @NotBlank
     @Schema(description = "用户昵称")
     private String nickName;
 
+    @Email
+    @NotBlank
     @Schema(description = "邮箱")
     private String email;
 
+    @NotBlank
     @Schema(description = "电话号码")
     private String phone;
 
@@ -50,12 +43,13 @@ public class SysUser extends BaseEntity {
     @Schema(description = "密码")
     private String password;
 
+    @NotNull
     @Schema(description = "是否启用")
     private Boolean status;
 
-    @Schema(description = "是否为admin账号")
-    private Boolean admin;
+    @Schema(description = "角色id集合")
+    private Set<Long> roleIds;
 
-    @Schema(description = "最后修改密码的时间")
-    private LocalDateTime pwdResetTime;
+    @Schema(description = "岗位id集合")
+    private Set<Long> jobIds;
 }

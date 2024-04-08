@@ -72,7 +72,4 @@ public class SysLog extends BaseIdEntity {
 
     @Schema(description = "浏览器")
     private String browser;
-
-
-  
 }

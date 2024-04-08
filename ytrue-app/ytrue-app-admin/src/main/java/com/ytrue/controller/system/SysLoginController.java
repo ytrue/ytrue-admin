@@ -1,12 +1,11 @@
 package com.ytrue.controller.system;
 
-import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.tree.Tree;
 import com.ytrue.bean.dataobject.system.SysDept;
 import com.ytrue.bean.dataobject.system.SysJob;
 import com.ytrue.bean.dataobject.system.SysRole;
 import com.ytrue.bean.dataobject.system.SysUser;
-import com.ytrue.bean.resp.system.LoginUserInfoResp;
+import com.ytrue.bean.resp.system.SysUserLoginInfoResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.service.system.*;
 import com.ytrue.tools.security.service.LoginService;
@@ -55,22 +54,22 @@ public class SysLoginController {
 
     @Operation(summary = "用户信息")
     @GetMapping("/getInfo")
-    public ServerResponseEntity<LoginUserInfoResp> getUserInfo() {
-        String username = SecurityUtils.getLoginUser().getUsername();
-        // 获取用户
-        SysUser sysUser = sysUserService.getUserByUsername(username);
+    public ServerResponseEntity<SysUserLoginInfoResp> getSysUserLoginInfo() {
+        String currLoginUserId = SecurityUtils.getLoginUser().getUser().getUserId();
+        // 根据用户名获取用户
+        SysUser sysUser = sysUserService.getById(Long.valueOf(currLoginUserId));
         // 获取岗位
-        List<SysJob> sysJobs = sysJobService.listByUserId(sysUser.getId());
+        List<SysJob> sysJobs = sysJobService.listBySysUserId(sysUser.getId());
         // 获取部门
         SysDept sysDept = sysDeptService.getById(sysUser.getDeptId());
         // 获取角色
-        Set<SysRole> sysRoles = sysRoleService.listByUserId(sysUser.getId());
+        Set<SysRole> sysRoles = sysRoleService.listBySysUserId(sysUser.getId());
         // 权限集合
-        Set<String> permissions = sysPermissionService.getPermission(sysUser);
+        Set<String> permissions = sysPermissionService.listPermissionBySysUser(sysUser);
         // 角色集合
-        Set<String> roleCodes = sysPermissionService.getRoleCode(sysUser);
+        Set<String> roleCodes = sysPermissionService.listRoleCodeBySysUser(sysUser);
 
-        LoginUserInfoResp sysUserInfoVO = new LoginUserInfoResp();
+        SysUserLoginInfoResp sysUserInfoVO = new SysUserLoginInfoResp();
         sysUserInfoVO.setUser(sysUser);
         sysUserInfoVO.setJobs(sysJobs);
         sysUserInfoVO.setDept(sysDept);
@@ -84,8 +83,9 @@ public class SysLoginController {
     @Operation(summary = "路由信息")
     @GetMapping("getRouters")
     public ServerResponseEntity<List<Tree<String>>> getRouters() {
-        List<Tree<String>> menuTree = sysMenuService.listMenuTreeByUserId(
-                Convert.toLong(SecurityUtils.getLoginUser().getUser().getUserId()));
+        String currLoginUserId = SecurityUtils.getLoginUser().getUser().getUserId();
+
+        List<Tree<String>> menuTree = sysMenuService.listMenuTreeBySysUserId(Long.valueOf(currLoginUserId));
         return ServerResponseEntity.success(menuTree);
     }
 

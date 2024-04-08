@@ -17,7 +17,7 @@ public interface SysPermissionService {
      * @param user
      * @return
      */
-    Set<String> getRoleCode(SysUser user);
+    Set<String> listRoleCodeBySysUser(SysUser user);
 
 
     /**
@@ -26,5 +26,5 @@ public interface SysPermissionService {
      * @param user
      * @return
      */
-    Set<String> getPermission(SysUser user);
+    Set<String> listPermissionBySysUser(SysUser user);
 }

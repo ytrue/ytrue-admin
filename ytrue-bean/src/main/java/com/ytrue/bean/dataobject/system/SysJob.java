@@ -26,7 +26,6 @@ public class SysJob extends BaseEntity {
     private static final long serialVersionUID = 8557945474976276338L;
 
 
-
     @Schema(description = "岗位名称")
     private String jobName;
 
@@ -37,6 +36,4 @@ public class SysJob extends BaseEntity {
     @Schema(description = "是否启用")
     private Boolean status;
 
-
-  
 }

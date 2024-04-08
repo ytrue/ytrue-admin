@@ -12,13 +12,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
-/**
- * @author ytrue
- * @description: LoginUserInfoResp
- * @date 2022/12/8 15:53
- */
 @Data
-public class LoginUserInfoResp implements Serializable {
+public class SysUserLoginInfoResp implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
