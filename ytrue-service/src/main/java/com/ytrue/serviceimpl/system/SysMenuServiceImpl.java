@@ -159,7 +159,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
         }
 
         // 不然就是普通的账号
-        return baseMapper.listMenuByUserId(userId);
+        return baseMapper.selectMenusByUserId(userId);
     }
 
 

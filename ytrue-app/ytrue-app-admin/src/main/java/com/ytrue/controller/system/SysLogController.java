@@ -2,7 +2,6 @@ package com.ytrue.controller.system;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-
 import com.ytrue.bean.dataobject.system.SysLog;
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.service.system.SysLogService;
@@ -40,7 +39,7 @@ public class SysLogController {
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:log:delete')")
-    public ServerResponseEntity<Void> delete(@RequestBody List<Long> ids) {
+    public ServerResponseEntity<Void> removeBatchSysLogByIds(@RequestBody List<Long> ids) {
         sysLogService.removeBatchByIds(ids);
         return ServerResponseEntity.success();
     }
@@ -48,7 +47,7 @@ public class SysLogController {
     @DeleteMapping("clear")
     @Operation(summary = "清空")
     @PreAuthorize("@pms.hasPermission('system:log:clear')")
-    public ServerResponseEntity<Void> clear() {
+    public ServerResponseEntity<Void> removeAll() {
         sysLogService.remove(Wrappers.emptyWrapper());
         return ServerResponseEntity.success();
     }

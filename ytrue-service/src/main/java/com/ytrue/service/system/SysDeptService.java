@@ -1,7 +1,9 @@
 package com.ytrue.service.system;
 
-import com.ytrue.infra.db.base.IBaseService;
 import com.ytrue.bean.dataobject.system.SysDept;
+import com.ytrue.bean.req.system.SysDeptAddReq;
+import com.ytrue.bean.req.system.SysDeptUpdateReq;
+import com.ytrue.infra.db.base.IBaseService;
 
 import java.util.List;
 import java.util.Set;
@@ -17,24 +19,24 @@ public interface SysDeptService extends IBaseService<SysDept> {
     /**
      * 保存部门x
      *
-     * @param sysDept
+     * @param requestParam
      */
-    void addDept(SysDept sysDept);
+    void addSysDept(SysDeptAddReq requestParam);
 
 
     /**
      * 更新部门
      *
-     * @param sysDept
+     * @param requestParam
      */
-    void updateDept(SysDept sysDept);
+    void updateSysDept(SysDeptUpdateReq requestParam);
 
     /**
      * 批量删除部门
      *
      * @param ids
      */
-    void removeBatchDept(List<Long> ids);
+    void removeBatchSysDeptByIds(List<Long> ids);
 
     /**
      * 根据数据范围获取部门id
@@ -42,4 +44,13 @@ public interface SysDeptService extends IBaseService<SysDept> {
      * @return
      */
     Set<Long> listCurrentAccountDeptId();
+
+    /**
+     * 获取部门
+     *
+     * @param id
+     * @return
+     */
+    SysDept getSysDeptById(Long id);
+
 }

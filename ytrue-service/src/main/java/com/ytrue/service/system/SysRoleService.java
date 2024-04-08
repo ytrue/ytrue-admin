@@ -42,7 +42,7 @@ public interface SysRoleService extends IBaseService<SysRole> {
      *
      * @param ids
      */
-    void removeBatchRole(List<Long> ids);
+    void removeBatchRoleByIds(List<Long> ids);
 
 
     /**

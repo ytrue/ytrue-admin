@@ -58,7 +58,7 @@ public class DataScopeManager {
                 // 要把当前账号的角色放入进去，如果级别包含本人
                 String userId = SecurityUtils.getLoginUser().getUser().getUserId();
 
-                roleIds.addAll(sysRoleDao.listByUserId(Convert.toLong(userId)).stream().map(SysRole::getId).collect(Collectors.toSet()));
+                roleIds.addAll(sysRoleDao.selectByUserId(Convert.toLong(userId)).stream().map(SysRole::getId).collect(Collectors.toSet()));
             } else {
                 roleIds = deptIds;
             }

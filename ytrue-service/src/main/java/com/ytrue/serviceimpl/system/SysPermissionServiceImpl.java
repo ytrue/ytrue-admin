@@ -37,7 +37,7 @@ public class SysPermissionServiceImpl implements SysPermissionService {
             roles.add(PermissionService.SUPER_ADMIN);
             return roles;
         }
-        return sysRoleDao.listRoleCodeByUserId(user.getId()).stream().filter(StrUtil::isNotEmpty).collect(Collectors.toSet());
+        return sysRoleDao.selectRoleCodeByUserId(user.getId()).stream().filter(StrUtil::isNotEmpty).collect(Collectors.toSet());
     }
 
     @Override
@@ -49,7 +49,7 @@ public class SysPermissionServiceImpl implements SysPermissionService {
             return perms;
         }
         // 处理下逗号
-        return sysUserDao.listPermsByUserId(user.getId())
+        return sysUserDao.selectPermsByUserId(user.getId())
                 .stream().filter(StrUtil::isNotEmpty)
                 .flatMap(s -> Arrays.stream(s.trim().split(StrPool.COMMA)))
                 .collect(Collectors.toSet());

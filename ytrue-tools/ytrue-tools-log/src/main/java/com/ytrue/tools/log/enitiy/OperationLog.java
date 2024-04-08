@@ -1,10 +1,12 @@
 package com.ytrue.tools.log.enitiy;
 
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -16,10 +18,11 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class OperationLog implements Serializable {
 
 
+    @Serial
     private static final long serialVersionUID = -6604255398447349464L;
     /**
      * 操作IP

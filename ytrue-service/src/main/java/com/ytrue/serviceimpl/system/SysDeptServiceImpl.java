@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.bean.dataobject.system.SysDept;
 import com.ytrue.bean.dataobject.system.SysRoleDept;
 import com.ytrue.bean.dataobject.system.SysUser;
+import com.ytrue.bean.req.system.SysDeptAddReq;
+import com.ytrue.bean.req.system.SysDeptUpdateReq;
+import com.ytrue.infra.core.response.ResponseCodeEnum;
 import com.ytrue.infra.core.response.ServerResponseCode;
 import com.ytrue.infra.core.util.AssertUtil;
 import com.ytrue.infra.db.base.BaseServiceImpl;
@@ -13,6 +16,7 @@ import com.ytrue.infra.db.dao.system.SysUserDao;
 import com.ytrue.manager.DataScopeManager;
 import com.ytrue.service.system.SysDeptService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,32 +44,47 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
         return dataScopeManager.listDeptIdDataScope();
     }
 
-    /**
-     * 保存部门
-     *
-     * @param sysDept
-     */
+    @Override
+    public SysDept getSysDeptById(Long id) {
+        SysDept data = getById(id);
+        AssertUtil.notNull(data, ResponseCodeEnum.DATA_NOT_FOUND);
+        return data;
+    }
+
+
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void addDept(SysDept sysDept) {
-        save(sysDept);
+    public void addSysDept(SysDeptAddReq requestParam) {
+        // 转换一下
+        SysDept sysDept = new SysDept();
+        BeanUtils.copyProperties(requestParam, SysDept.class);
+        // 保存
+        this.save(sysDept);
+        // 更新数量
         updateSubCnt(sysDept.getPid());
     }
 
     /**
      * 更新部门
      *
-     * @param sysDept
+     * @param requestParam
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void updateDept(SysDept sysDept) {
+    public void updateSysDept(SysDeptUpdateReq requestParam) {
         // 校验父级不能是自己
-        AssertUtil.numberNotEquals(sysDept.getId(), sysDept.getPid(), ServerResponseCode.error("父级不能是自己"));
+        AssertUtil.numberNotEquals(requestParam.getId(), requestParam.getPid(), ServerResponseCode.error("父级不能是自己"));
 
-        // 旧的部门
-        Long oldPid = getById(sysDept.getId()).getPid();
-        Long newPid = sysDept.getPid();
+        // 获取id的部门
+        SysDept sysDept = getById(requestParam.getId());
+        AssertUtil.notNull(sysDept, ResponseCodeEnum.DATA_NOT_FOUND);
+
+        // 获取id
+        Long oldPid = sysDept.getPid();
+        Long newPid = requestParam.getPid();
+
+        // bean转换
+        BeanUtils.copyProperties(requestParam, sysDept);
 
         updateById(sysDept);
         // 更新父节点中子节点数目
@@ -74,7 +93,12 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
     }
 
     @Override
-    public void removeBatchDept(List<Long> ids) {
+    @Transactional(rollbackFor = Exception.class)
+    public void removeBatchSysDeptByIds(List<Long> ids) {
+        // 校验集合
+        AssertUtil.collectionIsNotEmpty(ids, ResponseCodeEnum.ILLEGAL_OPERATION);
+
+        // 循环校验
         for (Long id : ids) {
             SysDept childDept = lambdaQuery().eq(SysDept::getPid, id).one();
             AssertUtil.isNull(childDept, ServerResponseCode.error("存在子级，请解除后再试"));
@@ -86,23 +110,29 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
             // 校验角色绑定
             SysRoleDept sysRoleDept = sysRoleDeptDao.selectOne(Wrappers.<SysRoleDept>lambdaQuery().eq(SysRoleDept::getDeptId, id));
             AssertUtil.isNull(sysRoleDept, ServerResponseCode.error("存在角色关联，请解除后再试"));
+        }
 
+        // 操作删除
+        this.doRemoveBatchSysDeptByIds(ids);
+    }
+
+
+    private void doRemoveBatchSysDeptByIds(List<Long> ids) {
+        // 处理
+        for (Long id : ids) {
             SysDept dept = getById(id);
             removeById(id);
+            // 更新节点的数量
             updateSubCnt(dept.getPid());
         }
     }
-
 
     /**
      * 更新数量
      *
      * @param deptId
      */
-    private void updateSubCnt(Long deptId) {
-        if (deptId == null) {
-            return;
-        }
+    private void updateSubCnt(long deptId) {
         Long count = lambdaQuery().eq(SysDept::getPid, deptId).count();
         // 更新
         lambdaUpdate().eq(SysDept::getId, deptId).set(SysDept::getSubCount, count).update();

@@ -3,12 +3,10 @@ package com.ytrue.controller.system;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ytrue.bean.dataobject.system.SysJob;
-import com.ytrue.bean.query.system.SysJobQuery;
-import com.ytrue.infra.core.response.ResponseCodeEnum;
-import com.ytrue.infra.core.response.ServerResponseCode;
+import com.ytrue.bean.query.system.SysJobPageQuery;
+import com.ytrue.bean.req.system.SysJobAddReq;
+import com.ytrue.bean.req.system.SysJobUpdateReq;
 import com.ytrue.infra.core.response.ServerResponseEntity;
-import com.ytrue.infra.core.util.AssertUtil;
-import com.ytrue.infra.db.entity.Pageable;
 import com.ytrue.service.system.SysJobService;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.util.QueryHelp;
@@ -39,13 +37,13 @@ public class SysJobController {
     @GetMapping("page")
     @Operation(summary = "分页")
     @PreAuthorize("@pms.hasPermission('system:job:page')")
-    public ServerResponseEntity<IPage<SysJob>> page(SysJobQuery params, Pageable pageable) {
+    public ServerResponseEntity<IPage<SysJob>> page(SysJobPageQuery queryParam) {
 
-        LambdaQueryWrapper<SysJob> queryWrapper = QueryHelp.<SysJob>lambdaQueryWrapperBuilder(params)
+        LambdaQueryWrapper<SysJob> queryWrapper = QueryHelp.<SysJob>lambdaQueryWrapperBuilder(queryParam)
                 .orderByAsc(SysJob::getJobSort)
                 .orderByDesc(SysJob::getId);
 
-        return ServerResponseEntity.success(sysJobService.page(pageable.page(), queryWrapper));
+        return ServerResponseEntity.success(sysJobService.page(queryParam.page(), queryWrapper));
     }
 
 
@@ -66,9 +64,7 @@ public class SysJobController {
     @Operation(summary = "详情")
     @PreAuthorize("@pms.hasPermission('system:job:detail')")
     public ServerResponseEntity<SysJob> detail(@PathVariable("id") Long id) {
-        SysJob data = sysJobService.getById(id);
-        AssertUtil.notNull(data, ResponseCodeEnum.DATA_NOT_FOUND);
-        return ServerResponseEntity.success(data);
+        return ServerResponseEntity.success(sysJobService.getSysJobById(id));
     }
 
 
@@ -76,10 +72,8 @@ public class SysJobController {
     @PostMapping
     @Operation(summary = "保存")
     @PreAuthorize("@pms.hasPermission('system:job:add')")
-    public ServerResponseEntity<Void> add(@Validated @RequestBody SysJob sysJob) {
-        SysJob job = sysJobService.lambdaQuery().eq(SysJob::getJobName, sysJob.getJobName()).one();
-        AssertUtil.isNull(job, ServerResponseCode.error("岗位已存在"));
-        sysJobService.save(sysJob);
+    public ServerResponseEntity<Void> addSysJob(@Validated @RequestBody SysJobAddReq requestParam) {
+        sysJobService.addSysJob(requestParam);
         return ServerResponseEntity.success();
     }
 
@@ -87,14 +81,8 @@ public class SysJobController {
     @PutMapping
     @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:job:update')")
-    public ServerResponseEntity<Void> update(@Validated @RequestBody SysJob sysJob) {
-        SysJob job = sysJobService
-                .lambdaQuery()
-                .eq(SysJob::getJobName, sysJob.getJobName())
-                .ne(SysJob::getId, sysJob.getId())
-                .one();
-        AssertUtil.isNull(job, ServerResponseCode.error("岗位已存在"));
-        sysJobService.updateById(sysJob);
+    public ServerResponseEntity<Void> updateSysJob(@Validated @RequestBody SysJobUpdateReq requestParam) {
+        sysJobService.updateSysJob(requestParam);
         return ServerResponseEntity.success();
     }
 
@@ -102,9 +90,9 @@ public class SysJobController {
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:job:delete')")
-    public ServerResponseEntity<Void> delete(@RequestBody List<Long> ids) {
+    public ServerResponseEntity<Void> removeBatchSysJobByIds(@RequestBody List<Long> ids) {
         // 需要校验用户与岗位得绑定关系
-        sysJobService.removeBatchByIds(ids);
+        sysJobService.removeBatchSysJobByIds(ids);
         return ServerResponseEntity.success();
     }
 }

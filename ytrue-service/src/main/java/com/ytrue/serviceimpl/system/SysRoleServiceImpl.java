@@ -54,9 +54,9 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
         SysRole role = getById(id);
         AssertUtil.notNull(role, ResponseCodeEnum.DATA_NOT_FOUND);
         // 获取对应的菜单
-        Set<Long> menuIds = sysMenuDao.listMenuIdByRoleId(id, role.getMenuCheckStrictly());
+        Set<Long> menuIds = sysMenuDao.selectMenuIdsByRoleId(id, role.getMenuCheckStrictly());
         // 获取对应的部门
-        Set<Long> deptIds = sysDeptDao.listDeptIdByRoleId(id, role.getDeptCheckStrictly());
+        Set<Long> deptIds = sysDeptDao.selectDeptIdsByRoleId(id, role.getDeptCheckStrictly());
 
         SysRoleDetailResp roleDTO = BeanUtil.cgLibCopyBean(role, SysRoleDetailResp::new);
         roleDTO.setMenuIds(menuIds);
@@ -91,7 +91,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void removeBatchRole(List<Long> ids) {
+    public void removeBatchRoleByIds(List<Long> ids) {
         // 删除角色
         removeBatchByIds(ids);
         // 删除角色与菜单,部门的关系
@@ -100,7 +100,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
 
     @Override
     public Set<SysRole> listByUserId(Long userId) {
-        return baseMapper.listByUserId(userId);
+        return baseMapper.selectByUserId(userId);
     }
 
     /**

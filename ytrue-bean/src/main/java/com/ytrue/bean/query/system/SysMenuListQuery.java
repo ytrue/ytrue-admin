@@ -11,21 +11,21 @@ import java.util.List;
 
 /**
  * @author ytrue
- * @description: 岗位搜索参数
- * @date 2022/12/20 11:09
+ * @description: SysMenuQuery
+ * @date 2022/12/20 11:10
  */
 @Data
-public class SysJobQuery implements Serializable {
+public class SysMenuListQuery implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Query(condition = QueryMethod.like)
-    @Schema(description = "岗位名称")
-    private String jobName;
+    @Schema(description = "菜单名称")
+    private String menuName;
 
     @Query
-    @Schema(description = "是否启用")
+    @Schema(description = " 菜单状态（0正常 1停用）")
     private Boolean status;
 
     @Query(condition = QueryMethod.between)

@@ -26,5 +26,5 @@ public interface SysJobDao extends IBaseDao<SysJob> {
                            INNER JOIN sys_user AS u ON u.id = uj.user_id
                   WHERE u.id = #{userId}
               """)
-    List<SysJob> listByUserId(Long userId);
+    List<SysJob> selectByUserId(Long userId);
 }

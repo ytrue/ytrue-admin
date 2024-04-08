@@ -1,5 +1,6 @@
 package com.ytrue.tools.security.user;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,8 +14,7 @@ import java.util.Set;
  * @description User
  */
 @Data
-
-@RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 public class User {
 

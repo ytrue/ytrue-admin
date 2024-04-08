@@ -2,7 +2,7 @@ package com.ytrue.controller.system;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ytrue.bean.dataobject.system.SysUser;
-import com.ytrue.bean.query.system.SysUserQuery;
+import com.ytrue.bean.query.system.SysUserPageQuery;
 import com.ytrue.bean.req.system.SysUserReq;
 import com.ytrue.bean.req.system.UpdatePasswordReq;
 import com.ytrue.bean.req.system.UserProfileReq;
@@ -11,7 +11,6 @@ import com.ytrue.bean.resp.system.SysUserListResp;
 import com.ytrue.infra.core.response.ServerResponseCode;
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.infra.core.util.AssertUtil;
-import com.ytrue.infra.db.entity.Pageable;
 import com.ytrue.service.system.SysUserService;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.entity.QueryEntity;
@@ -48,11 +47,11 @@ public class SysUserController {
     @GetMapping("page")
     @Operation(summary = "分页")
     @PreAuthorize("@pms.hasPermission('system:user:page')")
-    public ServerResponseEntity<IPage<SysUserListResp>> page(SysUserQuery params, Pageable pageable) {
+    public ServerResponseEntity<IPage<SysUserListResp>> page(SysUserPageQuery queryParam) {
 
-        QueryEntity queryEntity = QueryHelp.queryEntityBuilder(params).addSort(SysUserListResp::getId, Boolean.FALSE);
+        QueryEntity queryEntity = QueryHelp.queryEntityBuilder(queryParam).addSort(SysUserListResp::getId, Boolean.FALSE);
 
-        return ServerResponseEntity.success(sysUserService.paginate(pageable.page(), queryEntity));
+        return ServerResponseEntity.success(sysUserService.paginate(queryParam.page(), queryEntity));
     }
 
     @GetMapping("detail/{id}")
@@ -87,7 +86,7 @@ public class SysUserController {
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:user:delete')")
     public ServerResponseEntity<Void> delete(@RequestBody List<Long> ids) {
-        sysUserService.removeBatchUser(ids);
+        sysUserService.removeBatchUserByIds(ids);
         return ServerResponseEntity.success();
     }
 

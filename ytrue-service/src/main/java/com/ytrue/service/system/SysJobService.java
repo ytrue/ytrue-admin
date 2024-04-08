@@ -1,5 +1,7 @@
 package com.ytrue.service.system;
 
+import com.ytrue.bean.req.system.SysJobAddReq;
+import com.ytrue.bean.req.system.SysJobUpdateReq;
 import com.ytrue.infra.db.base.IBaseService;
 import com.ytrue.bean.dataobject.system.SysJob;
 
@@ -19,4 +21,31 @@ public interface SysJobService extends IBaseService<SysJob> {
      * @return
      */
     List<SysJob> listByUserId(Long userId);
+
+    /**
+     * 新增岗位
+     *
+     * @param requestParam
+     */
+    void addSysJob(SysJobAddReq requestParam);
+
+    /**
+     * 更新岗位
+     *
+     * @param requestParam
+     */
+    void updateSysJob(SysJobUpdateReq requestParam);
+
+    /**
+     * 删除岗位
+     * @param ids
+     */
+    void removeBatchSysJobByIds(List<Long> ids);
+
+    /**
+     * 根据id获取岗位
+     * @param id
+     * @return
+     */
+    SysJob getSysJobById(Long id);
 }

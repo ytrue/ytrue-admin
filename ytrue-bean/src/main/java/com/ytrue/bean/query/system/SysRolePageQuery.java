@@ -1,21 +1,25 @@
 package com.ytrue.bean.query.system;
 
+import com.ytrue.bean.Pageable;
 import com.ytrue.tools.query.annotation.Query;
 import com.ytrue.tools.query.enums.QueryMethod;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author ytrue
- * @description: SysRoleQuery
+ * @description: SysRolePageQuery
  * @date 2022/12/20 11:10
  */
 @Data
-public class SysRoleQuery implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class SysRolePageQuery extends Pageable {
 
     @Serial
     private static final long serialVersionUID = 1L;

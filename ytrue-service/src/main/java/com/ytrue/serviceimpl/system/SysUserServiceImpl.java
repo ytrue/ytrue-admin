@@ -57,7 +57,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
         } else {
             query.addFilter(SysUser::getId, QueryMethod.eq, SecurityUtils.getLoginUser().getUser().getUserId(), "u");
         }
-        return baseMapper.listWithDeptName(page, query);
+        return baseMapper.selectWithDeptName(page, query);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void removeBatchUser(List<Long> ids) {
+    public void removeBatchUserByIds(List<Long> ids) {
         // 删除用户
         removeBatchByIds(ids);
         // 删除用户与部门,角色的关系
@@ -117,11 +117,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
      */
     private void saveRoleAndJobRelation(SysUserReq sysUserReq) {
         //保存用户与岗位关系
-        if (sysUserReq.getJobIds().size() > 0) {
+        if (!sysUserReq.getJobIds().isEmpty()) {
             sysUserJobDao.insertBatchUserJob(sysUserReq.getId(), sysUserReq.getJobIds());
         }
         //保存户与角色关系
-        if (sysUserReq.getRoleIds().size() > 0) {
+        if (!sysUserReq.getRoleIds().isEmpty()) {
             sysUserRoleDao.insertBatchUserRole(sysUserReq.getId(), sysUserReq.getRoleIds());
         }
     }

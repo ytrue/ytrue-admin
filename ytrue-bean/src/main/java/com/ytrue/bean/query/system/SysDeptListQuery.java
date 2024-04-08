@@ -11,32 +11,24 @@ import java.util.List;
 
 /**
  * @author ytrue
- * @description: SysUserQuery
- * @date 2022/12/20 11:11
+ * @description: SysDeptListQuery
+ * @date 2022/12/20 11:10
  */
 @Data
-public class SysUserQuery implements Serializable {
+public class SysDeptListQuery implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Query(condition = QueryMethod.like, alias = "u")
-    @Schema(description = "用户名称")
-    private String username;
+    @Query(condition = QueryMethod.like)
+    @Schema(description = "名称")
+    private String deptName;
 
-    @Query(condition = QueryMethod.like, alias = "u")
-    @Schema(description = "电话号码")
-    private String phone;
-
-    @Query(alias = "u")
-    @Schema(description = "部门id")
-    private String deptId;
-
-    @Query(alias = "u")
+    @Query
     @Schema(description = "是否启用")
     private Boolean status;
 
-    @Query(condition = QueryMethod.between, alias = "u")
+    @Query(condition = QueryMethod.between)
     @Schema(description = "创建时间")
     private List<String> createTime;
 }

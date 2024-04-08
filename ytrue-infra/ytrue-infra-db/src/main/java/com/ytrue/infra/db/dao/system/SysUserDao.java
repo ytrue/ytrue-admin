@@ -32,7 +32,7 @@ public interface SysUserDao extends IBaseDao<SysUser> {
                     WHERE ur.user_id = #{userId}
             </script>
             """)
-    Set<String> listPermsByUserId(Long userId);
+    Set<String> selectPermsByUserId(Long userId);
 
 
     /**
@@ -59,5 +59,5 @@ public interface SysUserDao extends IBaseDao<SysUser> {
                              LEFT JOIN sys_dept d ON u.dept_id = d.id
             </script>
             """)
-    IPage<SysUserListResp> listWithDeptName(IPage<SysUserListResp> page, QueryEntity queryEntity);
+    IPage<SysUserListResp> selectWithDeptName(IPage<SysUserListResp> page, QueryEntity queryEntity);
 }

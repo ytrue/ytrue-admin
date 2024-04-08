@@ -5,11 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.bean.dataobject.system.SysRole;
-import com.ytrue.bean.query.system.SysRoleQuery;
+import com.ytrue.bean.query.system.SysRolePageQuery;
 import com.ytrue.bean.req.system.SysRoleReq;
 import com.ytrue.bean.resp.system.SysRoleDetailResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
-import com.ytrue.infra.db.entity.Pageable;
 import com.ytrue.service.system.SysRoleService;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.util.QueryHelp;
@@ -41,15 +40,15 @@ public class SysRoleController {
     @GetMapping("page")
     @Operation(summary = "分页查询")
     @PreAuthorize("@pms.hasPermission('system:role:page')")
-    public ServerResponseEntity<IPage<SysRole>> page(SysRoleQuery params, Pageable pageable) {
+    public ServerResponseEntity<IPage<SysRole>> page(SysRolePageQuery queryParam) {
         // 数据范围限制
         Set<Long> roleIds = sysRoleService.listCurrentAccountRoleId();
-        LambdaQueryWrapper<SysRole> queryWrapper = QueryHelp.<SysRole>lambdaQueryWrapperBuilder(params)
+        LambdaQueryWrapper<SysRole> queryWrapper = QueryHelp.<SysRole>lambdaQueryWrapperBuilder(queryParam)
                 .in(CollectionUtil.isNotEmpty(roleIds), SysRole::getId, roleIds)
                 .orderByAsc(SysRole::getRoleSort)
                 .orderByDesc(SysRole::getId);
 
-        return ServerResponseEntity.success(sysRoleService.page(pageable.page(), queryWrapper));
+        return ServerResponseEntity.success(sysRoleService.page(queryParam.page(), queryWrapper));
     }
 
     @GetMapping("list")
@@ -95,7 +94,7 @@ public class SysRoleController {
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:role:delete')")
     public ServerResponseEntity<Void> delete(@RequestBody List<Long> ids) {
-        sysRoleService.removeBatchRole(ids);
+        sysRoleService.removeBatchRoleByIds(ids);
         return ServerResponseEntity.success();
     }
 

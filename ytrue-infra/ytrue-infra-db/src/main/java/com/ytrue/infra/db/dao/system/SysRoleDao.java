@@ -32,7 +32,7 @@ public interface SysRoleDao extends IBaseDao<SysRole> {
             </script>
             """)
     @ResultType(String.class)
-    Set<String> listRoleCodeByUserId(Long userId);
+    Set<String> selectRoleCodeByUserId(Long userId);
 
 
     /**
@@ -48,5 +48,5 @@ public interface SysRoleDao extends IBaseDao<SysRole> {
                              LEFT JOIN sys_user u ON u.id = sur.user_id
                     WHERE u.id = 1
             """)
-    Set<SysRole> listByUserId(@Param("userId") Long userId);
+    Set<SysRole> selectByUserId(@Param("userId") Long userId);
 }

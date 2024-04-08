@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ytrue.infra.core.constant.DateFormat;
 import com.ytrue.infra.core.constant.TimeZone;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,8 +22,8 @@ import java.time.LocalDateTime;
  * @description BaseEntity
  */
 @Data
-@RequiredArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public abstract class BaseEntity implements Serializable {
 
     @Serial

@@ -47,5 +47,5 @@ public interface SysDeptDao extends IBaseDao<SysDept> {
             </script>
             """)
     @ResultType(Long.class)
-    Set<Long> listDeptIdByRoleId(@Param("roleId") Long roleId, @Param("deptCheckStrictly") boolean deptCheckStrictly);
+    Set<Long> selectDeptIdsByRoleId(@Param("roleId") Long roleId, @Param("deptCheckStrictly") boolean deptCheckStrictly);
 }

@@ -1,12 +1,11 @@
 package com.ytrue.controller.system;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.ytrue.bean.dataobject.system.SysMenu;
+import com.ytrue.bean.query.system.SysMenuListQuery;
 import com.ytrue.infra.core.response.ResponseCodeEnum;
-
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.infra.core.util.AssertUtil;
-import com.ytrue.bean.dataobject.system.SysMenu;
-import com.ytrue.bean.query.system.SysMenuQuery;
 import com.ytrue.service.system.SysMenuService;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.util.QueryHelp;
@@ -37,9 +36,9 @@ public class SysMenuController {
     @GetMapping("list")
     @Operation(summary = "列表")
     @PreAuthorize("@pms.hasPermission('system:menu:list')")
-    public ServerResponseEntity<List<SysMenu>> list(SysMenuQuery params) {
+    public ServerResponseEntity<List<SysMenu>> list(SysMenuListQuery queryParam) {
 
-        LambdaQueryWrapper<SysMenu> queryWrapper = QueryHelp.<SysMenu>lambdaQueryWrapperBuilder(params)
+        LambdaQueryWrapper<SysMenu> queryWrapper = QueryHelp.<SysMenu>lambdaQueryWrapperBuilder(queryParam)
                 .orderByAsc(SysMenu::getMenuSort)
                 .orderByDesc(SysMenu::getId);
 

@@ -3,10 +3,10 @@ package com.ytrue.controller.system;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ytrue.bean.dataobject.system.SysDept;
-import com.ytrue.bean.query.system.SysDeptQuery;
-import com.ytrue.infra.core.response.ResponseCodeEnum;
+import com.ytrue.bean.query.system.SysDeptListQuery;
+import com.ytrue.bean.req.system.SysDeptAddReq;
+import com.ytrue.bean.req.system.SysDeptUpdateReq;
 import com.ytrue.infra.core.response.ServerResponseEntity;
-import com.ytrue.infra.core.util.AssertUtil;
 import com.ytrue.service.system.SysDeptService;
 import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.query.util.QueryHelp;
@@ -37,10 +37,10 @@ public class SysDeptController {
     @GetMapping("list")
     @Operation(summary = "列表")
     @PreAuthorize("@pms.hasPermission('system:dept:list')")
-    public ServerResponseEntity<List<SysDept>> list(SysDeptQuery params) {
+    public ServerResponseEntity<List<SysDept>> list(SysDeptListQuery queryParam) {
         // 数据范围限制
         Set<Long> deptIds = sysDeptService.listCurrentAccountDeptId();
-        LambdaQueryWrapper<SysDept> queryWrapper = QueryHelp.<SysDept>lambdaQueryWrapperBuilder(params)
+        LambdaQueryWrapper<SysDept> queryWrapper = QueryHelp.<SysDept>lambdaQueryWrapperBuilder(queryParam)
                 .in(CollectionUtil.isNotEmpty(deptIds), SysDept::getId, deptIds)
                 .orderByAsc(SysDept::getDeptSort)
                 .orderByDesc(SysDept::getId);
@@ -51,18 +51,16 @@ public class SysDeptController {
     @GetMapping("detail/{id}")
     @Operation(summary = "详情")
     @PreAuthorize("@pms.hasPermission('system:dept:detail')")
-    public ServerResponseEntity<SysDept> detail(@PathVariable("id") Long id) {
-        SysDept data = sysDeptService.getById(id);
-        AssertUtil.notNull(data, ResponseCodeEnum.DATA_NOT_FOUND);
-        return ServerResponseEntity.success(data);
+    public ServerResponseEntity<SysDept> getSysDeptById(@PathVariable("id") Long id) {
+        return ServerResponseEntity.success(sysDeptService.getSysDeptById(id));
     }
 
     @SysLog
     @PostMapping
-    @Operation(summary = "保存")
+    @Operation(summary = "新增")
     @PreAuthorize("@pms.hasPermission('system:dept:add')")
-    public ServerResponseEntity<Void> add(@Validated @RequestBody SysDept sysDept) {
-        sysDeptService.addDept(sysDept);
+    public ServerResponseEntity<Void> addSysDept(@Validated @RequestBody SysDeptAddReq requestParam) {
+        sysDeptService.addSysDept(requestParam);
         return ServerResponseEntity.success();
     }
 
@@ -70,8 +68,8 @@ public class SysDeptController {
     @PutMapping
     @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:dept:update')")
-    public ServerResponseEntity<Void> update(@Validated @RequestBody SysDept sysDept) {
-        sysDeptService.updateDept(sysDept);
+    public ServerResponseEntity<Void> updateSysDept(@Validated @RequestBody SysDeptUpdateReq requestParam) {
+        sysDeptService.updateSysDept(requestParam);
         return ServerResponseEntity.success();
     }
 
@@ -79,8 +77,8 @@ public class SysDeptController {
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:dept:delete')")
-    public ServerResponseEntity<Void> delete(@RequestBody List<Long> ids) {
-        sysDeptService.removeBatchDept(ids);
+    public ServerResponseEntity<Void> removeBatchSysDeptByIds(@RequestBody List<Long> ids) {
+        sysDeptService.removeBatchSysDeptByIds(ids);
         return ServerResponseEntity.success();
     }
 
