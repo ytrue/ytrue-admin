@@ -53,7 +53,6 @@ public interface SysUserDao extends IBaseDao<SysUser> {
                            u.gender,
                            u.avatar_path,
                            u.`status`,
-                           u.create_time,
                            u.admin
                     FROM sys_user u
                              LEFT JOIN sys_dept d ON u.dept_id = d.id

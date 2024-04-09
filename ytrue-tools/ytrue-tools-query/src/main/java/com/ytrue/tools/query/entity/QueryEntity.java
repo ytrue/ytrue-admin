@@ -169,9 +169,11 @@ public class QueryEntity implements Serializable {
             AdditionalSqlCondition additionalSqlCondition = new AdditionalSqlCondition();
             AdditionalSqlSort additionalSqlSort = new AdditionalSqlSort();
             String testSql = "select tmp.* from tmp";
+            int testSqlStrLength = testSql.length();
+
             testSql = additionalSqlCondition.appendWhereCondition(testSql, this.filters);
             testSql = additionalSqlSort.appendSort(testSql, this.sorts);
-            return testSql.substring(22);
+            return testSql.substring(testSqlStrLength);
         } catch (JSQLParserException e) {
             log.error(e.getMessage());
             return "";

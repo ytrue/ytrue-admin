@@ -4,20 +4,27 @@ import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNodeConfig;
 import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.bean.dataobject.system.SysMenu;
 import com.ytrue.bean.dataobject.system.SysRoleMenu;
 import com.ytrue.bean.dataobject.system.SysUser;
 import com.ytrue.bean.enums.system.ComponentTypeEnum;
 import com.ytrue.bean.enums.system.MenuTypeEnum;
+import com.ytrue.bean.query.system.SysMenuListQuery;
+import com.ytrue.bean.req.system.SysMenuAddReq;
+import com.ytrue.bean.req.system.SysMenuUpdateReq;
+import com.ytrue.bean.resp.system.SysMenuIdResp;
 import com.ytrue.infra.core.response.ResponseCodeEnum;
 import com.ytrue.infra.core.response.ServerResponseCode;
 import com.ytrue.infra.core.util.AssertUtil;
+import com.ytrue.infra.core.util.BeanUtils;
 import com.ytrue.infra.db.base.BaseServiceImpl;
 import com.ytrue.infra.db.dao.system.SysMenuDao;
 import com.ytrue.infra.db.dao.system.SysRoleMenuDao;
 import com.ytrue.infra.db.dao.system.SysUserDao;
 import com.ytrue.service.system.SysMenuService;
+import com.ytrue.tools.query.util.QueryHelp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,25 +44,47 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
     private final SysUserDao sysUserDao;
     private final SysRoleMenuDao sysRoleMenuDao;
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
-    public void addMenu(SysMenu sysMenu) {
-        save(sysMenu);
-        updateSubCnt(sysMenu.getPid());
+    public List<SysMenu> listBySysMenuListQuery(SysMenuListQuery queryParam) {
+        LambdaQueryWrapper<SysMenu> queryWrapper = QueryHelp.<SysMenu>lambdaQueryWrapperBuilder(queryParam)
+                .orderByAsc(SysMenu::getMenuSort)
+                .orderByDesc(SysMenu::getId);
+
+        return this.list(queryWrapper);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void updateMenu(SysMenu sysMenu) {
-        AssertUtil.numberNotEquals(sysMenu.getId(), sysMenu.getPid(), ServerResponseCode.error("父级不能是自己"));
+    public void addMenu(SysMenuAddReq requestParam) {
+        // 转换bean
+        SysMenu sysMenu = BeanUtils.copyProperties(requestParam, SysMenu::new);
+
+        save(sysMenu);
+        updateSubCnt(sysMenu.getPid());
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updateMenu(SysMenuUpdateReq requestParam) {
+        AssertUtil.numberNotEquals(requestParam.getId(), requestParam.getPid(), ServerResponseCode.error("父级不能是自己"));
+
+        SysMenu sysMenu = this.getById(requestParam.getId());
+        AssertUtil.notNull(sysMenu, ResponseCodeEnum.ILLEGAL_OPERATION);
+
         // 旧的菜单
-        Long oldPid = getById(sysMenu.getId()).getPid();
-        Long newPid = sysMenu.getPid();
+        Long oldPid = sysMenu.getPid();
+        Long newPid = requestParam.getPid();
+
+        // bean转换
+        BeanUtils.copyProperties(requestParam, sysMenu);
+
         updateById(sysMenu);
         // 更新父节点中子节点数目
         updateSubCnt(oldPid);
         updateSubCnt(newPid);
     }
+
 
     @Override
     public void removeBatchMenu(List<Long> ids) {
@@ -155,6 +184,13 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
 
         // 不然就是普通的账号
         return baseMapper.selectMenusBySysUserId(userId);
+    }
+
+    @Override
+    public SysMenuIdResp getBySysMenuId(Long id) {
+        SysMenu data = this.getById(id);
+        AssertUtil.notNull(data, ResponseCodeEnum.DATA_NOT_FOUND);
+        return BeanUtils.copyProperties(data, SysMenuIdResp::new);
     }
 
 

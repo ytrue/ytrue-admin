@@ -26,7 +26,7 @@ public abstract class BaseServiceImpl<M extends IBaseDao<T>, T> extends ServiceI
      * @return
      */
     @Override
-    public IPage<T> paginate(PageQueryEntity pageQueryEntity) {
+    public IPage<T> listByPageQueryEntity(PageQueryEntity pageQueryEntity) {
         pageQueryEntity = Objects.isNull(pageQueryEntity) ? new PageQueryEntity() : pageQueryEntity;
         return page(pageQueryEntity.page(), pageQueryEntity.lambdaQueryWrapperBuilder());
     }
@@ -38,7 +38,7 @@ public abstract class BaseServiceImpl<M extends IBaseDao<T>, T> extends ServiceI
      * @return
      */
     @Override
-    public List<T> list(QueryEntity queryEntity) {
+    public List<T> listByQueryEntity(QueryEntity queryEntity) {
         queryEntity = Objects.isNull(queryEntity) ? new QueryEntity() : queryEntity;
         return list(queryEntity.lambdaQueryWrapperBuilder());
     }

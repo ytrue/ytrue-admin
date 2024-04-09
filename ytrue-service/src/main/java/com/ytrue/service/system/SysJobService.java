@@ -1,9 +1,13 @@
 package com.ytrue.service.system;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.ytrue.bean.dataobject.system.SysJob;
+import com.ytrue.bean.query.system.SysJobPageQuery;
 import com.ytrue.bean.req.system.SysJobAddReq;
 import com.ytrue.bean.req.system.SysJobUpdateReq;
+import com.ytrue.bean.resp.system.SysJobIdResp;
+import com.ytrue.bean.resp.system.SysJobListResp;
 import com.ytrue.infra.db.base.IBaseService;
-import com.ytrue.bean.dataobject.system.SysJob;
 
 import java.util.List;
 
@@ -13,6 +17,14 @@ import java.util.List;
  * @date 2022/12/7 10:56
  */
 public interface SysJobService extends IBaseService<SysJob> {
+
+
+    /**
+     * 列表查询
+     * @param queryParam
+     * @return
+     */
+    IPage<SysJobListResp> listBySysJobPageQuery(SysJobPageQuery queryParam);
 
     /**
      * 根据用户id获取对应的岗位
@@ -38,14 +50,16 @@ public interface SysJobService extends IBaseService<SysJob> {
 
     /**
      * 删除岗位
+     *
      * @param ids
      */
     void removeBatchSysJobByIds(List<Long> ids);
 
     /**
      * 根据id获取岗位
+     *
      * @param id
      * @return
      */
-    SysJob getSysJobById(Long id);
+    SysJobIdResp getBySysJobId(Long id);
 }

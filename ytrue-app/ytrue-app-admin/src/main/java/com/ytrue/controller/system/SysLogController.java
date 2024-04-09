@@ -31,8 +31,9 @@ public class SysLogController {
     @PostMapping("page")
     @Operation(summary = "分页")
     @PreAuthorize("@pms.hasPermission('system:log:page')")
-    public ServerResponseEntity<IPage<SysLog>> page(@RequestBody(required = false) PageQueryEntity pageQueryEntity) {
-        IPage<SysLog> page = sysLogService.paginate(pageQueryEntity);
+    public ServerResponseEntity<IPage<SysLog>> listByPageQueryEntity(@RequestBody(required = false) PageQueryEntity pageQueryEntity) {
+
+        IPage<SysLog> page = sysLogService.listByPageQueryEntity(pageQueryEntity);
         return ServerResponseEntity.success(page);
     }
 

@@ -11,11 +11,11 @@ import java.util.Set;
 
 /**
  * @author ytrue
- * @description: SysUserDetailResp
+ * @description: SysUserIdResp
  * @date 2022/12/7 17:01
  */
 @Data
-public class SysUserDetailResp implements Serializable {
+public class SysUserIdResp implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

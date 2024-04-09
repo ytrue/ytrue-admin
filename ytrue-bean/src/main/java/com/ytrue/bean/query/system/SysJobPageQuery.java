@@ -4,6 +4,7 @@ import com.ytrue.bean.Pageable;
 import com.ytrue.tools.query.annotation.Query;
 import com.ytrue.tools.query.enums.QueryMethod;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -19,6 +20,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Data
+@Builder
 public class SysJobPageQuery extends Pageable {
 
     @Serial

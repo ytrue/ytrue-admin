@@ -1,15 +1,14 @@
 package com.ytrue.controller.system;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.ytrue.bean.dataobject.system.SysJob;
 import com.ytrue.bean.query.system.SysJobPageQuery;
 import com.ytrue.bean.req.system.SysJobAddReq;
 import com.ytrue.bean.req.system.SysJobUpdateReq;
+import com.ytrue.bean.resp.system.SysJobIdResp;
+import com.ytrue.bean.resp.system.SysJobListResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.service.system.SysJobService;
 import com.ytrue.tools.log.annotation.SysLog;
-import com.ytrue.tools.query.util.QueryHelp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -37,34 +36,28 @@ public class SysJobController {
     @GetMapping("page")
     @Operation(summary = "分页")
     @PreAuthorize("@pms.hasPermission('system:job:page')")
-    public ServerResponseEntity<IPage<SysJob>> page(SysJobPageQuery queryParam) {
-
-        LambdaQueryWrapper<SysJob> queryWrapper = QueryHelp.<SysJob>lambdaQueryWrapperBuilder(queryParam)
-                .orderByAsc(SysJob::getJobSort)
-                .orderByDesc(SysJob::getId);
-
-        return ServerResponseEntity.success(sysJobService.page(queryParam.page(), queryWrapper));
+    public ServerResponseEntity<IPage<SysJobListResp>> listBySysJobPageQuery(SysJobPageQuery queryParam) {
+        return ServerResponseEntity.success(sysJobService.listBySysJobPageQuery(queryParam));
     }
 
 
     @GetMapping("list")
     @Operation(summary = "列表")
     @PreAuthorize("@pms.hasPermission('system:job:list')")
-    public ServerResponseEntity<List<SysJob>> list() {
-        return ServerResponseEntity.success(
-                sysJobService
-                        .lambdaQuery()
-                        .orderByAsc(SysJob::getJobSort)
-                        .orderByDesc(SysJob::getId)
-                        .list()
-        );
+    public ServerResponseEntity<List<SysJobListResp>> listAll() {
+
+        SysJobPageQuery sysJobPageQuery = SysJobPageQuery.builder().status(Boolean.TRUE).build();
+        sysJobPageQuery.setLimit(Integer.MAX_VALUE);
+
+        List<SysJobListResp> list = sysJobService.listBySysJobPageQuery(sysJobPageQuery).getRecords();
+        return ServerResponseEntity.success(list);
     }
 
     @GetMapping("detail/{id}")
     @Operation(summary = "详情")
     @PreAuthorize("@pms.hasPermission('system:job:detail')")
-    public ServerResponseEntity<SysJob> getSysJobById(@PathVariable("id") Long id) {
-        return ServerResponseEntity.success(sysJobService.getSysJobById(id));
+    public ServerResponseEntity<SysJobIdResp> getBySysJobId(@PathVariable("id") Long id) {
+        return ServerResponseEntity.success(sysJobService.getBySysJobId(id));
     }
 
 

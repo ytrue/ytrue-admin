@@ -7,13 +7,11 @@ import com.ytrue.bean.req.system.SysUserAddReq;
 import com.ytrue.bean.req.system.SysUserUpdatePasswordReq;
 import com.ytrue.bean.req.system.SysUserUpdateProfileReq;
 import com.ytrue.bean.req.system.SysUserUpdateReq;
-import com.ytrue.bean.resp.system.SysUserDetailResp;
+import com.ytrue.bean.resp.system.SysUserIdResp;
 import com.ytrue.bean.resp.system.SysUserListResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.service.system.SysUserService;
 import com.ytrue.tools.log.annotation.SysLog;
-import com.ytrue.tools.query.entity.QueryEntity;
-import com.ytrue.tools.query.util.QueryHelp;
 import com.ytrue.tools.security.util.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,16 +39,15 @@ public class SysUserController {
     @GetMapping("page")
     @Operation(summary = "分页")
     @PreAuthorize("@pms.hasPermission('system:user:page')")
-    public ServerResponseEntity<IPage<SysUserListResp>> page(SysUserPageQuery queryParam) {
-        QueryEntity queryEntity = QueryHelp.queryEntityBuilder(queryParam).addSort(SysUserListResp::getId, Boolean.FALSE);
-        return ServerResponseEntity.success(sysUserService.paginate(queryParam.page(), queryEntity));
+    public ServerResponseEntity<IPage<SysUserListResp>> listBySysUserPageQuery(SysUserPageQuery queryParam) {
+        return ServerResponseEntity.success(sysUserService.listBySysUserPageQuery(queryParam));
     }
 
     @GetMapping("detail/{id}")
     @Operation(summary = "详情")
     @PreAuthorize("@pms.hasPermission('system:user:detail')")
-    public ServerResponseEntity<SysUserDetailResp> detail(@PathVariable("id") Long id) {
-        return ServerResponseEntity.success(sysUserService.getUserById(id));
+    public ServerResponseEntity<SysUserIdResp> getBySysUserId(@PathVariable("id") Long id) {
+        return ServerResponseEntity.success(sysUserService.getBySysUserId(id));
     }
 
 

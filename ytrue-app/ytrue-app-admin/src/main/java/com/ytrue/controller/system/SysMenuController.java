@@ -1,14 +1,13 @@
 package com.ytrue.controller.system;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ytrue.bean.dataobject.system.SysMenu;
 import com.ytrue.bean.query.system.SysMenuListQuery;
-import com.ytrue.infra.core.response.ResponseCodeEnum;
+import com.ytrue.bean.req.system.SysMenuAddReq;
+import com.ytrue.bean.req.system.SysMenuUpdateReq;
+import com.ytrue.bean.resp.system.SysMenuIdResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
-import com.ytrue.infra.core.util.AssertUtil;
 import com.ytrue.service.system.SysMenuService;
 import com.ytrue.tools.log.annotation.SysLog;
-import com.ytrue.tools.query.util.QueryHelp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -37,29 +36,22 @@ public class SysMenuController {
     @Operation(summary = "列表")
     @PreAuthorize("@pms.hasPermission('system:menu:list')")
     public ServerResponseEntity<List<SysMenu>> list(SysMenuListQuery queryParam) {
-
-        LambdaQueryWrapper<SysMenu> queryWrapper = QueryHelp.<SysMenu>lambdaQueryWrapperBuilder(queryParam)
-                .orderByAsc(SysMenu::getMenuSort)
-                .orderByDesc(SysMenu::getId);
-
-        return ServerResponseEntity.success(sysMenuService.list(queryWrapper));
+        return ServerResponseEntity.success(sysMenuService.listBySysMenuListQuery(queryParam));
     }
 
     @GetMapping("detail/{id}")
     @Operation(summary = "详情")
     @PreAuthorize("@pms.hasPermission('system:menu:detail')")
-    public ServerResponseEntity<SysMenu> detail(@PathVariable("id") Long id) {
-        SysMenu data = sysMenuService.getById(id);
-        AssertUtil.notNull(data, ResponseCodeEnum.DATA_NOT_FOUND);
-        return ServerResponseEntity.success(data);
+    public ServerResponseEntity<SysMenuIdResp> detail(@PathVariable("id") Long id) {
+        return ServerResponseEntity.success(sysMenuService.getBySysMenuId(id));
     }
 
     @SysLog
     @PostMapping
     @Operation(summary = "保存")
     @PreAuthorize("@pms.hasPermission('system:menu:add')")
-    public ServerResponseEntity<Void> add(@Validated @RequestBody SysMenu sysMenu) {
-        sysMenuService.addMenu(sysMenu);
+    public ServerResponseEntity<Void> add(@Validated @RequestBody SysMenuAddReq requestParam) {
+        sysMenuService.addMenu(requestParam);
         return ServerResponseEntity.success();
     }
 
@@ -67,8 +59,8 @@ public class SysMenuController {
     @PutMapping
     @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:menu:update')")
-    public ServerResponseEntity<Void> update(@Validated @RequestBody SysMenu sysMenu) {
-        sysMenuService.updateMenu(sysMenu);
+    public ServerResponseEntity<Void> update(@Validated @RequestBody SysMenuUpdateReq requestParam) {
+        sysMenuService.updateMenu(requestParam);
         return ServerResponseEntity.success();
     }
 

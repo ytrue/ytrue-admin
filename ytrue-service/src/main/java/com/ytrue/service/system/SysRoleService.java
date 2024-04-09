@@ -1,10 +1,13 @@
 package com.ytrue.service.system;
 
-import com.ytrue.bean.req.system.SysRoleAddReq;
-import com.ytrue.bean.resp.system.SysRoleDetailResp;
-import com.ytrue.infra.db.base.IBaseService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ytrue.bean.dataobject.system.SysRole;
+import com.ytrue.bean.query.system.SysRolePageQuery;
+import com.ytrue.bean.req.system.SysRoleAddReq;
 import com.ytrue.bean.req.system.SysRoleUpdateReq;
+import com.ytrue.bean.resp.system.SysRoleIdResp;
+import com.ytrue.bean.resp.system.SysRoleListResp;
+import com.ytrue.infra.db.base.IBaseService;
 
 import java.util.List;
 import java.util.Set;
@@ -17,12 +20,19 @@ import java.util.Set;
 public interface SysRoleService extends IBaseService<SysRole> {
 
     /**
+     * 查询
+     *
+     * @param queryParam
+     */
+    IPage<SysRoleListResp> listBySysRolePageQuery(SysRolePageQuery queryParam);
+
+    /**
      * 获取role信息根据id
      *
      * @param id
      * @return
      */
-    SysRoleDetailResp getRoleById(Long id);
+    SysRoleIdResp getBySysRoleId(Long id);
 
     /**
      * 新增角色
@@ -61,4 +71,6 @@ public interface SysRoleService extends IBaseService<SysRole> {
      * @return
      */
     Set<Long> listCurrentAccountRoleId();
+
+
 }

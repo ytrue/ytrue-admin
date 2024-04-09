@@ -1,8 +1,11 @@
 package com.ytrue.service.system;
 
 import com.ytrue.bean.dataobject.system.SysDept;
+import com.ytrue.bean.query.system.SysDeptListQuery;
 import com.ytrue.bean.req.system.SysDeptAddReq;
 import com.ytrue.bean.req.system.SysDeptUpdateReq;
+import com.ytrue.bean.resp.system.SysDeptIdResp;
+import com.ytrue.bean.resp.system.SysDeptListResp;
 import com.ytrue.infra.db.base.IBaseService;
 
 import java.util.List;
@@ -15,6 +18,13 @@ import java.util.Set;
  */
 public interface SysDeptService extends IBaseService<SysDept> {
 
+
+    /**
+     * 查询
+     * @param queryParam
+     * @return
+     */
+    List<SysDeptListResp> listBySysDeptListQuery(SysDeptListQuery queryParam);
 
     /**
      * 保存部门x
@@ -51,6 +61,7 @@ public interface SysDeptService extends IBaseService<SysDept> {
      * @param id
      * @return
      */
-    SysDept getSysDeptById(Long id);
+    SysDeptIdResp getBySysDeptId(Long id);
+
 
 }

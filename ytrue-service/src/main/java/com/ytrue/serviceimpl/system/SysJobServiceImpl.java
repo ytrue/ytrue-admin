@@ -1,19 +1,25 @@
 package com.ytrue.serviceimpl.system;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.bean.dataobject.system.SysJob;
 import com.ytrue.bean.dataobject.system.SysUserJob;
+import com.ytrue.bean.query.system.SysJobPageQuery;
 import com.ytrue.bean.req.system.SysJobAddReq;
 import com.ytrue.bean.req.system.SysJobUpdateReq;
+import com.ytrue.bean.resp.system.SysJobIdResp;
+import com.ytrue.bean.resp.system.SysJobListResp;
 import com.ytrue.infra.core.response.ResponseCodeEnum;
 import com.ytrue.infra.core.response.ServerResponseCode;
 import com.ytrue.infra.core.util.AssertUtil;
+import com.ytrue.infra.core.util.BeanUtils;
 import com.ytrue.infra.db.base.BaseServiceImpl;
 import com.ytrue.infra.db.dao.system.SysJobDao;
 import com.ytrue.infra.db.dao.system.SysUserJobDao;
 import com.ytrue.service.system.SysJobService;
+import com.ytrue.tools.query.util.QueryHelp;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +38,14 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDao, SysJob> implem
     private final SysUserJobDao sysUserJobDao;
 
     @Override
+    public IPage<SysJobListResp> listBySysJobPageQuery(SysJobPageQuery queryParam) {
+
+        LambdaQueryWrapper<SysJob> queryWrapper = QueryHelp.<SysJob>lambdaQueryWrapperBuilder(queryParam).orderByAsc(SysJob::getJobSort).orderByDesc(SysJob::getId);
+
+        return this.page(queryParam.page(), queryWrapper).convert(sysJob -> BeanUtils.copyProperties(sysJob, SysJobListResp::new));
+    }
+
+    @Override
     public List<SysJob> listBySysUserId(Long userId) {
         return baseMapper.selectBySysUserId(userId);
     }
@@ -42,8 +56,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDao, SysJob> implem
         SysJob job = this.lambdaQuery().eq(SysJob::getJobName, requestParam.getJobName()).one();
         AssertUtil.isNull(job, ServerResponseCode.error("岗位已存在"));
 
-        SysJob sysJob = new SysJob();
-        BeanUtils.copyProperties(requestParam, sysJob);
+        SysJob sysJob = BeanUtils.copyProperties(requestParam, SysJob::new);
 
         this.save(sysJob);
     }
@@ -76,9 +89,10 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDao, SysJob> implem
     }
 
     @Override
-    public SysJob getSysJobById(Long id) {
+    public SysJobIdResp getBySysJobId(Long id) {
         SysJob data = this.getById(id);
         AssertUtil.notNull(data, ResponseCodeEnum.DATA_NOT_FOUND);
-        return data;
+
+        return BeanUtils.copyProperties(data, SysJobIdResp::new);
     }
 }

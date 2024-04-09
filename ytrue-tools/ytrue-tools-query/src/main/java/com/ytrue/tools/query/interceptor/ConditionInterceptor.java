@@ -1,5 +1,6 @@
 package com.ytrue.tools.query.interceptor;
 
+import cn.hutool.core.collection.CollUtil;
 import com.ytrue.tools.query.additional.AdditionalSqlCondition;
 import com.ytrue.tools.query.additional.AdditionalSqlSort;
 import com.ytrue.tools.query.entity.Filter;
@@ -56,29 +57,42 @@ public class ConditionInterceptor implements Interceptor {
         if (value instanceof QueryEntity queryEntity) {
             queryEntitySet.add(queryEntity);
         }
+        // 这里要不要参考mybatis-plus的  @Param(Constants.WRAPPER) 的写法呢，${ew.customSqlSegment}
+
         // 获取全部的Filter
         LinkedHashSet<Filter> filterSet = new LinkedHashSet<>();
         queryEntitySet.stream().filter(queryEntity -> !CollectionUtils.isEmpty(queryEntity.getFilters())).forEach(queryEntity -> filterSet.addAll(queryEntity.getFilters()));
+
         // 获取全部的sort
         LinkedHashSet<Sort> sortSet = new LinkedHashSet<>();
         queryEntitySet.stream().filter(queryEntity -> !CollectionUtils.isEmpty(queryEntity.getSorts())).forEach(queryEntity -> sortSet.addAll(queryEntity.getSorts()));
 
-        // 附加sql条件
-        AdditionalSqlCondition additionalSqlCondition = new AdditionalSqlCondition();
-        String appendWhereConditionSql = additionalSqlCondition.appendWhereCondition(sql, filterSet);
-        //如果是原来的sql 那就不用处理了
-        if (!sql.equals(appendWhereConditionSql)) {
-            // 替换之前的sql
-            metaObject.setValue(TARGET_DELEGATE_BOUNDS_SQL, appendWhereConditionSql);
+
+        String appendWhereConditionSql = sql;
+        // 如果是空，没有必要走了
+        if (CollUtil.isEmpty(filterSet)) {
+            // 附加sql条件
+            AdditionalSqlCondition additionalSqlCondition = new AdditionalSqlCondition();
+            appendWhereConditionSql = additionalSqlCondition.appendWhereCondition(sql, filterSet);
+            //如果是原来的sql 那就不用处理了
+            if (!sql.equals(appendWhereConditionSql)) {
+                // 替换之前的sql
+                metaObject.setValue(TARGET_DELEGATE_BOUNDS_SQL, appendWhereConditionSql);
+            }
         }
 
-        // 这里对排序做处理
-        AdditionalSqlSort additionalSqlSort = new AdditionalSqlSort();
-        String appendSortAfterSql = additionalSqlSort.appendSort(appendWhereConditionSql, sortSet);
-        if (!appendSortAfterSql.equals(appendWhereConditionSql)) {
-            // 替换之前的sql
-            metaObject.setValue(TARGET_DELEGATE_BOUNDS_SQL, appendSortAfterSql);
+        // 如果是空，没有必要走了
+        if (CollUtil.isEmpty(sortSet)) {
+            // 这里对排序做处理
+            AdditionalSqlSort additionalSqlSort = new AdditionalSqlSort();
+            String appendSortAfterSql = additionalSqlSort.appendSort(appendWhereConditionSql, sortSet);
+            //如果是原来的sql 那就不用处理了
+            if (!appendSortAfterSql.equals(appendWhereConditionSql)) {
+                // 替换之前的sql
+                metaObject.setValue(TARGET_DELEGATE_BOUNDS_SQL, appendSortAfterSql);
+            }
         }
+
 
         // 放行
         return invocation.proceed();

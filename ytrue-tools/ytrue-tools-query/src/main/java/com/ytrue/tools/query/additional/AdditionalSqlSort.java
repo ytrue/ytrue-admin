@@ -1,7 +1,6 @@
 package com.ytrue.tools.query.additional;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
 import com.ytrue.tools.query.entity.Sort;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.JSQLParserException;
@@ -36,6 +35,10 @@ public class AdditionalSqlSort {
      * @throws JSQLParserException
      */
     public String appendSort(String sql, Set<Sort> sorts) throws JSQLParserException {
+        //要判断一下是否为空，不然会报空指针异常
+        if (CollUtil.isEmpty(sorts)) {
+            return sql;
+        }
 
         List<OrderByElement> orderByElements = this.getOrderByElement(sorts);
 

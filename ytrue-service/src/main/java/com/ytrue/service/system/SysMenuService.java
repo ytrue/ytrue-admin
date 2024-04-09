@@ -1,6 +1,11 @@
 package com.ytrue.service.system;
 
 import cn.hutool.core.lang.tree.Tree;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.ytrue.bean.query.system.SysMenuListQuery;
+import com.ytrue.bean.req.system.SysMenuAddReq;
+import com.ytrue.bean.req.system.SysMenuUpdateReq;
+import com.ytrue.bean.resp.system.SysMenuIdResp;
 import com.ytrue.infra.db.base.IBaseService;
 import com.ytrue.bean.dataobject.system.SysMenu;
 
@@ -13,20 +18,21 @@ import java.util.List;
  */
 public interface SysMenuService extends IBaseService<SysMenu> {
 
+    List<SysMenu> listBySysMenuListQuery(SysMenuListQuery queryParam);
+
     /**
      * 新增菜单
      *
-     * @param sysMenu
+     * @param requestParam
      */
-    void addMenu(SysMenu sysMenu);
+    void addMenu(SysMenuAddReq requestParam);
 
     /**
      * 修改菜单
      *
-     * @param sysMenu
+     * @param requestParam
      */
-    void updateMenu(SysMenu sysMenu);
-
+    void updateMenu(SysMenuUpdateReq requestParam);
     /**
      * 删除菜单
      *
@@ -49,4 +55,12 @@ public interface SysMenuService extends IBaseService<SysMenu> {
      * @return
      */
     List<SysMenu> listBySysUserId(Long userId);
+
+
+    /**
+     * 根据id获取
+     * @param id
+     * @return
+     */
+    SysMenuIdResp getBySysMenuId(Long id);
 }

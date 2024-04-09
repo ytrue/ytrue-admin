@@ -41,6 +41,10 @@ public class AdditionalSqlCondition {
      */
     public String appendWhereCondition(String sql, Set<Filter> filters) throws JSQLParserException {
 
+        if (CollUtil.isEmpty(filters)) {
+            return sql;
+        }
+
         ExpressionWrap expressionWrap = getCondExpression(filters);
 
         if (expressionWrap == null || expressionWrap.getExpression() == null) {

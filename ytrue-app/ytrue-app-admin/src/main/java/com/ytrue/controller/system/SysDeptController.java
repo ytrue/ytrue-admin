@@ -1,15 +1,13 @@
 package com.ytrue.controller.system;
 
-import cn.hutool.core.collection.CollectionUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.ytrue.bean.dataobject.system.SysDept;
 import com.ytrue.bean.query.system.SysDeptListQuery;
 import com.ytrue.bean.req.system.SysDeptAddReq;
 import com.ytrue.bean.req.system.SysDeptUpdateReq;
+import com.ytrue.bean.resp.system.SysDeptIdResp;
+import com.ytrue.bean.resp.system.SysDeptListResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.service.system.SysDeptService;
 import com.ytrue.tools.log.annotation.SysLog;
-import com.ytrue.tools.query.util.QueryHelp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +16,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author ytrue
@@ -37,22 +34,15 @@ public class SysDeptController {
     @GetMapping("list")
     @Operation(summary = "列表")
     @PreAuthorize("@pms.hasPermission('system:dept:list')")
-    public ServerResponseEntity<List<SysDept>> list(SysDeptListQuery queryParam) {
-        // 数据范围限制
-        Set<Long> deptIds = sysDeptService.listCurrentAccountDeptId();
-        LambdaQueryWrapper<SysDept> queryWrapper = QueryHelp.<SysDept>lambdaQueryWrapperBuilder(queryParam)
-                .in(CollectionUtil.isNotEmpty(deptIds), SysDept::getId, deptIds)
-                .orderByAsc(SysDept::getDeptSort)
-                .orderByDesc(SysDept::getId);
-
-        return ServerResponseEntity.success(sysDeptService.list(queryWrapper));
+    public ServerResponseEntity<List<SysDeptListResp>> listBySysDeptListQuery(SysDeptListQuery queryParam) {
+        return ServerResponseEntity.success(sysDeptService.listBySysDeptListQuery(queryParam));
     }
 
     @GetMapping("detail/{id}")
     @Operation(summary = "详情")
     @PreAuthorize("@pms.hasPermission('system:dept:detail')")
-    public ServerResponseEntity<SysDept> getSysDeptById(@PathVariable("id") Long id) {
-        return ServerResponseEntity.success(sysDeptService.getSysDeptById(id));
+    public ServerResponseEntity<SysDeptIdResp> getBySysDeptId(@PathVariable("id") Long id) {
+        return ServerResponseEntity.success(sysDeptService.getBySysDeptId(id));
     }
 
     @SysLog

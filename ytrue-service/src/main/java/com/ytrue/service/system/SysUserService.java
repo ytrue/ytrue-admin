@@ -2,10 +2,11 @@ package com.ytrue.service.system;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ytrue.bean.dataobject.system.SysUser;
+import com.ytrue.bean.query.system.SysUserPageQuery;
 import com.ytrue.bean.req.system.SysUserAddReq;
 import com.ytrue.bean.req.system.SysUserUpdatePasswordReq;
 import com.ytrue.bean.req.system.SysUserUpdateReq;
-import com.ytrue.bean.resp.system.SysUserDetailResp;
+import com.ytrue.bean.resp.system.SysUserIdResp;
 import com.ytrue.bean.resp.system.SysUserListResp;
 import com.ytrue.infra.db.base.IBaseService;
 import com.ytrue.tools.query.entity.QueryEntity;
@@ -19,15 +20,14 @@ import java.util.List;
  */
 public interface SysUserService extends IBaseService<SysUser> {
 
-
     /**
-     * 分页查询
-     *
-     * @param page
-     * @param query
+     * 查询
+     * @param queryParam
      * @return
      */
-    IPage<SysUserListResp> paginate(IPage<SysUserListResp> page, QueryEntity query);
+    IPage<SysUserListResp> listBySysUserPageQuery(SysUserPageQuery queryParam);
+
+
 
 
     /**
@@ -36,7 +36,7 @@ public interface SysUserService extends IBaseService<SysUser> {
      * @param id
      * @return
      */
-    SysUserDetailResp getUserById(Long id);
+    SysUserIdResp getBySysUserId(Long id);
 
     /**
      * 新增用户
@@ -73,4 +73,6 @@ public interface SysUserService extends IBaseService<SysUser> {
      * @param userId
      */
     void resetSysUserPassword(Long userId);
+
+
 }

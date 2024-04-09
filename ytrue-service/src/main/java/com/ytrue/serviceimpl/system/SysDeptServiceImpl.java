@@ -1,22 +1,28 @@
 package com.ytrue.serviceimpl.system;
 
+import cn.hutool.core.collection.CollectionUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.bean.dataobject.system.SysDept;
 import com.ytrue.bean.dataobject.system.SysRoleDept;
 import com.ytrue.bean.dataobject.system.SysUser;
+import com.ytrue.bean.query.system.SysDeptListQuery;
 import com.ytrue.bean.req.system.SysDeptAddReq;
 import com.ytrue.bean.req.system.SysDeptUpdateReq;
+import com.ytrue.bean.resp.system.SysDeptIdResp;
+import com.ytrue.bean.resp.system.SysDeptListResp;
 import com.ytrue.infra.core.response.ResponseCodeEnum;
 import com.ytrue.infra.core.response.ServerResponseCode;
 import com.ytrue.infra.core.util.AssertUtil;
+import com.ytrue.infra.core.util.BeanUtils;
 import com.ytrue.infra.db.base.BaseServiceImpl;
 import com.ytrue.infra.db.dao.system.SysDeptDao;
 import com.ytrue.infra.db.dao.system.SysRoleDeptDao;
 import com.ytrue.infra.db.dao.system.SysUserDao;
 import com.ytrue.manager.DataScopeManager;
 import com.ytrue.service.system.SysDeptService;
+import com.ytrue.tools.query.util.QueryHelp;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,19 +49,35 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
     }
 
     @Override
-    public SysDept getSysDeptById(Long id) {
-        SysDept data = getById(id);
-        AssertUtil.notNull(data, ResponseCodeEnum.DATA_NOT_FOUND);
-        return data;
+    public SysDeptIdResp getBySysDeptId(Long id) {
+        SysDept sysDept = getById(id);
+        AssertUtil.notNull(sysDept, ResponseCodeEnum.DATA_NOT_FOUND);
+
+        return BeanUtils.copyProperties(sysDept, SysDeptIdResp::new);
     }
 
+
+    @Override
+    public List<SysDeptListResp> listBySysDeptListQuery(SysDeptListQuery queryParam) {
+        // 数据范围限制
+        Set<Long> deptIds = this.listCurrentAccountDeptId();
+        // 构建查询条件
+        LambdaQueryWrapper<SysDept> queryWrapper = QueryHelp.<SysDept>lambdaQueryWrapperBuilder(queryParam)
+                .in(CollectionUtil.isNotEmpty(deptIds), SysDept::getId, deptIds)
+                .orderByAsc(SysDept::getDeptSort)
+                .orderByDesc(SysDept::getId);
+
+        List<SysDept> list = this.list(queryWrapper);
+
+        // 转换输出
+        return BeanUtils.copyListProperties(list, SysDeptListResp::new);
+    }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void addSysDept(SysDeptAddReq requestParam) {
         // 转换一下
-        SysDept sysDept = new SysDept();
-        BeanUtils.copyProperties(requestParam, SysDept.class);
+        SysDept sysDept = BeanUtils.copyProperties(requestParam, SysDept::new);
         // 保存
         this.save(sysDept);
         // 更新数量

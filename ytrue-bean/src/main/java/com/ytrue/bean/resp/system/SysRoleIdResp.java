@@ -1,7 +1,6 @@
 package com.ytrue.bean.resp.system;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.CollectionSerializer;
 import com.ytrue.infra.core.ser.LongCollToStrSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -14,10 +13,10 @@ import java.util.Set;
 /**
  * @author ytrue
  * @date 2023-08-18 11:57
- * @description SysRoleDetailResp
+ * @description SysRoleIdResp
  */
 @Data
-public class SysRoleDetailResp implements Serializable {
+public class SysRoleIdResp implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -2368863016297932647L;

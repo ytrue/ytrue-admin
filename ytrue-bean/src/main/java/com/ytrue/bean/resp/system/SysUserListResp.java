@@ -54,10 +54,6 @@ public class SysUserListResp implements Serializable {
     @Schema(description = "是否启用")
     private Boolean status;
 
-
-    @Schema(description = "创建时间")
-    private LocalDateTime createTime;
-
     @Schema(description = "是否为admin账号")
     private Boolean admin;
 }

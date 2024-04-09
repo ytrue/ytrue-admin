@@ -82,7 +82,7 @@ public class SysLoginController {
 
     @Operation(summary = "路由信息")
     @GetMapping("getRouters")
-    public ServerResponseEntity<List<Tree<String>>> getRouters() {
+    public ServerResponseEntity<List<Tree<String>>> listMenuTreeBySysUserId() {
         String currLoginUserId = SecurityUtils.getLoginUser().getUser().getUserId();
 
         List<Tree<String>> menuTree = sysMenuService.listMenuTreeBySysUserId(Long.valueOf(currLoginUserId));

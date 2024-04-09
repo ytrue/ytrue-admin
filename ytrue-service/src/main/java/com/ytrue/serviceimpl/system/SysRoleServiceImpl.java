@@ -1,22 +1,28 @@
 package com.ytrue.serviceimpl.system;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.CollectionUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.bean.dataobject.system.SysRole;
 import com.ytrue.bean.dataobject.system.SysRoleDept;
 import com.ytrue.bean.dataobject.system.SysRoleMenu;
 import com.ytrue.bean.dataobject.system.SysUserRole;
+import com.ytrue.bean.query.system.SysRolePageQuery;
 import com.ytrue.bean.req.system.SysRoleAddReq;
 import com.ytrue.bean.req.system.SysRoleUpdateReq;
-import com.ytrue.bean.resp.system.SysRoleDetailResp;
+import com.ytrue.bean.resp.system.SysRoleIdResp;
+import com.ytrue.bean.resp.system.SysRoleListResp;
 import com.ytrue.infra.core.response.ResponseCodeEnum;
 import com.ytrue.infra.core.response.ServerResponseCode;
 import com.ytrue.infra.core.util.AssertUtil;
-import com.ytrue.infra.core.util.BeanUtil;
+import com.ytrue.infra.core.util.BeanUtils;
 import com.ytrue.infra.db.base.BaseServiceImpl;
 import com.ytrue.infra.db.dao.system.*;
 import com.ytrue.manager.DataScopeManager;
 import com.ytrue.service.system.SysRoleService;
+import com.ytrue.tools.query.util.QueryHelp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,9 +54,22 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
         return dataScopeManager.listRoleIdDataScope();
     }
 
+    @Override
+    public IPage<SysRoleListResp> listBySysRolePageQuery(SysRolePageQuery queryParam) {
+        // 数据范围限制
+        Set<Long> roleIds = this.listCurrentAccountRoleId();
+        // 构建查询条件
+        LambdaQueryWrapper<SysRole> queryWrapper = QueryHelp.<SysRole>lambdaQueryWrapperBuilder(queryParam)
+                .in(CollectionUtil.isNotEmpty(roleIds), SysRole::getId, roleIds)
+                .orderByAsc(SysRole::getRoleSort)
+                .orderByDesc(SysRole::getId);
+
+        return this.page(queryParam.page(), queryWrapper).convert(sysJob -> BeanUtils.copyProperties(sysJob, SysRoleListResp::new));
+    }
+
 
     @Override
-    public SysRoleDetailResp getRoleById(Long id) {
+    public SysRoleIdResp getBySysRoleId(Long id) {
         // 获取角色
         SysRole role = getById(id);
         AssertUtil.notNull(role, ResponseCodeEnum.DATA_NOT_FOUND);
@@ -59,7 +78,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
         // 获取对应的部门
         Set<Long> deptIds = sysDeptDao.selectDeptIdsBySysRoleId(id, role.getDeptCheckStrictly());
 
-        SysRoleDetailResp roleDTO = BeanUtil.cgLibCopyBean(role, SysRoleDetailResp::new);
+        SysRoleIdResp roleDTO = BeanUtils.copyProperties(role, SysRoleIdResp::new);
         roleDTO.setMenuIds(menuIds);
         roleDTO.setDeptIds(deptIds);
         return roleDTO;
@@ -69,7 +88,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
     @Override
     public void addSysRole(SysRoleAddReq requestParam) {
         // 转换下
-        SysRole role = BeanUtil.cgLibCopyBean(requestParam, SysRole::new);
+        SysRole role = BeanUtils.copyProperties(requestParam, SysRole::new);
         // 更新角色
         save(role);
         // 保存角色与菜单,部门的关系
@@ -80,10 +99,10 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
     @Override
     public void updateSysRole(SysRoleUpdateReq requestParam) {
         SysRole sysRole = this.getById(requestParam.getId());
-        AssertUtil.notNull(sysRole,ResponseCodeEnum.ILLEGAL_OPERATION);
+        AssertUtil.notNull(sysRole, ResponseCodeEnum.ILLEGAL_OPERATION);
 
         // 转换下
-        SysRole role = BeanUtil.cgLibCopyBean(requestParam, SysRole::new);
+        SysRole role = BeanUtils.copyProperties(requestParam, SysRole::new);
         // 删除角色与菜单,部门的关系
         removeMenuAndDeptRelation(Collections.singletonList(requestParam.getId()));
         // 更新角色
@@ -138,7 +157,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
      * @param roleIds
      */
     private void removeMenuAndDeptRelation(List<Long> roleIds) {
-        if (CollUtil.isEmpty(roleIds)){
+        if (CollUtil.isEmpty(roleIds)) {
             return;
         }
         //先删除角色与菜单关系

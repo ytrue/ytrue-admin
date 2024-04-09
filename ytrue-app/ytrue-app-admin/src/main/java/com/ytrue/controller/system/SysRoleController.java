@@ -1,18 +1,14 @@
 package com.ytrue.controller.system;
 
-import cn.hutool.core.collection.CollectionUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ytrue.bean.dataobject.system.SysRole;
 import com.ytrue.bean.query.system.SysRolePageQuery;
 import com.ytrue.bean.req.system.SysRoleAddReq;
 import com.ytrue.bean.req.system.SysRoleUpdateReq;
-import com.ytrue.bean.resp.system.SysRoleDetailResp;
+import com.ytrue.bean.resp.system.SysRoleIdResp;
+import com.ytrue.bean.resp.system.SysRoleListResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.service.system.SysRoleService;
 import com.ytrue.tools.log.annotation.SysLog;
-import com.ytrue.tools.query.util.QueryHelp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +18,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author ytrue
@@ -41,35 +36,26 @@ public class SysRoleController {
     @GetMapping("page")
     @Operation(summary = "分页查询")
     @PreAuthorize("@pms.hasPermission('system:role:page')")
-    public ServerResponseEntity<IPage<SysRole>> page(SysRolePageQuery queryParam) {
-        // 数据范围限制
-        Set<Long> roleIds = sysRoleService.listCurrentAccountRoleId();
-        LambdaQueryWrapper<SysRole> queryWrapper = QueryHelp.<SysRole>lambdaQueryWrapperBuilder(queryParam)
-                .in(CollectionUtil.isNotEmpty(roleIds), SysRole::getId, roleIds)
-                .orderByAsc(SysRole::getRoleSort)
-                .orderByDesc(SysRole::getId);
-
-        return ServerResponseEntity.success(sysRoleService.page(queryParam.page(), queryWrapper));
+    public ServerResponseEntity<IPage<SysRoleListResp>> listBySysRolePageQuery(SysRolePageQuery queryParam) {
+        return ServerResponseEntity.success(sysRoleService.listBySysRolePageQuery(queryParam));
     }
 
     @GetMapping("list")
     @Operation(summary = "列表")
     @PreAuthorize("@pms.hasPermission('system:role:list')")
-    public ServerResponseEntity<List<SysRole>> list() {
-        // 数据范围限制
-        Set<Long> roleIds = sysRoleService.listCurrentAccountRoleId();
-        LambdaQueryWrapper<SysRole> query = Wrappers.<SysRole>lambdaQuery()
-                .in(CollectionUtil.isNotEmpty(roleIds), SysRole::getId, roleIds);
+    public ServerResponseEntity<List<SysRoleListResp>> listAll() {
+        SysRolePageQuery queryParam = SysRolePageQuery.builder().build();
+        queryParam.setLimit(Integer.MAX_VALUE);
 
-        List<SysRole> roles = sysRoleService.list(query);
+        List<SysRoleListResp> roles = sysRoleService.listBySysRolePageQuery(queryParam).getRecords();
         return ServerResponseEntity.success(roles);
     }
 
     @GetMapping("detail/{id}")
     @Operation(summary = "详情")
     @PreAuthorize("@pms.hasPermission('system:role:detail')")
-    public ServerResponseEntity<SysRoleDetailResp> detail(@PathVariable("id") Long id) {
-        return ServerResponseEntity.success(sysRoleService.getRoleById(id));
+    public ServerResponseEntity<SysRoleIdResp> getBySysRoleId(@PathVariable("id") Long id) {
+        return ServerResponseEntity.success(sysRoleService.getBySysRoleId(id));
     }
 
     @SysLog

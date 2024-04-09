@@ -6,16 +6,17 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.bean.dataobject.system.SysUser;
 import com.ytrue.bean.dataobject.system.SysUserJob;
 import com.ytrue.bean.dataobject.system.SysUserRole;
+import com.ytrue.bean.query.system.SysUserPageQuery;
 import com.ytrue.bean.req.system.SysUserAddReq;
 import com.ytrue.bean.req.system.SysUserUpdatePasswordReq;
 import com.ytrue.bean.req.system.SysUserUpdateReq;
-import com.ytrue.bean.resp.system.SysUserDetailResp;
+import com.ytrue.bean.resp.system.SysUserIdResp;
 import com.ytrue.bean.resp.system.SysUserListResp;
 import com.ytrue.infra.core.constant.StrPool;
 import com.ytrue.infra.core.response.ResponseCodeEnum;
 import com.ytrue.infra.core.response.ServerResponseCode;
 import com.ytrue.infra.core.util.AssertUtil;
-import com.ytrue.infra.core.util.BeanUtil;
+import com.ytrue.infra.core.util.BeanUtils;
 import com.ytrue.infra.db.base.BaseServiceImpl;
 import com.ytrue.infra.db.dao.system.SysUserDao;
 import com.ytrue.infra.db.dao.system.SysUserJobDao;
@@ -24,10 +25,10 @@ import com.ytrue.manager.DataScopeManager;
 import com.ytrue.service.system.SysUserService;
 import com.ytrue.tools.query.entity.QueryEntity;
 import com.ytrue.tools.query.enums.QueryMethod;
+import com.ytrue.tools.query.util.QueryHelp;
 import com.ytrue.tools.security.service.LoginService;
 import com.ytrue.tools.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,26 +55,30 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
     private final LoginService loginService;
 
     @Override
-    public IPage<SysUserListResp> paginate(IPage<SysUserListResp> page, QueryEntity query) {
+    public IPage<SysUserListResp> listBySysUserPageQuery(SysUserPageQuery queryParam) {
         // 处理数据过滤
         Set<Long> deptIds = dataScopeManager.listDeptIdDataScope();
+
+        QueryEntity queryEntity = QueryHelp.queryEntityBuilder(queryParam).addSort(SysUserListResp::getId, Boolean.FALSE);
+
         if (!deptIds.contains(0L)) {
-            query.addFilter(SysUser::getDeptId, QueryMethod.in, deptIds.stream().toList(), "u");
+            queryEntity.addFilter(SysUser::getDeptId, QueryMethod.in, deptIds.stream().toList(), "u");
         } else {
-            query.addFilter(SysUser::getId, QueryMethod.eq, SecurityUtils.getLoginUser().getUser().getUserId(), "u");
+            queryEntity.addFilter(SysUser::getId, QueryMethod.eq, SecurityUtils.getLoginUser().getUser().getUserId(), "u");
         }
-        return baseMapper.selectWithDeptName(page, query);
+
+        return baseMapper.selectWithDeptName(queryParam.page(), queryEntity);
     }
 
     @Override
-    public SysUserDetailResp getUserById(Long id) {
+    public SysUserIdResp getBySysUserId(Long id) {
         SysUser user = getById(id);
         AssertUtil.notNull(user, ResponseCodeEnum.DATA_NOT_FOUND);
         // 获取对应的岗位
         Set<Long> jobIds = sysUserJobDao.selectList(Wrappers.<SysUserJob>lambdaQuery().eq(SysUserJob::getUserId, id)).stream().map(SysUserJob::getJobId).collect(Collectors.toSet());
         // 获取对应的角色
         Set<Long> roleIds = sysUserRoleDao.selectList(Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getUserId, id)).stream().map(SysUserRole::getRoleId).collect(Collectors.toSet());
-        SysUserDetailResp result = BeanUtil.cgLibCopyBean(user, SysUserDetailResp::new);
+        SysUserIdResp result = BeanUtils.copyProperties(user, SysUserIdResp::new);
         result.setJobIds(jobIds);
         result.setRoleIds(roleIds);
         return result;
@@ -82,8 +87,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void addSysUser(SysUserAddReq requestParam) {
-        SysUser sysUser = new SysUser();
-        BeanUtils.copyProperties(requestParam, sysUser);
+        SysUser sysUser = BeanUtils.copyProperties(requestParam, SysUser::new);
 
         sysUser.setPassword(passwordEncoder.encode(StrPool.DEFAULT_PASSWORD));
 
