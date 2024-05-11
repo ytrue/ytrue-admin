@@ -1,5 +1,6 @@
 package com.ytrue.infra.job;
 
+import cn.hutool.core.collection.CollUtil;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import com.ytrue.infra.job.handler.EveryDayExecute;
@@ -49,9 +50,10 @@ public class TimedTaskJobHandler {
         String param = XxlJobHelper.getJobParam();
         log.info("接收调度中心参数...[{}]", param);
 
-        if (everyMinuteExecutes == null || everyMinuteExecutes.size() == 0) {
+        if (CollUtil.isEmpty(everyDayExecutes)) {
             return;
         }
+        assert everyMinuteExecutes != null;
         for (EveryMinuteExecute everyMinuteExecute : everyMinuteExecutes) {
             try {
                 everyMinuteExecute.execute();
@@ -75,7 +77,7 @@ public class TimedTaskJobHandler {
         String param = XxlJobHelper.getJobParam();
         log.info("接收调度中心参数...[{}]", param);
 
-        if (everyHourExecutes == null || everyHourExecutes.size() == 0) {
+        if (CollUtil.isEmpty(everyHourExecutes)) {
             return;
         }
         for (EveryHourExecute everyHourExecute : everyHourExecutes) {
@@ -100,7 +102,7 @@ public class TimedTaskJobHandler {
         String param = XxlJobHelper.getJobParam();
         log.info("接收调度中心参数...[{}]", param);
 
-        if (everyDayExecutes == null || everyDayExecutes.size() == 0) {
+        if (CollUtil.isEmpty(everyDayExecutes)) {
             return;
         }
         for (EveryDayExecute everyDayExecute : everyDayExecutes) {

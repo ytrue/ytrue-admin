@@ -114,7 +114,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void removeBatchSysDeptByIds(List<Long> ids) {
+    public void removeBatchBySysDeptIds(List<Long> ids) {
         // 校验集合
         AssertUtil.collectionIsNotEmpty(ids, ResponseCodeEnum.ILLEGAL_OPERATION);
 
@@ -133,11 +133,11 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
         }
 
         // 操作删除
-        this.doRemoveBatchSysDeptByIds(ids);
+        this.doRemoveBatchBySysDeptIds(ids);
     }
 
 
-    private void doRemoveBatchSysDeptByIds(List<Long> ids) {
+    private void doRemoveBatchBySysDeptIds(List<Long> ids) {
         // 处理
         for (Long id : ids) {
             SysDept dept = getById(id);

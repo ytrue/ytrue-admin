@@ -1,13 +1,11 @@
 package com.ytrue.infra.cache.excptions;
 
-import com.ytrue.infra.core.base.BaseCodeException;
-
 /**
  * @author ytrue
  * @date 2023-12-04 16:59
  * @description RedissonRepeatSubmit
  */
-public class RedissonRepeatSubmitException extends BaseCodeException {
+public class RedissonRepeatSubmitException extends RuntimeException {
 
     public RedissonRepeatSubmitException() {
     }

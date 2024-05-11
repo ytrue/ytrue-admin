@@ -42,6 +42,7 @@
         </dependency>
 
 
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
@@ -70,10 +71,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!--        ytrue-infra-->
         <dependency>
             <groupId>com.ytrue</groupId>
             <artifactId>ytrue-infra-core</artifactId>
             <version>${revision}</version>
         </dependency>
+
     </dependencies>
 </project>

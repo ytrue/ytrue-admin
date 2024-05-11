@@ -1,8 +1,8 @@
 {
-  "name": "ruoyi",
+  "name": "ytrue",
   "version": "3.8.7",
-  "description": "若依管理系统",
-  "author": "若依",
+  "description": "ytrue-admin",
+  "author": "ytrue",
   "license": "MIT",
   "type": "module",
   "scripts": {

@@ -3,7 +3,7 @@ package com.ytrue.infra.cache.aspect;
 import cn.hutool.core.util.StrUtil;
 import com.ytrue.infra.cache.annotation.RedissonRepeatSubmit;
 import com.ytrue.infra.cache.excptions.RedissonRepeatSubmitException;
-import com.ytrue.infra.core.util.SpelParserUtil;
+import com.ytrue.infra.cache.util.SpelParserUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

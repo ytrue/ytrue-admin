@@ -1,5 +1,7 @@
 package com.ytrue.tools.security.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import com.ytrue.tools.security.integration.IntegrationAuthenticationContext;
 import com.ytrue.tools.security.integration.IntegrationAuthenticationEntity;
 import com.ytrue.tools.security.integration.authenticator.IntegrationAuthenticator;
@@ -9,9 +11,10 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ytrue
@@ -19,7 +22,7 @@ import java.util.List;
  * @description UserDetailsServiceImpl
  */
 @Slf4j
-@Service
+//@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     /**
@@ -27,10 +30,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     private List<IntegrationAuthenticator> authenticators;
 
-
-    public void setIntegrationAuthenticators(List<IntegrationAuthenticator> authenticators) {
-        this.authenticators = authenticators;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -56,8 +55,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * @return
      */
     private LoginUser authenticate(IntegrationAuthenticationEntity entity) {
-        if (this.authenticators == null) {
-            throw new InternalAuthenticationServiceException("未定义认证服务！");
+
+        if (CollUtil.isEmpty(this.authenticators)) {
+            // 这样去拿，在项目启动后，运行期间去拿，这样总加载完成了吧
+            Map<String, IntegrationAuthenticator> integrationAuthenticatorMap = SpringUtil.getBeansOfType(IntegrationAuthenticator.class);
+            ArrayList<IntegrationAuthenticator> integrationAuthenticators = new ArrayList<>();
+            integrationAuthenticatorMap.forEach((key, integrationAuthenticator) -> integrationAuthenticators.add(integrationAuthenticator));
+            this.authenticators = integrationAuthenticators;
+
+            if (CollUtil.isEmpty(this.authenticators)) {
+                throw new InternalAuthenticationServiceException("未定义认证服务！");
+            }
         }
 
         for (IntegrationAuthenticator authenticator : authenticators) {
@@ -69,4 +77,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         throw new InternalAuthenticationServiceException("无效的auth_type参数值！");
     }
+
+
 }

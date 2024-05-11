@@ -9,7 +9,6 @@ import com.ytrue.tools.security.handler.AuthenticationEntryPointImpl;
 import com.ytrue.tools.security.handler.LogoutHandlerImpl;
 import com.ytrue.tools.security.handler.LogoutSuccessHandlerImpl;
 import com.ytrue.tools.security.integration.IntegrationAuthenticationFilter;
-import com.ytrue.tools.security.integration.authenticator.IntegrationAuthenticator;
 import com.ytrue.tools.security.properties.IgnoreWebSecurityProperties;
 import com.ytrue.tools.security.properties.JwtProperties;
 import com.ytrue.tools.security.properties.SecurityProperties;
@@ -18,11 +17,8 @@ import com.ytrue.tools.security.service.impl.LoginServiceImpl;
 import com.ytrue.tools.security.service.impl.UserDetailsServiceImpl;
 import com.ytrue.tools.security.util.JwtOperation;
 import jakarta.annotation.Resource;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -50,7 +46,10 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author ytrue
@@ -59,9 +58,8 @@ import java.util.*;
  */
 @Configuration
 @EnableMethodSecurity
-public class SecurityAutoConfiguration implements ApplicationContextAware {
+public class SecurityAutoConfiguration {
 
-    private ApplicationContext applicationContext;
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
@@ -156,17 +154,7 @@ public class SecurityAutoConfiguration implements ApplicationContextAware {
      */
     @Bean
     public UserDetailsService userDetailsService() {
-        // WebSecurityConfigurerAdapter类有已经有ApplicationContext，不要再去实现 getApplicationContextAware，不然会空指针
-        Map<String, IntegrationAuthenticator> integrationAuthenticatorMap = applicationContext.getBeansOfType(IntegrationAuthenticator.class);
-
-        ArrayList<IntegrationAuthenticator> integrationAuthenticators = new ArrayList<>();
-
-        integrationAuthenticatorMap.forEach((key, integrationAuthenticator) -> integrationAuthenticators.add(integrationAuthenticator));
-
-        UserDetailsServiceImpl userDetailsService = new UserDetailsServiceImpl();
-        userDetailsService.setIntegrationAuthenticators(integrationAuthenticators);
-
-        return userDetailsService;
+        return new UserDetailsServiceImpl();
     }
 
 
@@ -329,8 +317,5 @@ public class SecurityAutoConfiguration implements ApplicationContextAware {
         return new HashSet<>();
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
+
 }

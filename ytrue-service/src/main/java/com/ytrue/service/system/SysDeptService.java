@@ -46,7 +46,7 @@ public interface SysDeptService extends IBaseService<SysDept> {
      *
      * @param ids
      */
-    void removeBatchSysDeptByIds(List<Long> ids);
+    void removeBatchBySysDeptIds(List<Long> ids);
 
     /**
      * 根据数据范围获取部门id

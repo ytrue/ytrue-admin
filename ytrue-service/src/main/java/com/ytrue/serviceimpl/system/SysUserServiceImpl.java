@@ -119,7 +119,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void removeBatchUserByIds(List<Long> ids) {
+    public void removeBatchBySysUserIds(List<Long> ids) {
         // 删除用户
         removeBatchByIds(ids);
         // 删除用户与部门,角色的关系

@@ -53,7 +53,7 @@ public interface SysJobService extends IBaseService<SysJob> {
      *
      * @param ids
      */
-    void removeBatchSysJobByIds(List<Long> ids);
+    void removeBatchBySysJobIds(List<Long> ids);
 
     /**
      * 根据id获取岗位

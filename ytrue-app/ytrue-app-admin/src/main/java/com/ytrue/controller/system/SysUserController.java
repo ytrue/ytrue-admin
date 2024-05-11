@@ -73,8 +73,8 @@ public class SysUserController {
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:user:delete')")
-    public ServerResponseEntity<Void> removeBatchUserByIds(@RequestBody List<Long> ids) {
-        sysUserService.removeBatchUserByIds(ids);
+    public ServerResponseEntity<Void> removeBatchBySysUserIds(@RequestBody List<Long> ids) {
+        sysUserService.removeBatchBySysUserIds(ids);
         return ServerResponseEntity.success();
     }
 

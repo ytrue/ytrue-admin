@@ -1,4 +1,4 @@
-package com.ytrue.infra.core.util;
+package com.ytrue.infra.cache.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.DefaultParameterNameDiscoverer;
@@ -153,7 +153,6 @@ public final class SpelParserUtil {
         if (spelExpression.startsWith(EXPRESSION_PREFIX) && spelExpression.endsWith(EXPRESSION_SUFFIX)) {
             return EXPRESSION_PARSER.parseExpression(spelExpression, new TemplateParserContext());
         }
-
         return EXPRESSION_PARSER.parseExpression(spelExpression);
     }
 

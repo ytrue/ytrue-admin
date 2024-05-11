@@ -80,8 +80,8 @@ public class SysRoleController {
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:role:delete')")
-    public ServerResponseEntity<Void> removeBatchSysRoleByIds(@RequestBody List<Long> ids) {
-        sysRoleService.removeBatchSysRoleByIds(ids);
+    public ServerResponseEntity<Void> removeBatchBySysRoleIds(@RequestBody List<Long> ids) {
+        sysRoleService.removeBatchBySysRoleIds(ids);
         return ServerResponseEntity.success();
     }
 

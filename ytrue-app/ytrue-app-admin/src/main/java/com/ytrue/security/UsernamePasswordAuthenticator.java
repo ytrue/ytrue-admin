@@ -1,6 +1,5 @@
 package com.ytrue.security;
 
-import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.bean.dataobject.system.SysUser;
@@ -75,7 +74,7 @@ public class UsernamePasswordAuthenticator extends AbstractPreparableIntegration
         AssertUtil.isTrue(passwordEncoder.matches(password, sysUser.getPassword()), ServerResponseCode.error("账号或者密码不正确"));
 
         User user = new User();
-        user.setUserId(Convert.toStr(sysUser.getId()));
+        user.setUserId(String.valueOf(sysUser.getId()));
         user.setUsername(sysUser.getUsername());
         user.setPassword(sysUser.getPassword());
         user.setAuthorities(sysPermissionService.listPermissionBySysUser(sysUser));

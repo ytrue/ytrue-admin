@@ -67,8 +67,8 @@ public class SysDeptController {
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:dept:delete')")
-    public ServerResponseEntity<Void> removeBatchSysDeptByIds(@RequestBody List<Long> ids) {
-        sysDeptService.removeBatchSysDeptByIds(ids);
+    public ServerResponseEntity<Void> removeBatchBySysDeptIds(@RequestBody List<Long> ids) {
+        sysDeptService.removeBatchBySysDeptIds(ids);
         return ServerResponseEntity.success();
     }
 

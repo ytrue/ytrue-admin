@@ -87,7 +87,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
 
 
     @Override
-    public void removeBatchMenu(List<Long> ids) {
+    public void removeBatchBySysMenuIds(List<Long> ids) {
         for (Long id : ids) {
             // 校验是否存在子级
             SysMenu childMenu = lambdaQuery().eq(SysMenu::getPid, id).one();

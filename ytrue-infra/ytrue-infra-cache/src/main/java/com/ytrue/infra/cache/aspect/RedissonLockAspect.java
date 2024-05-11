@@ -4,7 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.ytrue.infra.cache.annotation.RedissonLock;
 import com.ytrue.infra.cache.enums.RedissonLockTypeEnum;
 import com.ytrue.infra.cache.excptions.RedissonLockException;
-import com.ytrue.infra.core.util.SpelParserUtil;
+import com.ytrue.infra.cache.util.SpelParserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

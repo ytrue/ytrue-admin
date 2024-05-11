@@ -83,9 +83,9 @@ public class SysJobController {
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:job:delete')")
-    public ServerResponseEntity<Void> removeBatchSysJobByIds(@RequestBody List<Long> ids) {
+    public ServerResponseEntity<Void> removeBatchBySysJobIds(@RequestBody List<Long> ids) {
         // 需要校验用户与岗位得绑定关系
-        sysJobService.removeBatchSysJobByIds(ids);
+        sysJobService.removeBatchBySysJobIds(ids);
         return ServerResponseEntity.success();
     }
 }

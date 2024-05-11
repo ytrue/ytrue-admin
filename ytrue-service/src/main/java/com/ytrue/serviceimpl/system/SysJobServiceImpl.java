@@ -76,7 +76,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDao, SysJob> implem
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void removeBatchSysJobByIds(List<Long> ids) {
+    public void removeBatchBySysJobIds(List<Long> ids) {
         // 校验集合
         AssertUtil.collectionIsNotEmpty(ids, ResponseCodeEnum.ILLEGAL_OPERATION);
 

@@ -57,7 +57,7 @@ public interface SysUserService extends IBaseService<SysUser> {
      *
      * @param ids
      */
-    void removeBatchUserByIds(List<Long> ids);
+    void removeBatchBySysUserIds(List<Long> ids);
 
 
     /**
