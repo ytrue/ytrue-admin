@@ -2,10 +2,6 @@ package com.ytrue;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.web.servlet.HandlerExceptionResolver;
-
-import java.util.Arrays;
 
 /**
  * @author ytrue
@@ -33,10 +29,9 @@ public class AdminApplication {
          * RocketMQLog:WARN No appenders could be found for logger (io.netty.util.internal.InternalThreadLocalMap).
          * RocketMQLog:WARN Please initialize the logger system properly.
          */
-        System.setProperty("rocketmq.client.logUseSlf4j", "true");
+        //System.setProperty("rocketmq.client.logUseSlf4j", "true");
         // 设置spring security 多线程获取SecurityContextHolder,这块改到 SecurityAutoConfiguration#initializingBean
         // System.setProperty("spring.security.strategy", "MODE_INHERITABLETHREADLOCAL");
-        ConfigurableApplicationContext run = SpringApplication.run(AdminApplication.class, args);
-
+        SpringApplication.run(AdminApplication.class, args);
     }
 }

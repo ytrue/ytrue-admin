@@ -45,6 +45,14 @@
         <revision>1.0-SNAPSHOT</revision>
         <!--定时任务-->
         <xxl-job>2.4.0</xxl-job>
+
+
+        <tika.version>2.7.0</tika.version>
+        <!--第三方对象存储-->
+        <oss.version>3.16.1</oss.version>
+        <cos.version>5.6.137</cos.version>
+        <qiniu.version>7.11.0</qiniu.version>
+        <tika.version>2.7.0</tika.version>
     </properties>
 
     <dependencies>
@@ -62,6 +70,7 @@
 
     <dependencyManagement>
         <dependencies>
+
             <!--springboot依赖管理-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -70,6 +79,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
             <!--数据库操作-->
             <dependency>
                 <groupId>com.baomidou</groupId>
@@ -81,6 +91,7 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.version}</version>
             </dependency>
+
             <!--spring admin 监控-->
             <dependency>
                 <groupId>de.codecentric</groupId>
@@ -92,6 +103,7 @@
                 <artifactId>spring-boot-admin-starter-client</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
+
             <!--文档-->
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
@@ -103,12 +115,39 @@
                 <artifactId>swagger-core</artifactId>
                 <version>${swagger-core.version}</version>
             </dependency>
+
             <!-- Java图形验证码 -->
             <dependency>
                 <groupId>com.github.whvcse</groupId>
                 <artifactId>easy-captcha</artifactId>
                 <version>${easy-captcha.version}</version>
             </dependency>
+
+
+            <dependency>
+                <groupId>org.apache.tika</groupId>
+                <artifactId>tika-core</artifactId>
+                <version>${tika.version}</version>
+            </dependency>
+            <!-- 阿里云 OSS -->
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${oss.version}</version>
+            </dependency>
+            <!-- 七牛云 Kodo -->
+            <dependency>
+                <groupId>com.qiniu</groupId>
+                <artifactId>qiniu-java-sdk</artifactId>
+                <version>${qiniu.version}</version>
+            </dependency>
+            <!-- 腾讯云 COS -->
+            <dependency>
+                <groupId>com.qcloud</groupId>
+                <artifactId>cos_api</artifactId>
+                <version>${cos.version}</version>
+            </dependency>
+
 
             <!--ytrue-tools-->
             <dependency>

@@ -7,6 +7,12 @@
         <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/ytrue-tools/ytrue-tools-log/pom.xml" />
+        <option value="$PROJECT_DIR$/ytrue-tools/ytrue-tools-storage/pom.xml" />
+      </set>
+    </option>
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="jakarta.annotation.Nullable" />

@@ -5,8 +5,8 @@ import com.ytrue.infra.core.util.BeanUtils;
 import com.ytrue.infra.db.base.BaseServiceImpl;
 import com.ytrue.infra.db.dao.system.SysLogDao;
 import com.ytrue.service.system.SysLogService;
-import com.ytrue.tools.log.enitiy.OperationLog;
-import com.ytrue.tools.log.event.SysLogEvent;
+import com.ytrue.infra.log.enitiy.OperationLog;
+import com.ytrue.infra.log.event.OperateLogEvent;
 import com.ytrue.tools.security.util.SecurityUtils;
 
 import org.springframework.context.ApplicationListener;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  * @date 2022/12/9 10:21
  */
 @Service
-public class SysLogServiceImpl extends BaseServiceImpl<SysLogDao, SysLog> implements SysLogService, ApplicationListener<SysLogEvent> {
+public class SysLogServiceImpl extends BaseServiceImpl<SysLogDao, SysLog> implements SysLogService, ApplicationListener<OperateLogEvent> {
 
     /**
      * 监听日志处理
@@ -26,7 +26,7 @@ public class SysLogServiceImpl extends BaseServiceImpl<SysLogDao, SysLog> implem
      * @param event
      */
     @Override
-    public void onApplicationEvent(SysLogEvent event) {
+    public void onApplicationEvent(OperateLogEvent event) {
         OperationLog optLog = (OperationLog) event.getSource();
 
         SysLog sysLog = BeanUtils.copyProperties(optLog, SysLog::new);

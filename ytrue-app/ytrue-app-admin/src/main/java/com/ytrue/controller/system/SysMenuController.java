@@ -6,8 +6,8 @@ import com.ytrue.bean.req.system.SysMenuAddReq;
 import com.ytrue.bean.req.system.SysMenuUpdateReq;
 import com.ytrue.bean.resp.system.SysMenuIdResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
+import com.ytrue.infra.log.annotation.OperateLog;
 import com.ytrue.service.system.SysMenuService;
-import com.ytrue.tools.log.annotation.SysLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +46,7 @@ public class SysMenuController {
         return ServerResponseEntity.success(sysMenuService.getBySysMenuId(id));
     }
 
-    @SysLog
+    @OperateLog
     @PostMapping
     @Operation(summary = "保存")
     @PreAuthorize("@pms.hasPermission('system:menu:add')")
@@ -55,7 +55,7 @@ public class SysMenuController {
         return ServerResponseEntity.success();
     }
 
-    @SysLog
+    @OperateLog
     @PutMapping
     @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:menu:update')")
@@ -64,7 +64,7 @@ public class SysMenuController {
         return ServerResponseEntity.success();
     }
 
-    @SysLog
+    @OperateLog
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:menu:delete')")

@@ -7,7 +7,7 @@ import com.ytrue.bean.resp.system.SysDeptIdResp;
 import com.ytrue.bean.resp.system.SysDeptListResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.service.system.SysDeptService;
-import com.ytrue.tools.log.annotation.SysLog;
+import com.ytrue.infra.log.annotation.OperateLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +45,7 @@ public class SysDeptController {
         return ServerResponseEntity.success(sysDeptService.getBySysDeptId(id));
     }
 
-    @SysLog
+    @OperateLog
     @PostMapping
     @Operation(summary = "新增")
     @PreAuthorize("@pms.hasPermission('system:dept:add')")
@@ -54,7 +54,7 @@ public class SysDeptController {
         return ServerResponseEntity.success();
     }
 
-    @SysLog
+    @OperateLog
     @PutMapping
     @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:dept:update')")
@@ -63,7 +63,7 @@ public class SysDeptController {
         return ServerResponseEntity.success();
     }
 
-    @SysLog
+    @OperateLog
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:dept:delete')")

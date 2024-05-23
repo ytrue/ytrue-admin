@@ -8,7 +8,7 @@ import com.ytrue.bean.resp.system.SysJobIdResp;
 import com.ytrue.bean.resp.system.SysJobListResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.service.system.SysJobService;
-import com.ytrue.tools.log.annotation.SysLog;
+import com.ytrue.infra.log.annotation.OperateLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -61,7 +61,7 @@ public class SysJobController {
     }
 
 
-    @SysLog
+    @OperateLog
     @PostMapping
     @Operation(summary = "保存")
     @PreAuthorize("@pms.hasPermission('system:job:add')")
@@ -70,7 +70,7 @@ public class SysJobController {
         return ServerResponseEntity.success();
     }
 
-    @SysLog
+    @OperateLog
     @PutMapping
     @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:job:update')")
@@ -79,7 +79,7 @@ public class SysJobController {
         return ServerResponseEntity.success();
     }
 
-    @SysLog
+    @OperateLog
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:job:delete')")

@@ -51,11 +51,11 @@
             <version>${revision}</version>
         </dependency>
 
-
-        <!--        ytrue-tools-->
         <dependency>
             <groupId>com.ytrue</groupId>
-            <artifactId>ytrue-tools-log</artifactId>
+            <artifactId>ytrue-infra-log</artifactId>
+            <version>${revision}</version>
         </dependency>
+
     </dependencies>
 </project>

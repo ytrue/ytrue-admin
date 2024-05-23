@@ -10,8 +10,8 @@ import com.ytrue.bean.req.system.SysUserUpdateReq;
 import com.ytrue.bean.resp.system.SysUserIdResp;
 import com.ytrue.bean.resp.system.SysUserListResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
+import com.ytrue.infra.log.annotation.OperateLog;
 import com.ytrue.service.system.SysUserService;
-import com.ytrue.tools.log.annotation.SysLog;
 import com.ytrue.tools.security.util.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -51,7 +51,7 @@ public class SysUserController {
     }
 
 
-    @SysLog
+    @OperateLog
     @PostMapping
     @Operation(summary = "保存")
     @PreAuthorize("@pms.hasPermission('system:user:add')")
@@ -60,7 +60,7 @@ public class SysUserController {
         return ServerResponseEntity.success();
     }
 
-    @SysLog
+    @OperateLog
     @PutMapping
     @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:user:update')")
@@ -69,7 +69,7 @@ public class SysUserController {
         return ServerResponseEntity.success();
     }
 
-    @SysLog
+    @OperateLog
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:user:delete')")
@@ -78,7 +78,7 @@ public class SysUserController {
         return ServerResponseEntity.success();
     }
 
-    @SysLog
+    @OperateLog
     @PostMapping("resetPassword")
     @Operation(summary = "重置密码")
     @PreAuthorize("@pms.hasPermission('system:user:restPassword')")

@@ -7,8 +7,8 @@ import com.ytrue.bean.req.system.SysRoleUpdateReq;
 import com.ytrue.bean.resp.system.SysRoleIdResp;
 import com.ytrue.bean.resp.system.SysRoleListResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
+import com.ytrue.infra.log.annotation.OperateLog;
 import com.ytrue.service.system.SysRoleService;
-import com.ytrue.tools.log.annotation.SysLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +58,7 @@ public class SysRoleController {
         return ServerResponseEntity.success(sysRoleService.getBySysRoleId(id));
     }
 
-    @SysLog
+    @OperateLog
     @PostMapping
     @Operation(summary = "保存")
     @PreAuthorize("@pms.hasPermission('system:role:add')")
@@ -67,7 +67,7 @@ public class SysRoleController {
         return ServerResponseEntity.success();
     }
 
-    @SysLog
+    @OperateLog
     @PutMapping
     @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:role:update')")
@@ -76,7 +76,7 @@ public class SysRoleController {
         return ServerResponseEntity.success();
     }
 
-    @SysLog
+    @OperateLog
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:role:delete')")

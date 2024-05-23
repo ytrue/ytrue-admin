@@ -17,6 +17,9 @@
         <module>ytrue-infra-mq</module>
         <module>ytrue-infra-job</module>
         <module>ytrue-infra-cache</module>
+        <module>ytrue-infra-log</module>
+        <module>ytrue-infra-security</module>
+        <module>ytrue-infra-storage</module>
     </modules>
 
     <properties>

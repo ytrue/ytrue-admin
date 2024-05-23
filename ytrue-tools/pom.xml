@@ -13,10 +13,8 @@
     <name>ytrue-tools</name>
 
     <modules>
-        <module>ytrue-tools-log</module>
         <module>ytrue-tools-query</module>
         <module>ytrue-tools-security</module>
-        <module>ytrue-tools-storage</module>
     </modules>
 
     <properties>
