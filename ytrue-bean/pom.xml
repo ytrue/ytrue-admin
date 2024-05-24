@@ -24,7 +24,8 @@
         </dependency>
         <dependency>
             <groupId>com.ytrue</groupId>
-            <artifactId>ytrue-tools-query</artifactId>
+            <artifactId>ytrue-infra-db</artifactId>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>com.ytrue</groupId>

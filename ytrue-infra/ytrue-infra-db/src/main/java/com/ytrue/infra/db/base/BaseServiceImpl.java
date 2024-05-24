@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ytrue.tools.query.entity.PageQueryEntity;
-import com.ytrue.tools.query.entity.QueryEntity;
+import com.ytrue.infra.db.query.entity.PageQueryEntity;
+import com.ytrue.infra.db.query.entity.QueryEntity;
 
 import java.util.Collection;
 import java.util.List;

@@ -20,6 +20,8 @@
         <module>ytrue-infra-log</module>
         <module>ytrue-infra-security</module>
         <module>ytrue-infra-storage</module>
+        <module>ytrue-infra-serializer</module>
+
     </modules>
 
     <properties>

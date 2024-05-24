@@ -27,6 +27,10 @@
     <file url="file://$PROJECT_DIR$/ytrue-infra/ytrue-infra-mq/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ytrue-infra/ytrue-infra-security/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ytrue-infra/ytrue-infra-security/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ytrue-infra/ytrue-infra-serialize/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ytrue-infra/ytrue-infra-serialize/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ytrue-infra/ytrue-infra-serializer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ytrue-infra/ytrue-infra-serializer/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ytrue-infra/ytrue-infra-storage/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ytrue-infra/ytrue-infra-storage/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ytrue-service/src/main/java" charset="UTF-8" />

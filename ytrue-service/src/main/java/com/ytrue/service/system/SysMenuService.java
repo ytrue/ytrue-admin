@@ -1,7 +1,6 @@
 package com.ytrue.service.system;
 
 import cn.hutool.core.lang.tree.Tree;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ytrue.bean.query.system.SysMenuListQuery;
 import com.ytrue.bean.req.system.SysMenuAddReq;
 import com.ytrue.bean.req.system.SysMenuUpdateReq;

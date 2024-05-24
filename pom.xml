@@ -152,27 +152,7 @@
             <!--ytrue-tools-->
             <dependency>
                 <groupId>com.ytrue</groupId>
-                <artifactId>ytrue-tools-log</artifactId>
-                <version>${ytrue-tools-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ytrue</groupId>
                 <artifactId>ytrue-tools-security</artifactId>
-                <version>${ytrue-tools-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ytrue</groupId>
-                <artifactId>ytrue-tools-query</artifactId>
-                <version>${ytrue-tools-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ytrue</groupId>
-                <artifactId>ytrue-tools-log</artifactId>
-                <version>${ytrue-tools-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ytrue</groupId>
-                <artifactId>ytrue-tools-storage</artifactId>
                 <version>${ytrue-tools-version}</version>
             </dependency>
         </dependencies>

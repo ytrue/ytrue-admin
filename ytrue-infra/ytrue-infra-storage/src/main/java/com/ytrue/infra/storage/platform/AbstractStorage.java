@@ -11,10 +11,14 @@ import com.ytrue.infra.storage.model.UploadInfo;
 import com.ytrue.infra.storage.utils.ContentTypeUtil;
 import lombok.SneakyThrows;
 import org.apache.tika.Tika;
+import org.apache.tika.mime.MimeType;
+import org.apache.tika.mime.MimeTypeException;
+import org.apache.tika.mime.MimeTypes;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 /**
@@ -101,6 +105,17 @@ public abstract class AbstractStorage implements IStorage, InitializingBean {
 
         return fileInfo;
     }
+
+    // 文件后缀 ....
+    private void getType(String mimeType) throws MimeTypeException {
+        // 获取MIME类型对象
+        MimeTypes allTypes = MimeTypes.getDefaultMimeTypes();
+        MimeType type = allTypes.forName(mimeType);
+        // 获取文件后缀
+        String[] extensions = type.getExtensions().toArray(new String[0]);
+        System.out.println(Arrays.toString(extensions));
+    }
+
 
     /**
      * 平台

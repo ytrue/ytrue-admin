@@ -104,7 +104,6 @@ public class JacksonConfig {
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         // PrettyPrinter 格式化输出
         objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-
         //NULL不参与序列化--null是要参数序列化的,所以这里注释
         //objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 

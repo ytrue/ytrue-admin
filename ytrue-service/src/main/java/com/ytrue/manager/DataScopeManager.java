@@ -1,17 +1,16 @@
 package com.ytrue.manager;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.bean.dataobject.system.SysDept;
 import com.ytrue.bean.dataobject.system.SysRole;
 import com.ytrue.bean.dataobject.system.SysRoleDept;
 import com.ytrue.bean.dataobject.system.SysUser;
 import com.ytrue.bean.enums.system.DataScopeEnum;
-import com.ytrue.infra.db.dao.system.SysDeptDao;
-import com.ytrue.infra.db.dao.system.SysRoleDao;
-import com.ytrue.infra.db.dao.system.SysRoleDeptDao;
-import com.ytrue.infra.db.dao.system.SysUserDao;
+import com.ytrue.dao.system.SysDeptDao;
+import com.ytrue.dao.system.SysRoleDao;
+import com.ytrue.dao.system.SysRoleDeptDao;
+import com.ytrue.dao.system.SysUserDao;
 import com.ytrue.tools.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

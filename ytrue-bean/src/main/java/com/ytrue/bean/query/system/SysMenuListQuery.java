@@ -1,7 +1,7 @@
 package com.ytrue.bean.query.system;
 
-import com.ytrue.tools.query.annotation.Query;
-import com.ytrue.tools.query.enums.QueryMethod;
+import com.ytrue.infra.db.query.annotation.Query;
+import com.ytrue.infra.db.query.enums.QueryMethod;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

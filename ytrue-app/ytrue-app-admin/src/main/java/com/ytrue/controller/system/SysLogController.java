@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.bean.dataobject.system.SysLog;
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.service.system.SysLogService;
-import com.ytrue.tools.query.entity.PageQueryEntity;
+import com.ytrue.infra.db.query.entity.PageQueryEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

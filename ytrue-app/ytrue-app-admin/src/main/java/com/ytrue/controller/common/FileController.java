@@ -2,7 +2,7 @@ package com.ytrue.controller.common;
 
 
 import com.ytrue.infra.core.response.ServerResponseEntity;
-import com.ytrue.tools.storage.model.FileInfo;
+//import com.ytrue.tools.storage.model.FileInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,13 +22,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileController {
 
 
-    @PostMapping("upload")
-    @Operation(summary = "文件上传")
-    public ServerResponseEntity<FileInfo> fileUpload(MultipartFile file) {
-        // GenericStorageImpl storage = StorageFactory.getInstance(StorageType.local.name());
-        //  FileInfo fileInfo = storage.upload(UploadInfo.build(file));
-        // return ServerResponseEntity.success(fileInfo);
-
-        return null;
-    }
+//    @PostMapping("upload")
+//    @Operation(summary = "文件上传")
+//    public ServerResponseEntity<FileInfo> fileUpload(MultipartFile file) {
+//        // GenericStorageImpl storage = StorageFactory.getInstance(StorageType.local.name());
+//        //  FileInfo fileInfo = storage.upload(UploadInfo.build(file));
+//        // return ServerResponseEntity.success(fileInfo);
+//
+//        return null;
+//    }
 }

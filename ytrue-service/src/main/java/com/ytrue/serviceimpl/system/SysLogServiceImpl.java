@@ -3,7 +3,7 @@ package com.ytrue.serviceimpl.system;
 import com.ytrue.bean.dataobject.system.SysLog;
 import com.ytrue.infra.core.util.BeanUtils;
 import com.ytrue.infra.db.base.BaseServiceImpl;
-import com.ytrue.infra.db.dao.system.SysLogDao;
+import com.ytrue.dao.system.SysLogDao;
 import com.ytrue.service.system.SysLogService;
 import com.ytrue.infra.log.enitiy.OperationLog;
 import com.ytrue.infra.log.event.OperateLogEvent;

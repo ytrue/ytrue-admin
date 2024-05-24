@@ -57,5 +57,11 @@
             <version>${revision}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.ytrue</groupId>
+            <artifactId>ytrue-tools-security</artifactId>
+        </dependency>
+
+
     </dependencies>
 </project>

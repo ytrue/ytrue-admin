@@ -20,24 +20,6 @@
     </properties>
 
     <dependencies>
-
-        <dependency>
-            <groupId>com.ytrue</groupId>
-            <artifactId>ytrue-bean</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.ytrue</groupId>
-            <artifactId>ytrue-tools-query</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.ytrue</groupId>
-            <artifactId>ytrue-tools-security</artifactId>
-        </dependency>
-
         <!--数据库操作-->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -46,6 +28,20 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 </project>

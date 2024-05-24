@@ -9,7 +9,6 @@ import com.ytrue.bean.req.system.SysUserUpdateReq;
 import com.ytrue.bean.resp.system.SysUserIdResp;
 import com.ytrue.bean.resp.system.SysUserListResp;
 import com.ytrue.infra.db.base.IBaseService;
-import com.ytrue.tools.query.entity.QueryEntity;
 
 import java.util.List;
 
@@ -22,12 +21,11 @@ public interface SysUserService extends IBaseService<SysUser> {
 
     /**
      * 查询
+     *
      * @param queryParam
      * @return
      */
     IPage<SysUserListResp> listBySysUserPageQuery(SysUserPageQuery queryParam);
-
-
 
 
     /**

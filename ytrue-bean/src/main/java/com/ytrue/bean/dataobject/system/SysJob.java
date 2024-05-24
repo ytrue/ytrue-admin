@@ -3,8 +3,6 @@ package com.ytrue.bean.dataobject.system;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ytrue.bean.dataobject.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

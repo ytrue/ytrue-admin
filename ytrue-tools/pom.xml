@@ -13,7 +13,6 @@
     <name>ytrue-tools</name>
 
     <modules>
-        <module>ytrue-tools-query</module>
         <module>ytrue-tools-security</module>
     </modules>
 

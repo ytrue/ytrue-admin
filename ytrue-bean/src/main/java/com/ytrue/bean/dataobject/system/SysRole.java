@@ -2,7 +2,6 @@ package com.ytrue.bean.dataobject.system;
 
 import com.ytrue.bean.dataobject.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
