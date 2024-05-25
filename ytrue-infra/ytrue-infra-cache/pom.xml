@@ -71,12 +71,5 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!--        ytrue-infra-->
-        <dependency>
-            <groupId>com.ytrue</groupId>
-            <artifactId>ytrue-infra-core</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
     </dependencies>
 </project>

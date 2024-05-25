@@ -11,7 +11,7 @@ import com.ytrue.dao.system.SysDeptDao;
 import com.ytrue.dao.system.SysRoleDao;
 import com.ytrue.dao.system.SysRoleDeptDao;
 import com.ytrue.dao.system.SysUserDao;
-import com.ytrue.tools.security.util.SecurityUtils;
+import com.ytrue.infra.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

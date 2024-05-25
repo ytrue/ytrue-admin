@@ -6,7 +6,7 @@ import com.ytrue.infra.core.constant.StrPool;
 import com.ytrue.dao.system.SysRoleDao;
 import com.ytrue.dao.system.SysUserDao;
 import com.ytrue.service.system.SysPermissionService;
-import com.ytrue.tools.security.permission.PermissionService;
+import com.ytrue.infra.security.permission.PermissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

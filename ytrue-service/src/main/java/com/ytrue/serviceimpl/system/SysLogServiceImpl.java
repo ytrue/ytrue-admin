@@ -7,7 +7,7 @@ import com.ytrue.dao.system.SysLogDao;
 import com.ytrue.service.system.SysLogService;
 import com.ytrue.infra.log.enitiy.OperationLog;
 import com.ytrue.infra.log.event.OperateLogEvent;
-import com.ytrue.tools.security.util.SecurityUtils;
+import com.ytrue.infra.security.util.SecurityUtils;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;

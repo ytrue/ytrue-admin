@@ -8,7 +8,7 @@ import com.ytrue.infra.core.constant.StrPool;
 import com.ytrue.infra.core.enums.CaptchaTypeEnum;
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.infra.core.util.CaptchaUtil;
-import com.ytrue.tools.security.annotation.IgnoreWebSecurity;
+import com.ytrue.infra.security.annotation.IgnoreWebSecurity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

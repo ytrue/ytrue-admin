@@ -13,7 +13,6 @@
         <module>ytrue-bean</module>
         <module>ytrue-infra</module>
         <module>ytrue-service</module>
-        <module>ytrue-tools</module>
     </modules>
 
 
@@ -146,14 +145,6 @@
                 <groupId>com.qcloud</groupId>
                 <artifactId>cos_api</artifactId>
                 <version>${cos.version}</version>
-            </dependency>
-
-
-            <!--ytrue-tools-->
-            <dependency>
-                <groupId>com.ytrue</groupId>
-                <artifactId>ytrue-tools-security</artifactId>
-                <version>${ytrue-tools-version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

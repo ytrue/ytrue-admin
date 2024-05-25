@@ -1,7 +1,7 @@
 package com.ytrue.manager;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.ytrue.tools.security.util.SecurityUtils;
+import com.ytrue.infra.security.util.SecurityUtils;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 

@@ -1,7 +1,7 @@
 package com.ytrue.infra.cache.config;
 
 import com.alibaba.fastjson.JSON;
-import com.ytrue.infra.core.config.JacksonConfig;
+import com.ytrue.infra.cache.ser.Jackson2JsonRedisSerializer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -52,7 +52,7 @@ public class CacheConfig implements CachingConfigurer {
         // 使用fastjson序列化，这玩意返回的是JSONObject, 多个返回的是JSONArray里面的元素是JSONObject
         //FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
         // 获取这个，这是是处理了LocalDateTime
-        GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer = JacksonConfig.genericJackson2JsonRedisSerializer();
+        GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer = Jackson2JsonRedisSerializer.genericJackson2JsonRedisSerializer();
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                 //变双冒号为单冒号

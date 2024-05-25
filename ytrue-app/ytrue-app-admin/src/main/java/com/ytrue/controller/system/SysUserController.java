@@ -12,7 +12,7 @@ import com.ytrue.bean.resp.system.SysUserListResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.infra.log.annotation.OperateLog;
 import com.ytrue.service.system.SysUserService;
-import com.ytrue.tools.security.util.SecurityUtils;
+import com.ytrue.infra.security.util.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

@@ -59,7 +59,15 @@
 
         <dependency>
             <groupId>com.ytrue</groupId>
-            <artifactId>ytrue-tools-security</artifactId>
+            <artifactId>ytrue-infra-security</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.ytrue</groupId>
+            <artifactId>ytrue-infra-serializer</artifactId>
+            <version>${revision}</version>
         </dependency>
 
 
