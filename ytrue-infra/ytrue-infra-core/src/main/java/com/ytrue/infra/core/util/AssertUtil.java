@@ -55,26 +55,27 @@ public class AssertUtil {
     }
 
 
-    public static void lessThanEq(double value, double limit, IServerResponseCode responseCode) {
-        if (value > limit) {
+    public static <T extends Number & Comparable<? super T>> void lessThanEq(T value, T limit, IServerResponseCode responseCode) {
+        if (value.compareTo(limit) > 0) {
             reportInvalidArgument(responseCode);
         }
     }
 
-    public static void lessThan(double value, double limit, IServerResponseCode responseCode) {
-        if (value >= limit) {
+
+    public static <T extends Number & Comparable<? super T>> void lessThan(T value, T limit, IServerResponseCode responseCode) {
+        if (value.compareTo(limit) >= 0) {
             reportInvalidArgument(responseCode);
         }
     }
 
-    public static void greaterThanEq(double value, double limit, IServerResponseCode responseCode) {
-        if (value < limit) {
+    public static <T extends Number & Comparable<? super T>> void greaterThanEq(T value, T limit, IServerResponseCode responseCode) {
+        if (value.compareTo(limit) < 0) {
             reportInvalidArgument(responseCode);
         }
     }
 
-    public static void greaterThan(double value, double limit, IServerResponseCode responseCode) {
-        if (value <= limit) {
+    public static <T extends Number & Comparable<? super T>> void greaterThan(T value, T limit, IServerResponseCode responseCode) {
+        if (value.compareTo(limit) <= 0) {
             reportInvalidArgument(responseCode);
         }
     }
@@ -93,14 +94,14 @@ public class AssertUtil {
     }
 
 
-    public static void strIsEmpty(String value, IServerResponseCode responseCode) {
+    public static void strIsEmpty(CharSequence value, IServerResponseCode responseCode) {
         if (StrUtil.isNotEmpty(value)) {
             reportInvalidArgument(responseCode);
         }
     }
 
 
-    public static void strIsNotEmpty(String value, IServerResponseCode responseCode) {
+    public static void strIsNotEmpty(CharSequence value, IServerResponseCode responseCode) {
         if (StrUtil.isEmpty(value)) {
             reportInvalidArgument(responseCode);
         }

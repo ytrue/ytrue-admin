@@ -6,20 +6,19 @@ package com.ytrue.infra.serializer.ser;
  * @description BigNumberOrSpecifyFieldToStrTypeAdapter
  */
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
 import com.fasterxml.jackson.databind.ser.std.NumberSerializer;
 import com.ytrue.infra.serializer.enums.SafeIntegerEnum;
-import lombok.Builder;
 import lombok.Setter;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * 超出 JS 最大最小值 处理
@@ -145,26 +144,21 @@ public class BigNumberOrSpecifyFieldToStrSerializer extends NumberSerializer {
             return false;
         }
 
-        if (CollUtil.isNotEmpty(prefixMatchList)) {
-            for (String prefix : prefixMatchList) {
-                if (input.startsWith(prefix)) {
-                    return true;
-                }
-            }
-        }
+        // 前缀匹配
+        boolean isPrefixMatch = Optional.ofNullable(prefixMatchList)
+                .map(list -> list.stream().anyMatch(prefix -> prefix != null && input.startsWith(prefix)))
+                .orElse(false);
 
-        if (CollUtil.isNotEmpty(suffixMatchList)) {
-            for (String suffix : suffixMatchList) {
-                if (input.endsWith(suffix)) {
-                    return true;
-                }
-            }
-        }
+        // 后缀匹配
+        boolean isSuffixMatch = Optional.ofNullable(suffixMatchList)
+                .map(list -> list.stream().anyMatch(suffix -> suffix != null && input.endsWith(suffix)))
+                .orElse(false);
 
-        if (CollUtil.isNotEmpty(perfectMatchList)) {
-            return perfectMatchList.contains(input);
-        }
+        // 完全匹配
+        boolean isPerfectMatch = Optional.ofNullable(perfectMatchList)
+                .map(list -> list.contains(input))
+                .orElse(false);
 
-        return false;
+        return isPrefixMatch || isSuffixMatch || isPerfectMatch;
     }
 }

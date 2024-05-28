@@ -1,5 +1,6 @@
 package com.ytrue.infra.cache.aspect;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.ytrue.infra.cache.annotation.RedissonLock;
 import com.ytrue.infra.cache.enums.RedissonLockTypeEnum;
@@ -101,9 +102,9 @@ public class RedissonLockAspect {
                 }
                 if (res) {
                     return proceedingJoinPoint.proceed();
-                } else {
-                    throw new RedissonLockException(failMessage);
                 }
+
+                throw new RedissonLockException(failMessage);
             } finally {
                 if (res) {
                     rLock.unlock();
@@ -126,7 +127,7 @@ public class RedissonLockAspect {
         }
 
         // 如果没有，这里直接以为redisKeyName 作为key了
-        if (lockList.size() == 0) {
+        if (CollUtil.isEmpty(lockList)) {
             RLock lock = redissonClient.getLock(redisKeyName);
             lockList.add(lock);
         }

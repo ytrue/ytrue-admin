@@ -33,9 +33,15 @@ public interface FileWrapperAdapter {
      * @return
      */
     default FileWrapper updateFileWrapper(FileWrapper fileWrapper, String name, String contentType, Long size) {
-        if (name != null) fileWrapper.setName(name);
-        if (contentType != null) fileWrapper.setContentType(contentType);
-        if (size != null) fileWrapper.setSize(size);
+        if (name != null) {
+            fileWrapper.setName(name);
+        }
+        if (contentType != null) {
+            fileWrapper.setContentType(contentType);
+        }
+        if (size != null) {
+            fileWrapper.setSize(size);
+        }
         return fileWrapper;
     }
 }
