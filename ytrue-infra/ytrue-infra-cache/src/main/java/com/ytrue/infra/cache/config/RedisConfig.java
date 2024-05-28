@@ -27,7 +27,6 @@ public class RedisConfig {
     @Bean
     @ConditionalOnMissingBean(name = "redisTemplate")
     public RedisTemplate<String, Object> redisTemplate() {
-
         //使用fastjson序列化,使用这个获取的value是JSONObject
         //FastJsonRedisSerializer<Object> jsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
         // 获取这个，这是是处理了LocalDateTime

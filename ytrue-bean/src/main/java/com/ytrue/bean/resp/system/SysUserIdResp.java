@@ -1,7 +1,7 @@
 package com.ytrue.bean.resp.system;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.ytrue.infra.core.ser.LongCollToStrSerializer;
+import com.ytrue.infra.serializer.ser.NumberCollToStrSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -51,10 +51,10 @@ public class SysUserIdResp implements Serializable {
     private Boolean status;
 
     @Schema(description = "角色id集合")
-    @JsonSerialize(using = LongCollToStrSerializer.class)
+    @JsonSerialize(using = NumberCollToStrSerializer.class)
     private Set<Long> roleIds;
 
     @Schema(description = "岗位id集合")
-    @JsonSerialize(using = LongCollToStrSerializer.class)
+    @JsonSerialize(using = NumberCollToStrSerializer.class)
     private Set<Long> jobIds;
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.ytrue.infra.serializer.config.GsonConfig;
+//import com.ytrue.infra.serializer.config.GsonConfig;
 import com.ytrue.infra.serializer.config.JacksonConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +24,7 @@ public class TestSerializer {
     @Test
     public void test01() throws JsonProcessingException {
         ObjectMapper objectMapper = new JacksonConfig().objectMapper();
-        Gson gson = new GsonConfig().gson();
+        //Gson gson = new GsonConfig().gson();
 
         Cat cat = new Cat();
         cat.setName("tomcat");
@@ -62,7 +62,7 @@ public class TestSerializer {
 
        // System.out.println(objectMapper.writeValueAsString(cat));
 
-         System.out.println(gson.toJson(cat));
+        // System.out.println(gson.toJson(cat));
         //System.out.println(gson.fromJson(gson.toJson(cat), Cat.class));
     }
 

@@ -79,8 +79,7 @@ public interface SysMenuDao extends IBaseDao<SysMenu> {
                              LEFT JOIN sys_role ro ON ur.role_id = ro.id
                              LEFT JOIN sys_user u ON ur.user_id = u.id
                     WHERE u.id = #{userId}
-                      AND m.menu_type IN ('M'
-                        , 'C')
+                      AND m.menu_type IN ('M' , 'C')
                       AND m.STATUS = 1
                     ORDER BY m.pid,
                         m.menu_sort

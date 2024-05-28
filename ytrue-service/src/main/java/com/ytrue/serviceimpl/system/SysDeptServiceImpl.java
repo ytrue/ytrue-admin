@@ -84,11 +84,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
         updateSubCnt(sysDept.getPid());
     }
 
-    /**
-     * 更新部门
-     *
-     * @param requestParam
-     */
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateSysDept(SysDeptUpdateReq requestParam) {

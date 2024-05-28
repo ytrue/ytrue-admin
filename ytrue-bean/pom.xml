@@ -32,5 +32,10 @@
             <artifactId>ytrue-infra-core</artifactId>
             <version>${revision}</version>
         </dependency>
+        <dependency>
+            <groupId>com.ytrue</groupId>
+            <artifactId>ytrue-infra-serializer</artifactId>
+            <version>${revision}</version>
+        </dependency>
     </dependencies>
 </project>
