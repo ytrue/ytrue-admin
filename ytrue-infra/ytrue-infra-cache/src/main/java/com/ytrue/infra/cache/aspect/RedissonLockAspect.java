@@ -107,7 +107,12 @@ public class RedissonLockAspect {
                 throw new RedissonLockException(failMessage);
             } finally {
                 if (res) {
-                    rLock.unlock();
+                    // 有锁才删除
+                    if (rLock.isLocked()) {
+                        rLock.unlock();
+                    }else {
+                        log.warn("锁提前过期了，无需删除");
+                    }
                 }
             }
         }

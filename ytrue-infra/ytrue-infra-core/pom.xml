@@ -25,12 +25,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!--redis依赖-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-
         <!--验证相关的-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -51,6 +45,12 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.24.3</version>
         </dependency>
     </dependencies>
 </project>

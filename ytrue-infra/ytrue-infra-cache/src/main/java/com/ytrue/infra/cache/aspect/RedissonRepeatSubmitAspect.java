@@ -101,7 +101,12 @@ public class RedissonRepeatSubmitAspect {
         } finally {
             // 解锁
             if (!waitExpire) {
-                rLock.unlock();
+                // 有锁才删除
+                if (rLock.isLocked()) {
+                    rLock.unlock();
+                }else {
+                    log.warn("防重复提前过期了，无需删除");
+                }
             }
         }
     }

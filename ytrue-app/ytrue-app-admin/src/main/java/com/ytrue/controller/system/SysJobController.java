@@ -7,8 +7,8 @@ import com.ytrue.bean.req.system.SysJobUpdateReq;
 import com.ytrue.bean.resp.system.SysJobIdResp;
 import com.ytrue.bean.resp.system.SysJobListResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
-import com.ytrue.service.system.SysJobService;
 import com.ytrue.infra.log.annotation.OperateLog;
+import com.ytrue.service.system.SysJobService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +39,6 @@ public class SysJobController {
     public ServerResponseEntity<IPage<SysJobListResp>> listBySysJobPageQuery(SysJobPageQuery queryParam) {
         return ServerResponseEntity.success(sysJobService.listBySysJobPageQuery(queryParam));
     }
-
 
     @GetMapping("list")
     @Operation(summary = "列表")
