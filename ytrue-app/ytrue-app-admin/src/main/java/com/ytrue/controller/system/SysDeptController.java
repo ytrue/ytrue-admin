@@ -6,8 +6,8 @@ import com.ytrue.bean.req.system.SysDeptUpdateReq;
 import com.ytrue.bean.resp.system.SysDeptIdResp;
 import com.ytrue.bean.resp.system.SysDeptListResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
-import com.ytrue.service.system.SysDeptService;
 import com.ytrue.infra.log.annotation.OperateLog;
+import com.ytrue.service.system.SysDeptService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,6 @@ import java.util.List;
 public class SysDeptController {
 
     private final SysDeptService sysDeptService;
-
 
     @GetMapping("list")
     @Operation(summary = "列表")

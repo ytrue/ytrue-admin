@@ -23,7 +23,7 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
                 request,
                 response,
                 new AuthenticationFailureException(authException),
-                4000);
+                401);
     }
 
 

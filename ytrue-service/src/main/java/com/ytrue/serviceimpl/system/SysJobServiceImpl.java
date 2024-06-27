@@ -57,7 +57,6 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDao, SysJob> implem
         AssertUtil.isNull(job, ServerResponseCode.error("岗位已存在"));
 
         SysJob sysJob = BeanUtils.copyProperties(requestParam, SysJob::new);
-
         this.save(sysJob);
     }
 

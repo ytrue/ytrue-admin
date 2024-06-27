@@ -26,6 +26,6 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
                 request,
                 response,
                 new AccessDeniedFailureException(accessDeniedException),
-                4003);
+                403);
     }
 }

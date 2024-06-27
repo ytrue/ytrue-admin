@@ -23,6 +23,7 @@ public class LoginAuthenticationProvider extends DaoAuthenticationProvider {
     ) throws AuthenticationException {
 
         Object credentials = authentication.getCredentials();
+        // 这里如果凭证为空，或者未"" 这里直接是跳过
         if (Objects.isNull(credentials) || "".equals(credentials)) {
             return;
         }

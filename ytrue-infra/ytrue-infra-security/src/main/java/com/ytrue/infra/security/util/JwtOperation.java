@@ -23,7 +23,6 @@ import java.util.Objects;
  */
 @Component
 @Data
-@ConfigurationProperties("jwt.data")
 @Slf4j
 public class JwtOperation {
 
@@ -48,7 +47,7 @@ public class JwtOperation {
     private String jwtSeparator;
 
     /**
-     * token生效时间(默认是从当前开始生效)
+     * 发布时间
      * 默认：new Date(System.currentTimeMillis() + START_TIME)
      */
     private Long startTime;
@@ -66,6 +65,7 @@ public class JwtOperation {
         startTime = jwtProperties.getStartTime();
         tokenSecret = jwtProperties.getTokenSecret();
         jwtSeparator = jwtProperties.getJwtSeparator();
+
 
 
         //转成大写判断
@@ -152,7 +152,7 @@ public class JwtOperation {
         //判断token是否过期，判断token是否和userDetails中的username一致
         Claims claims = parseToken(token);
         String username = getValue(claims, token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        return username.equals(userDetails.getUsername()) && !isExpired(token);
     }
 
     /**
@@ -164,7 +164,7 @@ public class JwtOperation {
     public boolean validateToken(String token) {
         //claims 为null 意味着要门jwt被修改
         Claims claims = parseToken(token);
-        return claims != null && !isTokenExpired(token);
+        return claims != null && !isExpired(token);
     }
 
 
@@ -174,7 +174,7 @@ public class JwtOperation {
      * @param token
      * @return
      */
-    public boolean isTokenExpired(String token) {
+    public boolean isExpired(String token) {
         Date expiredDate = getExpiredDate(token);
         return expiredDate.before(new Date());
     }

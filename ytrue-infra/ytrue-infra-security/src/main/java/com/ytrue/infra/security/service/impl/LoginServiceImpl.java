@@ -41,8 +41,6 @@ public class LoginServiceImpl implements LoginService {
     public Map<String, String> login() {
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(null, null);
-
-
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         if (Objects.isNull(authenticate)) {
             throw new UsernameNotFoundException("用户名或密码错误");

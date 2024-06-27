@@ -63,11 +63,11 @@ spring:
     # 使用redis作为缓存
     type: redis
 
-  # spring boot admin 配置
-  boot:
-    admin:
-      client:
-        url: http://127.0.0.1:7001
+#  # spring boot admin 配置
+#  boot:
+#    admin:
+#      client:
+#        url: http://127.0.0.1:7001
 
 
 
@@ -170,17 +170,17 @@ knife4j:
     # basic密码
     password: ytrue
 
-# 暴露给监控的设置
-management:
-  endpoints:
-    web:
-      exposure:
-        #暴露部分端点
-        include: '*'
-  endpoint:
-    health:
-      #显示健康具体信息  默认不会显示详细信息
-      show-details: always
+## 暴露给监控的设置
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        #暴露部分端点
+#        include: '*'
+#  endpoint:
+#    health:
+#      #显示健康具体信息  默认不会显示详细信息
+#      show-details: always
 
 # 设置日志级别
 logging:

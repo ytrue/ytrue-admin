@@ -4,12 +4,12 @@ import com.ytrue.infra.core.base.IServerResponseCode;
 
 public enum ResponseCodeEnum implements IServerResponseCode {
     //状态码
-    SUCCESS("2000", "成功"),
+    SUCCESS("200", "成功"),
 
-    FAIL("5000", "服务器出了点小差"),
-    CUSTOM_FAIL_MESSAGE("5000", ""),
-    DATA_NOT_FOUND("5004", "数据不存在"),
-    ILLEGAL_OPERATION("5005", "非法操作");
+    FAIL("500", "服务器出了点小差"),
+    CUSTOM_FAIL_MESSAGE("500", ""),
+    DATA_NOT_FOUND("404", "数据不存在"),
+    ILLEGAL_OPERATION("501", "非法操作");
 
     /**
      * code错误码
