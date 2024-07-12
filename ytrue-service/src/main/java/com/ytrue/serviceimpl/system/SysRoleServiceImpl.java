@@ -113,7 +113,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void removeBatchBySysRoleIds(List<Long> ids) {
+    public void removeBySysRoleIds(List<Long> ids) {
         // 校验集合
         AssertUtil.collectionIsNotEmpty(ids, ResponseInfoEnum.ILLEGAL_OPERATION);
 

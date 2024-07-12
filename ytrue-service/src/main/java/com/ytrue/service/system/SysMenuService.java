@@ -37,7 +37,7 @@ public interface SysMenuService extends IBaseService<SysMenu> {
      *
      * @param ids
      */
-    void removeBatchBySysMenuIds(List<Long> ids);
+    void removeBySysMenuIds(List<Long> ids);
 
     /**
      * 获取菜单树形结构，根据用户id

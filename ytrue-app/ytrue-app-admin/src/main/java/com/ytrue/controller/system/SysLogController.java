@@ -40,7 +40,7 @@ public class SysLogController {
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:log:delete')")
-    public ServerResponseEntity<Void> removeBatchBySysLogIds(@RequestBody List<Long> ids) {
+    public ServerResponseEntity<Void> removeBySysLogIds(@RequestBody List<Long> ids) {
         sysLogService.removeBatchByIds(ids);
         return ServerResponseEntity.success();
     }

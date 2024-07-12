@@ -68,8 +68,8 @@ public class SysMenuController {
     @DeleteMapping
     @Operation(summary = "删除")
     @PreAuthorize("@pms.hasPermission('system:menu:delete')")
-    public ServerResponseEntity<Void> delete(@RequestBody List<Long> ids) {
-        sysMenuService.removeBatchBySysMenuIds(ids);
+    public ServerResponseEntity<Void> removeBySysMenuIds(@RequestBody List<Long> ids) {
+        sysMenuService.removeBySysMenuIds(ids);
         return ServerResponseEntity.success();
     }
 }

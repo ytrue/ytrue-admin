@@ -110,7 +110,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void removeBatchBySysDeptIds(List<Long> ids) {
+    public void removeBySysDeptIds(List<Long> ids) {
         // 校验集合
         AssertUtil.collectionIsNotEmpty(ids, ResponseInfoEnum.ILLEGAL_OPERATION);
 
