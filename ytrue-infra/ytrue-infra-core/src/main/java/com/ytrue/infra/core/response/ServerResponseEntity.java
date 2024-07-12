@@ -1,6 +1,6 @@
 package com.ytrue.infra.core.response;
 
-import com.ytrue.infra.core.base.IServerResponseCode;
+import com.ytrue.infra.core.base.IServerResponseInfo;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,22 +29,22 @@ public class ServerResponseEntity<T> implements Serializable {
 
 
     public boolean isSuccess() {
-        return Objects.equals(ResponseCodeEnum.SUCCESS.code(), this.code);
+        return Objects.equals(ResponseInfoEnum.SUCCESS.code(), this.code);
     }
 
 
     public static <T> ServerResponseEntity<T> success(T data) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setData(data);
-        serverResponseEntity.setCode(ResponseCodeEnum.SUCCESS.code());
-        serverResponseEntity.setMessage(ResponseCodeEnum.SUCCESS.message());
+        serverResponseEntity.setCode(ResponseInfoEnum.SUCCESS.code());
+        serverResponseEntity.setMessage(ResponseInfoEnum.SUCCESS.message());
         return serverResponseEntity;
     }
 
     public static ServerResponseEntity<Void> success() {
         ServerResponseEntity<Void> serverResponseEntity = new ServerResponseEntity<>();
-        serverResponseEntity.setCode(ResponseCodeEnum.SUCCESS.code());
-        serverResponseEntity.setMessage(ResponseCodeEnum.SUCCESS.message());
+        serverResponseEntity.setCode(ResponseInfoEnum.SUCCESS.code());
+        serverResponseEntity.setMessage(ResponseInfoEnum.SUCCESS.message());
         return serverResponseEntity;
     }
 
@@ -52,7 +52,7 @@ public class ServerResponseEntity<T> implements Serializable {
     public static ServerResponseEntity<Void> fail(String msg) {
         ServerResponseEntity<Void> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setMessage(msg);
-        serverResponseEntity.setCode(ResponseCodeEnum.CUSTOM_FAIL_MESSAGE.code());
+        serverResponseEntity.setCode(ResponseInfoEnum.CUSTOM_FAIL_MESSAGE.code());
         return serverResponseEntity;
     }
 
@@ -64,7 +64,7 @@ public class ServerResponseEntity<T> implements Serializable {
     }
 
 
-    public static ServerResponseEntity<Void> fail(IServerResponseCode responseCode) {
+    public static ServerResponseEntity<Void> fail(IServerResponseInfo responseCode) {
         ServerResponseEntity<Void> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setMessage(responseCode.message());
         serverResponseEntity.setCode(responseCode.code());

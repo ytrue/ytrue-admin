@@ -2,7 +2,7 @@ package com.ytrue.infra.core.excptions;
 
 
 import com.ytrue.infra.core.base.BaseCodeException;
-import com.ytrue.infra.core.base.IServerResponseCode;
+import com.ytrue.infra.core.base.IServerResponseInfo;
 
 import java.io.Serial;
 
@@ -26,7 +26,7 @@ public class BizException extends BaseCodeException {
     }
 
 
-    public BizException(IServerResponseCode responseCode) {
+    public BizException(IServerResponseInfo responseCode) {
         super(responseCode);
     }
 

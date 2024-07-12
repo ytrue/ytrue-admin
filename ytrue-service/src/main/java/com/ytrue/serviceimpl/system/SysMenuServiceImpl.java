@@ -15,8 +15,8 @@ import com.ytrue.bean.query.system.SysMenuListQuery;
 import com.ytrue.bean.req.system.SysMenuAddReq;
 import com.ytrue.bean.req.system.SysMenuUpdateReq;
 import com.ytrue.bean.resp.system.SysMenuIdResp;
-import com.ytrue.infra.core.response.ResponseCodeEnum;
-import com.ytrue.infra.core.response.ServerResponseCode;
+import com.ytrue.infra.core.response.ResponseInfoEnum;
+import com.ytrue.infra.core.response.ServerResponseInfo;
 import com.ytrue.infra.core.util.AssertUtil;
 import com.ytrue.infra.core.util.BeanUtils;
 import com.ytrue.infra.db.base.BaseServiceImpl;
@@ -67,10 +67,10 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateMenu(SysMenuUpdateReq requestParam) {
-        AssertUtil.numberNotEquals(requestParam.getId(), requestParam.getPid(), ServerResponseCode.error("父级不能是自己"));
+        AssertUtil.numberNotEquals(requestParam.getId(), requestParam.getPid(), ServerResponseInfo.error("父级不能是自己"));
 
         SysMenu sysMenu = this.getById(requestParam.getId());
-        AssertUtil.notNull(sysMenu, ResponseCodeEnum.ILLEGAL_OPERATION);
+        AssertUtil.notNull(sysMenu, ResponseInfoEnum.ILLEGAL_OPERATION);
 
         // 旧的菜单
         Long oldPid = sysMenu.getPid();
@@ -91,11 +91,11 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
         for (Long id : ids) {
             // 校验是否存在子级
             SysMenu childMenu = lambdaQuery().eq(SysMenu::getPid, id).one();
-            AssertUtil.isNull(childMenu, ServerResponseCode.error("存在子级，请解除后再试"));
+            AssertUtil.isNull(childMenu, ServerResponseInfo.error("存在子级，请解除后再试"));
 
             // 校验角色绑定或者去解绑角色的关系
             SysRoleMenu sysRoleMenu = sysRoleMenuDao.selectOne(Wrappers.<SysRoleMenu>lambdaQuery().eq(SysRoleMenu::getMenuId, id));
-            AssertUtil.isNull(sysRoleMenu, ServerResponseCode.error("存在角色关联，请解除后再试"));
+            AssertUtil.isNull(sysRoleMenu, ServerResponseInfo.error("存在角色关联，请解除后再试"));
 
             SysMenu menu = getById(id);
             removeById(id);
@@ -171,7 +171,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
     @Override
     public List<SysMenu> listBySysUserId(Long userId) {
         SysUser sysUser = sysUserDao.selectById(userId);
-        AssertUtil.notNull(sysUser, ResponseCodeEnum.DATA_NOT_FOUND);
+        AssertUtil.notNull(sysUser, ResponseInfoEnum.DATA_NOT_FOUND);
 
         // 平台账号,但是是超级管理员
         if (sysUser.getAdmin()) {
@@ -189,7 +189,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
     @Override
     public SysMenuIdResp getBySysMenuId(Long id) {
         SysMenu data = this.getById(id);
-        AssertUtil.notNull(data, ResponseCodeEnum.DATA_NOT_FOUND);
+        AssertUtil.notNull(data, ResponseInfoEnum.DATA_NOT_FOUND);
         return BeanUtils.copyProperties(data, SysMenuIdResp::new);
     }
 

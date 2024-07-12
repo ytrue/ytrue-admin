@@ -11,8 +11,8 @@ import com.ytrue.bean.req.system.SysDeptAddReq;
 import com.ytrue.bean.req.system.SysDeptUpdateReq;
 import com.ytrue.bean.resp.system.SysDeptIdResp;
 import com.ytrue.bean.resp.system.SysDeptListResp;
-import com.ytrue.infra.core.response.ResponseCodeEnum;
-import com.ytrue.infra.core.response.ServerResponseCode;
+import com.ytrue.infra.core.response.ResponseInfoEnum;
+import com.ytrue.infra.core.response.ServerResponseInfo;
 import com.ytrue.infra.core.util.AssertUtil;
 import com.ytrue.infra.core.util.BeanUtils;
 import com.ytrue.infra.db.base.BaseServiceImpl;
@@ -51,7 +51,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
     @Override
     public SysDeptIdResp getBySysDeptId(Long id) {
         SysDept sysDept = getById(id);
-        AssertUtil.notNull(sysDept, ResponseCodeEnum.DATA_NOT_FOUND);
+        AssertUtil.notNull(sysDept, ResponseInfoEnum.DATA_NOT_FOUND);
 
         return BeanUtils.copyProperties(sysDept, SysDeptIdResp::new);
     }
@@ -90,10 +90,10 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
     public void updateSysDept(SysDeptUpdateReq requestParam) {
         // 获取id的部门
         SysDept sysDept = getById(requestParam.getId());
-        AssertUtil.notNull(sysDept, ResponseCodeEnum.ILLEGAL_OPERATION);
+        AssertUtil.notNull(sysDept, ResponseInfoEnum.ILLEGAL_OPERATION);
 
         // 校验父级不能是自己
-        AssertUtil.numberNotEquals(requestParam.getId(), requestParam.getPid(), ServerResponseCode.error("父级不能是自己"));
+        AssertUtil.numberNotEquals(requestParam.getId(), requestParam.getPid(), ServerResponseInfo.error("父级不能是自己"));
 
         // 获取id
         Long oldPid = sysDept.getPid();
@@ -112,20 +112,20 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
     @Transactional(rollbackFor = Exception.class)
     public void removeBatchBySysDeptIds(List<Long> ids) {
         // 校验集合
-        AssertUtil.collectionIsNotEmpty(ids, ResponseCodeEnum.ILLEGAL_OPERATION);
+        AssertUtil.collectionIsNotEmpty(ids, ResponseInfoEnum.ILLEGAL_OPERATION);
 
         // 循环校验
         for (Long id : ids) {
             SysDept childDept = lambdaQuery().eq(SysDept::getPid, id).one();
-            AssertUtil.isNull(childDept, ServerResponseCode.error("存在子级，请解除后再试"));
+            AssertUtil.isNull(childDept, ServerResponseInfo.error("存在子级，请解除后再试"));
 
             // 校验用户绑定
             SysUser sysUser = sysUserDao.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getDeptId, id));
-            AssertUtil.isNull(sysUser, ServerResponseCode.error("存在用户关联，请解除后再试"));
+            AssertUtil.isNull(sysUser, ServerResponseInfo.error("存在用户关联，请解除后再试"));
 
             // 校验角色绑定
             SysRoleDept sysRoleDept = sysRoleDeptDao.selectOne(Wrappers.<SysRoleDept>lambdaQuery().eq(SysRoleDept::getDeptId, id));
-            AssertUtil.isNull(sysRoleDept, ServerResponseCode.error("存在角色关联，请解除后再试"));
+            AssertUtil.isNull(sysRoleDept, ServerResponseInfo.error("存在角色关联，请解除后再试"));
         }
 
         // 操作删除

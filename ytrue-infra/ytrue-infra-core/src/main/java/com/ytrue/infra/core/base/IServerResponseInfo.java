@@ -1,6 +1,6 @@
 package com.ytrue.infra.core.base;
 
-public interface IServerResponseCode {
+public interface IServerResponseInfo {
 
     /**
      * 获取code

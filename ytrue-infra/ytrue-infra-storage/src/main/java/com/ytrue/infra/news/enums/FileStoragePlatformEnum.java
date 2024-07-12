@@ -1,26 +1,26 @@
-package com.ytrue.infra.storage.enums;
+package com.ytrue.infra.news.enums;
 
 /**
  * @author ytrue
  * @date 2023/4251 15:40
  * @description FileStoragePlatformEnum
  */
-public enum StorageType {
+public enum FileStoragePlatformEnum {
 
     /**
      * 阿里云
      */
-    oss,
+    OSS,
     /**
      * 本地
      */
-    local,
+    LOCAL,
     /**
      * 七牛云
      */
-    kodo,
+    KODO,
     /**
      * 腾讯云
      */
-    cos;
+    COS;
 }

@@ -22,7 +22,6 @@ public class SysJobListResp implements Serializable {
     @Schema(description = "岗位排序")
     private Long jobSort;
 
-
     @Schema(description = "是否启用")
     private Boolean status;
 }

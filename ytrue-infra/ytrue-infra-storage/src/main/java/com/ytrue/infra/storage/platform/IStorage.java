@@ -33,6 +33,14 @@ public interface IStorage {
     boolean exists(FileInfo fileInfo);
 
     /**
+     * 删除文件
+     *
+     * @param fileInfo
+     * @return
+     */
+    boolean delete(FileInfo fileInfo);
+
+    /**
      * 下载
      *
      * @param fileInfo
@@ -40,11 +48,5 @@ public interface IStorage {
      */
     void download(FileInfo fileInfo, Consumer<InputStream> consumer);
 
-    /**
-     * 删除文件
-     *
-     * @param fileInfo
-     * @return
-     */
-    boolean delete(FileInfo fileInfo);
+
 }

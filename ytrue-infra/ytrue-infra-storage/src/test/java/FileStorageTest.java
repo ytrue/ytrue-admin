@@ -1,6 +1,10 @@
+import com.ytrue.infra.news.FileInfo;
+import com.ytrue.infra.news.UploadTreatment;
 import com.ytrue.infra.news.detect.TikaContentTypeDetect;
+import com.ytrue.infra.news.platform.LocalFileStorage;
 import com.ytrue.infra.news.wrapper.FileWrapper;
-import com.ytrue.infra.news.wrapper.adapter.*;
+import com.ytrue.infra.news.wrapper.adapter.FileWrapperAdapter;
+import com.ytrue.infra.news.wrapper.adapter.LocalFileWrapperAdapter;
 import org.apache.tika.mime.MimeType;
 import org.apache.tika.mime.MimeTypeException;
 import org.apache.tika.mime.MimeTypes;
@@ -16,16 +20,43 @@ public class FileStorageTest {
 
 
     @Test
+    public void test02() throws Exception {
+
+
+        File file = new File("C:\\Users\\Administrator\\Desktop\\版本更新\\04.杭州银行分润账户\\文档资料\\开放银行商户接入签名验签说明手册.docx");
+
+        FileWrapperAdapter fileWrapperAdapter = new LocalFileWrapperAdapter(new TikaContentTypeDetect());
+        FileWrapper fileWrapper1 = fileWrapperAdapter.getFileWrapper(file, null, null, null);
+
+
+        LocalFileStorage localFileStorage = new LocalFileStorage();
+
+
+        UploadTreatment uploadTreatment = new UploadTreatment();
+        uploadTreatment.setFileWrapper(fileWrapper1);
+
+        FileInfo fileInfo = localFileStorage.save(uploadTreatment);
+
+
+        System.out.println(localFileStorage.exists(fileInfo));
+        System.out.println(localFileStorage.delete(fileInfo));
+        System.out.println(localFileStorage.exists(fileInfo));
+
+
+    }
+
+
+    @Test
     public void test01() throws IOException, MimeTypeException {
 
-        File file1 = new File("C:\\Users\\Administrator\\Desktop\\other\\test.png");
+        // File file1 = new File("C:\\Users\\Administrator\\Desktop\\other\\test.png");
         File file2 = new File("C:\\Users\\Administrator\\Desktop\\版本更新\\04.杭州银行分润账户\\文档资料\\开放银行商户接入签名验签说明手册.docx");
 
 
         // localFile
-        FileWrapperAdapter fileWrapperAdapter = new LocalFileWrapperAdapter(new TikaContentTypeDetect());
-        FileWrapper fileWrapper1 = fileWrapperAdapter.getFileWrapper(file1, null, null, null);
-        FileWrapper fileWrapper2 = fileWrapperAdapter.getFileWrapper(file2, null, null, null);
+//        FileWrapperAdapter fileWrapperAdapter = new LocalFileWrapperAdapter(new TikaContentTypeDetect());
+        //  FileWrapper fileWrapper1 = fileWrapperAdapter.getFileWrapper(file1, null, null, null);
+//        FileWrapper fileWrapper2 = fileWrapperAdapter.getFileWrapper(file2, null, null, null);
 
 //        // byteFile
 //        FileWrapperAdapter byteFileWrapperAdapter = new ByteFileWrapperAdapter(new TikaContentTypeDetect());
@@ -44,13 +75,13 @@ public class FileStorageTest {
 //        FileWrapper fileWrapper8 = uriFileWrapperAdapter.getFileWrapper(imageUrlPath, null, null, null);
 
 
-
-       // getType(fileWrapper1.getContentType());
-        System.out.println(fileWrapper2.getContentType());
-        getType(fileWrapper2.getContentType());
+        // getType(fileWrapper1.getContentType());
+//        System.out.println(fileWrapper2.getContentType());
+//        getType(fileWrapper2.getContentType());
     }
 
 
+    // 获取文件类型 后缀
     private void getType(String mimeType) throws MimeTypeException {
         // 获取MIME类型对象
         MimeTypes allTypes = MimeTypes.getDefaultMimeTypes();

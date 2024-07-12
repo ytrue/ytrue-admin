@@ -1,7 +1,7 @@
 package com.ytrue.infra.core.excptions.handler;
 
 import com.ytrue.infra.core.base.BaseCodeException;
-import com.ytrue.infra.core.response.ResponseCodeEnum;
+import com.ytrue.infra.core.response.ResponseInfoEnum;
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.infra.core.util.ThrowableUtil;
 import jakarta.validation.ConstraintViolation;
@@ -54,7 +54,7 @@ public class SpecifyExceptionHandler {
     public ServerResponseEntity<Void> exceptionHandler(final Exception error) {
 
         String errorMessage = error.getMessage();
-        String errorCode = ResponseCodeEnum.FAIL.code();
+        String errorCode = ResponseInfoEnum.FAIL.code();
 
         if (error instanceof BaseCodeException baseCodeException) {
             errorCode = baseCodeException.getCode();

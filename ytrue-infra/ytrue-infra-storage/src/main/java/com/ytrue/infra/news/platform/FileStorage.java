@@ -1,20 +1,19 @@
 package com.ytrue.infra.news.platform;
 
-import com.ytrue.infra.storage.model.FileInfo;
-import com.ytrue.infra.storage.model.UploadInfo;
+import com.ytrue.infra.news.FileInfo;
+import com.ytrue.infra.news.UploadTreatment;
 
-import java.io.InputStream;
-import java.util.function.Consumer;
 
 public interface FileStorage {
 
     /**
      * 上传文件
      *
-     * @param uploadInfo
+     * @param per
      * @return
+     * @throws Exception
      */
-    FileInfo save(UploadInfo uploadInfo);
+    FileInfo save(UploadTreatment per) throws Exception;
 
     /**
      * 判断文件是否存在
@@ -25,18 +24,11 @@ public interface FileStorage {
     boolean exists(FileInfo fileInfo);
 
     /**
-     * 下载
-     *
-     * @param fileInfo
-     * @param consumer
-     */
-    void download(FileInfo fileInfo, Consumer<InputStream> consumer);
-
-    /**
      * 删除文件
      *
      * @param fileInfo
      * @return
      */
     boolean delete(FileInfo fileInfo);
+
 }

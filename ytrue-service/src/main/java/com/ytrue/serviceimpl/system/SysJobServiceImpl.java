@@ -10,8 +10,8 @@ import com.ytrue.bean.req.system.SysJobAddReq;
 import com.ytrue.bean.req.system.SysJobUpdateReq;
 import com.ytrue.bean.resp.system.SysJobIdResp;
 import com.ytrue.bean.resp.system.SysJobListResp;
-import com.ytrue.infra.core.response.ResponseCodeEnum;
-import com.ytrue.infra.core.response.ServerResponseCode;
+import com.ytrue.infra.core.response.ResponseInfoEnum;
+import com.ytrue.infra.core.response.ServerResponseInfo;
 import com.ytrue.infra.core.util.AssertUtil;
 import com.ytrue.infra.core.util.BeanUtils;
 import com.ytrue.infra.db.base.BaseServiceImpl;
@@ -54,7 +54,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDao, SysJob> implem
     public void addSysJob(SysJobAddReq requestParam) {
 
         SysJob job = this.lambdaQuery().eq(SysJob::getJobName, requestParam.getJobName()).one();
-        AssertUtil.isNull(job, ServerResponseCode.error("岗位已存在"));
+        AssertUtil.isNull(job, ServerResponseInfo.error("岗位已存在"));
 
         SysJob sysJob = BeanUtils.copyProperties(requestParam, SysJob::new);
         this.save(sysJob);
@@ -63,10 +63,12 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDao, SysJob> implem
     @Override
     public void updateSysJob(SysJobUpdateReq requestParam) {
         SysJob data = this.getById(requestParam.getId());
-        AssertUtil.notNull(data, ResponseCodeEnum.ILLEGAL_OPERATION);
+        AssertUtil.notNull(data, ResponseInfoEnum.ILLEGAL_OPERATION);
 
-        SysJob job = this.lambdaQuery().eq(SysJob::getJobName, requestParam.getJobName()).ne(SysJob::getId, requestParam.getId()).one();
-        AssertUtil.isNull(job, ServerResponseCode.error("岗位已存在"));
+        SysJob job = this.lambdaQuery()
+                .eq(SysJob::getJobName, requestParam.getJobName())
+                .ne(SysJob::getId, requestParam.getId()).one();
+        AssertUtil.isNull(job, ServerResponseInfo.error("岗位已存在"));
 
         BeanUtils.copyProperties(requestParam, job);
 
@@ -75,13 +77,13 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDao, SysJob> implem
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void removeBatchBySysJobIds(List<Long> ids) {
+    public void removeBySysJobIds(List<Long> ids) {
         // 校验集合
-        AssertUtil.collectionIsNotEmpty(ids, ResponseCodeEnum.ILLEGAL_OPERATION);
+        AssertUtil.collectionIsNotEmpty(ids, ResponseInfoEnum.ILLEGAL_OPERATION);
 
         // 只要存在一个 就是无法删除的
         SysUserJob sysUserJob = sysUserJobDao.selectOne(Wrappers.<SysUserJob>lambdaQuery().in(SysUserJob::getJobId, ids));
-        AssertUtil.isNull(sysUserJob, ServerResponseCode.error("存在用户关联，请解除后再试"));
+        AssertUtil.isNull(sysUserJob, ServerResponseInfo.error("存在用户关联，请解除后再试"));
 
         // 删除
         this.removeBatchByIds(ids);
@@ -90,7 +92,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDao, SysJob> implem
     @Override
     public SysJobIdResp getBySysJobId(Long id) {
         SysJob data = this.getById(id);
-        AssertUtil.notNull(data, ResponseCodeEnum.DATA_NOT_FOUND);
+        AssertUtil.notNull(data, ResponseInfoEnum.DATA_NOT_FOUND);
 
         return BeanUtils.copyProperties(data, SysJobIdResp::new);
     }

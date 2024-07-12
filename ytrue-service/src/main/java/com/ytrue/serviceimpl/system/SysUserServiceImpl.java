@@ -13,8 +13,8 @@ import com.ytrue.bean.req.system.SysUserUpdateReq;
 import com.ytrue.bean.resp.system.SysUserIdResp;
 import com.ytrue.bean.resp.system.SysUserListResp;
 import com.ytrue.infra.core.constant.StrPool;
-import com.ytrue.infra.core.response.ResponseCodeEnum;
-import com.ytrue.infra.core.response.ServerResponseCode;
+import com.ytrue.infra.core.response.ResponseInfoEnum;
+import com.ytrue.infra.core.response.ServerResponseInfo;
 import com.ytrue.infra.core.util.AssertUtil;
 import com.ytrue.infra.core.util.BeanUtils;
 import com.ytrue.infra.db.base.BaseServiceImpl;
@@ -73,7 +73,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
     @Override
     public SysUserIdResp getBySysUserId(Long id) {
         SysUser user = getById(id);
-        AssertUtil.notNull(user, ResponseCodeEnum.DATA_NOT_FOUND);
+        AssertUtil.notNull(user, ResponseInfoEnum.DATA_NOT_FOUND);
         // 获取对应的岗位
         Set<Long> jobIds = sysUserJobDao.selectList(Wrappers.<SysUserJob>lambdaQuery().eq(SysUserJob::getUserId, id)).stream().map(SysUserJob::getJobId).collect(Collectors.toSet());
         // 获取对应的角色
@@ -92,7 +92,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
         sysUser.setPassword(passwordEncoder.encode(StrPool.DEFAULT_PASSWORD));
 
         // 校验账号是否存在
-        AssertUtil.isNull(lambdaQuery().eq(SysUser::getUsername, requestParam.getUsername()).one(), ServerResponseCode.error("账号已存在"));
+        AssertUtil.isNull(lambdaQuery().eq(SysUser::getUsername, requestParam.getUsername()).one(), ServerResponseInfo.error("账号已存在"));
         // 保存用户
         save(sysUser);
         // 保存用户与部门,角色的关系
@@ -104,7 +104,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
     @Override
     public void updateSysUser(SysUserUpdateReq requestParam) {
         SysUser sysUser = this.getById(requestParam.getId());
-        AssertUtil.notNull(sysUser, ResponseCodeEnum.ILLEGAL_OPERATION);
+        AssertUtil.notNull(sysUser, ResponseInfoEnum.ILLEGAL_OPERATION);
 
         BeanUtils.copyProperties(requestParam, sysUser);
 
@@ -132,8 +132,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
 
         SysUser sysUser = this.getById(Long.valueOf(userId));
 
-        AssertUtil.isTrue(passwordEncoder.matches(requestParam.getOldPassword(), sysUser.getPassword()), ServerResponseCode.error("旧密码错误"));
-        AssertUtil.objectNotEquals(requestParam.getOldPassword(), requestParam.getNewPassword(), ServerResponseCode.error("新密码不能与旧密码相同"));
+        AssertUtil.isTrue(passwordEncoder.matches(requestParam.getOldPassword(), sysUser.getPassword()), ServerResponseInfo.error("旧密码错误"));
+        AssertUtil.objectNotEquals(requestParam.getOldPassword(), requestParam.getNewPassword(), ServerResponseInfo.error("新密码不能与旧密码相同"));
 
         sysUser.setPassword(passwordEncoder.encode(requestParam.getNewPassword()));
         this.updateById(sysUser);

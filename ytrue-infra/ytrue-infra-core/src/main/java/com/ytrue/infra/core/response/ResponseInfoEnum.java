@@ -1,8 +1,8 @@
 package com.ytrue.infra.core.response;
 
-import com.ytrue.infra.core.base.IServerResponseCode;
+import com.ytrue.infra.core.base.IServerResponseInfo;
 
-public enum ResponseCodeEnum implements IServerResponseCode {
+public enum ResponseInfoEnum implements IServerResponseInfo {
     //状态码
     SUCCESS("200", "成功"),
 
@@ -21,7 +21,7 @@ public enum ResponseCodeEnum implements IServerResponseCode {
      */
     private final String message;
 
-    ResponseCodeEnum(String code, String message) {
+    ResponseInfoEnum(String code, String message) {
         this.code = code;
         this.message = message;
     }

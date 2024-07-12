@@ -15,8 +15,8 @@ import com.ytrue.bean.req.system.SysRoleUpdateReq;
 import com.ytrue.bean.resp.system.SysRoleIdResp;
 import com.ytrue.bean.resp.system.SysRoleListResp;
 import com.ytrue.dao.system.*;
-import com.ytrue.infra.core.response.ResponseCodeEnum;
-import com.ytrue.infra.core.response.ServerResponseCode;
+import com.ytrue.infra.core.response.ResponseInfoEnum;
+import com.ytrue.infra.core.response.ServerResponseInfo;
 import com.ytrue.infra.core.util.AssertUtil;
 import com.ytrue.infra.core.util.BeanUtils;
 import com.ytrue.infra.db.base.BaseServiceImpl;
@@ -72,7 +72,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
     public SysRoleIdResp getBySysRoleId(Long id) {
         // 获取角色
         SysRole role = getById(id);
-        AssertUtil.notNull(role, ResponseCodeEnum.DATA_NOT_FOUND);
+        AssertUtil.notNull(role, ResponseInfoEnum.DATA_NOT_FOUND);
         // 获取对应的菜单
         Set<Long> menuIds = sysMenuDao.selectMenuIdsBySysRoleId(id, role.getMenuCheckStrictly());
         // 获取对应的部门
@@ -99,7 +99,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
     @Override
     public void updateSysRole(SysRoleUpdateReq requestParam) {
         SysRole sysRole = this.getById(requestParam.getId());
-        AssertUtil.notNull(sysRole, ResponseCodeEnum.ILLEGAL_OPERATION);
+        AssertUtil.notNull(sysRole, ResponseInfoEnum.ILLEGAL_OPERATION);
 
         // 转换下
         SysRole role = BeanUtils.copyProperties(requestParam, SysRole::new);
@@ -115,11 +115,11 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
     @Override
     public void removeBatchBySysRoleIds(List<Long> ids) {
         // 校验集合
-        AssertUtil.collectionIsNotEmpty(ids, ResponseCodeEnum.ILLEGAL_OPERATION);
+        AssertUtil.collectionIsNotEmpty(ids, ResponseInfoEnum.ILLEGAL_OPERATION);
 
         // 只要存在一个 就是无法删除的
         SysUserRole sysUserRole = sysUserRoleDao.selectOne(Wrappers.<SysUserRole>lambdaQuery().in(SysUserRole::getRoleId, ids));
-        AssertUtil.isNull(sysUserRole, ServerResponseCode.error("存在用户关联，请解除后再试"));
+        AssertUtil.isNull(sysUserRole, ServerResponseInfo.error("存在用户关联，请解除后再试"));
 
         // 删除角色
         removeBatchByIds(ids);

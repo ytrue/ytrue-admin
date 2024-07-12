@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.bean.dataobject.system.SysUser;
 import com.ytrue.infra.cache.constant.CacheKey;
 import com.ytrue.infra.core.excptions.LoginFailureException;
-import com.ytrue.infra.core.response.ServerResponseCode;
+import com.ytrue.infra.core.response.ServerResponseInfo;
 import com.ytrue.infra.core.util.AssertUtil;
 import com.ytrue.service.system.SysPermissionService;
 import com.ytrue.service.system.SysUserService;
@@ -69,9 +69,9 @@ public class UsernamePasswordAuthenticator extends AbstractPreparableIntegration
         );
 
         // 校验用户名是否存在
-        AssertUtil.notNull(sysUser, ServerResponseCode.error("账号不存在"));
+        AssertUtil.notNull(sysUser, ServerResponseInfo.error("账号不存在"));
         // 校验密码
-        AssertUtil.isTrue(passwordEncoder.matches(password, sysUser.getPassword()), ServerResponseCode.error("账号或者密码不正确"));
+        AssertUtil.isTrue(passwordEncoder.matches(password, sysUser.getPassword()), ServerResponseInfo.error("账号或者密码不正确"));
 
         User user = new User();
         user.setUserId(String.valueOf(sysUser.getId()));

@@ -1,6 +1,6 @@
 package com.ytrue.infra.core.base;
 
-import com.ytrue.infra.core.response.ResponseCodeEnum;
+import com.ytrue.infra.core.response.ResponseInfoEnum;
 import lombok.Getter;
 
 import java.io.Serial;
@@ -13,7 +13,7 @@ public abstract class BaseCodeException extends RuntimeException {
     /**
      * 状态码
      */
-    private String code = ResponseCodeEnum.FAIL.code();
+    private String code = ResponseInfoEnum.FAIL.code();
 
     public BaseCodeException() {
     }
@@ -31,7 +31,7 @@ public abstract class BaseCodeException extends RuntimeException {
         super(message, cause);
     }
 
-    public BaseCodeException(IServerResponseCode responseCode) {
+    public BaseCodeException(IServerResponseInfo responseCode) {
         super(responseCode.message());
         this.code = responseCode.code();
     }

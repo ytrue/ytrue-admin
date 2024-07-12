@@ -3,7 +3,7 @@ package com.ytrue.infra.storage.exception;
 /**
  * @author ytrue
  * @date 2023/4251 15:40
- * @description StorageRuntimeException
+ * @description FileStorageException
  */
 public class StorageRuntimeException extends RuntimeException {
     public StorageRuntimeException() {

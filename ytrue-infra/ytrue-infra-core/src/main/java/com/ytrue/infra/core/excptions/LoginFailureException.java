@@ -2,7 +2,7 @@ package com.ytrue.infra.core.excptions;
 
 
 import com.ytrue.infra.core.base.BaseCodeException;
-import com.ytrue.infra.core.base.IServerResponseCode;
+import com.ytrue.infra.core.base.IServerResponseInfo;
 
 import java.io.Serial;
 
@@ -31,7 +31,7 @@ public class LoginFailureException extends BaseCodeException {
         super(message, cause);
     }
 
-    public LoginFailureException(IServerResponseCode responseCode) {
+    public LoginFailureException(IServerResponseInfo responseCode) {
         super(responseCode);
     }
 }
