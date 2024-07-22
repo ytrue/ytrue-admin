@@ -2,7 +2,9 @@ package com.ytrue.infra.cache.aspect;
 
 import cn.hutool.core.util.StrUtil;
 import com.ytrue.infra.cache.annotation.RedissonRepeatSubmit;
-import com.ytrue.infra.cache.excptions.RedissonRepeatSubmitException;
+import com.ytrue.infra.cache.excptions.RedissonRepeatSubmitFailureException;
+import com.ytrue.infra.cache.strategy.RedissonRateLimiterFailureStrategy;
+import com.ytrue.infra.cache.strategy.RedissonRepeatFailureStrategy;
 import com.ytrue.infra.cache.util.SpelParserUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.beans.BeanUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
@@ -67,10 +70,11 @@ public class RedissonRepeatSubmitAspect {
         });
 
         long expireTime = repeatSubmit.expireTime();
-        String failMessage = repeatSubmit.failMessage();
         TimeUnit timeUnit = repeatSubmit.timeUnit();
         boolean waitExpire = repeatSubmit.waitExpire();
         boolean validateForm = repeatSubmit.validateForm();
+        // 获取策略
+        RedissonRepeatFailureStrategy failureStrategy = BeanUtils.getResolvableConstructor(repeatSubmit.failureStrategy()).newInstance();
 
 
         if (validateForm) {
@@ -93,18 +97,19 @@ public class RedissonRepeatSubmitAspect {
 
         RLock rLock = redissonClient.getLock(changeAfterRedisKeyName.toString());
         try {
-            if (rLock.tryLock(0, expireTime, timeUnit)) {
-                return proceedingJoinPoint.proceed();
-            } else {
-                throw new RedissonRepeatSubmitException(failMessage);
+            if (!rLock.tryLock(0, expireTime, timeUnit)) {
+                // 按照失败策略处理
+                failureStrategy.onFailure(repeatSubmit, method, args);
+                // 下面还是继续执行内容，是不是放下面执行是由failureStrategy处理的，你可以直接抛出异常不往下面处理
             }
+            return proceedingJoinPoint.proceed();
         } finally {
             // 解锁
             if (!waitExpire) {
                 // 有锁才删除
                 if (rLock.isLocked()) {
                     rLock.unlock();
-                }else {
+                } else {
                     log.warn("防重复提前过期了，无需删除");
                 }
             }

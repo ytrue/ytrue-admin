@@ -1,5 +1,8 @@
 package com.ytrue.infra.cache.annotation;
 
+import com.ytrue.infra.cache.strategy.DefaultRedissonRepeatSubmitFailureStrategy;
+import com.ytrue.infra.cache.strategy.RedissonRepeatFailureStrategy;
+
 import java.lang.annotation.*;
 import java.util.concurrent.TimeUnit;
 
@@ -42,12 +45,6 @@ public @interface RedissonRepeatSubmit {
      */
     boolean validateForm() default true;
 
-    /**
-     * 异常message信息
-     *
-     * @return
-     */
-    String failMessage() default "频繁提交";
 
     /**
      * 如果keys有多个, 使用:拼接  value:key1:key2
@@ -55,4 +52,9 @@ public @interface RedissonRepeatSubmit {
      * @return
      */
     String[] keys();
+
+    /**
+     * 失败策略
+     */
+    Class<? extends RedissonRepeatFailureStrategy> failureStrategy() default DefaultRedissonRepeatSubmitFailureStrategy.class;
 }

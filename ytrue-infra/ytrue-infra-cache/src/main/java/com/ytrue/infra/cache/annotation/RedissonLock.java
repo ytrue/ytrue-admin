@@ -1,6 +1,8 @@
 package com.ytrue.infra.cache.annotation;
 
 import com.ytrue.infra.cache.enums.RedissonLockTypeEnum;
+import com.ytrue.infra.cache.strategy.DefaultRedissonLockFailureStrategy;
+import com.ytrue.infra.cache.strategy.RedissonLockFailureStrategy;
 
 import java.lang.annotation.*;
 import java.util.concurrent.TimeUnit;
@@ -52,10 +54,9 @@ public @interface RedissonLock {
      */
     long leaseTime() default 60L;
 
+
     /**
-     * 异常message信息
-     *
-     * @return
+     * 失败策略
      */
-    String failMessage() default "获锁失败";
+    Class<? extends RedissonLockFailureStrategy> failureStrategy() default DefaultRedissonLockFailureStrategy.class;
 }

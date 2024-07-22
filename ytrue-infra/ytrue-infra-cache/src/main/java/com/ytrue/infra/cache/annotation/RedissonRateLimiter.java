@@ -1,5 +1,9 @@
 package com.ytrue.infra.cache.annotation;
 
+import com.ytrue.infra.cache.strategy.DefaultRedissonLockFailureStrategy;
+import com.ytrue.infra.cache.strategy.DefaultRedissonRateLimiterFailureStrategy;
+import com.ytrue.infra.cache.strategy.RedissonLockFailureStrategy;
+import com.ytrue.infra.cache.strategy.RedissonRateLimiterFailureStrategy;
 import org.redisson.api.RateIntervalUnit;
 
 import java.lang.annotation.*;
@@ -42,10 +46,11 @@ public @interface RedissonRateLimiter {
      */
     String[] keys() default {};
 
+
     /**
-     * 异常message信息
-     *
-     * @return
+     * 失败策略
      */
-    String failMessage() default "访问频繁";
+    Class<? extends RedissonRateLimiterFailureStrategy> failureStrategy() default DefaultRedissonRateLimiterFailureStrategy.class;
+
+
 }

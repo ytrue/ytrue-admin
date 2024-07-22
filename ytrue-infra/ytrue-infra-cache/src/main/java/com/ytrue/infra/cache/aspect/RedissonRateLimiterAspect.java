@@ -2,7 +2,9 @@ package com.ytrue.infra.cache.aspect;
 
 import cn.hutool.core.util.StrUtil;
 import com.ytrue.infra.cache.annotation.RedissonRateLimiter;
-import com.ytrue.infra.cache.excptions.RedissonRateLimiterException;
+import com.ytrue.infra.cache.excptions.RedissonRateLimiterFailureException;
+import com.ytrue.infra.cache.strategy.RedissonLockFailureStrategy;
+import com.ytrue.infra.cache.strategy.RedissonRateLimiterFailureStrategy;
 import com.ytrue.infra.cache.util.SpelParserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,7 @@ import org.redisson.api.RRateLimiter;
 import org.redisson.api.RateIntervalUnit;
 import org.redisson.api.RateType;
 import org.redisson.api.RedissonClient;
+import org.springframework.beans.BeanUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -63,7 +66,9 @@ public class RedissonRateLimiterAspect {
         long rate = limiter.rate();
         long rateInterval = limiter.rateInterval();
         RateIntervalUnit rateIntervalUnit = limiter.timeUnit();
-        String failMessage = limiter.failMessage();
+        // 获取策略
+        RedissonRateLimiterFailureStrategy failureStrategy = BeanUtils.getResolvableConstructor(limiter.failureStrategy()).newInstance();
+
         //声明一个限流器
         RRateLimiter rateLimiter = redissonClient.getRateLimiter(changeAfterRedisKeyName.toString());
         //设置速率 RateType.OVERALL所有实例共享、RateType.PER_CLIENT单实例端共享
@@ -75,7 +80,10 @@ public class RedissonRateLimiterAspect {
         if (res) {
             return proceedingJoinPoint.proceed();
         }
-        // 失败这里给提示
-        throw new RedissonRateLimiterException(failMessage);
+
+        // 按照失败策略处理
+        failureStrategy.onFailure(limiter, method, args);
+        // 下面还是继续执行内容，是不是放下面执行是由failureStrategy处理的，你可以直接抛出异常不往下面处理
+        return proceedingJoinPoint.proceed();
     }
 }

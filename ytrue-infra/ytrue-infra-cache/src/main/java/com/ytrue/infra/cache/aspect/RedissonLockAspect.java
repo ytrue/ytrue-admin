@@ -4,7 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.ytrue.infra.cache.annotation.RedissonLock;
 import com.ytrue.infra.cache.enums.RedissonLockTypeEnum;
-import com.ytrue.infra.cache.excptions.RedissonLockException;
+import com.ytrue.infra.cache.excptions.RedissonLockFailureException;
+import com.ytrue.infra.cache.strategy.RedissonLockFailureStrategy;
 import com.ytrue.infra.cache.util.SpelParserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.redisson.RedissonMultiLock;
 import org.redisson.RedissonRedLock;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.beans.BeanUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -71,7 +73,9 @@ public class RedissonLockAspect {
         long waitTime = lock.waitTime();
         long leaseTime = lock.leaseTime();
         TimeUnit timeUnit = lock.timeUnit();
-        String failMessage = lock.failMessage();
+        // 获取策略
+        RedissonLockFailureStrategy failureStrategy = BeanUtils.getResolvableConstructor(lock.failureStrategy()).newInstance();
+
 
         log.info("锁模式->{},等待锁定时间->{}.锁定最长时间->{} 时间单位->{}", lockType.name(), waitTime, leaseTime, timeUnit.name());
 
@@ -85,7 +89,7 @@ public class RedissonLockAspect {
 
             case MULTIPLE -> new RedissonMultiLock(getLocks(parseStrArr, redisKeyName));
             case REDLOCK -> new RedissonRedLock(getLocks(parseStrArr, redisKeyName));
-            default -> throw new RedissonLockException("lock类型错误");
+            default -> throw new RedissonLockFailureException("lock类型错误");
         };
 
         //一直等待加锁.
@@ -104,19 +108,23 @@ public class RedissonLockAspect {
                     return proceedingJoinPoint.proceed();
                 }
 
-                throw new RedissonLockException(failMessage);
+                // 按照失败策略处理
+                failureStrategy.onFailure(lock, method, args);
+                // 下面还是继续执行内容，是不是放下面执行是由failureStrategy处理的，你可以直接抛出异常不往下面处理
+                return proceedingJoinPoint.proceed();
             } finally {
                 if (res) {
                     // 有锁才删除
                     if (rLock.isLocked()) {
                         rLock.unlock();
-                    }else {
+                    } else {
                         log.warn("锁提前过期了，无需删除");
                     }
                 }
             }
         }
-        throw new RedissonLockException(failMessage);
+        failureStrategy.onFailure(lock, method, args);
+        return proceedingJoinPoint.proceed();
     }
 
 
