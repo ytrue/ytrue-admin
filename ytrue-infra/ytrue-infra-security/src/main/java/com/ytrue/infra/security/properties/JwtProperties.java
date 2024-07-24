@@ -22,7 +22,7 @@ public class JwtProperties {
     /**
      * Token加密解密的密码
      */
-    private String tokenSecret = "pwd";
+    private String tokenSecret = "2FF93E55E5AD263459216956F6E319D34839C85BD246AD9365B47B62109293AA";
 
     /**
      * 加密类型 三个值可取 HS256  HS384  HS512

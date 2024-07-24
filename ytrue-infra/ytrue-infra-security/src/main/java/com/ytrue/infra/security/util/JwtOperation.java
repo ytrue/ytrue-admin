@@ -1,16 +1,18 @@
 package com.ytrue.infra.security.util;
 
 import com.ytrue.infra.security.properties.JwtProperties;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.MacAlgorithm;
 import jakarta.annotation.Resource;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.spec.SecretKeySpec;
-import java.security.Key;
+import javax.crypto.SecretKey;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
@@ -25,7 +27,6 @@ import java.util.Objects;
 @Data
 @Slf4j
 public class JwtOperation {
-
     /**
      * Token过期时间必须大于生效时间
      */
@@ -39,7 +40,7 @@ public class JwtOperation {
     /**
      * 加密类型 三个值可取 HS256  HS384  HS512
      */
-    private SignatureAlgorithm jwtAlg;
+    private MacAlgorithm jwtAlg;
 
     /**
      * 添加一个前缀
@@ -67,12 +68,11 @@ public class JwtOperation {
         jwtSeparator = jwtProperties.getJwtSeparator();
 
 
-
         //转成大写判断
         jwtAlg = switch (jwtProperties.getJwtAlg().toUpperCase()) {
-            case "HS256" -> SignatureAlgorithm.HS256;
-            case "HS384" -> SignatureAlgorithm.HS384;
-            default -> SignatureAlgorithm.HS512;
+            case "HS256" -> Jwts.SIG.HS256;
+            case "HS384" -> Jwts.SIG.HS384;
+            default -> Jwts.SIG.HS512;
         };
     }
 
@@ -86,16 +86,17 @@ public class JwtOperation {
     public String createToken(Map<String, Object> claims) {
         String token = Jwts.builder()
                 // 设置自定义载体
-                .setClaims(claims)
+                .claims(claims)
                 // 设置token在什么时间之前是不可用的（默认从当前时间）
-                .setNotBefore(new Date(System.currentTimeMillis() + beforeTime))
+                .notBefore(new Date(System.currentTimeMillis() + beforeTime))
                 // 设置token生效时间(默认是从当前开始生效)
-                .setIssuedAt(new Date(System.currentTimeMillis() + startTime))
+                .issuedAt(new Date(System.currentTimeMillis() + startTime))
                 // 设置Token过期时间必须大于生效时间
-                .setExpiration(new Date(System.currentTimeMillis() + tokenExpireTime))
+                .expiration(new Date(System.currentTimeMillis() + tokenExpireTime))
                 // 设置签名加密方式
-                .signWith(jwtAlg, generateKey())
+                .signWith(generateKey(), jwtAlg)
                 .compact();
+
 
         return jwtSeparator + token;
     }
@@ -116,30 +117,31 @@ public class JwtOperation {
 
         if (Objects.nonNull(map)) {
             if (!map.isEmpty()) {
-                builder.setClaims(map);
+                builder.claims(map);
             }
         }
-        String token = builder
-                // 设置签名加密方式
-                .signWith(jwtAlg, generateKey())
+        String token = Jwts.builder()
                 // 设置主题
-                .setSubject(sub)
+                .subject(sub)
                 // 设置 受众(给谁用的)比如：http://www.xxx.com
-                .setAudience(aud)
+                .audience().add(aud).and()
                 // 设置编号，JWT 的唯一身份标识
-                .setId(jti)
+                .id(jti)
                 // 设置 签发人（谁签发的）
-                .setIssuer(iss)
+                .issuer(iss)
                 // 设置token在什么时间之前是不可用的（默认从当前时间）
-                .setNotBefore(new Date(System.currentTimeMillis() + beforeTime))
+                .notBefore(new Date(System.currentTimeMillis() + beforeTime))
                 // 设置token生效时间(默认是从当前开始生效)
-                .setIssuedAt(new Date(System.currentTimeMillis() + startTime))
+                .issuedAt(new Date(System.currentTimeMillis() + startTime))
                 // 设置Token过期时间必须大于生效时间
-                .setExpiration(new Date(System.currentTimeMillis() + tokenExpireTime))
+                .expiration(new Date(System.currentTimeMillis() + tokenExpireTime))
+                // 设置签名加密方式
+                .signWith(generateKey(), jwtAlg)
                 .compact();
         return jwtSeparator + token;
 
     }
+
 
     /**
      * 判断token是否有效
@@ -192,33 +194,19 @@ public class JwtOperation {
         return claims.getExpiration();
     }
 
-
     /**
-     * 刷新我们的token：重新构建jwt
+     * 获取去掉前缀的token
      *
      * @param token
      * @return
      */
-    public String refreshToken(String token) {
-        Claims claims = parseToken(token);
-        return createToken(claims);
+    public String getOriginalToken(String token) {
+        // 移除 token 前的"Bearer#"字符串
+        int pos = token.indexOf(jwtSeparator);
+        token = pos == -1 ? "" : token.substring(pos + jwtSeparator.length());
+
+        return token;
     }
-
-
-    /**
-     * 生产key
-     *
-     * @return
-     */
-    private Key generateKey() {
-        // 将将密码转换为字节数组
-        Base64.Decoder decoder = Base64.getDecoder();
-        byte[] bytes = decoder.decode(tokenSecret);
-        // 根据指定的加密方式，生成密钥
-        return new SecretKeySpec(bytes, jwtAlg.getJcaName());
-
-    }
-
 
     /**
      * 根据身份信息获取键值
@@ -233,31 +221,43 @@ public class JwtOperation {
 
 
     /**
+     * 刷新我们的token：重新构建jwt
+     *
+     * @param token
+     * @return
+     */
+    public String refreshToken(String token) {
+        Claims claims = parseToken(token);
+        return createToken(claims);
+    }
+
+
+    /**
      * 从令牌中获取数据声明
      *
      * @param token 令牌
      * @return 数据声明
      */
     public Claims parseToken(String token) {
-        Claims claims;
-        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(generateKey()).parseClaimsJws(token);
-        claims = claimsJws.getBody();
-        return claims;
+        return Jwts.parser()
+                .verifyWith(generateKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
 
     /**
-     * 获取去掉前缀的token
+     * 生产key
      *
-     * @param token
      * @return
      */
-    public String getOriginalToken(String token) {
-        // 移除 token 前的"Bearer#"字符串
-        int pos = token.indexOf(jwtSeparator);
-        token = pos == -1 ? "" : token.substring(pos + jwtSeparator.length());
-
-        return token;
+    private SecretKey generateKey() {
+        // 将将密码转换为字节数组
+        Base64.Decoder decoder = Base64.getDecoder();
+        byte[] bytes = decoder.decode(tokenSecret);
+        // 根据指定的加密方式，生成密钥
+        return Keys.hmacShaKeyFor(bytes);
     }
 }
 
