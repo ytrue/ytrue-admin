@@ -19,6 +19,14 @@ import java.io.IOException;
 public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
 
 
+    /**
+     * 如果 使用了    @ExceptionHandler 处理 AccessDeniedException 异常 这里是不会生效的
+     * @param request that resulted in an <code>AccessDeniedException</code>
+     * @param response so that the user agent can be advised of the failure
+     * @param accessDeniedException that caused the invocation
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws ServletException, IOException {
         // springboot3没有办法直接抛异常了

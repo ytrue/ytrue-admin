@@ -2,15 +2,10 @@ package com.ytrue.infra.db.base;
 
 import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ytrue.infra.db.query.entity.PageQueryEntity;
-import com.ytrue.infra.db.query.entity.QueryEntity;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * @author ytrue
@@ -18,30 +13,6 @@ import java.util.Objects;
  * @date 2022/12/7 9:24
  */
 public abstract class BaseServiceImpl<M extends IBaseDao<T>, T> extends ServiceImpl<M, T> implements IBaseService<T> {
-
-    /**
-     * 分页
-     *
-     * @param pageQueryEntity
-     * @return
-     */
-    @Override
-    public IPage<T> listByPageQueryEntity(PageQueryEntity pageQueryEntity) {
-        pageQueryEntity = Objects.isNull(pageQueryEntity) ? new PageQueryEntity() : pageQueryEntity;
-        return page(pageQueryEntity.page(), pageQueryEntity.lambdaQueryWrapperBuilder());
-    }
-
-    /**
-     * 列表
-     *
-     * @param queryEntity
-     * @return
-     */
-    @Override
-    public List<T> listByQueryEntity(QueryEntity queryEntity) {
-        queryEntity = Objects.isNull(queryEntity) ? new QueryEntity() : queryEntity;
-        return list(queryEntity.lambdaQueryWrapperBuilder());
-    }
 
 
     /**

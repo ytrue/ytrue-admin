@@ -8,6 +8,7 @@ import com.ytrue.infra.security.user.LoginUser;
 import com.ytrue.infra.security.user.User;
 import com.ytrue.infra.security.util.JwtOperation;
 import com.ytrue.infra.security.util.ServletWebRequestUtil;
+import com.ytrue.infra.security.util.WhitelistMatcherUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -40,6 +41,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private final SecurityProperties securityProperties;
 
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -49,12 +51,18 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
         // 获取token
         String token = request.getHeader(securityProperties.getAuthorizationHeaderParameterName());
-
-        //如果header没有token就是直接放行
+        // 如果header没有token就是直接放行
         if (!StringUtils.hasText(token)) {
             filterChain.doFilter(request, response);
             return;
         }
+
+        // 判断一下是否在白名单,匹配直接放行
+        if (WhitelistMatcherUtil.isPathWhitelisted(request)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
 
         // 获取去掉前缀的token
         token = jwtOperation.getOriginalToken(token);
@@ -80,12 +88,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        User user = new Gson().fromJson(userJsonData, User.class);
-
         LoginUser loginUser = new LoginUser();
-        loginUser.setUser(user);
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginUser, loginUser.getPassword(), loginUser.getAuthorities());
+        loginUser.setUser(new Gson().fromJson(userJsonData, User.class));
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, loginUser.getPassword(), loginUser.getAuthorities());
 
         //存入SecurityContextHolder
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);

@@ -1,6 +1,6 @@
 package com.ytrue.infra.core.base;
 
-import com.ytrue.infra.core.response.ResponseInfoEnum;
+import com.ytrue.infra.core.response.ServerResponseInfoEnum;
 import lombok.Getter;
 
 import java.io.Serial;
@@ -13,7 +13,7 @@ public abstract class BaseCodeException extends RuntimeException {
     /**
      * 状态码
      */
-    private String code = ResponseInfoEnum.FAIL.code();
+    private String code = ServerResponseInfoEnum.INTERNAL_SERVER_ERROR.code();
 
     public BaseCodeException() {
     }

@@ -13,7 +13,7 @@ import com.ytrue.bean.req.system.SysUserUpdateReq;
 import com.ytrue.bean.resp.system.SysUserIdResp;
 import com.ytrue.bean.resp.system.SysUserListResp;
 import com.ytrue.infra.core.constant.StrPool;
-import com.ytrue.infra.core.response.ResponseInfoEnum;
+import com.ytrue.infra.core.response.ServerResponseInfoEnum;
 import com.ytrue.infra.core.response.ServerResponseInfo;
 import com.ytrue.infra.core.util.AssertUtil;
 import com.ytrue.infra.core.util.BeanUtils;
@@ -21,13 +21,10 @@ import com.ytrue.infra.db.base.BaseServiceImpl;
 import com.ytrue.dao.system.SysUserDao;
 import com.ytrue.dao.system.SysUserJobDao;
 import com.ytrue.dao.system.SysUserRoleDao;
+import com.ytrue.infra.security.util.SecurityUtil;
 import com.ytrue.manager.DataScopeManager;
 import com.ytrue.service.system.SysUserService;
-import com.ytrue.infra.db.query.entity.QueryEntity;
-import com.ytrue.infra.db.query.enums.QueryMethod;
-import com.ytrue.infra.db.query.util.QueryHelp;
 import com.ytrue.infra.security.service.LoginService;
-import com.ytrue.infra.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -56,24 +53,25 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
 
     @Override
     public IPage<SysUserListResp> listBySysUserPageQuery(SysUserPageQuery queryParam) {
-        // 处理数据过滤
-        Set<Long> deptIds = dataScopeManager.listDeptIdDataScope();
-
-        QueryEntity queryEntity = QueryHelp.queryEntityBuilder(queryParam).addSort(SysUserListResp::getId, Boolean.FALSE);
-
-        if (!deptIds.contains(0L)) {
-            queryEntity.addFilter(SysUser::getDeptId, QueryMethod.in, deptIds.stream().toList(), "u");
-        } else {
-            queryEntity.addFilter(SysUser::getId, QueryMethod.eq, SecurityUtils.getLoginUser().getUser().getUserId(), "u");
-        }
-
-        return baseMapper.selectWithDeptName(queryParam.page(), queryEntity);
+//        // 处理数据过滤
+//        Set<Long> deptIds = dataScopeManager.listDeptIdDataScope();
+//
+//        QueryEntity queryEntity = QueryHelp.queryEntityBuilder(queryParam).addSort(SysUserListResp::getId, Boolean.FALSE);
+//
+//        if (!deptIds.contains(0L)) {
+//            queryEntity.addFilter(SysUser::getDeptId, QueryMethod.in, deptIds.stream().toList(), "u");
+//        } else {
+//            queryEntity.addFilter(SysUser::getId, QueryMethod.eq, SecurityUtil.getLoginUser().getUser().getUserId(), "u");
+//        }
+//
+//        return baseMapper.selectWithDeptName(queryParam.page(), queryEntity);
+        return null;
     }
 
     @Override
     public SysUserIdResp getBySysUserId(Long id) {
         SysUser user = getById(id);
-        AssertUtil.notNull(user, ResponseInfoEnum.DATA_NOT_FOUND);
+        AssertUtil.notNull(user, ServerResponseInfoEnum.NOT_FOUND);
         // 获取对应的岗位
         Set<Long> jobIds = sysUserJobDao.selectList(Wrappers.<SysUserJob>lambdaQuery().eq(SysUserJob::getUserId, id)).stream().map(SysUserJob::getJobId).collect(Collectors.toSet());
         // 获取对应的角色
@@ -104,7 +102,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
     @Override
     public void updateSysUser(SysUserUpdateReq requestParam) {
         SysUser sysUser = this.getById(requestParam.getId());
-        AssertUtil.notNull(sysUser, ResponseInfoEnum.ILLEGAL_OPERATION);
+        AssertUtil.notNull(sysUser, ServerResponseInfoEnum.ILLEGAL_OPERATION);
 
         BeanUtils.copyProperties(requestParam, sysUser);
 
@@ -128,7 +126,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
 
     @Override
     public void updateSysUserPassword(SysUserUpdatePasswordReq requestParam) {
-        String userId = SecurityUtils.getLoginUser().getUser().getUserId();
+        String userId = SecurityUtil.getLoginUser().getUser().getUserId();
 
         SysUser sysUser = this.getById(Long.valueOf(userId));
 

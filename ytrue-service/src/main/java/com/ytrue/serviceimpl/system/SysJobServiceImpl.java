@@ -10,7 +10,7 @@ import com.ytrue.bean.req.system.SysJobAddReq;
 import com.ytrue.bean.req.system.SysJobUpdateReq;
 import com.ytrue.bean.resp.system.SysJobIdResp;
 import com.ytrue.bean.resp.system.SysJobListResp;
-import com.ytrue.infra.core.response.ResponseInfoEnum;
+import com.ytrue.infra.core.response.ServerResponseInfoEnum;
 import com.ytrue.infra.core.response.ServerResponseInfo;
 import com.ytrue.infra.core.util.AssertUtil;
 import com.ytrue.infra.core.util.BeanUtils;
@@ -40,9 +40,15 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDao, SysJob> implem
     @Override
     public IPage<SysJobListResp> listBySysJobPageQuery(SysJobPageQuery queryParam) {
 
-        LambdaQueryWrapper<SysJob> queryWrapper = QueryHelp.<SysJob>lambdaQueryWrapperBuilder(queryParam).orderByAsc(SysJob::getJobSort).orderByDesc(SysJob::getId);
+        LambdaQueryWrapper<SysJob> queryWrapper = QueryHelp
+                .<SysJob>builderlambdaQueryWrapper(queryParam)
+                .orderByAsc(SysJob::getJobSort)
+                .orderByDesc(SysJob::getId);
 
-        return this.page(queryParam.page(), queryWrapper).convert(sysJob -> BeanUtils.copyProperties(sysJob, SysJobListResp::new));
+       // queryParam.getLambdaQueryWrapper()
+
+        return this.page(queryParam.page(), queryWrapper)
+                .convert(sysJob -> BeanUtils.copyProperties(sysJob, SysJobListResp::new));
     }
 
     @Override
@@ -63,23 +69,23 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDao, SysJob> implem
     @Override
     public void updateSysJob(SysJobUpdateReq requestParam) {
         SysJob data = this.getById(requestParam.getId());
-        AssertUtil.notNull(data, ResponseInfoEnum.ILLEGAL_OPERATION);
+        AssertUtil.notNull(data, ServerResponseInfoEnum.ILLEGAL_OPERATION);
 
         SysJob job = this.lambdaQuery()
                 .eq(SysJob::getJobName, requestParam.getJobName())
                 .ne(SysJob::getId, requestParam.getId()).one();
         AssertUtil.isNull(job, ServerResponseInfo.error("岗位已存在"));
 
-        BeanUtils.copyProperties(requestParam, job);
+        BeanUtils.copyProperties(requestParam, data);
 
-        this.updateById(job);
+        this.updateById(data);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void removeBySysJobIds(List<Long> ids) {
         // 校验集合
-        AssertUtil.collectionIsNotEmpty(ids, ResponseInfoEnum.ILLEGAL_OPERATION);
+        AssertUtil.collectionIsNotEmpty(ids, ServerResponseInfoEnum.ILLEGAL_OPERATION);
 
         // 只要存在一个 就是无法删除的
         SysUserJob sysUserJob = sysUserJobDao.selectOne(Wrappers.<SysUserJob>lambdaQuery().in(SysUserJob::getJobId, ids));
@@ -92,7 +98,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobDao, SysJob> implem
     @Override
     public SysJobIdResp getBySysJobId(Long id) {
         SysJob data = this.getById(id);
-        AssertUtil.notNull(data, ResponseInfoEnum.DATA_NOT_FOUND);
+        AssertUtil.notNull(data, ServerResponseInfoEnum.NOT_FOUND);
 
         return BeanUtils.copyProperties(data, SysJobIdResp::new);
     }

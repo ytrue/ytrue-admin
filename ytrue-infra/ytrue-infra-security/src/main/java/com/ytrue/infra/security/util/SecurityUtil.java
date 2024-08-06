@@ -7,10 +7,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * @author ytrue
- * @description: SecurityUtils
+ * @description: SecurityUtil
  * @date 2022/12/8 15:18
  */
-public class SecurityUtils {
+public class SecurityUtil {
 
     /**
      * 获取用户

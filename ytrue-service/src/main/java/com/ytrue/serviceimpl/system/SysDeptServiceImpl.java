@@ -11,7 +11,7 @@ import com.ytrue.bean.req.system.SysDeptAddReq;
 import com.ytrue.bean.req.system.SysDeptUpdateReq;
 import com.ytrue.bean.resp.system.SysDeptIdResp;
 import com.ytrue.bean.resp.system.SysDeptListResp;
-import com.ytrue.infra.core.response.ResponseInfoEnum;
+import com.ytrue.infra.core.response.ServerResponseInfoEnum;
 import com.ytrue.infra.core.response.ServerResponseInfo;
 import com.ytrue.infra.core.util.AssertUtil;
 import com.ytrue.infra.core.util.BeanUtils;
@@ -51,7 +51,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
     @Override
     public SysDeptIdResp getBySysDeptId(Long id) {
         SysDept sysDept = getById(id);
-        AssertUtil.notNull(sysDept, ResponseInfoEnum.DATA_NOT_FOUND);
+        AssertUtil.notNull(sysDept, ServerResponseInfoEnum.NOT_FOUND);
 
         return BeanUtils.copyProperties(sysDept, SysDeptIdResp::new);
     }
@@ -62,7 +62,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
         // 数据范围限制
         Set<Long> deptIds = this.listCurrentAccountDeptId();
         // 构建查询条件
-        LambdaQueryWrapper<SysDept> queryWrapper = QueryHelp.<SysDept>lambdaQueryWrapperBuilder(queryParam)
+        LambdaQueryWrapper<SysDept> queryWrapper = QueryHelp.<SysDept>builderlambdaQueryWrapper(queryParam)
                 .in(CollectionUtil.isNotEmpty(deptIds), SysDept::getId, deptIds)
                 .orderByAsc(SysDept::getDeptSort)
                 .orderByDesc(SysDept::getId);
@@ -90,7 +90,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
     public void updateSysDept(SysDeptUpdateReq requestParam) {
         // 获取id的部门
         SysDept sysDept = getById(requestParam.getId());
-        AssertUtil.notNull(sysDept, ResponseInfoEnum.ILLEGAL_OPERATION);
+        AssertUtil.notNull(sysDept, ServerResponseInfoEnum.ILLEGAL_OPERATION);
 
         // 校验父级不能是自己
         AssertUtil.numberNotEquals(requestParam.getId(), requestParam.getPid(), ServerResponseInfo.error("父级不能是自己"));
@@ -112,7 +112,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDept> imp
     @Transactional(rollbackFor = Exception.class)
     public void removeBySysDeptIds(List<Long> ids) {
         // 校验集合
-        AssertUtil.collectionIsNotEmpty(ids, ResponseInfoEnum.ILLEGAL_OPERATION);
+        AssertUtil.collectionIsNotEmpty(ids, ServerResponseInfoEnum.ILLEGAL_OPERATION);
 
         // 循环校验
         for (Long id : ids) {

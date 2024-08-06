@@ -42,9 +42,9 @@ public class ServletWebRequestUtil {
         servletWebRequest.setAttribute("jakarta.servlet.error.exception", e, RequestAttributes.SCOPE_REQUEST);
         servletWebRequest.setAttribute("jakarta.servlet.error.request_uri", request.getRequestURI(), RequestAttributes.SCOPE_REQUEST);
 
-
         HttpServletRequest servletRequest = servletWebRequest.getNativeRequest(HttpServletRequest.class);
         // 转发
+        assert servletRequest != null;
         RequestDispatcher requestDispatcher = servletRequest.getRequestDispatcher("/error");
         requestDispatcher.forward(servletRequest, response);
     }

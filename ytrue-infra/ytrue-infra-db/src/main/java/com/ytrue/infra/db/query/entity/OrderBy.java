@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author ytrue
- * @description: Order
+ * @description: OrderBy
  * @date 2022/12/20 9:15
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Sort {
+public class OrderBy {
 
 
     /**
@@ -31,7 +31,7 @@ public class Sort {
      */
     private String alias = "";
 
-    public Sort(String column, Boolean asc) {
+    public OrderBy(String column, Boolean asc) {
         this.column = column;
         this.asc = asc;
     }

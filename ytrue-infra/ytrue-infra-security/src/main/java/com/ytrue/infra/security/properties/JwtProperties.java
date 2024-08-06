@@ -15,7 +15,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class JwtProperties {
 
     /**
-     * Token过期时间必须大于生效时间
+     * Token过期时间必须大于生效时间 ，单位毫秒
      */
     private Long tokenExpireTime = 30 * 60 * 1000L;
 

@@ -1,19 +1,23 @@
 package com.ytrue.infra.db.query.util;
 
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.ytrue.infra.db.query.additional.AdditionalQueryWrapper;
-import com.ytrue.infra.db.query.annotation.Query;
-import com.ytrue.infra.db.query.entity.Filter;
-import com.ytrue.infra.db.query.entity.QueryEntity;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ytrue.infra.db.query.builder.QueryWrapperBuilder;
+import com.ytrue.infra.db.query.entity.OrderBy;
+import com.ytrue.infra.db.query.entity.QueryDefinition;
+import com.ytrue.infra.db.query.entity.Where;
 import com.ytrue.infra.db.query.enums.Operator;
 import com.ytrue.infra.db.query.enums.QueryMethod;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author ytrue
@@ -23,122 +27,129 @@ import java.util.*;
 @Slf4j
 public class QueryHelp {
 
-
-    public static <T> LambdaQueryWrapper<T> lambdaQueryWrapperBuilder(Object query) {
-        return QueryHelp.<T>queryWrapperBuilder(query).lambda();
+    public static <T> LambdaQueryWrapper<T> builderlambdaQueryWrapper(Object query) {
+        return QueryHelp.<T>buildQueryWrapper(query).lambda();
     }
 
     /**
-     * po or queryEntity or Set<Filter> or Set<Sort>  =>> QueryWrapper
+     * 构建 QueryWrapper
      *
      * @param query
      * @param <T>
      * @return
      */
-    public static <T> QueryWrapper<T> queryWrapperBuilder(Object query) {
-        QueryWrapper<T> queryWrapper = new QueryWrapper<>();
-        AdditionalQueryWrapper additionalQueryWrapper = new AdditionalQueryWrapper();
+    public static <T> QueryWrapper<T> buildQueryWrapper(Object query) {
+        QueryWrapper<T> queryWrapper = Wrappers.query();
+
         // 进行构建
-        if (query instanceof QueryEntity queryEntity) {
-            additionalQueryWrapper.queryWrapperBuilder(queryWrapper, queryEntity);
-            // 是 set<Filter> 就处理
-        } else if (query instanceof Set<?> set) {
-            additionalQueryWrapper.queryWrapperBuilder(queryWrapper, set);
+        if (query instanceof QueryDefinition definition) {
+            QueryWrapperBuilder.buildQueryWrapper(queryWrapper, definition);
+        } else if (query instanceof Where where) {
+            QueryWrapperBuilder.applyWhereCondition(queryWrapper, where);
+        } else if (query instanceof OrderBy orderBy) {
+            QueryWrapperBuilder.applyOrderBy(queryWrapper, orderBy);
         } else {
-            queryWrapperBuilder(queryWrapper, query);
+            QueryWrapperBuilder.buildQueryWrapper(queryWrapper, generateQueryDefinition(query));
         }
         return queryWrapper;
     }
 
 
     /**
-     * po =>> QueryWrapper
-     *
-     * @param queryWrapper
-     * @param query
-     */
-    public static void queryWrapperBuilder(QueryWrapper<?> queryWrapper, Object query) {
-        // 追加
-        AdditionalQueryWrapper additionalQueryWrapper = new AdditionalQueryWrapper();
-        // 构建
-        additionalQueryWrapper.queryWrapperBuilder(queryWrapper, queryEntityBuilder(query));
-    }
-
-
-    /**
-     * po =>> fields
+     * 生成 queryDefinition
      *
      * @param query
      * @return
      */
-    public static QueryEntity queryEntityBuilder(Object query) {
-        return QueryEntity.builder().filters(filterBuilder(query)).build();
-    }
-
-    /**
-     * po =>> field
-     *
-     * @param query
-     * @return
-     */
-    public static LinkedHashSet<Filter> filterBuilder(Object query) {
+    public static QueryDefinition generateQueryDefinition(Object query) {
         Class<?> clazz = query.getClass();
-        // 存储的
-        LinkedHashSet<Filter> filterList = new LinkedHashSet<>();
-        // 获取所有的字段
-        List<Field> fields = getAllFields(clazz, new ArrayList<>());
+        // 获取所有的字段,其实这里可以去拿get is 方法 参考mybatis这里暂时不做了
+        List<Field> fields = FieldUtil.getAllFields(clazz);
+        // 存储的where
+        LinkedHashSet<Where> whereSets = new LinkedHashSet<>();
+        // 存储的order by
+        LinkedHashSet<OrderBy> orderBySets = new LinkedHashSet<>();
+
         try {
             // 循环处理
             for (Field field : fields) {
                 // 设置对象的访问权限，保证对private的属性的访
                 field.setAccessible(true);
                 //  Query q = field.getAnnotation(Query.class);
-                Query[] queryList = field.getAnnotationsByType(Query.class);
-
-                for (Query q : queryList) {
-                    if (q != null) {
-                        // 获取字段
-                        String column = StrUtil.isBlank(q.column()) ? field.getName() : q.column();
-                        // 获取别名
-                        String alias = q.alias();
-                        // 获取条件类型
-                        QueryMethod condition = q.condition();
-
-                        // 获取连接条件
-                        Operator operator = q.operator();
-                        // 获取值
-                        Object value = field.get(query);
-                        // 如果是null就不处理
-                        if (ObjectUtil.isNull(value)) {
-                            continue;
-                        }
-                        // 构建
-                        // 小驼峰转下划线
-                        column = StrUtil.toUnderlineCase(column);
-                        filterList.add(new Filter(column, condition, value, alias, operator));
+                com.ytrue.infra.db.query.annotation.Where[] whereAnnotations = field.getAnnotationsByType(com.ytrue.infra.db.query.annotation.Where.class);
+                for (com.ytrue.infra.db.query.annotation.Where w : whereAnnotations) {
+                    if (w == null) {
+                        continue;
                     }
+                    // 获取别名
+                    String alias = w.alias();
+                    // 获取条件类型
+                    QueryMethod condition = w.condition();
+                    // 获取连接条件
+                    Operator operator = w.operator();
+                    // 获取值
+                    Object value = field.get(query);
+                    // 获取字段
+                    String column = getColumn(w.column(), field.getName());
+                    // 开始构建条件
+                    whereSets.add(new Where(column, condition, value, alias, operator));
+                }
+
+                // 处理order by
+                for (com.ytrue.infra.db.query.annotation.OrderBy o : getSortedOrderByAnnotations(fields)) {
+                    if (o == null) {
+                        continue;
+                    }
+                    // 获取别名
+                    String alias = o.alias();
+                    // 获取值
+                    boolean asc = o.asc();
+                    // 获取字段
+                    String column = getColumn(o.column(), field.getName());
+                    // 开始 构建 orderBy
+                    orderBySets.add(new OrderBy(column, asc, alias));
                 }
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
 
-        return filterList;
+        QueryDefinition queryDefinition = new QueryDefinition();
+        queryDefinition.setWhereSets(whereSets);
+        queryDefinition.setOrderSets(orderBySets);
+        return queryDefinition;
     }
 
 
     /**
-     * 获取所以的字段,包含父类
+     * 获取 colum
      *
-     * @param clazz
-     * @param fields
+     * @param columnName
+     * @param fieldName
      * @return
      */
-    private static List<Field> getAllFields(Class clazz, List<Field> fields) {
-        if (clazz != null) {
-            fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
-            getAllFields(clazz.getSuperclass(), fields);
+    private static String getColumn(String columnName, String fieldName) {
+        // 存在的话,就拿这个，不进行处理
+        String column = columnName;
+        if (StrUtil.isBlank(columnName)) {
+            // 小驼峰转下划线
+            column = fieldName;
+            column = StrUtil.toUnderlineCase(column);
         }
-        return fields;
+
+        return column;
+    }
+
+    /**
+     * 获取所有字段上的 OrderBy 注解，并按照 index 升序排序
+     *
+     * @param fields 目标字段列表
+     * @return 排序后的 OrderBy 注解列表
+     */
+    public static List<com.ytrue.infra.db.query.annotation.OrderBy> getSortedOrderByAnnotations(List<Field> fields) {
+        return fields.stream()
+                .flatMap(field -> Arrays.stream(field.getAnnotationsByType(com.ytrue.infra.db.query.annotation.OrderBy.class)))
+                .sorted(Comparator.comparingInt(com.ytrue.infra.db.query.annotation.OrderBy::index))  // 按 index 升序排序
+                .collect(Collectors.toList());
     }
 }

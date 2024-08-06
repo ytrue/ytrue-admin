@@ -9,6 +9,7 @@ import com.ytrue.infra.security.handler.AuthenticationEntryPointImpl;
 import com.ytrue.infra.security.handler.LogoutHandlerImpl;
 import com.ytrue.infra.security.handler.LogoutSuccessHandlerImpl;
 import com.ytrue.infra.security.integration.IntegrationAuthenticationFilter;
+import com.ytrue.infra.security.permission.PermissionService;
 import com.ytrue.infra.security.properties.IgnoreWebSecurityProperties;
 import com.ytrue.infra.security.properties.JwtProperties;
 import com.ytrue.infra.security.properties.SecurityProperties;
@@ -17,6 +18,7 @@ import com.ytrue.infra.security.service.impl.LoginServiceImpl;
 import com.ytrue.infra.security.service.impl.UserDetailsServiceImpl;
 import com.ytrue.infra.security.util.JwtOperation;
 import jakarta.annotation.Resource;
+import lombok.Getter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -25,13 +27,11 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -80,6 +80,11 @@ public class SecurityAutoConfiguration {
         return new JwtProperties();
     }
 
+
+    @Bean("pms")
+    public PermissionService  permissionService(){
+        return new PermissionService();
+    }
 
     @Bean
     public SecurityProperties securityProperties() {
@@ -211,7 +216,7 @@ public class SecurityAutoConfiguration {
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // 获取配置
-        Map<String, HashSet<String>> ignoreAuthConfig = ignoreAuthConfig();
+        Map<String, HashSet<String>> ignoreAuthConfig = initIgnoreAuthConfig();
         // 允许匿名访问
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry.requestMatchers(
                         HttpMethod.GET, ignoreAuthConfig.get(HttpRequestType.GET).toArray(new String[0]))
@@ -249,13 +254,18 @@ public class SecurityAutoConfiguration {
     }
 
 
+    @Getter
+    private static Map<String, HashSet<String>> ignoreAuthConfigMap = new HashMap<>();
+
     /**
      * 配置
      *
      * @return
      */
-    private Map<String, HashSet<String>> ignoreAuthConfig() {
-
+    private Map<String, HashSet<String>> initIgnoreAuthConfig() {
+        // get    ==> /xx/xxx
+        // post   ==> /xx/xxx
+        // delete ==> /xx/xxx
         Map<String, HashSet<String>> ignoreRequestUrlMap = new HashMap<>(16);
 
         // 登录的
@@ -313,6 +323,8 @@ public class SecurityAutoConfiguration {
 
         }
 
+        // 存一份
+        ignoreAuthConfigMap = ignoreRequestUrlMap;
         return ignoreRequestUrlMap;
     }
 

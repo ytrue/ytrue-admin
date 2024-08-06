@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.ytrue.infra.db.ExtendSqlInjector;
-import com.ytrue.infra.db.query.interceptor.ConditionInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +34,9 @@ public class MybatisPlusConfig {
      */
     @Bean
     public ConfigurationCustomizer configurationCustomizer() {
-        return configuration -> configuration.addInterceptor(new ConditionInterceptor());
+        return configuration ->{
+            //  configuration.addInterceptor(new ConditionInterceptor())
+        };
     }
 
 

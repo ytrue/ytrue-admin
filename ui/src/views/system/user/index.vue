@@ -92,7 +92,7 @@
               删除
             </el-button>
           </el-col>
-          <right-toolbar v-model:showSearch="showSearch" @queryTable="init(deptId)"/>
+          <right-toolbar v-model:showSearch="showSearch" @WhereTable="init(deptId)"/>
         </el-row>
         <!-- 表格 start-->
         <el-table

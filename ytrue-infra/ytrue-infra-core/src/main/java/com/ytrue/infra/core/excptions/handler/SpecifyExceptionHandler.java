@@ -1,8 +1,10 @@
 package com.ytrue.infra.core.excptions.handler;
 
+
 import com.ytrue.infra.core.base.BaseCodeException;
-import com.ytrue.infra.core.response.ResponseInfoEnum;
 import com.ytrue.infra.core.response.ServerResponseEntity;
+import com.ytrue.infra.core.response.ServerResponseInfoEnum;
+import com.ytrue.infra.core.util.ClassUtil;
 import com.ytrue.infra.core.util.ThrowableUtil;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -34,7 +36,7 @@ public class SpecifyExceptionHandler {
         FieldError fieldError = exception.getFieldErrors().stream().findFirst().orElse(null);
         assert fieldError != null;
         String message = fieldError.getField() + ": " + fieldError.getDefaultMessage();
-        return ServerResponseEntity.fail("4000", message);
+        return ServerResponseEntity.fail(ServerResponseInfoEnum.BAD_REQUEST.code(), message);
     }
 
 
@@ -47,17 +49,24 @@ public class SpecifyExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ServerResponseEntity<Void> constraintViolationExceptionHandler(final ConstraintViolationException exception) {
         String message = exception.getConstraintViolations().stream().findFirst().map(ConstraintViolation::getMessage).orElse("");
-        return ServerResponseEntity.fail("4000", message);
+        return ServerResponseEntity.fail(ServerResponseInfoEnum.BAD_REQUEST.code(), message);
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler({Exception.class})
     public ServerResponseEntity<Void> exceptionHandler(final Exception error) {
 
         String errorMessage = error.getMessage();
-        String errorCode = ResponseInfoEnum.FAIL.code();
+        String errorCode = ServerResponseInfoEnum.INTERNAL_SERVER_ERROR.code();
 
         if (error instanceof BaseCodeException baseCodeException) {
             errorCode = baseCodeException.getCode();
+        }
+
+
+        // 反射检查 AccessDeniedHandler 类是否存在
+        String accessDeniedExceptionClassName = "org.springframework.security.access.AccessDeniedException";
+        if (ClassUtil.isClassPresentAndSubclass(accessDeniedExceptionClassName, error.getClass(), this.getClass().getClassLoader())) {
+            return ServerResponseEntity.fail(ServerResponseInfoEnum.FORBIDDEN.code(), ServerResponseInfoEnum.FORBIDDEN.message());
         }
 
         // 打印日志

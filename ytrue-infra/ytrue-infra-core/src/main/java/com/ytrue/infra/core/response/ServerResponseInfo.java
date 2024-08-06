@@ -9,7 +9,7 @@ import com.ytrue.infra.core.base.IServerResponseInfo;
 public record ServerResponseInfo(String code, String message) implements IServerResponseInfo {
 
     public static IServerResponseInfo error(String message) {
-        return new ServerResponseInfo(ResponseInfoEnum.CUSTOM_FAIL_MESSAGE.code(), message);
+        return new ServerResponseInfo(ServerResponseInfoEnum.CUSTOM_FAIL_MESSAGE.code(), message);
     }
 
     public static IServerResponseInfo error(String code, String message) {

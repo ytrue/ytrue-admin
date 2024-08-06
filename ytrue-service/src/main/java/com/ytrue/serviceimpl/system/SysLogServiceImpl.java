@@ -4,10 +4,10 @@ import com.ytrue.bean.dataobject.system.SysLog;
 import com.ytrue.infra.core.util.BeanUtils;
 import com.ytrue.infra.db.base.BaseServiceImpl;
 import com.ytrue.dao.system.SysLogDao;
+import com.ytrue.infra.security.util.SecurityUtil;
 import com.ytrue.service.system.SysLogService;
 import com.ytrue.infra.log.enitiy.OperationLog;
 import com.ytrue.infra.log.event.OperateLogEvent;
-import com.ytrue.infra.security.util.SecurityUtils;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
@@ -32,9 +32,9 @@ public class SysLogServiceImpl extends BaseServiceImpl<SysLogDao, SysLog> implem
         SysLog sysLog = BeanUtils.copyProperties(optLog, SysLog::new);
 
         // 可能存在没有登录的情况
-        if (SecurityUtils.getAuthentication() != null) {
+        if (SecurityUtil.getAuthentication() != null) {
             // 用户名
-            String operator = SecurityUtils.getLoginUser().getUsername();
+            String operator = SecurityUtil.getLoginUser().getUsername();
             sysLog.setOperator(operator);
         }
 

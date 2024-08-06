@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ytrue.bean.resp.system.SysUserListResp;
 import com.ytrue.infra.db.base.IBaseDao;
 import com.ytrue.bean.dataobject.system.SysUser;
-import com.ytrue.infra.db.query.entity.QueryEntity;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.Set;
@@ -58,5 +57,5 @@ public interface SysUserDao extends IBaseDao<SysUser> {
                              LEFT JOIN sys_dept d ON u.dept_id = d.id
             </script>
             """)
-    IPage<SysUserListResp> selectWithDeptName(IPage<SysUserListResp> page, QueryEntity queryEntity);
+    IPage<SysUserListResp> selectWithDeptName(IPage<SysUserListResp> page);
 }

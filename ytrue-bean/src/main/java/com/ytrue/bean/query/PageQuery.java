@@ -1,32 +1,29 @@
-package com.ytrue.bean;
+package com.ytrue.bean.query;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
-
-import java.io.Serial;
-import java.io.Serializable;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author ytrue
- * @description: Pageable
+ * @description: PageQuery
  * @date 2022/12/21 19:06
  */
 @Data
-public class Pageable implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = -6949451396264513939L;
+@EqualsAndHashCode(callSuper = true)
+public abstract class PageQuery extends ListQuery {
 
     /**
      * 当前页码，默认是1
      */
-    private Integer page = 1;
+    private Integer pageIndex = 1;
 
     /**
      * 当前页码，默认是10
      */
-    private Integer limit = 10;
+    private Integer pageSize = 10;
+
 
     /**
      * 组合page
@@ -34,6 +31,6 @@ public class Pageable implements Serializable {
      * @return {@link IPage <?>}
      */
     public <T> IPage<T> page() {
-        return new Page<>(page, limit);
+        return new Page<>(pageIndex, pageSize);
     }
 }

@@ -5,15 +5,10 @@ import com.ytrue.infra.db.query.enums.QueryMethod;
 
 import java.lang.annotation.*;
 
-/**
- * @author ytrue
- * @description: Query
- * @date 2022/12/21 16:22
- */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Repeatable(Queries.class)
-public @interface Query {
+@Repeatable(WhereGroup.class)
+public @interface Where {
 
     /**
      * 字段

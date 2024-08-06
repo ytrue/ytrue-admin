@@ -81,7 +81,7 @@ mybatis-plus:
     # 使用Mybatis时，如果查询语句中某些字段值是null的，则这个字段就无法返回，这里可以设置为true
     call-setters-on-nulls: true
     # 打印sql语句
-    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   # 全局配置
   global-config:
     # 关闭MP3.0自带的banner
@@ -111,6 +111,7 @@ ytrue:
       token-expire-time: 360000000
     ignoring:
       pattern:
+#        - /**
         - /favicon.ico
         - /error
         - /actuator

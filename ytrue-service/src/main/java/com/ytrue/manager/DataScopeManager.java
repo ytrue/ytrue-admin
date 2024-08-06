@@ -11,7 +11,7 @@ import com.ytrue.dao.system.SysDeptDao;
 import com.ytrue.dao.system.SysRoleDao;
 import com.ytrue.dao.system.SysRoleDeptDao;
 import com.ytrue.dao.system.SysUserDao;
-import com.ytrue.infra.security.util.SecurityUtils;
+import com.ytrue.infra.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -46,7 +46,7 @@ public class DataScopeManager {
             if (!deptIds.contains(0L)) {
                 roleIds = sysRoleDeptDao.selectList(Wrappers.<SysRoleDept>lambdaQuery().in(SysRoleDept::getDeptId, deptIds)).stream().map(SysRoleDept::getRoleId).collect(Collectors.toSet());
                 // 要把当前账号的角色放入进去，如果级别包含本人
-                String userId = SecurityUtils.getLoginUser().getUser().getUserId();
+                String userId = SecurityUtil.getLoginUser().getUser().getUserId();
                 roleIds.addAll(sysRoleDao.selectBySysUserId(Long.valueOf(userId)).stream().map(SysRole::getId).collect(Collectors.toSet()));
             } else {
                 roleIds = deptIds;
@@ -65,8 +65,8 @@ public class DataScopeManager {
         Set<Long> resultIds = new HashSet<>();
 
         // 获取用户角色
-        Set<String> roleCodes = SecurityUtils.getLoginUser().getUser().getRoles();
-        SysUser sysUser = sysUserDao.selectById(SecurityUtils.getLoginUser().getUser().getUserId());
+        Set<String> roleCodes = SecurityUtil.getLoginUser().getUser().getRoles();
+        SysUser sysUser = sysUserDao.selectById(SecurityUtil.getLoginUser().getUser().getUserId());
 
         // 超级管理员不做限制
         if (sysUser.getAdmin()) {

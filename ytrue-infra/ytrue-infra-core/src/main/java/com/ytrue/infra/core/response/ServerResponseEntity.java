@@ -29,22 +29,22 @@ public class ServerResponseEntity<T> implements Serializable {
 
 
     public boolean isSuccess() {
-        return Objects.equals(ResponseInfoEnum.SUCCESS.code(), this.code);
+        return Objects.equals(ServerResponseInfoEnum.OK.code(), this.code);
     }
 
 
     public static <T> ServerResponseEntity<T> success(T data) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setData(data);
-        serverResponseEntity.setCode(ResponseInfoEnum.SUCCESS.code());
-        serverResponseEntity.setMessage(ResponseInfoEnum.SUCCESS.message());
+        serverResponseEntity.setCode(ServerResponseInfoEnum.OK.code());
+        serverResponseEntity.setMessage(ServerResponseInfoEnum.OK.message());
         return serverResponseEntity;
     }
 
     public static ServerResponseEntity<Void> success() {
         ServerResponseEntity<Void> serverResponseEntity = new ServerResponseEntity<>();
-        serverResponseEntity.setCode(ResponseInfoEnum.SUCCESS.code());
-        serverResponseEntity.setMessage(ResponseInfoEnum.SUCCESS.message());
+        serverResponseEntity.setCode(ServerResponseInfoEnum.OK.code());
+        serverResponseEntity.setMessage(ServerResponseInfoEnum.OK.message());
         return serverResponseEntity;
     }
 
@@ -52,7 +52,7 @@ public class ServerResponseEntity<T> implements Serializable {
     public static ServerResponseEntity<Void> fail(String msg) {
         ServerResponseEntity<Void> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setMessage(msg);
-        serverResponseEntity.setCode(ResponseInfoEnum.CUSTOM_FAIL_MESSAGE.code());
+        serverResponseEntity.setCode(ServerResponseInfoEnum.CUSTOM_FAIL_MESSAGE.code());
         return serverResponseEntity;
     }
 

@@ -54,7 +54,7 @@
             </el-button>
           </el-col>
 
-          <right-toolbar v-model:showSearch="showSearch" @queryTable="init"/>
+          <right-toolbar v-model:showSearch="showSearch" @WhereTable="init"/>
         </el-row>
 
         <!-- 表格 start-->

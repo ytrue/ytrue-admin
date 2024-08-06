@@ -12,7 +12,7 @@ import com.ytrue.bean.resp.system.SysUserListResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.infra.log.annotation.OperateLog;
 import com.ytrue.service.system.SysUserService;
-import com.ytrue.infra.security.util.SecurityUtils;
+import com.ytrue.infra.security.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -90,14 +90,14 @@ public class SysUserController {
     @PutMapping("updateUserProfile")
     @Operation(summary = "修改用户信息")
     public ServerResponseEntity<Void> updateProfile(@RequestBody SysUserUpdateProfileReq requestParam) {
-        String userId = SecurityUtils.getLoginUser().getUser().getUserId();
+        String userId = SecurityUtil.getLoginUser().getUser().getUserId();
 
         SysUser sysUser = sysUserService.getById(userId);
         sysUser.setEmail(requestParam.getEmail());
         sysUser.setPhone(requestParam.getPhone());
         sysUser.setGender(requestParam.getGender());
         sysUser.setNickName(requestParam.getNickName());
-        sysUser.setAvatarPath(requestParam.getAvatarPath());
+        sysUser.setAvatar(requestParam.getAvatarPath());
 
         sysUserService.updateById(sysUser);
         return ServerResponseEntity.success();

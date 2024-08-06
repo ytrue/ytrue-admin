@@ -45,7 +45,7 @@ public class SysRoleController {
     @PreAuthorize("@pms.hasPermission('system:role:list')")
     public ServerResponseEntity<List<SysRoleListResp>> listAll() {
         SysRolePageQuery queryParam = SysRolePageQuery.builder().build();
-        queryParam.setLimit(Integer.MAX_VALUE);
+        queryParam.setPageSize(Integer.MAX_VALUE);
 
         List<SysRoleListResp> roles = sysRoleService.listBySysRolePageQuery(queryParam).getRecords();
         return ServerResponseEntity.success(roles);

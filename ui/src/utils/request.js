@@ -68,7 +68,7 @@ service.interceptors.request.use(config => {
 // 响应拦截器
 service.interceptors.response.use(res => {
       // 未设置状态码则默认成功状态
-      const code = res.data.code || "2000";
+      const code = res.data.code || "200";
       // 获取错误信息
       const msg = errorCode[code] || res.data.message || errorCode['default']
       // 二进制数据则直接返回
@@ -76,7 +76,7 @@ service.interceptors.response.use(res => {
         return res.data
       }
       // 后端要处理状态
-      if (code === "4001") {
+      if (code === "401") {
         isRelogin.show = true;
         ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
           confirmButtonText: '重新登录',
@@ -90,7 +90,7 @@ service.interceptors.response.use(res => {
         }).catch(() => {
           isRelogin.show = false;
         });
-      } else if (code !== "2000") {
+      } else if (code !== "200") {
         // ElNotification.error({title: msg})
         ElMessage({message: msg, type: 'error'})
         return Promise.reject('error')

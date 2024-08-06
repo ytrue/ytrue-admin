@@ -15,7 +15,7 @@ import com.ytrue.bean.req.system.SysRoleUpdateReq;
 import com.ytrue.bean.resp.system.SysRoleIdResp;
 import com.ytrue.bean.resp.system.SysRoleListResp;
 import com.ytrue.dao.system.*;
-import com.ytrue.infra.core.response.ResponseInfoEnum;
+import com.ytrue.infra.core.response.ServerResponseInfoEnum;
 import com.ytrue.infra.core.response.ServerResponseInfo;
 import com.ytrue.infra.core.util.AssertUtil;
 import com.ytrue.infra.core.util.BeanUtils;
@@ -59,7 +59,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
         // 数据范围限制
         Set<Long> roleIds = this.listCurrentAccountRoleId();
         // 构建查询条件
-        LambdaQueryWrapper<SysRole> queryWrapper = QueryHelp.<SysRole>lambdaQueryWrapperBuilder(queryParam)
+        LambdaQueryWrapper<SysRole> queryWrapper = QueryHelp.<SysRole>builderlambdaQueryWrapper(queryParam)
                 .in(CollectionUtil.isNotEmpty(roleIds), SysRole::getId, roleIds)
                 .orderByAsc(SysRole::getRoleSort)
                 .orderByDesc(SysRole::getId);
@@ -72,7 +72,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
     public SysRoleIdResp getBySysRoleId(Long id) {
         // 获取角色
         SysRole role = getById(id);
-        AssertUtil.notNull(role, ResponseInfoEnum.DATA_NOT_FOUND);
+        AssertUtil.notNull(role, ServerResponseInfoEnum.NOT_FOUND);
         // 获取对应的菜单
         Set<Long> menuIds = sysMenuDao.selectMenuIdsBySysRoleId(id, role.getMenuCheckStrictly());
         // 获取对应的部门
@@ -99,7 +99,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
     @Override
     public void updateSysRole(SysRoleUpdateReq requestParam) {
         SysRole sysRole = this.getById(requestParam.getId());
-        AssertUtil.notNull(sysRole, ResponseInfoEnum.ILLEGAL_OPERATION);
+        AssertUtil.notNull(sysRole, ServerResponseInfoEnum.ILLEGAL_OPERATION);
 
         // 转换下
         SysRole role = BeanUtils.copyProperties(requestParam, SysRole::new);
@@ -115,7 +115,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
     @Override
     public void removeBySysRoleIds(List<Long> ids) {
         // 校验集合
-        AssertUtil.collectionIsNotEmpty(ids, ResponseInfoEnum.ILLEGAL_OPERATION);
+        AssertUtil.collectionIsNotEmpty(ids, ServerResponseInfoEnum.ILLEGAL_OPERATION);
 
         // 只要存在一个 就是无法删除的
         SysUserRole sysUserRole = sysUserRoleDao.selectOne(Wrappers.<SysUserRole>lambdaQuery().in(SysUserRole::getRoleId, ids));

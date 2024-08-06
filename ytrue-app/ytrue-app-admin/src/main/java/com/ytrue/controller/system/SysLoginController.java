@@ -7,9 +7,9 @@ import com.ytrue.bean.dataobject.system.SysRole;
 import com.ytrue.bean.dataobject.system.SysUser;
 import com.ytrue.bean.resp.system.SysUserLoginInfoResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
+import com.ytrue.infra.security.util.SecurityUtil;
 import com.ytrue.service.system.*;
 import com.ytrue.infra.security.service.LoginService;
-import com.ytrue.infra.security.util.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -48,14 +48,14 @@ public class SysLoginController {
     @Operation(summary = "登出")
     @PostMapping("/logout")
     public ServerResponseEntity<Void> logout() {
-        loginService.logout(SecurityUtils.getLoginUser().getUser().getUserId());
+        loginService.logout(SecurityUtil.getLoginUser().getUser().getUserId());
         return ServerResponseEntity.success();
     }
 
     @Operation(summary = "用户信息")
     @GetMapping("/getInfo")
     public ServerResponseEntity<SysUserLoginInfoResp> getSysUserLoginInfo() {
-        String currLoginUserId = SecurityUtils.getLoginUser().getUser().getUserId();
+        String currLoginUserId = SecurityUtil.getLoginUser().getUser().getUserId();
         // 根据用户名获取用户
         SysUser sysUser = sysUserService.getById(Long.valueOf(currLoginUserId));
         // 获取岗位
@@ -83,7 +83,7 @@ public class SysLoginController {
     @Operation(summary = "路由信息")
     @GetMapping("getRouters")
     public ServerResponseEntity<List<Tree<String>>> listMenuTreeBySysUserId() {
-        String currLoginUserId = SecurityUtils.getLoginUser().getUser().getUserId();
+        String currLoginUserId = SecurityUtil.getLoginUser().getUser().getUserId();
 
         List<Tree<String>> menuTree = sysMenuService.listMenuTreeBySysUserId(Long.valueOf(currLoginUserId));
         return ServerResponseEntity.success(menuTree);

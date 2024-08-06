@@ -15,16 +15,17 @@ import com.ytrue.bean.query.system.SysMenuListQuery;
 import com.ytrue.bean.req.system.SysMenuAddReq;
 import com.ytrue.bean.req.system.SysMenuUpdateReq;
 import com.ytrue.bean.resp.system.SysMenuIdResp;
-import com.ytrue.infra.core.response.ResponseInfoEnum;
+import com.ytrue.dao.system.SysMenuDao;
+import com.ytrue.dao.system.SysRoleMenuDao;
+import com.ytrue.dao.system.SysUserDao;
+import com.ytrue.infra.core.constant.StrPool;
+import com.ytrue.infra.core.response.ServerResponseInfoEnum;
 import com.ytrue.infra.core.response.ServerResponseInfo;
 import com.ytrue.infra.core.util.AssertUtil;
 import com.ytrue.infra.core.util.BeanUtils;
 import com.ytrue.infra.db.base.BaseServiceImpl;
-import com.ytrue.dao.system.SysMenuDao;
-import com.ytrue.dao.system.SysRoleMenuDao;
-import com.ytrue.dao.system.SysUserDao;
-import com.ytrue.service.system.SysMenuService;
 import com.ytrue.infra.db.query.util.QueryHelp;
+import com.ytrue.service.system.SysMenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,11 +43,12 @@ import java.util.List;
 public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> implements SysMenuService {
 
     private final SysUserDao sysUserDao;
+
     private final SysRoleMenuDao sysRoleMenuDao;
 
     @Override
     public List<SysMenu> listBySysMenuListQuery(SysMenuListQuery queryParam) {
-        LambdaQueryWrapper<SysMenu> queryWrapper = QueryHelp.<SysMenu>lambdaQueryWrapperBuilder(queryParam)
+        LambdaQueryWrapper<SysMenu> queryWrapper = QueryHelp.<SysMenu>builderlambdaQueryWrapper(queryParam)
                 .orderByAsc(SysMenu::getMenuSort)
                 .orderByDesc(SysMenu::getId);
 
@@ -70,7 +72,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
         AssertUtil.numberNotEquals(requestParam.getId(), requestParam.getPid(), ServerResponseInfo.error("父级不能是自己"));
 
         SysMenu sysMenu = this.getById(requestParam.getId());
-        AssertUtil.notNull(sysMenu, ResponseInfoEnum.ILLEGAL_OPERATION);
+        AssertUtil.notNull(sysMenu, ServerResponseInfoEnum.ILLEGAL_OPERATION);
 
         // 旧的菜单
         Long oldPid = sysMenu.getPid();
@@ -130,26 +132,19 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
         TreeNodeConfig treeNodeConfig = new TreeNodeConfig();
         //转换器
         return TreeUtil.build(menus, "0", treeNodeConfig, (sysMenu, tree) -> {
+            // id
             tree.setId(String.valueOf(sysMenu.getId()));
+            // 父id
             tree.setParentId(String.valueOf(sysMenu.getPid()));
+            // 菜单名称
             tree.setName(sysMenu.getPath());
-
-            // 不是外链，并且是M path要加/
-            String path = sysMenu.getPath();
-            if (MenuTypeEnum.DIRECTORY.getType().equals(sysMenu.getMenuType()) && !sysMenu.getIsFrame()) {
-                path = "/" + path;
-            }
-            tree.putExtra("path", path);
-
+            // 访问path
+            tree.putExtra("path", getPath(sysMenu));
             // 扩展属性 ...
             tree.putExtra("query", sysMenu.getQuery());
             tree.putExtra("hidden", !sysMenu.getVisible());
-
+            // 前端组件
             tree.putExtra("component", getComponent(sysMenu));
-            // 如果是ParentView path要去掉/
-            if (getComponent(sysMenu).equals(ComponentTypeEnum.PARENT_VIEW.getType())) {
-                tree.putExtra("path", sysMenu.getPath());
-            }
 
             // 有子菜单并且类型是M
             if (sysMenu.getSubCount() > 0 && MenuTypeEnum.DIRECTORY.getType().equals(sysMenu.getMenuType())) {
@@ -160,10 +155,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
             meta.put("title", sysMenu.getMenuName());
             meta.put("icon", sysMenu.getIcon());
             meta.put("noCache", !sysMenu.getIsCache());
-            meta.put("link", null);
-            if (sysMenu.getIsFrame()) {
-                meta.put("link", sysMenu.getPath());
-            }
+            meta.put("link", sysMenu.getIsFrame() ? sysMenu.getPath() : null);
             tree.putExtra("meta", meta);
         });
     }
@@ -171,7 +163,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
     @Override
     public List<SysMenu> listBySysUserId(Long userId) {
         SysUser sysUser = sysUserDao.selectById(userId);
-        AssertUtil.notNull(sysUser, ResponseInfoEnum.DATA_NOT_FOUND);
+        AssertUtil.notNull(sysUser, ServerResponseInfoEnum.NOT_FOUND);
 
         // 平台账号,但是是超级管理员
         if (sysUser.getAdmin()) {
@@ -189,10 +181,32 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
     @Override
     public SysMenuIdResp getBySysMenuId(Long id) {
         SysMenu data = this.getById(id);
-        AssertUtil.notNull(data, ResponseInfoEnum.DATA_NOT_FOUND);
+        AssertUtil.notNull(data, ServerResponseInfoEnum.NOT_FOUND);
         return BeanUtils.copyProperties(data, SysMenuIdResp::new);
     }
 
+
+    /**
+     * 获取path
+     * @param menu
+     * @return
+     */
+    private String getPath(SysMenu menu) {
+        // 不是外链, 并且是M, 并且前缀没有 / 的话 path要加/
+        String path = menu.getPath();
+        // 路径调整逻辑
+        if (MenuTypeEnum.DIRECTORY.getType().equals(menu.getMenuType())
+                && !menu.getIsFrame()
+                && path.startsWith(StrPool.SLASH)) {
+            path = StrPool.SLASH + path;
+        }
+
+        // 如果是ParentView path要去掉/，因为是二级
+        if (getComponent(menu).equals(ComponentTypeEnum.PARENT_VIEW.getType())) {
+            path = path.substring(1);
+        }
+        return path;
+    }
 
     /**
      * 获取组件信息
@@ -202,17 +216,22 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
      */
     private String getComponent(SysMenu menu) {
 
+        // 如果组件不为空，就返回内容里面的组件
         if (StrUtil.isNotEmpty(menu.getComponent())) {
             return menu.getComponent();
         }
-        // 默认LAYOUT
-        String component = ComponentTypeEnum.LAYOUT.getType();
 
+        //  如果 pid !=0 并且 是外链接，这里的对应的前端组件是  InnerLink
         if (menu.getPid().intValue() != 0 && menu.getIsFrame()) {
-            component = ComponentTypeEnum.INNER_LINK.getType();
-        } else if (menu.getPid().intValue() != 0 && MenuTypeEnum.DIRECTORY.getType().equals(menu.getMenuType())) {
-            component = ComponentTypeEnum.PARENT_VIEW.getType();
+            return ComponentTypeEnum.INNER_LINK.getType();
         }
-        return component;
+
+        // 如果pid !=0 并且菜单类型是目录(二级)，这里对应的前端组件是 ParentView
+        if (menu.getPid().intValue() != 0 && MenuTypeEnum.DIRECTORY.getType().equals(menu.getMenuType())) {
+            return ComponentTypeEnum.PARENT_VIEW.getType();
+        }
+
+        // 不然返回的前端组件是 Layout
+        return ComponentTypeEnum.LAYOUT.getType();
     }
 }

@@ -1,7 +1,7 @@
 package com.ytrue.manager;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.ytrue.infra.security.util.SecurityUtils;
+import com.ytrue.infra.security.util.SecurityUtil;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 
@@ -24,9 +24,9 @@ public   class MpMetaObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void insertFill(MetaObject metaObject) {
-        if (SecurityUtils.getAuthentication() != null) {
-            if (SecurityUtils.isLogged()) {
-                setFieldValByName(CREATE_BY, SecurityUtils.getLoginUser().getUsername(), metaObject);
+        if (SecurityUtil.getAuthentication() != null) {
+            if (SecurityUtil.isLogged()) {
+                setFieldValByName(CREATE_BY, SecurityUtil.getLoginUser().getUsername(), metaObject);
             }
         }
         setFieldValByName(CREATE_TIME, LocalDateTime.now(), metaObject);
@@ -50,9 +50,9 @@ public   class MpMetaObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void updateFill(MetaObject metaObject) {
-        if (SecurityUtils.getAuthentication() != null) {
-            if (SecurityUtils.isLogged()) {
-                setFieldValByName(UPDATE_BY, SecurityUtils.getLoginUser().getUsername(), metaObject);
+        if (SecurityUtil.getAuthentication() != null) {
+            if (SecurityUtil.isLogged()) {
+                setFieldValByName(UPDATE_BY, SecurityUtil.getLoginUser().getUsername(), metaObject);
             }
         }
         setFieldValByName(UPDATE_TIME, LocalDateTime.now(), metaObject);

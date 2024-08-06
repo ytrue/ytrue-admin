@@ -41,11 +41,8 @@ public class SysUser extends BaseEntity {
     @Schema(description = "用户性别")
     private Integer gender;
 
-    @Schema(description = "头像真实名称")
-    private String avatarName;
-
     @Schema(description = "头像存储的路径")
-    private String avatarPath;
+    private String avatar;
 
     @Schema(description = "密码")
     private String password;

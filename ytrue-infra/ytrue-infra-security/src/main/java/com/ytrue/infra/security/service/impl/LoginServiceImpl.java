@@ -60,12 +60,8 @@ public class LoginServiceImpl implements LoginService {
 
         //把token响应给前端，使用map是未来后期扩展，这里还会加入过期事件，刷新token等...
         HashMap<String, String> resultMap = new HashMap<>(2);
-
         // 自定义载体
-        HashMap<String, Object> claimsMap = new HashMap<>(2);
-        claimsMap.put("userId", userId);
-
-        resultMap.put("token", jwtOperation.createToken(claimsMap));
+        resultMap.put("token", jwtOperation.createToken(Map.of("userId", userId)));
         resultMap.put("expireTime", jwtProperties.getTokenExpireTime().toString());
         return resultMap;
     }

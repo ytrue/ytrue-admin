@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.bean.dataobject.system.SysLog;
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.service.system.SysLogService;
-import com.ytrue.infra.db.query.entity.PageQueryEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -31,10 +30,12 @@ public class SysLogController {
     @PostMapping("page")
     @Operation(summary = "分页")
     @PreAuthorize("@pms.hasPermission('system:log:page')")
-    public ServerResponseEntity<IPage<SysLog>> listByPageQueryEntity(@RequestBody(required = false) PageQueryEntity pageQueryEntity) {
+    public ServerResponseEntity<IPage<SysLog>> listByPageQueryEntity() {
 
-        IPage<SysLog> page = sysLogService.listByPageQueryEntity(pageQueryEntity);
-        return ServerResponseEntity.success(page);
+//        IPage<SysLog> page = sysLogService.listByPageQueryEntity(pageQueryEntity);
+//        return ServerResponseEntity.success(page);
+
+        return null;
     }
 
     @DeleteMapping
