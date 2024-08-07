@@ -103,7 +103,7 @@ ytrue:
   # 安全配置
   security:
     auth-type-parameter-name: auth_type
-    authorization-header-parameter-name: BearerAuth
+    authorization-header-parameter-name: Authorization
     token-cache-prefix: 'login_auth_tokens:'
     # 这个必须要与你认证的接口保存一致
     auth-url: /login

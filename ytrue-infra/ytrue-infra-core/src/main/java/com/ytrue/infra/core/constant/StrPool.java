@@ -87,5 +87,18 @@ public interface StrPool {
      * 默认密码
      */
     String DEFAULT_PASSWORD = "111111";
+    /**
+     * http请求
+     */
+    String HTTP = "http://";
 
+    /**
+     * https请求
+     */
+    String HTTPS = "https://";
+
+    /**
+     * www主域
+     */
+    String WWW = "www.";
 }

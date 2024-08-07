@@ -1,12 +1,12 @@
 package com.ytrue.bean.query.system;
 
-import com.ytrue.bean.query.ListQuery;
 import com.ytrue.infra.db.query.annotation.Where;
 import com.ytrue.infra.db.query.enums.QueryMethod;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -15,7 +15,7 @@ import java.util.List;
  * @date 2022/12/20 11:10
  */
 @Data
-public class SysDeptListQuery extends ListQuery {
+public class SysDeptListQuery implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

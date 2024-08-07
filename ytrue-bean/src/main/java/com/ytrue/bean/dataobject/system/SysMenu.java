@@ -40,7 +40,7 @@ public class SysMenu extends BaseEntity {
     @Schema(description = "路由参数")
     private String query;
 
-    @Schema(description = " 是否为外链（0是 1否）")
+    @Schema(description = " 是否为外链（1是 0否）")
     private Boolean isFrame;
 
     @Schema(description = "是否缓存（0缓存 1不缓存）")
@@ -49,7 +49,7 @@ public class SysMenu extends BaseEntity {
     @Schema(description = "类型（M目录 C菜单 F按钮）")
     private String menuType;
 
-    @Schema(description = "显示状态（0显示 1隐藏）")
+    @Schema(description = "显示状态（1显示 0隐藏）")
     private Boolean visible;
 
     @Schema(description = " 菜单状态（0正常 1停用）")

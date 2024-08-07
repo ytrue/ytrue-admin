@@ -11,8 +11,7 @@ import lombok.EqualsAndHashCode;
  * @date 2022/12/21 19:06
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public abstract class PageQuery extends ListQuery {
+public abstract class PageQuery{
 
     /**
      * 当前页码，默认是1

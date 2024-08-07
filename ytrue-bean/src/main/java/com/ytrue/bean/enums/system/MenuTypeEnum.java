@@ -12,15 +12,17 @@ import lombok.Getter;
 @RequiredArgsConstructor
 public enum MenuTypeEnum {
 
-    /**
-     * C菜单
-     */
-    MENU("C"),
+
 
     /**
      * M目录
      */
     DIRECTORY("M"),
+
+    /**
+     * C菜单
+     */
+    MENU("C"),
 
     /**
      * F按钮

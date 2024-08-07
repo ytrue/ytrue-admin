@@ -5,6 +5,7 @@ import com.ytrue.bean.dataobject.system.SysRole;
 import com.ytrue.bean.query.system.SysRolePageQuery;
 import com.ytrue.bean.req.system.SysRoleAddReq;
 import com.ytrue.bean.req.system.SysRoleUpdateReq;
+
 import com.ytrue.bean.resp.system.SysRoleIdResp;
 import com.ytrue.bean.resp.system.SysRoleListResp;
 import com.ytrue.infra.db.base.IBaseService;
@@ -62,7 +63,7 @@ public interface SysRoleService extends IBaseService<SysRole> {
      * @param userId
      * @return
      */
-    Set<SysRole> listBySysUserId(Long userId);
+    List<SysRole> listBySysUserId(Long userId);
 
 
     /**

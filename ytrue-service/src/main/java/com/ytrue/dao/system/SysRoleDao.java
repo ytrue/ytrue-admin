@@ -1,11 +1,12 @@
 package com.ytrue.dao.system;
 
-import com.ytrue.infra.db.base.IBaseDao;
 import com.ytrue.bean.dataobject.system.SysRole;
+import com.ytrue.infra.db.base.IBaseDao;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -48,5 +49,5 @@ public interface SysRoleDao extends IBaseDao<SysRole> {
                              LEFT JOIN sys_user u ON u.id = sur.user_id
                     WHERE u.id = 1
             """)
-    Set<SysRole> selectBySysUserId(@Param("userId") Long userId);
+    List<SysRole> selectBySysUserId(@Param("userId") Long userId);
 }

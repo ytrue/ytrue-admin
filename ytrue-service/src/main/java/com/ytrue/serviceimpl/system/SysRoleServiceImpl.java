@@ -128,7 +128,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
     }
 
     @Override
-    public Set<SysRole> listBySysUserId(Long userId) {
+    public List<SysRole> listBySysUserId(Long userId) {
         return baseMapper.selectBySysUserId(userId);
     }
 

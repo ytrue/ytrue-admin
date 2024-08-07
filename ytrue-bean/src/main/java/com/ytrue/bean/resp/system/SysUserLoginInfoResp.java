@@ -21,13 +21,13 @@ public class SysUserLoginInfoResp implements Serializable {
     private SysUser user;
 
     @Schema(description = "部门信息")
-    private SysDept dept;
+    private SysDeptIdResp dept;
 
     @Schema(description = "角色信息")
-    private Set<SysRole> roles;
+    private List<SysRoleListResp> roles;
 
     @Schema(description = "岗位信息")
-    private List<SysJob> jobs;
+    private List<SysJobListResp> jobs;
 
     @Schema(description = "角色code")
     private Set<String> roleCodes;

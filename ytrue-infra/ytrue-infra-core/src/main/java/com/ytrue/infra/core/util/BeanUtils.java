@@ -6,6 +6,14 @@ import java.util.function.Supplier;
 
 public class BeanUtils extends org.springframework.beans.BeanUtils {
 
+
+
+
+    public static <T> T copyProperties(Object source, Supplier<T> supplier) {
+        T t = supplier.get();
+        copyProperties(source,t);
+        return t;
+    }
     /**
      * 集合数据的拷贝
      *
@@ -15,14 +23,6 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
      */
     public static <S, T> List<T> copyListProperties(List<S> sources, Supplier<T> target) {
         return copyListProperties(sources, target, null);
-    }
-
-
-
-    public static <T> T copyProperties(Object source, Supplier<T> supplier) {
-        T t = supplier.get();
-        copyProperties(source,t);
-        return t;
     }
 
 

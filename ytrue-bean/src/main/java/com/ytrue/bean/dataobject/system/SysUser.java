@@ -1,6 +1,7 @@
 package com.ytrue.bean.dataobject.system;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ytrue.bean.dataobject.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -44,6 +45,7 @@ public class SysUser extends BaseEntity {
     @Schema(description = "头像存储的路径")
     private String avatar;
 
+    @JsonIgnore
     @Schema(description = "密码")
     private String password;
 

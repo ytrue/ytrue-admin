@@ -78,13 +78,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 throw new InvalidTokenException("无效token");
             }
         } catch (Exception e) {
-            ServletWebRequestUtil.errorPathForward(request, response, e, 4001);
+            ServletWebRequestUtil.errorPathForward(request, response, e, 401);
             return;
         }
 
         String userJsonData = redisTemplate.opsForValue().get(securityProperties.getTokenCachePrefix() + userId);
         if (StrUtil.isEmpty(userJsonData)) {
-            ServletWebRequestUtil.errorPathForward(request, response, new InvalidTokenException("无效token"), 4001);
+            ServletWebRequestUtil.errorPathForward(request, response, new InvalidTokenException("无效token"), 401);
             return;
         }
 

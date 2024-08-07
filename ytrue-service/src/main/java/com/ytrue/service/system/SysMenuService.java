@@ -5,6 +5,7 @@ import com.ytrue.bean.query.system.SysMenuListQuery;
 import com.ytrue.bean.req.system.SysMenuAddReq;
 import com.ytrue.bean.req.system.SysMenuUpdateReq;
 import com.ytrue.bean.resp.system.SysMenuIdResp;
+import com.ytrue.bean.resp.system.SysRouterResp;
 import com.ytrue.infra.db.base.IBaseService;
 import com.ytrue.bean.dataobject.system.SysMenu;
 
@@ -39,13 +40,7 @@ public interface SysMenuService extends IBaseService<SysMenu> {
      */
     void removeBySysMenuIds(List<Long> ids);
 
-    /**
-     * 获取菜单树形结构，根据用户id
-     *
-     * @param userId
-     * @return
-     */
-    List<Tree<String>> listMenuTreeBySysUserId(Long userId);
+
 
     /**
      * 根据用户id获取菜单列表
@@ -62,4 +57,11 @@ public interface SysMenuService extends IBaseService<SysMenu> {
      * @return
      */
     SysMenuIdResp getBySysMenuId(Long id);
+
+    /**
+     * 获取路由信息
+     * @param userId
+     * @return
+     */
+    List<SysRouterResp> listSysRouterBySysUserId(Long userId);
 }

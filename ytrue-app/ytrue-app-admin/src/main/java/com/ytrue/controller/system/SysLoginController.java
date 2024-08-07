@@ -1,15 +1,13 @@
 package com.ytrue.controller.system;
 
 import cn.hutool.core.lang.tree.Tree;
-import com.ytrue.bean.dataobject.system.SysDept;
-import com.ytrue.bean.dataobject.system.SysJob;
-import com.ytrue.bean.dataobject.system.SysRole;
 import com.ytrue.bean.dataobject.system.SysUser;
-import com.ytrue.bean.resp.system.SysUserLoginInfoResp;
+import com.ytrue.bean.resp.system.*;
 import com.ytrue.infra.core.response.ServerResponseEntity;
+import com.ytrue.infra.core.util.BeanUtils;
+import com.ytrue.infra.security.service.LoginService;
 import com.ytrue.infra.security.util.SecurityUtil;
 import com.ytrue.service.system.*;
-import com.ytrue.infra.security.service.LoginService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author ytrue
@@ -59,11 +58,12 @@ public class SysLoginController {
         // 根据用户名获取用户
         SysUser sysUser = sysUserService.getById(Long.valueOf(currLoginUserId));
         // 获取岗位
-        List<SysJob> sysJobs = sysJobService.listBySysUserId(sysUser.getId());
+        List<SysJobListResp> sysJobs = sysJobService.listBySysUserId(sysUser.getId()).stream().map(sysJob -> BeanUtils.copyProperties(sysJob, SysJobListResp::new)).collect(Collectors.toList());
         // 获取部门
-        SysDept sysDept = sysDeptService.getById(sysUser.getDeptId());
+        SysDeptIdResp sysDept = BeanUtils.copyProperties(sysDeptService.getById(sysUser.getDeptId()), SysDeptIdResp::new);
         // 获取角色
-        Set<SysRole> sysRoles = sysRoleService.listBySysUserId(sysUser.getId());
+        List<SysRoleListResp> sysRoles = BeanUtils.copyListProperties(sysRoleService.listBySysUserId(sysUser.getId()), SysRoleListResp::new);
+
         // 权限集合
         Set<String> permissions = sysPermissionService.listPermissionBySysUser(sysUser);
         // 角色集合
@@ -82,11 +82,9 @@ public class SysLoginController {
 
     @Operation(summary = "路由信息")
     @GetMapping("getRouters")
-    public ServerResponseEntity<List<Tree<String>>> listMenuTreeBySysUserId() {
+    public ServerResponseEntity<List<SysRouterResp>> listMenuTreeBySysUserId() {
         String currLoginUserId = SecurityUtil.getLoginUser().getUser().getUserId();
-
-        List<Tree<String>> menuTree = sysMenuService.listMenuTreeBySysUserId(Long.valueOf(currLoginUserId));
+        List<SysRouterResp> menuTree = sysMenuService.listSysRouterBySysUserId(Long.valueOf(currLoginUserId));
         return ServerResponseEntity.success(menuTree);
     }
-
 }
