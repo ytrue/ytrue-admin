@@ -1,0 +1,71 @@
+# 忽略 Visual Studio 相关文件和目录
+.vs/                       # Visual Studio IDE 目录
+*.vscode/                  # Visual Studio Code 设置文件
+*.suo                      # Solution User Options 文件
+*.user                     # 用户特定文件
+*.sln.docstates            # Solution 特定设置
+*.userprefs                # 用户偏好设置文件
+
+# 忽略 Rider 特定文件和目录
+.idea/                     # Rider IDE 目录
+.idea/*
+
+./Ytrue.Endpoints.Admin/[Bb]in/*
+./Ytrue.Endpoints.Admin/[Oo]bj/*
+
+./Ytrue.Infrastructures/[Bb]in/*
+./Ytrue.Infrastructures/[Oo]bj/*
+
+./Ytrue.Services/[Bb]in/*
+./Ytrue.Services/[Oo]bj/*
+
+./Ytrue.Repositories/[Bb]in/*
+./Ytrue.Repositories/[Oo]bj/*
+
+./Ytrue.Models/[Bb]in/*
+./Ytrue.Models/[Oo]bj/*
+
+# 忽略 NuGet packages
+*.nuget.props              # NuGet 配置文件
+*.lock                     # 包版本锁定文件
+packages/                  # NuGet packages 目录
+*.nupkg                    # NuGet package 文件
+*.paket.restore            # Paket package 恢复文件
+paket-files/               # Paket packages 目录
+
+# 忽略构建输出
+[Dd]ebug/                  # 调试构建输出目录
+[Rr]elease/                # 发布构建输出目录
+x64/                       # x64 构建输出目录
+x86/                       # x86 构建输出目录
+[Aa][Rr][Mm]/              # ARM 构建输出目录
+[Aa][Rr][Mm]64/            # ARM64 构建输出目录
+bld/                       # 构建输出目录
+.[Bb]in/                    # 二进制输出目录
+.[Oo]bj/                    # 对象输出目录
+
+# 忽略代码分析文件
+*.psess                    # Visual Studio 代码分析会话文件
+*.vsp                      # Visual Studio 性能分析文件
+*.vspx                     # Visual Studio 性能会话文件
+
+# 忽略 Resharper 相关文件
+_ReSharper*/                # Resharper 目录
+*.resharper                # Resharper 设置文件
+*.DotSettings.user         # Resharper 用户特定设置文件
+
+# 忽略 SQL Server 文件
+*.mdf                      # SQL Server 数据库文件
+*.ldf                      # SQL Server 日志文件
+
+# 忽略测试结果
+[Tt]est[Rr]esult*/         # 测试结果目录
+*.trx                      # Visual Studio 测试结果文件
+*.testsettings             # Visual Studio 测试设置文件
+
+# 忽略其他杂项文件
+*.[Cc]ache                 # 通用缓存文件
+*.log                      # 日志文件
+*.sqlite                   # SQLite 数据库文件
+*.sqlite3                  # SQLite3 数据库文件
+*.sdf                      # SQL Server Compact 数据库文件

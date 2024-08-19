@@ -1,0 +1,236 @@
+#app {
+
+  .main-container {
+    min-height: 100%;                          // 设置最小高度为100%
+    transition: margin-left .28s;              // 左边距过渡效果
+    margin-left: $base-sidebar-width;          // 默认左边距为侧边栏宽度
+    position: relative;                       // 相对定位
+  }
+
+  .sidebarHide {
+    margin-left: 0!important;                 // 隐藏侧边栏时左边距为0
+  }
+
+  .sidebar-container {
+    -webkit-transition: width .28s;           // Webkit浏览器的宽度过渡效果
+    transition: width 0.28s;                  // 宽度过渡效果
+    width: $base-sidebar-width !important;     // 侧边栏宽度
+    background-color: $base-menu-background;  // 侧边栏背景色
+    height: 100%;                             // 高度为100%
+    position: fixed;                          // 固定定位
+    font-size: 0px;                           // 字体大小为0
+    top: 0;                                   // 顶部对齐
+    bottom: 0;                                // 底部对齐
+    left: 0;                                  // 左侧对齐
+    z-index: 1001;                            // 层级
+    overflow: hidden;                         // 隐藏溢出内容
+    -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);  // Webkit浏览器的阴影效果
+    box-shadow: 2px 0 6px rgba(0,21,41,.35);         // 阴影效果
+
+    // 重置 element-ui 的 CSS
+    .horizontal-collapse-transition {
+      transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
+    }
+
+    .scrollbar-wrapper {
+      overflow-x: hidden !important;          // 隐藏水平滚动条
+    }
+
+    .el-scrollbar__bar.is-vertical {
+      right: 0px;                             // 垂直滚动条在右侧
+    }
+
+    .el-scrollbar {
+      height: 100%;                           // 滚动条高度为100%
+    }
+
+    &.has-logo {
+      .el-scrollbar {
+        height: calc(100% - 50px);            // 带标志时滚动条高度减少50px
+      }
+    }
+
+    .is-horizontal {
+      display: none;                          // 隐藏水平菜单
+    }
+
+    a {
+      display: inline-block;                  // 链接为内联块元素
+      width: 100%;                             // 宽度为100%
+      overflow: hidden;                       // 隐藏溢出内容
+    }
+
+    .svg-icon {
+      margin-right: 16px;                     // SVG图标右边距16px
+    }
+
+    .el-menu {
+      border: none;                           // 去掉边框
+      height: 100%;                           // 高度为100%
+      width: 100% !important;                 // 宽度为100%
+    }
+
+    .el-menu-item, .menu-title {
+      overflow: hidden !important;            // 隐藏溢出内容
+      text-overflow: ellipsis !important;     // 文本溢出时显示省略号
+      white-space: nowrap !important;         // 不换行
+    }
+
+    .el-menu-item .el-menu-tooltip__trigger {
+      display: inline-block !important;       // 工具提示触发器为内联块元素
+    }
+
+    // 菜单悬停效果
+    .sub-menu-title-noDropdown,
+    .el-sub-menu__title {
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.06) !important;  // 悬停背景色
+      }
+    }
+
+    & .theme-dark .is-active > .el-sub-menu__title {
+      color: $base-menu-color-active !important;  // 激活状态的标题颜色
+    }
+
+    & .nest-menu .el-sub-menu>.el-sub-menu__title,
+    & .el-sub-menu .el-menu-item {
+      min-width: $base-sidebar-width !important;  // 最小宽度为侧边栏宽度
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.06) !important;  // 悬停背景色
+      }
+    }
+
+    & .theme-dark .nest-menu .el-sub-menu>.el-sub-menu__title,
+    & .theme-dark .el-sub-menu .el-menu-item {
+      background-color: $base-sub-menu-background !important;  // 暗色主题的子菜单背景色
+
+      &:hover {
+        background-color: $base-sub-menu-hover !important;  // 暗色主题的悬停背景色
+      }
+    }
+  }
+
+  .hideSidebar {
+    .sidebar-container {
+      width: 54px !important;                // 隐藏侧边栏时宽度为54px
+    }
+
+    .main-container {
+      margin-left: 54px;                    // 隐藏侧边栏时左边距为54px
+    }
+
+    .sub-menu-title-noDropdown {
+      padding: 0 !important;               // 隐藏侧边栏时子菜单标题无内边距
+      position: relative;                   // 相对定位
+
+      .el-tooltip {
+        padding: 0 !important;             // 隐藏侧边栏时工具提示无内边距
+
+        .svg-icon {
+          margin-left: 20px;                // 工具提示中的SVG图标左边距20px
+        }
+      }
+    }
+
+    .el-sub-menu {
+      overflow: hidden;                     // 隐藏侧边栏时子菜单溢出内容
+
+      &>.el-sub-menu__title {
+        padding: 0 !important;             // 子菜单标题无内边距
+
+        .svg-icon {
+          margin-left: 20px;                // 子菜单标题中的SVG图标左边距20px
+        }
+      }
+    }
+
+    .el-menu--collapse {
+      .el-sub-menu {
+        &>.el-sub-menu__title {
+          &>span {
+            height: 0;
+            width: 0;
+            overflow: hidden;
+            visibility: hidden;
+            display: inline-block;          // 隐藏子菜单标题中的文本
+          }
+          &>i {
+            height: 0;
+            width: 0;
+            overflow: hidden;
+            visibility: hidden;
+            display: inline-block;          // 隐藏子菜单标题中的图标
+          }
+        }
+      }
+    }
+  }
+
+  .el-menu--collapse .el-menu .el-sub-menu {
+    min-width: $base-sidebar-width !important;  // 收起菜单时子菜单最小宽度为侧边栏宽度
+  }
+
+  // 移动端响应式
+  .mobile {
+    .main-container {
+      margin-left: 0px;                    // 移动端左边距为0
+    }
+
+    .sidebar-container {
+      transition: transform .28s;          // 移动端侧边栏转换效果
+      width: $base-sidebar-width !important; // 侧边栏宽度
+    }
+
+    &.hideSidebar {
+      .sidebar-container {
+        pointer-events: none;               // 隐藏侧边栏时禁用点击事件
+        transition-duration: 0.3s;         // 转换持续时间
+        transform: translate3d(-$base-sidebar-width, 0, 0);  // 隐藏侧边栏时平移效果
+      }
+    }
+  }
+
+  .withoutAnimation {
+
+    .main-container,
+    .sidebar-container {
+      transition: none;                    // 无动画效果
+    }
+  }
+}
+
+// 菜单收起时
+.el-menu--vertical {
+  &>.el-menu {
+    .svg-icon {
+      margin-right: 16px;                 // 收起菜单时SVG图标右边距16px
+    }
+  }
+
+  .nest-menu .el-sub-menu>.el-sub-menu__title,
+  .el-menu-item {
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.06) !important;  // 收起菜单时悬停背景色
+    }
+  }
+
+  // 当子菜单过长时出现滚动条
+  >.el-menu--popup {
+    max-height: 100vh;                     // 最大高度为视口高度
+    overflow-y: auto;                     // 纵向滚动条
+
+    &::-webkit-scrollbar-track-piece {
+      background: #d3dce6;                // 滚动条轨道颜色
+    }
+
+    &::-webkit-scrollbar {
+      width: 6px;                         // 滚动条宽度
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #99a9bf;                // 滚动条滑块颜色
+      border-radius: 20px;                // 滚动条滑块圆角
+    }
+  }
+}

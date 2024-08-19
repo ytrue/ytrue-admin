@@ -1,0 +1,44 @@
+# Logging 配置部分
+Logging:
+  # 日志级别配置
+  LogLevel:
+    # 默认日志级别
+    Default: Information
+    # 特定于 Microsoft.AspNetCore 的日志级别
+    Microsoft.AspNetCore: Warning
+    
+# 连接配置
+ConnectionStrings:
+  # Mysql 连接配置
+  Mysql: "Server=127.0.0.1;Database=crmeb;Uid=root;Pwd=root;"
+
+# 允许的主机设置
+AllowedHosts: "*"
+
+# Security 配置部分
+Security:
+  # 授权头参数名称
+  AuthorizationHeaderParameterName: "Authorization"
+  # JWT 相关设置
+  JwtSetting:
+    # 用于签名 JWT 的密钥
+    TokenSecret: "your_token_secret312312hfsdjkfjsdhgdjgjdfsdffsdfgsdgasdiasdhiashd"
+    # JWT 的过期时间（毫秒）
+    TokenExpireTime: 1800000
+    # 在 JWT 过期之前的警告时间（秒）
+    BeforeTime: 0
+    # JWT 使用的加密算法
+    JwtAlg: HS256
+    # JWT 分隔符（如果有的话）
+    JwtSeparator: "Bearer#"
+    # JWT 的发行者
+    Issuer: ""
+    # JWT 的受众
+    Audience: ""
+  # 允许匿名访问的路径设置
+  AllowAnonymousPath:
+    # 定义允许匿名访问的端点
+    Endpoints:
+      # 端点路径和方法配置
+      - Path: "/**"
+        Methods: "*"

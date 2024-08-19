@@ -1,0 +1,53 @@
+// 全局过渡效果 CSS
+
+/* 渐变效果 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.28s;               // 渐变效果的过渡时间为0.28秒
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;                              // 渐变进入和离开时的透明度为0
+}
+
+/* 渐变+平移效果 */
+.fade-transform--move,
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all .5s;                     // 所有属性的过渡时间为0.5秒
+}
+
+.fade-transform-leave-active {
+  position: absolute;                      // 离开时的定位为绝对定位
+}
+
+.fade-transform-enter {
+  opacity: 0;                              // 进入时的透明度为0
+  transform: translateX(-30px);            // 进入时向左移动30像素
+}
+
+.fade-transform-leave-to {
+  opacity: 0;                              // 离开时的透明度为0
+  transform: translateX(30px);             // 离开时向右移动30像素
+}
+
+/* 面包屑导航过渡效果 */
+.breadcrumb-enter-active,
+.breadcrumb-leave-active {
+  transition: all .5s;                     // 所有属性的过渡时间为0.5秒
+}
+
+.breadcrumb-enter,
+.breadcrumb-leave-active {
+  opacity: 0;                              // 面包屑导航进入和离开时的透明度为0
+  transform: translateX(20px);             // 面包屑导航进入和离开时向右移动20像素
+}
+
+.breadcrumb-move {
+  transition: all .5s;                     // 移动时所有属性的过渡时间为0.5秒
+}
+
+.breadcrumb-leave-active {
+  position: absolute;                      // 离开时的定位为绝对定位
+}

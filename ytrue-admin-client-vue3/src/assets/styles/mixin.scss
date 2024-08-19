@@ -1,0 +1,71 @@
+ // 清除浮动
+@mixin clearfix {
+  &:after {
+    content: "";                            // 添加一个空内容
+    display: table;                         // 使其成为块级元素
+    clear: both;                            // 清除浮动
+  }
+}
+
+// 自定义滚动条样式
+@mixin scrollBar {
+  &::-webkit-scrollbar-track-piece {
+    background: #d3dce6;                    // 滚动条轨道背景色
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;                            // 滚动条宽度
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #99a9bf;                    // 滚动条滑块背景色
+    border-radius: 20px;                   // 滚动条滑块圆角
+  }
+}
+
+// 相对定位和全宽高
+@mixin relative {
+  position: relative;                     // 相对定位
+  width: 100%;                            // 宽度为100%
+  height: 100%;                           // 高度为100%
+}
+
+// 按百分比设置宽度，并居中对齐
+@mixin pct($pct) {
+  width: #{$pct};                         // 设置宽度为传入的百分比值
+  position: relative;                    // 相对定位
+  margin: 0 auto;                        // 垂直方向无外边距，水平居中
+}
+
+// 创建三角形
+@mixin triangle($width, $height, $color, $direction) {
+  $width: $width/2;                       // 宽度的一半
+  $color-border-style: $height solid $color;   // 三角形颜色边框样式
+  $transparent-border-style: $width solid transparent; // 透明边框样式
+  height: 0;                              // 高度为0
+  width: 0;                               // 宽度为0
+
+  @if $direction == up {
+    border-bottom: $color-border-style;   // 向上三角形的下边框
+    border-left: $transparent-border-style; // 左边框透明
+    border-right: $transparent-border-style; // 右边框透明
+  }
+
+  @else if $direction == right {
+    border-left: $color-border-style;    // 向右三角形的左边框
+    border-top: $transparent-border-style; // 上边框透明
+    border-bottom: $transparent-border-style; // 下边框透明
+  }
+
+  @else if $direction == down {
+    border-top: $color-border-style;     // 向下三角形的上边框
+    border-left: $transparent-border-style; // 左边框透明
+    border-right: $transparent-border-style; // 右边框透明
+  }
+
+  @else if $direction == left {
+    border-right: $color-border-style;   // 向左三角形的右边框
+    border-top: $transparent-border-style; // 上边框透明
+    border-bottom: $transparent-border-style; // 下边框透明
+  }
+}

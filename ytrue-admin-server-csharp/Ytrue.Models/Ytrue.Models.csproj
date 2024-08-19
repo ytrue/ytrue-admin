@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Entities\" />
+      <Folder Include="Enums\" />
+      <Folder Include="Queries\" />
+      <Folder Include="Reqs\" />
+      <Folder Include="Resps\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SqlSugarCoreNoDrive" Version="5.1.4.166" />
+    </ItemGroup>
+
+</Project>

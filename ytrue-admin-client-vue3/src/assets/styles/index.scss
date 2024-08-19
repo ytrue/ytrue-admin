@@ -1,0 +1,76 @@
+// 导入所需的SCSS文件
+@import './variables.module.scss';   // 变量定义
+@import './mixin.scss';              // 混合宏定义
+@import './transition.scss';         // 过渡效果
+@import './sidebar.scss';            // 侧边栏样式
+@import './element-ui';            // element ui
+
+
+// 全局样式
+body {
+  height: 100%;                        // 设置body高度为100%
+  margin: 0;                           // 去掉默认外边距
+  -moz-osx-font-smoothing: grayscale;  // 优化MacOS字体渲染
+  -webkit-font-smoothing: antialiased; // 优化Webkit浏览器字体渲染
+  text-rendering: optimizeLegibility;  // 优化文本渲染
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif; // 设置字体
+}
+
+label {
+  font-weight: 700;                    // 设置label字体加粗
+}
+
+html {
+  height: 100%;                        // 设置html高度为100%
+  box-sizing: border-box;             // 设置box-sizing为border-box
+}
+
+#app {
+  height: 100%;                        // 设置#app高度为100%
+}
+
+// 通用样式
+*,
+*:before,
+*:after {
+  box-sizing: inherit;                // 继承box-sizing属性
+}
+
+a:focus,
+a:active {
+  outline: none;                       // 去掉a标签的焦点轮廓
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;                    // 设置光标为手型
+  color: inherit;                     // 继承字体颜色
+  text-decoration: none;              // 去掉下划线
+}
+
+div:focus {
+  outline: none;                      // 去掉div的焦点轮廓
+}
+
+
+.clearfix {
+  &:after {
+    visibility: hidden;              // 隐藏伪元素
+    display: block;                  // 使伪元素为块级元素
+    font-size: 0;                    // 设置字体大小为0
+    content: " ";                    // 添加空内容
+    clear: both;                     // 清除浮动
+    height: 0;                       // 高度为0
+  }
+}
+
+
+// 主要容器全局样式
+.app-container {
+  padding: 20px;                     // 内边距
+}
+
+.mb8 {
+  margin-bottom: 8px;
+}

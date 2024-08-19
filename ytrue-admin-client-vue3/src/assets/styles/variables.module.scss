@@ -1,0 +1,66 @@
+// 基础颜色
+$blue: #324157;          // 深蓝色
+$light-blue: #3A71A8;    // 浅蓝色
+$red: #C03639;          // 红色
+$pink: #E65D6E;         // 粉色
+$green: #30B08F;        // 绿色
+$tiffany: #4AB7BD;      // 绿松石色
+$yellow: #FEC171;       // 黄色
+$panGreen: #30B08F;     // 绿色（重复定义）
+
+// 默认菜单主题风格
+$base-menu-color: #bfcbd9;                // 菜单颜色
+$base-menu-color-active: #f4f4f5;         // 激活状态菜单颜色
+$base-menu-background: #304156;           // 菜单背景色
+$base-logo-title-color: #ffffff;          // 标志标题颜色
+
+$base-menu-light-color: rgba(0, 0, 0, 0.7);  // 浅色菜单文字颜色
+$base-menu-light-background: #ffffff;       // 浅色菜单背景色
+$base-logo-light-title-color: #001529;      // 浅色标志标题颜色
+
+$base-sub-menu-background: #1f2d3d;       // 子菜单背景色
+$base-sub-menu-hover: #001528;            // 子菜单悬停颜色
+
+// 自定义暗色菜单风格
+/**
+$base-menu-color:hsla(0,0%,100%,.65);      // 暗色菜单颜色
+$base-menu-color-active:#fff;              // 暗色激活状态菜单颜色
+$base-menu-background:#001529;             // 暗色菜单背景色
+$base-logo-title-color: #ffffff;           // 暗色标志标题颜色
+
+$base-menu-light-color:rgba(0,0,0,.70);    // 暗色菜单文字颜色
+$base-menu-light-background:#ffffff;       // 暗色菜单背景色
+$base-logo-light-title-color: #001529;     // 暗色标志标题颜色
+
+$base-sub-menu-background:#000c17;         // 暗色子菜单背景色
+$base-sub-menu-hover:#001528;              // 暗色子菜单悬停颜色
+*/
+
+// 颜色变量
+$--color-primary: #409EFF;     // 主要颜色
+$--color-success: #67C23A;     // 成功颜色
+$--color-warning: #E6A23C;     // 警告颜色
+$--color-danger: #F56C6C;      // 危险颜色
+$--color-info: #909399;        // 信息颜色
+
+$base-sidebar-width: 200px;    // 侧边栏宽度
+
+// :export 指令是 webpack 的魔法法宝
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+  menuColor: $base-menu-color;                // 菜单颜色
+  menuLightColor: $base-menu-light-color;     // 浅色菜单文字颜色
+  menuColorActive: $base-menu-color-active;   // 激活状态菜单颜色
+  menuBackground: $base-menu-background;      // 菜单背景色
+  menuLightBackground: $base-menu-light-background;  // 浅色菜单背景色
+  subMenuBackground: $base-sub-menu-background;       // 子菜单背景色
+  subMenuHover: $base-sub-menu-hover;          // 子菜单悬停颜色
+  sideBarWidth: $base-sidebar-width;           // 侧边栏宽度
+  logoTitleColor: $base-logo-title-color;      // 标志标题颜色
+  logoLightTitleColor: $base-logo-light-title-color; // 浅色标志标题颜色
+  primaryColor: $--color-primary;              // 主要颜色
+  successColor: $--color-success;              // 成功颜色
+  dangerColor: $--color-danger;                // 危险颜色
+  infoColor: $--color-info;                    // 信息颜色
+  warningColor: $--color-warning;              // 警告颜色
+}

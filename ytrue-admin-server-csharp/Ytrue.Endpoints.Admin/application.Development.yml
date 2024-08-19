@@ -1,0 +1,8 @@
+# Logging 配置部分
+Logging:
+  # 日志级别配置
+  LogLevel:
+    # 默认日志级别
+    Default: Information
+    # 针对 Microsoft.AspNetCore 的日志级别
+    Microsoft.AspNetCore: Warning
