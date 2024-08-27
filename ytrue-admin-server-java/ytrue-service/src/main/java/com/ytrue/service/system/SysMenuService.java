@@ -25,14 +25,14 @@ public interface SysMenuService extends IBaseService<SysMenu> {
      *
      * @param requestParam
      */
-    void addMenu(SysMenuAddReq requestParam);
+    void addSysMenu(SysMenuAddReq requestParam);
 
     /**
      * 修改菜单
      *
      * @param requestParam
      */
-    void updateMenu(SysMenuUpdateReq requestParam);
+    void updateSysMenu(SysMenuUpdateReq requestParam);
     /**
      * 删除菜单
      *

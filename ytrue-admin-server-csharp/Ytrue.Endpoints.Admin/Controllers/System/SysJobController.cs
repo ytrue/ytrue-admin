@@ -53,7 +53,7 @@ public class SysJobController : ControllerBase
     [Permission("system:job:list")]
     public async Task<ServerResponseEntity<List<SysJobListResp>>> ListAllAsync()
     {
-        var query = new SysJobPageQuery()
+        var query = new SysJobPageQuery
         {
             Status = true,
             PageIndex = 1,

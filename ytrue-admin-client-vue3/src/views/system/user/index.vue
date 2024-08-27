@@ -29,7 +29,7 @@
 
       <!--用户数据-->
       <el-col :span="20" :xs="24">
-        <el-form :model="searchFrom" ref="searchFromRef" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :model="searchFrom" ref="searchFormRef" :inline="true" v-show="showSearch" label-width="68px">
           <el-form-item label="用户名称" prop="username">
             <el-input
                 v-model="searchFrom.username"
@@ -177,14 +177,14 @@ import {onMounted, reactive, ref, watch} from "vue";
 import * as userApi from "@/api/system/user";
 import {ElMessage, ElMessageBox} from "element-plus";
 import * as deptAi from "@/api/system/dept";
-import {treeDataTranslate} from "@//utils/common";
-import AddOrUpdate from '@//views/system/user/component/AddOrUpdate.vue';
+import {treeDataTranslate} from "@/utils/common";
+import AddOrUpdate from '@/views/system/user/component/AddOrUpdate.vue';
 import Pagination from '@/components/Pagination/index.vue'
 
 // 弹窗的ref
 const addOrUpdateRef = ref()
 // 搜索的ref
-const searchFromRef = ref()
+const searchFormRef = ref()
 // 表格的
 const tableRef = ref()
 // deptTreeRef
@@ -265,7 +265,7 @@ function init(deptId = '') {
 
 // 重置表单数据
 function reset() {
-  searchFromRef.value?.resetFields()
+  searchFormRef.value?.resetFields()
   init(deptId.value)
 }
 

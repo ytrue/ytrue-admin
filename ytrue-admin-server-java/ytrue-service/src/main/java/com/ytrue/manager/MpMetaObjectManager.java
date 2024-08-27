@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 @Component
-public   class MpMetaObjectHandler implements MetaObjectHandler {
+public   class MpMetaObjectManager implements MetaObjectHandler {
 
 
     private final static String UPDATE_TIME = "updateTime";

@@ -1,16 +1,18 @@
 <template>
   <div class="app-container">
 
-    <el-tabs v-model="activeSetting" @tab-click="tabClickHandle">
-      <el-tab-pane label="系统菜单" name="SYSTEM">
-        <MenuList ref="systemMenuListRef"/>
-      </el-tab-pane>
-    </el-tabs>
+<!--    <el-tabs v-model="activeSetting" @tab-click="handleTabClick">-->
+<!--      <el-tab-pane label="系统菜单" name="SYSTEM">-->
+<!--        <MenuList ref="systemMenuListRef"/>-->
+<!--      </el-tab-pane>-->
+<!--    </el-tabs>-->
+
+    <MenuList ref="systemMenuListRef"/>
   </div>
 </template>
 <script setup name="index">
 import {onMounted, ref} from "vue"
-import MenuList from "@//views/system/menu/component/MenuList.vue"
+import MenuList from "./component/MenuList.vue"
 
 // tabs选中值
 const activeSetting = ref("SYSTEM")
@@ -18,8 +20,8 @@ const activeSetting = ref("SYSTEM")
 const systemMenuListRef = ref(null)
 
 // ref map
-let refMap = new Map();
-refMap.set('SYSTEM', systemMenuListRef);
+let refMap = new Map()
+refMap.set('SYSTEM', systemMenuListRef)
 
 /**
  * 调用 ref 的init方法
@@ -37,8 +39,8 @@ function callMenuInit(ref) {
  * @param tab
  * @param event
  */
-function tabClickHandle(tab) {
-  let name = tab.props.name;
+function handleTabClick(tab) {
+  let name = tab.props.name
   callMenuInit(refMap.get(name))
 }
 
@@ -46,6 +48,6 @@ function tabClickHandle(tab) {
  * 页面加载时
  */
 onMounted(() => {
-  callMenuInit(systemMenuListRef, activeSetting.value);
-});
+  callMenuInit(systemMenuListRef, activeSetting.value)
+})
 </script>

@@ -35,14 +35,14 @@ public class SysMenuController {
     @GetMapping("list")
     @Operation(summary = "列表")
     @PreAuthorize("@pms.hasPermission('system:menu:list')")
-    public ServerResponseEntity<List<SysMenu>> list(SysMenuListQuery queryParam) {
+    public ServerResponseEntity<List<SysMenu>> listBySysMenuListQuery(SysMenuListQuery queryParam) {
         return ServerResponseEntity.success(sysMenuService.listBySysMenuListQuery(queryParam));
     }
 
     @GetMapping("detail/{id}")
     @Operation(summary = "详情")
     @PreAuthorize("@pms.hasPermission('system:menu:detail')")
-    public ServerResponseEntity<SysMenuIdResp> detail(@PathVariable("id") Long id) {
+    public ServerResponseEntity<SysMenuIdResp> getBySysMenuId(@PathVariable("id") Long id) {
         return ServerResponseEntity.success(sysMenuService.getBySysMenuId(id));
     }
 
@@ -50,8 +50,8 @@ public class SysMenuController {
     @PostMapping
     @Operation(summary = "保存")
     @PreAuthorize("@pms.hasPermission('system:menu:add')")
-    public ServerResponseEntity<Void> add(@Validated @RequestBody SysMenuAddReq requestParam) {
-        sysMenuService.addMenu(requestParam);
+    public ServerResponseEntity<Void> addSysMenu(@Validated @RequestBody SysMenuAddReq requestParam) {
+        sysMenuService.addSysMenu(requestParam);
         return ServerResponseEntity.success();
     }
 
@@ -59,8 +59,8 @@ public class SysMenuController {
     @PutMapping
     @Operation(summary = "修改")
     @PreAuthorize("@pms.hasPermission('system:menu:update')")
-    public ServerResponseEntity<Void> update(@Validated @RequestBody SysMenuUpdateReq requestParam) {
-        sysMenuService.updateMenu(requestParam);
+    public ServerResponseEntity<Void> updateSysMenu(@Validated @RequestBody SysMenuUpdateReq requestParam) {
+        sysMenuService.updateSysMenu(requestParam);
         return ServerResponseEntity.success();
     }
 

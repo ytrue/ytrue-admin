@@ -98,7 +98,7 @@ import {ElMessage} from "element-plus";
 import * as roleApi from "@/api/system/role";
 import * as deptAi from "@/api/system/dept";
 import * as userApi from "@/api/system/user";
-import {treeDataTranslate} from "@//utils/common";
+import {treeDataTranslate} from "@/utils/common";
 
 const emit = defineEmits(['handleSubmit'])
 

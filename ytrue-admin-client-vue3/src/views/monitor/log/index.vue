@@ -5,7 +5,7 @@
         <!--label-position="left"-->
         <el-form
             :model="searchFrom"
-            ref="searchFromRef"
+            ref="searchFormRef"
             :inline="true"
             v-show="showSearch"
             label-width="68px">
@@ -178,11 +178,11 @@
 <script setup name="index">
 import {onMounted, reactive, ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
-import * as  logApi from "@//api/system/log";
-import Pagination from '@//components/Pagination/index.vue'
+import * as  logApi from "@/api/system/log";
+import Pagination from '@/components/Pagination/index.vue'
 
 // 搜索的ref
-const searchFromRef = ref(null)
+const searchFormRef = ref(null)
 // 表格的
 const tableRef = ref(null)
 // 是否加载
@@ -295,7 +295,7 @@ function deleteHandle(id) {
 
 // 重置表单数据
 function reset() {
-  searchFromRef.value?.resetFields()
+  searchFormRef.value?.resetFields()
   init()
 }
 

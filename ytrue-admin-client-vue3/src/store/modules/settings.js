@@ -60,7 +60,6 @@ const useSettingsStore = defineStore(
                 if (this.dynamicTitle) {
                     document.title = title + ' - ' + defaultSettings.title
                 } else {
-                    console.log(456)
                     document.title = defaultSettings.title
                 }
             }

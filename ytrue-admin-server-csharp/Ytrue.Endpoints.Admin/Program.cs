@@ -1,8 +1,6 @@
 using Ytrue.Infrastructures.Extensions;
 using Ytrue.Infrastructures.Extensions.Yaml;
 using Ytrue.Infrastructures.Interceptors.Middlewares;
-using Ytrue.Repositories;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +23,6 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Pr
 
 // 构建
 var app = builder.Build();
-
 // 添加404异常处理器
 app.UseMiddleware<NotFoundMiddleware>();
 // 静态文件

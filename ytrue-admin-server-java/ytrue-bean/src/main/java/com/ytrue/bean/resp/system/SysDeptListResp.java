@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 public class SysDeptListResp implements Serializable {
@@ -26,4 +27,7 @@ public class SysDeptListResp implements Serializable {
 
     @Schema(description = "排序")
     private Integer deptSort;
+
+    @Schema(description = "创建时间")
+    private LocalDateTime createTime;
 }

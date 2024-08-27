@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 public class SysRoleListResp implements Serializable {
@@ -33,4 +34,7 @@ public class SysRoleListResp implements Serializable {
 
     @Schema(description = "状态:0=禁用,1=正常")
     private Boolean status;
+
+    @Schema(description = "创建时间")
+    private LocalDateTime createTime;
 }

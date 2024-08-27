@@ -23,9 +23,9 @@ public interface SysRoleMenuDao extends IBaseDao<SysRoleMenu> {
      */
     @Insert("""
             <script>
-              insert into sys_role_menu (id,role_id,menu_id) values
+              insert into sys_role_menu (role_id,menu_id) values
                     <foreach collection="menuIds" item="menuId" separator=",">
-                         (${@com.ytrue.infra.core.util.SnowFlake@getId()},#{roleId},#{menuId})
+                         (#{roleId},#{menuId})
                     </foreach>
             </script>
             """)

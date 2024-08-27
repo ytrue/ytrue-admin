@@ -35,9 +35,9 @@
           <el-col :span="24">
             <el-form-item label="菜单类型" prop="menuType">
               <el-radio-group v-model="dataForm.menuType">
-                <el-radio label="M">目录</el-radio>
-                <el-radio label="C">菜单</el-radio>
-                <el-radio label="F">按钮</el-radio>
+                <el-radio value="M">目录</el-radio>
+                <el-radio value="C">菜单</el-radio>
+                <el-radio value="F">按钮</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -89,7 +89,7 @@
           </el-col>
 
           <el-col :span="12" v-if="dataForm.menuType !== 'F'">
-            <el-form-item>
+            <el-form-item prop="isFrame">
               <template #label>
                         <span>
                            <el-tooltip content="选择是外链则路由地址需要以`http(s)://`开头" placement="top">
@@ -98,8 +98,8 @@
                         </span>
               </template>
               <el-radio-group v-model="dataForm.isFrame">
-                <el-radio :label="true">是</el-radio>
-                <el-radio :label="false">否</el-radio>
+                <el-radio :value="true">是</el-radio>
+                <el-radio :value="false">否</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -135,7 +135,7 @@
           </el-col>
 
           <el-col v-if="dataForm.menuType !== 'M'">
-            <el-form-item>
+            <el-form-item prop="perms">
               <el-input type="textarea" v-model="dataForm.perms" placeholder="请输入权限标识"/>
               <template #label>
                         <span>
@@ -165,7 +165,7 @@
           </el-col>
 
           <el-col :span="12" v-if="dataForm.menuType === 'C'">
-            <el-form-item>
+            <el-form-item prop="isCache">
               <template #label>
                         <span>
                            <el-tooltip content="选择是则会被`keep-alive`缓存，需要匹配组件的`name`和地址保持一致"
@@ -176,14 +176,14 @@
                         </span>
               </template>
               <el-radio-group v-model="dataForm.isCache">
-                <el-radio :label="true">缓存</el-radio>
-                <el-radio :label="false">不缓存</el-radio>
+                <el-radio :value="true">缓存</el-radio>
+                <el-radio :value="false">不缓存</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
 
           <el-col :span="12" v-if="dataForm.menuType !== 'F'">
-            <el-form-item>
+            <el-form-item prop="visible">
               <template #label>
                         <span>
                            <el-tooltip content="选择隐藏则路由将不会出现在侧边栏，但仍然可以访问" placement="top">
@@ -193,14 +193,14 @@
                         </span>
               </template>
               <el-radio-group v-model="dataForm.visible">
-                <el-radio :label="true">显示</el-radio>
-                <el-radio :label="false">隐藏</el-radio>
+                <el-radio :value="true">显示</el-radio>
+                <el-radio :value="false">隐藏</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
 
           <el-col :span="12" v-if="dataForm.menuType !== 'F'">
-            <el-form-item>
+            <el-form-item prop="status">
               <template #label>
                         <span>
                            <el-tooltip content="选择停用则路由将不会出现在侧边栏，也不能被访问" placement="top">
@@ -210,8 +210,8 @@
                         </span>
               </template>
               <el-radio-group v-model="dataForm.status">
-                <el-radio :label="true">正常</el-radio>
-                <el-radio :label="false">禁用</el-radio>
+                <el-radio :value="true">正常</el-radio>
+                <el-radio :value="false">禁用</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -230,11 +230,10 @@
 
 <script setup name="AddOrUpdate">
 import {ref} from 'vue';
-import {ElMessage} from "element-plus";
+import {ClickOutside as vClickOutside, ElMessage} from "element-plus";
 import * as menuApi from "@/api/system/menu";
-import {treeDataTranslate} from "@//utils/common";
+import {treeDataTranslate} from "@/utils/common";
 import IconSelect from "@/components/IconSelect";
-import {ClickOutside as vClickOutside} from 'element-plus'
 
 const emit = defineEmits(['handleSubmit'])
 // 表单的ref
@@ -270,7 +269,15 @@ const dataRule = {
   pid: [{required: true, message: "选择上级菜单", trigger: "blur"}],
   menuName: [{required: true, message: "请输入菜单名称", trigger: "blur"}],
   menuSort: [{required: true, message: "请输入排序值", trigger: "blur"}],
-  path: [{required: true, message: "请输入路由地址", trigger: "blur"}]
+  path: [{required: true, message: "请输入路由地址", trigger: "blur"}],
+  menuType: [{required: true, message: '请选择菜单类型', trigger: 'blur'}],
+  status: [{required: true, message: '请选择菜单状态', trigger: 'blur'}],
+  visible: [{required: true, message: '请选择显示状态', trigger: 'blur'}],
+  isFrame: [{required: true, message: '请选择是否外链', trigger: 'blur'}],
+  isCache: [{required: true, message: '请选择是否缓存', trigger: 'blur'}],
+
+  perms: [{required: true, message: '请输入权限标识', trigger: 'blur'}],
+  component: [{required: true, message: '请输入组件路径', trigger: 'blur'}],
 }
 
 // 菜单类型:SYSTEM=系统菜单,1=店铺菜单
@@ -289,11 +296,9 @@ async function init(id, type) {
   dataForm.value.type = type
 
   // 请求获取数据
-  await menuApi.list({
+  await menuApi.listApi({
     type: menuType
   }).then((response) => {
-
-
 
     let data = response.data
     data.push({
@@ -312,7 +317,7 @@ async function init(id, type) {
   }
   // 调取ajax获取详情数据
   await menuApi
-      .detail(formId.value)
+      .detailApi(formId.value)
       .then((response) => {
         // 进行赋值
         dataForm.value = response.data
@@ -329,7 +334,7 @@ function onSubmit() {
     if (valid) {
       // 下面就是调用ajax
       menuApi
-          .saveAndUpdate(dataForm.value)
+          .addAndUpdateApi(dataForm.value)
           .then((response) => {
             ElMessage({type: 'success', message: response.message})
             // 通知父端组件提交完成了
@@ -390,7 +395,6 @@ function selectedIcon(name) {
  * @param event
  */
 function hideSelectIcon(event) {
-
   let elem = event.relatedTarget || event.srcElement || event.target || event.currentTarget;
   let className = elem.className;
   if (className !== "el-input__inner") {

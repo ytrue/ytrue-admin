@@ -34,9 +34,13 @@
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
 
 
-<!--        &lt;!&ndash;监控&ndash;&gt;-->
+        <!--        &lt;!&ndash;监控&ndash;&gt;-->
 <!--        <dependency>-->
 <!--            <groupId>de.codecentric</groupId>-->
 <!--            <artifactId>spring-boot-admin-starter-client</artifactId>-->

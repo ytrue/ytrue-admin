@@ -68,7 +68,7 @@
 import {ref} from 'vue';
 import * as  deptApi from "@/api/system/dept";
 import {ElMessage} from "element-plus";
-import {treeDataTranslate} from "@//utils/common";
+import {treeDataTranslate} from "@/utils/common";
 
 const emit = defineEmits(['handleSubmit'])
 // 表单的ref

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="searchFormData" ref="searchFromRef" :inline="true" v-show="showSearch">
+    <el-form :model="searchFormData" ref="searchFormRef" :inline="true" v-show="showSearch">
 
       <el-form-item label="部门名称" prop="deptName">
         <el-input v-model="searchFormData.deptName" placeholder="请输入部门名称" clearable style="width: 200px"/>
@@ -92,13 +92,13 @@
 import {reactive, ref} from "vue"
 import * as  deptAi from "@/api/system/dept"
 import {ElMessage, ElMessageBox} from "element-plus"
-import {treeDataTranslate} from "@//utils/common"
-import AddOrUpdate from '@//views/system/dept/component/AddOrUpdate.vue'
+import {treeDataTranslate} from "@/utils/common"
+import AddOrUpdate from '@/views/system/dept/component/AddOrUpdate.vue'
 
 // 弹窗的ref
 const addOrUpdateRef = ref()
 // 搜索的ref
-const searchFromRef = ref()
+const searchFormRef = ref()
 // 表格的
 const tableRef = ref()
 // 是否加载
@@ -159,7 +159,7 @@ function handleDelete(id) {
  * 重置表单数据
  */
 function handleSearchFormReset() {
-  searchFromRef.value?.resetFields()
+  searchFormRef.value?.resetFields()
   init()
 }
 

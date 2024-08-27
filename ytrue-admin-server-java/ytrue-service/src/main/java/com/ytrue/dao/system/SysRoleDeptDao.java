@@ -22,9 +22,9 @@ public interface SysRoleDeptDao extends IBaseDao<SysRoleDept> {
      */
     @Insert("""
             <script>
-              insert into sys_role_dept (id,role_id,dept_id) values
+              insert into sys_role_dept (role_id,dept_id) values
                     <foreach collection='deptIds' item='deptId' separator=','>
-                         (${@com.ytrue.infra.core.util.SnowFlake@getId()},#{roleId},#{deptId})
+                         (#{roleId},#{deptId})
                     </foreach>
             </script>
             """)

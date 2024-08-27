@@ -36,8 +36,8 @@
 
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="dataForm.status">
-            <el-radio :label="true">正常</el-radio>
-            <el-radio :label="false">禁用</el-radio>
+            <el-radio :value="true">正常</el-radio>
+            <el-radio :value="false">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -45,7 +45,8 @@
           <el-checkbox v-model="menuExpand" @change="handleCheckedTreeExpand($event, 'menu')">展开/折叠</el-checkbox>
           <el-checkbox v-model="menuNodeAll" @change="handleCheckedTreeNodeAll($event, 'menu')">全选/全不选
           </el-checkbox>
-          <el-checkbox v-model="dataForm.menuCheckStrictly" @change="handleCheckedTreeConnect($event, 'menu')">父子联动
+          <el-checkbox v-model="dataForm.menuCheckStrictly" @change="handleCheckedTreeConnect($event, 'menu')">
+            父子联动
           </el-checkbox>
           <el-tree
               class="tree-border"
@@ -55,7 +56,7 @@
               node-key="id"
               :check-strictly="!dataForm.menuCheckStrictly"
               :props="menuTreeProps"
-          ></el-tree>
+          />
         </el-form-item>
 
 
@@ -73,7 +74,8 @@
           <el-checkbox v-model="deptExpand" @change="handleCheckedTreeExpand($event, 'dept')">展开/折叠</el-checkbox>
           <el-checkbox v-model="deptNodeAll" @change="handleCheckedTreeNodeAll($event, 'dept')">全选/全不选
           </el-checkbox>
-          <el-checkbox v-model="dataForm.deptCheckStrictly" @change="handleCheckedTreeConnect($event, 'dept')">父子联动
+          <el-checkbox v-model="dataForm.deptCheckStrictly" @change="handleCheckedTreeConnect($event, 'dept')">
+            父子联动
           </el-checkbox>
           <el-tree
               default-expand-all
@@ -105,12 +107,12 @@
 </template>
 
 <script setup name="AddOrUpdate">
-import {defineComponent, reactive, ref, toRefs} from 'vue';
-import * as  roleApi from "@/api/system/role";
-import {ElMessage} from "element-plus";
-import * as menuApi from "@/api/system/menu";
-import {treeDataTranslate} from "@//utils/common";
-import * as deptAi from "@/api/system/dept";
+import {ref} from 'vue'
+import * as  roleApi from "@/api/system/role"
+import {ElMessage} from "element-plus"
+import * as menuApi from "@/api/system/menu"
+import {treeDataTranslate} from "@/utils/common"
+import * as deptApi from "@/api/system/dept"
 
 const emit = defineEmits(['handleSubmit'])
 
@@ -151,9 +153,10 @@ const dataRule = {
   roleName: [{required: true, message: '请输入角色名称', trigger: 'blur'}],
   roleCode: [{required: true, message: '请输入角色标识', trigger: 'blur'}],
   roleSort: [{required: true, message: '排序不能为空', trigger: 'blur'}],
+  status: [{required: true, message: '请选择状态', trigger: 'blur'}],
 }
 // tree的Props
-const menuTreeProps = {value: 'id', label: 'menuName', children: 'children'};
+const menuTreeProps = {value: 'id', label: 'menuName', children: 'children'}
 const deptTreeProps = {value: 'id', label: 'deptName', children: 'children'}
 
 // vue3+element-plus解决resetFields表单重置无效问题
@@ -169,13 +172,13 @@ async function init(id) {
   formId.value = id || ""
 
   // 获取菜单树
-  await menuApi.list().then((response) => {
+  await menuApi.listApi().then((response) => {
     // 删除掉hasChildren不然不显示
     menuTree.value = treeDataTranslate(response.data)
   })
 
   // 获取部门树
-  await deptAi.list().then((response) => {
+  await deptApi.listApi().then((response) => {
     deptTree.value = treeDataTranslate(response.data)
   })
 
@@ -187,7 +190,7 @@ async function init(id) {
 
   // 调取ajax获取详情数据
   await roleApi
-      .detail(formId.value)
+      .detailApi(formId.value)
       .then((response) => {
         // 进行赋值
         dataForm.value = response.data
@@ -196,27 +199,29 @@ async function init(id) {
       })
 
   // 处理赋值
-  const menuCheckedKeys = dataForm.value.menuIds;
-  const deptCheckedKeys = dataForm.value.deptIds;
+  const menuCheckedKeys = dataForm.value.menuIds
+  const deptCheckedKeys = dataForm.value.deptIds
   menuCheckedKeys.forEach((v) => {
-    menuRef.value.setChecked(v, true, false);
-  });
+    menuRef.value.setChecked(v, true, false)
+  })
   deptCheckedKeys.forEach((v) => {
-    deptRef.value.setChecked(v, true, false);
-  });
+    deptRef.value.setChecked(v, true, false)
+  })
 
 }
 
-// 提交表单
+/**
+ * 提交表单
+ */
 function onSubmit() {
   dataFormRef.value.validate((valid) => {
     if (valid) {
       // 设置菜单ids和部门ids
-      dataForm.value.menuIds = getMenuAllCheckedKeys();
-      dataForm.value.deptIds = getDeptAllCheckedKeys();
+      dataForm.value.menuIds = getMenuAllCheckedKeys()
+      dataForm.value.deptIds = getDeptAllCheckedKeys()
       // 下面就是调用ajax
       roleApi
-          .saveAndUpdate(dataForm.value)
+          .addAndUpdateApi(dataForm.value)
           .then((response) => {
             ElMessage({type: 'success', message: response.message})
             // 通知父端组件提交完成了
@@ -229,7 +234,9 @@ function onSubmit() {
   })
 }
 
-// 关闭弹窗
+/**
+ * 关闭弹窗
+ */
 function onCancel() {
   // vue3+element-plus解决resetFields表单重置无效问题
   isShowDialog.value = false;
@@ -245,66 +252,96 @@ function onCancel() {
   deptNodeAll.value = false
 }
 
-// 树权限（展开/折叠）
+/**
+ * 树权限（展开/折叠）
+ * @param value
+ * @param type
+ */
 function handleCheckedTreeExpand(value, type) {
   if (type === "menu") {
-    let treeList = menuTree.value;
+    let treeList = menuTree.value
     for (let i = 0; i < treeList.length; i++) {
-      menuRef.value.store.nodesMap[treeList[i].id].expanded = value;
+      menuRef.value.store.nodesMap[treeList[i].id].expanded = value
     }
   } else if (type === "dept") {
     let treeList = deptTree.value;
     for (let i = 0; i < treeList.length; i++) {
-      deptRef.value.store.nodesMap[treeList[i].id].expanded = value;
+      deptRef.value.store.nodesMap[treeList[i].id].expanded = value
     }
   }
 }
 
-// 树权限（全选/全不选）
+/**
+ * 树权限（全选/全不选）
+ * @param value
+ * @param type
+ */
 function handleCheckedTreeNodeAll(value, type) {
   if (type === "menu") {
-    menuRef.value.setCheckedNodes(value ? menuTree.value : []);
+    menuRef.value.setCheckedNodes(value ? menuTree.value : [])
   } else if (type === "dept") {
-    deptRef.value.setCheckedNodes(value ? deptTree.value : []);
+    deptRef.value.setCheckedNodes(value ? deptTree.value : [])
   }
 }
 
-// 树权限（父子联动）
+/**
+ * 树权限（父子联动）
+ * @param value
+ * @param type
+ */
 function handleCheckedTreeConnect(value, type) {
   if (type === "menu") {
-    dataForm.value.menuCheckStrictly = !!value;
+    dataForm.value.menuCheckStrictly = !!value
   } else if (type === "dept") {
-    dataForm.value.deptCheckStrictly = !!value;
+    dataForm.value.deptCheckStrictly = !!value
   }
 }
 
-// 所有菜单节点数据
+/**
+ * 所有菜单节点数据
+ * @returns {*}
+ */
 function getMenuAllCheckedKeys() {
   // 目前被选中的菜单节点
-  let checkedKeys = menuRef.value.getCheckedKeys();
+  let checkedKeys = menuRef.value.getCheckedKeys()
   // 半选中的菜单节点
-  let halfCheckedKeys = menuRef.value.getHalfCheckedKeys();
-  checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
-  return checkedKeys;
+  let halfCheckedKeys = menuRef.value.getHalfCheckedKeys()
+  checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys)
+  return checkedKeys
 }
 
-// 所有部门节点数据
+/**
+ * 所有部门节点数据
+ * @returns {*}
+ */
 function getDeptAllCheckedKeys() {
   // 目前被选中的部门节点
-  let checkedKeys = deptRef.value.getCheckedKeys();
+  let checkedKeys = deptRef.value.getCheckedKeys()
   // 半选中的部门节点
-  let halfCheckedKeys = deptRef.value.getHalfCheckedKeys();
-  checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
-  return checkedKeys;
+  let halfCheckedKeys = deptRef.value.getHalfCheckedKeys()
+  checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys)
+  return checkedKeys
 }
 
-// 选择角色权限范围触发
+/**
+ * 选择角色权限范围触发
+ * @param value
+ */
 function dataScopeSelectChange(value) {
   if (value !== "2") {
-    deptRef.value.setCheckedKeys([]);
+    deptRef.value.setCheckedKeys([])
   }
 }
 
 // 主动暴露childMethod方法
 defineExpose({init})
 </script>
+<style scoped lang="scss">
+.tree-border {
+  margin-top: 5px;
+  border: 1px solid #e5e6e7;
+  background: #FFFFFF none;
+  border-radius: 4px;
+  width: 100%;
+}
+</style>

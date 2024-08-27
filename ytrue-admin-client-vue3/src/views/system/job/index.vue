@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row :gutter="10">
       <el-col :span="24" :xs="24">
-        <el-form :model="searchFormData" ref="searchFromRef" :inline="true" v-show="showSearch">
+        <el-form :model="searchFormData" ref="searchFormRef" :inline="true" v-show="showSearch">
 
           <el-form-item label="岗位名称" prop="jobName">
             <el-input v-model="searchFormData.jobName" placeholder="请输入岗位名称" clearable style="width: 200px"/>
@@ -119,13 +119,13 @@
 // 弹窗的ref
 import {reactive, ref} from "vue"
 import {ElMessage, ElMessageBox} from "element-plus"
-import AddOrUpdate from '@//views/system/job/component/AddOrUpdate.vue'
+import AddOrUpdate from '@/views/system/job/component/AddOrUpdate.vue'
 import * as  jobApi from "@/api/system/job"
 import Pagination from '@/components/Pagination'
 
 const addOrUpdateRef = ref(null)
 // 搜索的ref
-const searchFromRef = ref(null)
+const searchFormRef = ref(null)
 // 表格的
 const tableRef = ref(null)
 // 表格加载
@@ -207,7 +207,7 @@ function handleDelete(id) {
  * 重置表单数据
  */
 function handleSearchFormReset() {
-  searchFromRef.value?.resetFields()
+  searchFormRef.value?.resetFields()
   init()
 }
 
