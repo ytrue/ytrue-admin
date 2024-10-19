@@ -7,7 +7,7 @@ import com.ytrue.bean.req.system.SysRoleUpdateReq;
 import com.ytrue.bean.resp.system.SysRoleIdResp;
 import com.ytrue.bean.resp.system.SysRoleListResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
-import com.ytrue.infra.log.annotation.OperateLog;
+import com.ytrue.infra.operationlog.annotation.OperateLog;
 import com.ytrue.service.system.SysRoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

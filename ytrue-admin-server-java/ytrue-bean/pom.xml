@@ -24,7 +24,7 @@
         </dependency>
         <dependency>
             <groupId>com.ytrue</groupId>
-            <artifactId>ytrue-infra-db</artifactId>
+            <artifactId>ytrue-infra-mysql</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>
@@ -34,7 +34,7 @@
         </dependency>
         <dependency>
             <groupId>com.ytrue</groupId>
-            <artifactId>ytrue-infra-serializer</artifactId>
+            <artifactId>ytrue-infra-jsonserializer</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>

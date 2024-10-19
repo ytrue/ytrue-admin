@@ -6,7 +6,7 @@ import com.ytrue.bean.req.system.SysDeptAddReq;
 import com.ytrue.bean.req.system.SysDeptUpdateReq;
 import com.ytrue.bean.resp.system.SysDeptIdResp;
 import com.ytrue.bean.resp.system.SysDeptListResp;
-import com.ytrue.infra.db.base.IBaseService;
+import com.ytrue.infra.mysql.base.IBaseService;
 
 import java.util.List;
 import java.util.Set;

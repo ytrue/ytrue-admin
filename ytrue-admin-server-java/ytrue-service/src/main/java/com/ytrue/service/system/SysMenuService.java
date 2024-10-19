@@ -6,7 +6,7 @@ import com.ytrue.bean.req.system.SysMenuAddReq;
 import com.ytrue.bean.req.system.SysMenuUpdateReq;
 import com.ytrue.bean.resp.system.SysMenuIdResp;
 import com.ytrue.bean.resp.system.SysRouterResp;
-import com.ytrue.infra.db.base.IBaseService;
+import com.ytrue.infra.mysql.base.IBaseService;
 import com.ytrue.bean.dataobject.system.SysMenu;
 
 import java.util.List;

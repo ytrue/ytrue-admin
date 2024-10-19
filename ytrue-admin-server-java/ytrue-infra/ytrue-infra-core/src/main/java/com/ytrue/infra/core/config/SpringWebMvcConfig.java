@@ -10,18 +10,23 @@ import org.springframework.web.servlet.config.annotation.*;
 import java.util.List;
 
 /**
+ * SpringWebMvcConfig 类用于配置 Spring MVC 的相关设置。
+ *
+ * <p>
+ * 包括静态资源处理、跨域配置和消息转换器的配置等。
+ * </p>
+ *
  * @author ytrue
  * @date 2022/1/20 14:33
- * @description SpringWebMvcConfig spring mvc 配置文件
  */
 @EnableWebMvc
 @Configuration
 public class SpringWebMvcConfig implements WebMvcConfigurer {
 
     /**
-     * doc.html是在jar包里的，需要使用资源处理器注册静态资源，不然会404
+     * 注册静态资源处理器，以便访问相关文档和资源。
      *
-     * @param registry
+     * @param registry 资源处理器注册器
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -30,17 +35,16 @@ public class SpringWebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
         // favicon.ico
         registry.addResourceHandler("/favicon.ico").addResourceLocations("classpath:/static/favicon.ico");
-        // idea本地图片访问
+        // 本地图片访问
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/storage");
-        // jar后的访问
+        // jar包后的访问
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/", "file:static/");
     }
 
-
     /**
-     * 配置跨域
+     * 配置跨域请求的相关设置。
      *
-     * @param registry
+     * @param registry 跨域注册器
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -48,19 +52,31 @@ public class SpringWebMvcConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 // 设置允许跨域请求的域名
                 .allowedOriginPatterns("*")
-                // 是否允许cookie
+                // 是否允许带有 cookie
                 .allowCredentials(true)
                 // 设置允许的请求方式
                 .allowedMethods("GET", "POST", "DELETE", "PUT")
-                // 设置允许的header属性
+                // 设置允许的 header 属性
                 .allowedHeaders("*")
-                // 跨域允许时间
+                // 跨域允许的时间
                 .maxAge(3600);
     }
 
+    /**
+     * Jackson 对象映射器
+     */
     @Resource
     private ObjectMapper objectMapper;
 
+    /**
+     * 配置消息转换器。
+     *
+     * <p>
+     * 移除默认的 MappingJackson2HttpMessageConverter，并使用自定义的 ObjectMapper。
+     * </p>
+     *
+     * @param converters 消息转换器列表
+     */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.removeIf(o -> o instanceof MappingJackson2HttpMessageConverter);

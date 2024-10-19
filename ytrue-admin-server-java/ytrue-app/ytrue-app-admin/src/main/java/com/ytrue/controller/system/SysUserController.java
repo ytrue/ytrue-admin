@@ -10,7 +10,8 @@ import com.ytrue.bean.req.system.SysUserUpdateReq;
 import com.ytrue.bean.resp.system.SysUserIdResp;
 import com.ytrue.bean.resp.system.SysUserListResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
-import com.ytrue.infra.log.annotation.OperateLog;
+import com.ytrue.infra.core.util.BeanUtils;
+import com.ytrue.infra.operationlog.annotation.OperateLog;
 import com.ytrue.service.system.SysUserService;
 import com.ytrue.infra.security.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -91,14 +92,8 @@ public class SysUserController {
     @Operation(summary = "修改用户信息")
     public ServerResponseEntity<Void> updateProfile(@RequestBody SysUserUpdateProfileReq requestParam) {
         String userId = SecurityUtil.getLoginUser().getUser().getUserId();
-
         SysUser sysUser = sysUserService.getById(userId);
-        sysUser.setEmail(requestParam.getEmail());
-        sysUser.setPhone(requestParam.getPhone());
-        sysUser.setGender(requestParam.getGender());
-        sysUser.setNickName(requestParam.getNickName());
-        sysUser.setAvatar(requestParam.getAvatarPath());
-
+        BeanUtils.copyProperties(requestParam,sysUser);
         sysUserService.updateById(sysUser);
         return ServerResponseEntity.success();
     }

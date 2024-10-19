@@ -13,6 +13,7 @@
         <module>ytrue-bean</module>
         <module>ytrue-infra</module>
         <module>ytrue-service</module>
+        <module>ytrue-repository</module>
     </modules>
 
 

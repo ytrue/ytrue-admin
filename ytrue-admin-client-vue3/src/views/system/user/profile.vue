@@ -75,8 +75,8 @@
           <el-tabs v-model="activeTab">
             <el-tab-pane label="基本资料" name="baseInfo">
               <el-form ref="baseInfoRef" :model="state.user" :rules="baseInfoRules" label-width="80px">
-                <el-form-item label="用户头像" prop="avatarPath">
-                  <image-upload :limit="1" :model-value="state.user.avatarPath"
+                <el-form-item label="用户头像" prop="avatar">
+                  <image-upload :limit="1" :model-value="state.user.avatar"
                                 @update:modelValue="updateAvatarPath"></image-upload>
                 </el-form-item>
 
@@ -91,12 +91,12 @@
                 </el-form-item>
                 <el-form-item label="性别">
                   <el-radio-group v-model="state.user.gender">
-                    <el-radio :label="0">男</el-radio>
-                    <el-radio :label="1">女</el-radio>
+                    <el-radio :value="0">男</el-radio>
+                    <el-radio :value="1">女</el-radio>
                   </el-radio-group>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="updateProfileHandle">保存</el-button>
+                  <el-button type="primary" @click="handleUpdateProfile">保存</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -116,7 +116,7 @@
                             show-password/>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="updatePasswordHandle">保存</el-button>
+                  <el-button type="primary" @click="handleUpdatePassword">保存</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -130,7 +130,7 @@
 <script setup name="profile">
 
 import {reactive, ref} from "vue";
-import {getInfo} from "@/api/login";
+import {getInfoApi} from "@/api/login";
 import * as userApi from "@/api/system/user";
 import {ElMessage} from "element-plus";
 import useUserStore from "@/store/modules/user";
@@ -139,11 +139,11 @@ import ImageUpload from "@/components/ImageUpload/index.vue";
 const userStore = useUserStore()
 
 // 默认选择的ref
-const activeTab = ref("baseInfo");
+const activeTab = ref("baseInfo")
 // 基本信息的ref
-const baseInfoRef = ref(null);
+const baseInfoRef = ref(null)
 // 修改密码的ref
-const updatePasswordRef = ref(null);
+const updatePasswordRef = ref(null)
 
 // 表单数据
 const state = ref({
@@ -151,20 +151,20 @@ const state = ref({
   dept: {},
   roles: [],
   jobs: [],
-});
+})
 
 // 修改密码表单数据
 const updatePassword = reactive({
-  oldPassword: '',
-  newPassword: '',
-  confirmPassword: ''
-});
+  oldPassword: null,
+  newPassword: null,
+  confirmPassword: null
+})
 
 
 // 修改用户信息表单验证规则
 const baseInfoRules = {
   nickName: [{required: true, message: "用户昵称不能为空", trigger: "blur"}],
-  avatarPath: [{required: true, message: "请上传头像", trigger: "blur"}],
+  avatar: [{required: true, message: "请上传头像", trigger: "blur"}],
   email: [{required: true, message: "邮箱地址不能为空", trigger: "blur"}, {
     type: "email",
     message: "请输入正确的邮箱地址",
@@ -175,16 +175,16 @@ const baseInfoRules = {
     message: "请输入正确的手机号码",
     trigger: "blur"
   }],
-};
+}
 
 // 修改密码表单验证规则
 const equalToPassword = (rule, value, callback) => {
   if (updatePassword.newPassword !== value) {
-    callback(new Error("两次输入的密码不一致"));
+    callback(new Error("两次输入的密码不一致"))
   } else {
-    callback();
+    callback()
   }
-};
+}
 const updatePasswordRules = {
   oldPassword: [{required: true, message: "旧密码不能为空", trigger: "blur"}],
   newPassword: [{required: true, message: "新密码不能为空", trigger: "blur"}, {
@@ -198,7 +198,8 @@ const updatePasswordRules = {
     validator: equalToPassword,
     trigger: "blur"
   }]
-};
+}
+
 
 
 /**
@@ -206,35 +207,35 @@ const updatePasswordRules = {
  * @param data
  */
 function updateAvatarPath(data) {
-  state.value.user.avatarPath = data;
+  state.value.user.avatar = data
 }
 
 /**
  * 获取用户信息
  */
 function getUser() {
-  getInfo().then(response => {
-    state.value = response.data;
-  });
+  getInfoApi().then(response => {
+    state.value = response.data
+  })
 }
 
-getUser();
+getUser()
 
 
 /**
  * 修改用户信息
  */
-function updateProfileHandle() {
+function handleUpdateProfile() {
   baseInfoRef.value.validate((valid) => {
     if (valid) {
-      userApi.updateUserProfile({
+      userApi.updateUserProfileApi({
         nickName: state.value.user.nickName,
         email: state.value.user.email,
         phone: state.value.user.phone,
         gender: state.value.user.gender,
-        avatarPath: state.value.user.avatarPath,
+        avatar: state.value.user.avatar,
       }).then((response) => {
-        userStore.avatar = state.value.user.avatarPath
+        userStore.avatar = state.value.user.avatar
         ElMessage({type: 'success', message: response.message})
       })
     } else {
@@ -246,25 +247,23 @@ function updateProfileHandle() {
 /**
  * 修改密码
  */
-function updatePasswordHandle() {
+function handleUpdatePassword() {
   updatePasswordRef.value.validate((valid) => {
     if (valid) {
-      userApi.updatePassword({
+      userApi.updatePasswordApi({
         oldPassword: updatePassword.oldPassword,
         newPassword: updatePassword.newPassword,
       }).then((response) => {
         // 清除下登录
-        userStore.logOut().then(() => {
+        userStore.logout().then(() => {
           ElMessage({type: 'success', message: response.message})
-          //location.href = '/index';
+          location.href = '/index'
         })
       })
     } else {
       return false
     }
   })
-
-
 }
 
 </script>

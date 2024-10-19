@@ -186,4 +186,4 @@ knife4j:
 # 设置日志级别
 logging:
   level:
-    com.ytrue: info
+    com.ytrue: debug

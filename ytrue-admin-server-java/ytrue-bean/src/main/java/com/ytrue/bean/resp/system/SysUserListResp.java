@@ -1,9 +1,6 @@
 package com.ytrue.bean.resp.system;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serial;
@@ -27,33 +24,31 @@ public class SysUserListResp implements Serializable {
     @Schema(description = "用户部门名称")
     private String deptName;
 
-    @NotBlank
+
     @Schema(description = "用户名称")
     private String username;
 
-    @NotBlank
+
     @Schema(description = "用户昵称")
     private String nickName;
 
-    @Email
-    @NotBlank
     @Schema(description = "邮箱")
     private String email;
 
-    @NotBlank
+
     @Schema(description = "电话号码")
     private String phone;
 
     @Schema(description = "用户性别")
     private Integer gender;
 
-    @Schema(description = "头像真实名称")
-    private String avatarName;
 
-    @NotNull
     @Schema(description = "是否启用")
     private Boolean status;
 
     @Schema(description = "是否为admin账号")
     private Boolean admin;
+
+    @Schema(description = "创建时间")
+    private LocalDateTime createTime;
 }

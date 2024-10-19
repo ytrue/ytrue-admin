@@ -21,39 +21,19 @@
     <dependencies>
         <dependency>
             <groupId>com.ytrue</groupId>
-            <artifactId>ytrue-bean</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
-
-        <!--        ytrue-infra-->
-        <dependency>
-            <groupId>com.ytrue</groupId>
-            <artifactId>ytrue-infra-core</artifactId>
+            <artifactId>ytrue-repository</artifactId>
             <version>${revision}</version>
         </dependency>
 
         <dependency>
             <groupId>com.ytrue</groupId>
-            <artifactId>ytrue-infra-db</artifactId>
+            <artifactId>ytrue-infra-redis</artifactId>
             <version>${revision}</version>
         </dependency>
 
         <dependency>
             <groupId>com.ytrue</groupId>
-            <artifactId>ytrue-infra-mq</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.ytrue</groupId>
-            <artifactId>ytrue-infra-cache</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.ytrue</groupId>
-            <artifactId>ytrue-infra-log</artifactId>
+            <artifactId>ytrue-infra-operationlog</artifactId>
             <version>${revision}</version>
         </dependency>
 
@@ -62,14 +42,5 @@
             <artifactId>ytrue-infra-security</artifactId>
             <version>${revision}</version>
         </dependency>
-
-
-        <dependency>
-            <groupId>com.ytrue</groupId>
-            <artifactId>ytrue-infra-serializer</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
-
     </dependencies>
 </project>

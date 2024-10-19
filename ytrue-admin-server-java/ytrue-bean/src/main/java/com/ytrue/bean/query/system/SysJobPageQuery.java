@@ -1,8 +1,8 @@
 package com.ytrue.bean.query.system;
 
 import com.ytrue.bean.query.PageQuery;
-import com.ytrue.infra.db.query.annotation.Where;
-import com.ytrue.infra.db.query.enums.QueryMethod;
+import com.ytrue.infra.mysql.query.annotation.Where;
+import com.ytrue.infra.mysql.query.enums.QueryMethod;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;

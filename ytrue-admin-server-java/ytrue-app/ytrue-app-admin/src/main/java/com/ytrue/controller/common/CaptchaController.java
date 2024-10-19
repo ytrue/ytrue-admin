@@ -3,9 +3,8 @@ package com.ytrue.controller.common;
 import cn.hutool.core.util.IdUtil;
 import com.wf.captcha.base.Captcha;
 import com.ytrue.bean.resp.common.CaptchaResp;
-import com.ytrue.infra.cache.constant.CacheKey;
+import com.ytrue.infra.core.constant.CacheKey;
 import com.ytrue.infra.core.constant.StrPool;
-import com.ytrue.infra.core.enums.CaptchaTypeEnum;
 import com.ytrue.infra.core.response.ServerResponseEntity;
 import com.ytrue.infra.core.util.CaptchaUtil;
 import com.ytrue.infra.security.annotation.IgnoreWebSecurity;
@@ -34,12 +33,12 @@ public class CaptchaController {
     @Operation(summary = "获取验证码")
     @GetMapping("/captcha")
     public ServerResponseEntity<CaptchaResp> captcha() {
-        Captcha captcha = CaptchaUtil.getCaptcha(CaptchaTypeEnum.ARITHMETIC);
+        Captcha captcha = CaptchaUtil.getCaptcha(CaptchaUtil.CaptchaTypeEnum.ARITHMETIC);
         // 设置缓存的key
         String uuid = IdUtil.simpleUUID();
         //当验证码类型为 arithmetic时且长度 >= 2 时，captcha.text()的结果有几率为浮点型
         String captchaValue = captcha.text();
-        if (captcha.getCharType() - 1 == CaptchaTypeEnum.ARITHMETIC.ordinal() && captchaValue.contains(StrPool.DOT)) {
+        if (captcha.getCharType() - 1 == CaptchaUtil.CaptchaTypeEnum.ARITHMETIC.ordinal() && captchaValue.contains(StrPool.DOT)) {
             captchaValue = captchaValue.split("\\.")[0];
         }
 

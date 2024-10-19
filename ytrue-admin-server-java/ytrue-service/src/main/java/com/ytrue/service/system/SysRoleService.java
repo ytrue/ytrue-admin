@@ -8,7 +8,7 @@ import com.ytrue.bean.req.system.SysRoleUpdateReq;
 
 import com.ytrue.bean.resp.system.SysRoleIdResp;
 import com.ytrue.bean.resp.system.SysRoleListResp;
-import com.ytrue.infra.db.base.IBaseService;
+import com.ytrue.infra.mysql.base.IBaseService;
 
 import java.util.List;
 import java.util.Set;

@@ -6,7 +6,7 @@ import com.ytrue.bean.req.system.SysMenuAddReq;
 import com.ytrue.bean.req.system.SysMenuUpdateReq;
 import com.ytrue.bean.resp.system.SysMenuIdResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
-import com.ytrue.infra.log.annotation.OperateLog;
+import com.ytrue.infra.operationlog.annotation.OperateLog;
 import com.ytrue.service.system.SysMenuService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -12,19 +12,22 @@ import com.ytrue.bean.req.system.SysUserUpdatePasswordReq;
 import com.ytrue.bean.req.system.SysUserUpdateReq;
 import com.ytrue.bean.resp.system.SysUserIdResp;
 import com.ytrue.bean.resp.system.SysUserListResp;
+import com.ytrue.repository.mysql.system.SysUserDao;
+import com.ytrue.repository.mysql.system.SysUserJobDao;
+import com.ytrue.repository.mysql.system.SysUserRoleDao;
 import com.ytrue.infra.core.constant.StrPool;
-import com.ytrue.infra.core.response.ServerResponseInfoEnum;
 import com.ytrue.infra.core.response.ServerResponseInfo;
+import com.ytrue.infra.core.response.ServerResponseInfoEnum;
 import com.ytrue.infra.core.util.AssertUtil;
 import com.ytrue.infra.core.util.BeanUtils;
-import com.ytrue.infra.db.base.BaseServiceImpl;
-import com.ytrue.dao.system.SysUserDao;
-import com.ytrue.dao.system.SysUserJobDao;
-import com.ytrue.dao.system.SysUserRoleDao;
+import com.ytrue.infra.mysql.base.BaseServiceImpl;
+import com.ytrue.infra.mysql.query.entity.QueryDefinition;
+import com.ytrue.infra.mysql.query.enums.QueryMethod;
+import com.ytrue.infra.mysql.query.util.QueryHelp;
+import com.ytrue.infra.security.service.LoginService;
 import com.ytrue.infra.security.util.SecurityUtil;
 import com.ytrue.manager.DataScopeManager;
 import com.ytrue.service.system.SysUserService;
-import com.ytrue.infra.security.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -53,19 +56,22 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
 
     @Override
     public IPage<SysUserListResp> listBySysUserPageQuery(SysUserPageQuery queryParam) {
-//        // 处理数据过滤
-//        Set<Long> deptIds = dataScopeManager.listDeptIdDataScope();
-//
-//        QueryEntity queryEntity = QueryHelp.queryEntityBuilder(queryParam).addSort(SysUserListResp::getId, Boolean.FALSE);
-//
-//        if (!deptIds.contains(0L)) {
-//            queryEntity.addFilter(SysUser::getDeptId, QueryMethod.in, deptIds.stream().toList(), "u");
-//        } else {
-//            queryEntity.addFilter(SysUser::getId, QueryMethod.eq, SecurityUtil.getLoginUser().getUser().getUserId(), "u");
-//        }
-//
-//        return baseMapper.selectWithDeptName(queryParam.page(), queryEntity);
-        return null;
+        // 处理数据过滤
+        Set<Long> deptIds = dataScopeManager.listDeptIdDataScope();
+        // 生成 QueryDefinition
+        QueryDefinition queryDefinition = QueryHelp.generateQueryDefinition(queryParam);
+        // 判断是不是仅本人数据权限
+        if (!deptIds.contains(0L)) {
+            if (CollUtil.isNotEmpty(deptIds)) {
+                queryDefinition.where(SysUser::getDeptId, QueryMethod.in, deptIds.stream().toList(), "u");
+            }
+        } else {
+            queryDefinition.where(SysUser::getId, QueryMethod.eq, SecurityUtil.getLoginUser().getUser().getUserId(), "u");
+        }
+        queryDefinition.orderBy(SysUser::getCreateTime, Boolean.FALSE);
+        queryDefinition.orderBy(SysUser::getId, Boolean.FALSE);
+        // 调用查询
+        return baseMapper.selectWithDeptName(queryParam.page(), QueryHelp.buildQueryWrapper(queryDefinition));
     }
 
     @Override

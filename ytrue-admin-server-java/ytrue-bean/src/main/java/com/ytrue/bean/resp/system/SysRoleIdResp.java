@@ -1,7 +1,7 @@
 package com.ytrue.bean.resp.system;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.ytrue.infra.serializer.ser.NumberCollToStrSerializer;
+import com.ytrue.infra.jsonserializer.ser.NumberCollToStrSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

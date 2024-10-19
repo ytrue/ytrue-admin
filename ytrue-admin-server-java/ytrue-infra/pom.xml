@@ -13,14 +13,15 @@
     <name>ytrue-infra</name>
     <modules>
         <module>ytrue-infra-core</module>
-        <module>ytrue-infra-db</module>
-        <module>ytrue-infra-mq</module>
-        <module>ytrue-infra-job</module>
-        <module>ytrue-infra-cache</module>
-        <module>ytrue-infra-log</module>
         <module>ytrue-infra-security</module>
         <module>ytrue-infra-storage</module>
-        <module>ytrue-infra-serializer</module>
+        <module>ytrue-infra-redis</module>
+        <module>ytrue-infra-mysql</module>
+        <module>ytrue-infra-xxljob</module>
+        <module>ytrue-infra-rabbitmq</module>
+        <module>ytrue-infra-operationlog</module>
+        <module>ytrue-infra-jsonserializer</module>
+        <module>ytrue-infra-validation</module>
 
     </modules>
 

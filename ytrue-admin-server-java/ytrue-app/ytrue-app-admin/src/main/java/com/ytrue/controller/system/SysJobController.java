@@ -7,7 +7,7 @@ import com.ytrue.bean.req.system.SysJobUpdateReq;
 import com.ytrue.bean.resp.system.SysJobIdResp;
 import com.ytrue.bean.resp.system.SysJobListResp;
 import com.ytrue.infra.core.response.ServerResponseEntity;
-import com.ytrue.infra.log.annotation.OperateLog;
+import com.ytrue.infra.operationlog.annotation.OperateLog;
 import com.ytrue.service.system.SysJobService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

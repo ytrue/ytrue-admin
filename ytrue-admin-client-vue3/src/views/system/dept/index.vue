@@ -93,7 +93,7 @@ import {reactive, ref} from "vue"
 import * as  deptAi from "@/api/system/dept"
 import {ElMessage, ElMessageBox} from "element-plus"
 import {treeDataTranslate} from "@/utils/common"
-import AddOrUpdate from '@/views/system/dept/component/AddOrUpdate.vue'
+import AddOrUpdate from './component/AddOrUpdate.vue'
 
 // 弹窗的ref
 const addOrUpdateRef = ref()

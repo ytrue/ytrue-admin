@@ -21,7 +21,7 @@ export function pageApi(data) {
  * @param {Object} data - 请求数据
  * @returns {Promise<*>} - 返回操作结果
  */
-export function saveAndUpdateApi(data) {
+export function addAndUpdateApi(data) {
     let method = data.id ? 'put' : 'post'
     return request({
         url: `${apiPath}`,

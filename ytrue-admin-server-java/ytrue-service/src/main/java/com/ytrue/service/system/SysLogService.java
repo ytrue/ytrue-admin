@@ -1,6 +1,6 @@
 package com.ytrue.service.system;
 
-import com.ytrue.infra.db.base.IBaseService;
+import com.ytrue.infra.mysql.base.IBaseService;
 import com.ytrue.bean.dataobject.system.SysLog;
 
 /**

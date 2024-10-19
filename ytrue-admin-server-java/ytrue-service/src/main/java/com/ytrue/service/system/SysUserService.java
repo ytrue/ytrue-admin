@@ -8,7 +8,7 @@ import com.ytrue.bean.req.system.SysUserUpdatePasswordReq;
 import com.ytrue.bean.req.system.SysUserUpdateReq;
 import com.ytrue.bean.resp.system.SysUserIdResp;
 import com.ytrue.bean.resp.system.SysUserListResp;
-import com.ytrue.infra.db.base.IBaseService;
+import com.ytrue.infra.mysql.base.IBaseService;
 
 import java.util.List;
 

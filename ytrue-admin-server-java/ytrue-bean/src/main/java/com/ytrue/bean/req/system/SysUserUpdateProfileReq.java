@@ -37,5 +37,5 @@ public class SysUserUpdateProfileReq implements Serializable {
     private Integer gender;
 
     @Schema(description = "用户头像")
-    private String avatarPath;
+    private String avatar;
 }

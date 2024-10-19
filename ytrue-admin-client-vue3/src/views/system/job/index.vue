@@ -119,7 +119,7 @@
 // 弹窗的ref
 import {reactive, ref} from "vue"
 import {ElMessage, ElMessageBox} from "element-plus"
-import AddOrUpdate from '@/views/system/job/component/AddOrUpdate.vue'
+import AddOrUpdate from './component/AddOrUpdate.vue'
 import * as  jobApi from "@/api/system/job"
 import Pagination from '@/components/Pagination'
 
@@ -158,8 +158,8 @@ function init() {
   tableLoading.value = true
   // 请求获取数据
 
-  searchFormData.pageIndex = 1
-  searchFormData.pageSize1 = 10
+  searchFormData.pageIndex= paginationData.pageNum
+  searchFormData.pageSize = paginationData.pageSize
   jobApi.pageApi(searchFormData).then((response) => {
     // 表格数据赋值
     tableData.value = response.data.records

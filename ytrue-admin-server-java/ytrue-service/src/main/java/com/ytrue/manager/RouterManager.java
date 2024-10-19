@@ -144,7 +144,7 @@ public class RouterManager {
      */
     private String innerLinkReplaceEach(String path) {
         // new String[] {"http://", "https://", "www." ".", ":" } new String[] { "", "", "", "/", "/" }
-        return StringUtils.replaceEach(path, new String[]{StrPool.HTTP, StrPool.HTTPS, StrPool.WWW, StrPool.DOT, StrPool.COLON}, new String[]{StrPool.EMPTY, StrPool.EMPTY, StrPool.EMPTY, StrPool.SLASH, StrPool.SLASH});
+        return StringUtils.replaceEach(path, new String[]{StrPool.HTTP, StrPool.HTTPS, StrPool.WWW, StrPool.DOT, StrPool.COLON}, new String[]{StrPool.EMPTY_STRING, StrPool.EMPTY_STRING, StrPool.EMPTY_STRING, StrPool.SLASH, StrPool.SLASH});
     }
 
     /**

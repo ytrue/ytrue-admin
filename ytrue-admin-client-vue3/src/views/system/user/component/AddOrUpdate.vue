@@ -68,15 +68,15 @@
 
         <el-form-item label="性别">
           <el-radio-group v-model="dataForm.gender">
-            <el-radio :label="1">男</el-radio>
-            <el-radio :label="0">女</el-radio>
+            <el-radio :value="1">男</el-radio>
+            <el-radio :value="0">女</el-radio>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="dataForm.status">
-            <el-radio :label="true">正常</el-radio>
-            <el-radio :label="false">禁用</el-radio>
+            <el-radio :value="true">正常</el-radio>
+            <el-radio :value="false">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -92,19 +92,18 @@
 </template>
 
 <script setup name="AddOrUpdate">
-import {ref} from 'vue';
-import * as  jobApi from "@/api/system/job";
-import {ElMessage} from "element-plus";
-import * as roleApi from "@/api/system/role";
-import * as deptAi from "@/api/system/dept";
-import * as userApi from "@/api/system/user";
-import {treeDataTranslate} from "@/utils/common";
+import {ref} from 'vue'
+import * as  jobApi from "@/api/system/job"
+import {ElMessage} from "element-plus"
+import * as roleApi from "@/api/system/role"
+import * as deptApi from "@/api/system/dept"
+import * as userApi from "@/api/system/user"
+import {treeDataTranslate} from "@/utils/common"
 
 const emit = defineEmits(['handleSubmit'])
 
 // 表单的ref
 const dataFormRef = ref(null)
-
 // 表单id
 const formId = ref("")
 // 是否弹窗
@@ -153,17 +152,17 @@ const backupData = JSON.parse(JSON.stringify(dataForm.value))
  */
 async function init(id) {
   // 初始化部门数据
-  await deptAi.list().then((response) => {
+  await deptApi.listApi().then((response) => {
     let data = response.data
     deptTree.value = treeDataTranslate(data)
   })
 
   // 初始化岗位数据
-  await jobApi.list().then((response) => {
+  await jobApi.listApi().then((response) => {
     jobList.value = response.data
   })
   // 初始化角色数据
-  await roleApi.list().then((response) => {
+  await roleApi.listApi().then((response) => {
     roleList.value = response.data
   })
   formId.value = id || ""
@@ -174,7 +173,7 @@ async function init(id) {
   }
   // 调取ajax获取详情数据
   await userApi
-      .detail(formId.value)
+      .detailApi(formId.value)
       .then((response) => {
         // 进行赋值
         dataForm.value = response.data
@@ -192,7 +191,7 @@ function onSubmit() {
     if (valid) {
       // 下面就是调用ajax
       userApi
-          .saveAndUpdate(dataForm.value)
+          .addAndUpdateApi(dataForm.value)
           .then((response) => {
             ElMessage({type: 'success', message: response.message})
             // 通知父端组件提交完成了
@@ -210,7 +209,7 @@ function onSubmit() {
  */
 function onCancel() {
   // vue3+element-plus解决resetFields表单重置无效问题
-  isShowDialog.value = false;
+  isShowDialog.value = false
   // 这一步是防止（仅用下面这一步的话）点击增加在里面输入内容后关闭第二次点击增加再输入内容再关闭再点击增加会出现未初始化
   dataFormRef.value.resetFields()
   // 这一步是防止(仅用上面那一步)先点击编辑后再关闭弹窗再点击增加，显示的为数据2

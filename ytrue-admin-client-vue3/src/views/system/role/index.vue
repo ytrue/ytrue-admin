@@ -132,7 +132,7 @@
 <script setup name="index">
 import {onMounted, reactive, ref} from "vue"
 import {ElMessage, ElMessageBox} from "element-plus"
-import AddOrUpdate from '@/views/system/role/component/AddOrUpdate.vue'
+import AddOrUpdate from './component/AddOrUpdate.vue'
 import * as  roleApi from "@/api/system/role"
 import Pagination from '@/components/Pagination/index.vue'
 
@@ -172,8 +172,8 @@ function init() {
   tableLoading.value = true
 
   // 请求获取数据
-  searchFormData.page = paginationData.pageNum
-  searchFormData.limit = paginationData.pageSize
+  searchFormData.pageIndex= paginationData.pageNum
+  searchFormData.pageSize = paginationData.pageSize
   roleApi.pageApi(searchFormData).then((response) => {
     // 表格数据赋值
     tableData.value = response.data.records

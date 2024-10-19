@@ -3,7 +3,7 @@ package com.ytrue.security;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ytrue.bean.dataobject.system.SysUser;
-import com.ytrue.infra.cache.constant.CacheKey;
+import com.ytrue.infra.core.constant.CacheKey;
 import com.ytrue.infra.core.excptions.LoginFailureException;
 import com.ytrue.infra.core.response.ServerResponseInfo;
 import com.ytrue.infra.core.util.AssertUtil;

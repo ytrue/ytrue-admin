@@ -29,10 +29,10 @@
 
       <!--用户数据-->
       <el-col :span="20" :xs="24">
-        <el-form :model="searchFrom" ref="searchFormRef" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :model="searchFormData" ref="searchFormRef" :inline="true" v-show="showSearch" label-width="68px">
           <el-form-item label="用户名称" prop="username">
             <el-input
-                v-model="searchFrom.username"
+                v-model="searchFormData.username"
                 placeholder="请输入用户名称"
                 clearable
                 style="width: 240px"
@@ -40,7 +40,7 @@
           </el-form-item>
           <el-form-item label="手机号码" prop="phone">
             <el-input
-                v-model="searchFrom.phone"
+                v-model="searchFormData.phone"
                 placeholder="请输入手机号码"
                 clearable
                 style="width: 240px"
@@ -48,7 +48,7 @@
           </el-form-item>
 
           <el-form-item label="状态" prop="status">
-            <el-select v-model="searchFrom.status" placeholder="请选择状态" clearable style="width: 200px">
+            <el-select v-model="searchFormData.status" placeholder="请选择状态" clearable style="width: 200px">
               <el-option label="正常" :value="true"/>
               <el-option label="禁用" :value="false"/>
             </el-select>
@@ -57,7 +57,7 @@
 
           <el-form-item label="创建时间" style="width: 308px" prop="createTime">
             <el-date-picker
-                v-model="searchFrom.createTime"
+                v-model="searchFormData.createTime"
                 value-format="YYYY-MM-DD"
                 type="daterange"
                 start-placeholder="开始日期"
@@ -67,48 +67,48 @@
 
           <el-form-item>
             <el-button type="primary" icon="Search" @click="init(deptId)">搜索</el-button>
-            <el-button icon="Refresh" @click="reset">重置</el-button>
+            <el-button icon="Refresh" @click="handleSearchFormReset">重置</el-button>
           </el-form-item>
         </el-form>
 
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
             <el-button
-                v-hasPermi="['system:user:add']"
+                v-hasPermission="['system:user:add']"
                 icon="Plus"
                 type="primary"
-                @click="addOrUpdateHandle()"
+                @click="handleAddOrUpdate()"
             >新增
             </el-button>
           </el-col>
 
           <el-col :span="1.5">
             <el-button
-                v-hasPermi="['system:user:delete']"
+                v-hasPermission="['system:user:delete']"
                 icon="Delete"
                 type="danger"
                 :disabled="!selectIds.length"
-                @click="deleteHandle()">
+                @click="handleDelete()">
               删除
             </el-button>
           </el-col>
-          <right-toolbar v-model:showSearch="showSearch" @WhereTable="init(deptId)"/>
+          <!--          <right-toolbar v-model:showSearch="showSearch" @WhereTable="init(deptId)"/>-->
         </el-row>
         <!-- 表格 start-->
         <el-table
             :data="data"
             ref="tableRef"
             row-key="id"
-            v-loading="loading"
+            v-loading="tableLoading"
             style="width: 100%"
-            @selection-change="selectionChangeHandle"
+            @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55"/>
-<!--          <el-table-column label="ID" align="center" prop="id"/>-->
+          <!--          <el-table-column label="ID" align="center" prop="id"/>-->
           <el-table-column label="用户名称" align="center" prop="username"/>
           <el-table-column label="用户昵称" align="center" prop="nickName"/>
 
-          <el-table-column label="性别" align="center" prop="gender"  width="55">
+          <el-table-column label="性别" align="center" prop="gender" width="55">
             <template #default="scope">
               <span v-if="scope.row.gender ===1">男</span>
               <span v-if="scope.row.gender ===0">女</span>
@@ -132,26 +132,26 @@
                   link
                   icon="Edit"
                   type="primary"
-                  @click="addOrUpdateHandle(scope.row.id)"
-                  v-hasPermi="['system:user:update']">修改
+                  @click="handleAddOrUpdate(scope.row.id)"
+                  v-hasPermission="['system:user:update']">修改
               </el-button>
               <el-button
                   v-if="!scope.row.admin"
                   size="small"
                   link
                   type="primary"
-                  @click="deleteHandle(scope.row.id)"
+                  @click="handleDelete(scope.row.id)"
                   icon="Delete"
-                  v-hasPermi="['system:user:delete']">删除
+                  v-hasPermission="['system:user:delete']">删除
               </el-button>
 
               <el-button
                   size="small"
                   link
                   type="primary"
-                  @click="resetPasswordHandle(scope.row.id)"
+                  @click="handleResetPassword(scope.row.id)"
                   icon="Key"
-                  v-hasPermi="['system:user:resetPassword']">重置密码
+                  v-hasPermission="['system:user:resetPassword']">重置密码
               </el-button>
 
             </template>
@@ -159,10 +159,10 @@
         </el-table>
         <!--分页 start-->
         <pagination
-            v-show="pagination.total > 0"
-            :total="pagination.total"
-            v-model:page="pagination.pageNum"
-            v-model:limit="pagination.pageSize"
+            v-show="paginationData.total > 0"
+            :total="paginationData.total"
+            v-model:page="paginationData.pageNum"
+            v-model:limit="paginationData.pageSize"
             @pagination="init(deptId)"
         />
       </el-col>
@@ -173,12 +173,12 @@
 </template>
 
 <script setup name="index">
-import {onMounted, reactive, ref, watch} from "vue";
-import * as userApi from "@/api/system/user";
-import {ElMessage, ElMessageBox} from "element-plus";
-import * as deptAi from "@/api/system/dept";
-import {treeDataTranslate} from "@/utils/common";
-import AddOrUpdate from '@/views/system/user/component/AddOrUpdate.vue';
+import {onMounted, reactive, ref, watch} from "vue"
+import * as userApi from "@/api/system/user"
+import {ElMessage, ElMessageBox} from "element-plus"
+import * as deptApi from "@/api/system/dept"
+import {treeDataTranslate} from "@/utils/common"
+import AddOrUpdate from './component/AddOrUpdate.vue'
 import Pagination from '@/components/Pagination/index.vue'
 
 // 弹窗的ref
@@ -188,18 +188,18 @@ const searchFormRef = ref()
 // 表格的
 const tableRef = ref()
 // deptTreeRef
-const deptTreeRef = ref();
+const deptTreeRef = ref()
 
 // 是否加载
-const loading = ref(false);
+const tableLoading = ref(false)
 // 选中数据
-const selectIds = ref([]);
+const selectIds = ref([])
 // 是否显示搜索框
-const showSearch = ref(true);
+const showSearch = ref(true)
 // 列表数据
-const data = ref([]);
+const data = ref([])
 // 搜索表单数据
-const searchFrom = reactive({
+const searchFormData = reactive({
   username: null,
   phone: null,
   email: null,
@@ -211,7 +211,7 @@ const deptId = ref('')
 const deptTree = ref([])
 
 // 分页数据
-const pagination = reactive({
+const paginationData = reactive({
   total: 0,
   pageNum: 1,
   pageSize: 10,
@@ -221,13 +221,15 @@ let deptName = ref('')
 // 根据名称筛选部门树
 watch(deptName, val => {
   deptTreeRef.value.filter(val)
-});
+})
 
 
-// dept数据初始化
+/**
+ * dept数据初始化
+ */
 function deptTreeInit() {
   // 请求获取数据
-  deptAi.list().then((response) => {
+  deptApi.listApi().then((response) => {
     let data = response.data
     data.push({
       "id": 0,
@@ -239,38 +241,41 @@ function deptTreeInit() {
 }
 
 // 初始化表格数据---这里是调用ajax的
-function init(deptId = '') {
+function init(deptId = null) {
   // 加载中
-  loading.value = true
+  tableLoading.value = true
 
   // 追加一下
-  if (deptId !== '') {
-    searchFrom.deptId = deptId;
-  }
-  searchFrom.page = pagination.pageNum
-  searchFrom.limit = pagination.pageSize
+  searchFormData.deptId = deptId
+  searchFormData.pageIndex= paginationData.pageNum
+  searchFormData.pageSize = paginationData.pageSize
   // 请求获取数据
-  userApi.page(searchFrom).then((response) => {
+  userApi.pageApi(searchFormData).then((response) => {
     // 表格数据赋值
     data.value = response.data.records
     // 分页赋值
-    pagination.total = response.data.total
-    pagination.pageNum = response.data.current
-    pagination.pageSize = response.data.size
+    paginationData.total = response.data.total
+    paginationData.pageNum = response.data.current
+    paginationData.pageSize = response.data.size
   }).finally(() => {
     // 加载完毕
-    loading.value = false
+    tableLoading.value = false
   })
 }
 
-// 重置表单数据
-function reset() {
+/**
+ * 重置表单数据
+ */
+function handleSearchFormReset() {
   searchFormRef.value?.resetFields()
   init(deptId.value)
 }
 
-// 删除数据
-function deleteHandle(id) {
+/**
+ * 删除数据
+ * @param id
+ */
+function handleDelete(id) {
   const deleteIds = id === undefined ? selectIds.value : [id]
   // 校验是否有删除数据
   if (deleteIds.length === 0) {
@@ -287,7 +292,7 @@ function deleteHandle(id) {
       }
   ).then(() => {
     // 删除
-    userApi.remove(deleteIds).then((response) => {
+    userApi.removeApi(deleteIds).then((response) => {
       ElMessage({type: 'success', message: response.message})
       init()
     })
@@ -298,7 +303,7 @@ function deleteHandle(id) {
  * 重置密码
  * @param id
  */
-function resetPasswordHandle(id) {
+function handleResetPassword(id) {
   ElMessageBox.confirm(
       '您确定要重置该账号密码吗',
       '提示',
@@ -309,32 +314,46 @@ function resetPasswordHandle(id) {
       }
   ).then(() => {
     // 删除
-    userApi.resetPassword(id).then((response) => {
+    userApi.resetPasswordApi(id).then((response) => {
       ElMessage({type: 'success', message: response.message})
       init()
     })
   })
 }
 
-// 节点单击事件
+/**
+ * 节点单击事件
+ * @param data
+ */
 function handleNodeClick(data) {
-  deptId.value = data.id !== 0 ? data.id : ''
+  deptId.value = data.id !== 0 ? data.id : null
   init(deptId.value)
 }
 
-// 通过条件过滤节点
+/**
+ * 通过条件过滤节点
+ * @param value
+ * @param data
+ * @returns {boolean}
+ */
 function filterNode(value, data) {
   if (!value) return true
   return data.deptName.indexOf(value) !== -1
 }
 
-// 打开新增和编辑的弹窗
-function addOrUpdateHandle(id) {
-  addOrUpdateRef.value.init(id);
+/**
+ * 打开新增和编辑的弹窗
+ * @param id
+ */
+function handleAddOrUpdate(id) {
+  addOrUpdateRef.value.init(id)
 }
 
-// 复选框变化时
-function selectionChangeHandle(val) {
+/**
+ * 复选框变化时
+ * @param val
+ */
+function handleSelectionChange(val) {
   // 清空之前的
   selectIds.value = []
   val.forEach((item) => {
