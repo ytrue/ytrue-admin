@@ -3,9 +3,10 @@ package com.ytrue.infra.news.platform;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import com.ytrue.infra.news.FileInfo;
-import com.ytrue.infra.news.UploadTreatment;
+import com.ytrue.infra.news.FileMetadata;
+import com.ytrue.infra.news.UploadFileContext;
 import com.ytrue.infra.news.enums.FileStoragePlatformEnum;
+import com.ytrue.infra.news.util.MimeTypeUtil;
 import com.ytrue.infra.news.util.PathUtil;
 import com.ytrue.infra.news.wrapper.FileWrapper;
 import com.ytrue.infra.storage.exception.StorageRuntimeException;
@@ -30,45 +31,43 @@ public class LocalFileStorage extends AbstractFileStorage {
     private static final String RESOURCE_LOCATION = "classpath:";
 
     @Override
-    public FileInfo save(UploadTreatment per) throws Exception {
+    public FileMetadata save(UploadFileContext per) throws Exception {
         // 获取文件包装器
         FileWrapper fileWrapper = per.getFileWrapper();
-        // 检查一下
-        Assert.notNull(fileWrapper, "fileWrapper is null");
 
-        FileInfo fileInfo = new FileInfo();
+        FileMetadata fileMetadata = new FileMetadata();
         // 设置时间
-        fileInfo.setCreateTime(LocalDateTime.now());
+        fileMetadata.setCreateTime(LocalDateTime.now());
         // 设置文件大小
-        fileInfo.setSize(fileWrapper.getSize());
+        fileMetadata.setSize(fileWrapper.getSize());
         // 文件的原生名
         String originalFileName = fileWrapper.getName();
-        fileInfo.setOriginalFilename(originalFileName);
+        fileMetadata.setOriginalFilename(originalFileName);
         // 设置文件后缀
-        String fileExtension = com.ytrue.infra.news.util.FileUtil.getPreferredFileExtension(originalFileName, fileWrapper.getContentType());
-        fileInfo.setExt(fileExtension);
+        String fileExtension = MimeTypeUtil.getPreferredFileExtension(originalFileName, fileWrapper.getContentType());
+        fileMetadata.setExt(fileExtension);
         // contentType
-        fileInfo.setContentType(fileWrapper.getContentType());
+        fileMetadata.setContentType(fileWrapper.getContentType());
 
         // 设置文件名称
         String newFileName = per.getSaveFileName();
         // 如果文件名称为空，这里随机生产名称
         if (StrUtil.isBlank(newFileName)) {
-            newFileName = IdUtil.objectId() + (StrUtil.isBlank(fileInfo.getExt()) ? StrUtil.EMPTY : fileInfo.getExt());
+            newFileName = IdUtil.objectId() + (StrUtil.isBlank(fileMetadata.getExt()) ? StrUtil.EMPTY : fileMetadata.getExt());
         }
-        fileInfo.setFilename(newFileName);
+        fileMetadata.setFilename(newFileName);
         // 设置平台
-        fileInfo.setPlatform(platform());
+        fileMetadata.setPlatform(platform());
 
         // url  basePath path
         String fileHost = "";
-        fileInfo.setBasePath(fileHost);
-        fileInfo.setPath(fileHost + per.getSavePath());
+        fileMetadata.setBasePath(fileHost);
+        fileMetadata.setPath(fileHost + per.getSavePath());
 
 
         // 拼接一下
         File saveFile = new File(getUploadPath(fileHost), per.getSavePath());
-        saveFile = new File(saveFile.getAbsolutePath(), fileInfo.getFilename());
+        saveFile = new File(saveFile.getAbsolutePath(), fileMetadata.getFilename());
 
         try {
             // 获取文件流
@@ -77,34 +76,34 @@ public class LocalFileStorage extends AbstractFileStorage {
             FileUtil.writeBytes(inputStream.readAllBytes(), saveFile);
         } catch (IOException e) {
             FileUtil.del(saveFile);
-            throw new StorageRuntimeException("文件上传失败！platform：" + platform() + "，filename：" + fileInfo.getOriginalFilename(), e);
+            throw new StorageRuntimeException("文件上传失败！platform：" + platform() + "，filename：" + fileMetadata.getOriginalFilename(), e);
         }
 
-        return fileInfo;
+        return fileMetadata;
     }
 
     @Override
-    public boolean exists(FileInfo fileInfo) {
+    public boolean exists(FileMetadata fileMetadata) {
         return new File(
                 getUploadPath(
                         PathUtil.montagePath(
-                                fileInfo.getBasePath(),
-                                fileInfo.getPath())
+                                fileMetadata.getBasePath(),
+                                fileMetadata.getPath())
                 ),
-                fileInfo.getFilename()
+                fileMetadata.getFilename()
         ).exists();
     }
 
     @Override
-    public boolean delete(FileInfo fileInfo) {
+    public boolean delete(FileMetadata fileMetadata) {
         return FileUtil.del(
                 new File(
                         getUploadPath(
                                 PathUtil.montagePath(
-                                        fileInfo.getBasePath(),
-                                        fileInfo.getPath())
+                                        fileMetadata.getBasePath(),
+                                        fileMetadata.getPath())
                         ),
-                        fileInfo.getFilename()
+                        fileMetadata.getFilename()
                 )
         );
     }

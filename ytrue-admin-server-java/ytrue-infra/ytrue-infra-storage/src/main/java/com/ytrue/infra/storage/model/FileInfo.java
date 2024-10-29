@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 /**
  * @author ytrue
  * @date 2023/5/7 18:05
- * @description FileInfo
+ * @description FileMetadata
  */
 @Data
 public class FileInfo implements Serializable {
