@@ -58,7 +58,6 @@ import java.util.Set;
  * @date 2022/5/12 14:05
  * @description SecurityAutoConfiguration
  */
-@Configuration
 @EnableMethodSecurity
 public class SecurityAutoConfiguration {
 

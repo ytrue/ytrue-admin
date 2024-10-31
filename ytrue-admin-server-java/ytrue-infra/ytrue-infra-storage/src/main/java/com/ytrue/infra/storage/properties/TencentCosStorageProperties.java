@@ -1,25 +1,23 @@
 package com.ytrue.infra.storage.properties;
 
 import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * @author ytrue
  * @date 2023/4251 15:40
  * @description TencentCosStorageProperties
  */
-@ConfigurationProperties(prefix = "ytrue.storage.cos")
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class TencentCosStorageProperties implements IStorageProperties {
-    private String bucket = "";
+@ToString(callSuper = true)
+public class TencentCosStorageProperties extends BaseStorageProperties {
+    private String bucket;
 
-    private String region = "";
+    private String region;
 
-    private String secretId = "";
+    private String secretId;
 
-    private String secretKey = "";
-
-    private String domain = "";
-
-    private String fileHost = "";
+    private String secretKey;
 }

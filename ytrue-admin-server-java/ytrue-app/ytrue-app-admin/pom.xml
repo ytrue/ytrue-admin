@@ -29,6 +29,12 @@
             <version>${revision}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.ytrue</groupId>
+            <artifactId>ytrue-infra-storage</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!-- swagger接口文档 -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>

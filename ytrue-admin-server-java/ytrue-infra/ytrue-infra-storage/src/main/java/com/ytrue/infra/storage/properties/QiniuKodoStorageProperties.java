@@ -1,6 +1,8 @@
 package com.ytrue.infra.storage.properties;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -8,17 +10,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @date 2023/4251 15:40
  * @description QiniuKodoStorageProperties
  */
-@ConfigurationProperties(prefix = "ytrue.storage.kodo")
+
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class QiniuKodoStorageProperties implements IStorageProperties {
+@ToString(callSuper = true)
+public class QiniuKodoStorageProperties extends BaseStorageProperties {
 
-    private String bucket = "";
+    private String bucket;
 
-    private String accessKey = "";
+    private String accessKey;
 
-    private String secretKey = "";
-
-    private String domain = "";
-
-    private String fileHost = "";
+    private String secretKey;
 }

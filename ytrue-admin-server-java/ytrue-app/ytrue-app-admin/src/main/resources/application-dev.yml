@@ -126,12 +126,6 @@ ytrue:
   # 开启操作日志监听
   log:
     enabled: true
-  # 文件存储
-  storage:
-    local:
-      domain: http://127.0.0.1:${server.port}
-      file-host: storage
-
 
 # 接口文档
 springdoc:
