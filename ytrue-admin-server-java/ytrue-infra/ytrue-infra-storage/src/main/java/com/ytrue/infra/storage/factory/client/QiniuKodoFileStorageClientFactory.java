@@ -1,4 +1,4 @@
-package com.ytrue.infra.storage.factory;
+package com.ytrue.infra.storage.factory.client;
 
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;

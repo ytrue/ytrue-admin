@@ -1,4 +1,4 @@
-package com.ytrue.infra.storage.factory;
+package com.ytrue.infra.storage.factory.client;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;

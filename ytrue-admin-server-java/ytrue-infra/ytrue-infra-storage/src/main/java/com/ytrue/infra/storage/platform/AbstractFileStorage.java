@@ -8,7 +8,6 @@ import com.ytrue.infra.storage.properties.BaseStorageProperties;
 import com.ytrue.infra.storage.util.MimeTypeUtil;
 import com.ytrue.infra.storage.util.StringJoinerUtil;
 import com.ytrue.infra.storage.wrapper.FileWrapper;
-import lombok.Getter;
 import org.apache.tika.mime.MimeTypeException;
 
 import java.io.InputStream;
@@ -24,14 +23,19 @@ import java.util.function.Consumer;
  * @author ytrue
  * @date 2024/10/29
  */
-
-@Getter
 public abstract class AbstractFileStorage<C extends BaseStorageProperties> implements FileStorage {
 
     /**
      * 存储配置对象，包含文件存储相关的配置信息。
      */
     protected C config;
+
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public C getConfig() {
+        return config; // 直接返回类型参数 config
+    }
 
     /**
      * 构造函数，用于初始化存储配置。
@@ -95,11 +99,12 @@ public abstract class AbstractFileStorage<C extends BaseStorageProperties> imple
 
     /**
      * 获取存储平台的信息。
-     * 子类需实现此方法以返回具体的平台名称或类型。
      *
      * @return 存储平台的名称或类型。
      */
-    public abstract String platform();
+    public String platform() {
+        return config.getPlatform();
+    }
 
 
     /**

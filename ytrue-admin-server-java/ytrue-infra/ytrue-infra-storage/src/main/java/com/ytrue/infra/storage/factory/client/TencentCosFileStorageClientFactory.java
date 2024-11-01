@@ -1,4 +1,4 @@
-package com.ytrue.infra.storage.factory;
+package com.ytrue.infra.storage.factory.client;
 
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;

@@ -3,6 +3,7 @@ package com.ytrue.infra.storage.platform;
 import com.qiniu.common.QiniuException;
 import com.ytrue.infra.storage.entity.FileMetadata;
 import com.ytrue.infra.storage.entity.UploadFileContext;
+import com.ytrue.infra.storage.properties.BaseStorageProperties;
 
 import java.io.InputStream;
 import java.util.function.Consumer;
@@ -15,6 +16,13 @@ import java.util.function.Consumer;
  * @date 2024/10/29
  */
 public interface FileStorage {
+
+    /**
+     * 获取配置
+     *
+     * @return BaseStorageProperties配置信息
+     */
+    <C extends BaseStorageProperties> C getConfig();
 
     /**
      * 上传文件。
@@ -45,7 +53,7 @@ public interface FileStorage {
      * 下载文件。
      *
      * @param fileMetadata 文件信息对象，包含要下载的文件的相关信息。
-     * @param consumer 处理输入流的消费函数，通常用于将输入流写入目标输出流（如文件或响应）。
+     * @param consumer     处理输入流的消费函数，通常用于将输入流写入目标输出流（如文件或响应）。
      * @throws Exception 如果下载过程中发生错误，抛出异常。
      */
     void download(FileMetadata fileMetadata, Consumer<InputStream> consumer) throws Exception;

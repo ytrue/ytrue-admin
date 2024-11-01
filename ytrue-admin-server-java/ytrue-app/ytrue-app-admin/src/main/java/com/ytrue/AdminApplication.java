@@ -1,19 +1,8 @@
 package com.ytrue;
 
-import com.ytrue.infra.storage.builder.FileMetadataBuilder;
-import com.ytrue.infra.storage.FileStorageFactory;
-import com.ytrue.infra.storage.builder.FileWrapperBuilder;
-import com.ytrue.infra.storage.builder.UploadFileContextBuilder;
-import com.ytrue.infra.storage.entity.FileMetadata;
-import com.ytrue.infra.storage.entity.UploadFileContext;
-import com.ytrue.infra.storage.platform.FileStorage;
-import com.ytrue.infra.storage.wrapper.FileWrapper;
-import com.ytrue.infra.storage.wrapper.adapter.LocalFileWrapperAdapter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-
-import java.io.File;
 
 /**
  * @author ytrue
@@ -45,7 +34,10 @@ public class AdminApplication {
         // 设置spring security 多线程获取SecurityContextHolder,这块改到 SecurityAutoConfiguration#initializingBean
         // System.setProperty("spring.security.strategy", "MODE_INHERITABLETHREADLOCAL");
 
-//        ApplicationContext applicationContext = SpringApplication.run(AdminApplication.class, args);
+        ApplicationContext applicationContext = SpringApplication.run(AdminApplication.class, args);
+
+        System.out.println(applicationContext);
+
 //
 //
 //        FileStorage qiniu = FileStorageFactory.getFileStorage("tencent");

@@ -6,9 +6,8 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import com.ytrue.infra.storage.entity.FileMetadata;
 import com.ytrue.infra.storage.entity.UploadFileContext;
-import com.ytrue.infra.storage.enums.FileStoragePlatformEnum;
 import com.ytrue.infra.storage.exception.FileStorageException;
-import com.ytrue.infra.storage.factory.QiniuKodoFileStorageClientFactory;
+import com.ytrue.infra.storage.factory.client.QiniuKodoFileStorageClientFactory;
 import com.ytrue.infra.storage.properties.QiniuKodoStorageProperties;
 import com.ytrue.infra.storage.util.StringJoinerUtil;
 import lombok.Getter;
@@ -51,7 +50,6 @@ public class QiniuKodoFileStorage extends AbstractFileStorage<QiniuKodoStoragePr
     private final Auth auth;
 
 
-
     /**
      * 构造函数，初始化七牛云 Kodo 文件存储实例。
      *
@@ -76,7 +74,6 @@ public class QiniuKodoFileStorage extends AbstractFileStorage<QiniuKodoStoragePr
         // 初始化认证对象，用于生成上传凭证
         this.auth = client.getAuth();
     }
-
 
 
     /**
@@ -155,15 +152,5 @@ public class QiniuKodoFileStorage extends AbstractFileStorage<QiniuKodoStoragePr
             log.error("下载文件失败：文件名 = " + fileMetadata.getFilename() + "，错误信息 = " + e.getMessage(), e);
             throw e;  // 抛出异常以便上层处理
         }
-    }
-
-    /**
-     * 获取存储平台的名称。
-     *
-     * @return 返回存储平台的名称
-     */
-    @Override
-    public String platform() {
-        return FileStoragePlatformEnum.KODO.name();  // 返回存储平台枚举
     }
 }

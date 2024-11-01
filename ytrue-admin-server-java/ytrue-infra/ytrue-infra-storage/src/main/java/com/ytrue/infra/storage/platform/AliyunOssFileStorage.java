@@ -6,8 +6,7 @@ import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.ytrue.infra.storage.entity.FileMetadata;
 import com.ytrue.infra.storage.entity.UploadFileContext;
-import com.ytrue.infra.storage.enums.FileStoragePlatformEnum;
-import com.ytrue.infra.storage.factory.AliyunOssFileStorageClientFactory;
+import com.ytrue.infra.storage.factory.client.AliyunOssFileStorageClientFactory;
 import com.ytrue.infra.storage.properties.AliyunOssStorageProperties;
 import com.ytrue.infra.storage.util.StringJoinerUtil;
 import lombok.Getter;
@@ -145,16 +144,5 @@ public class AliyunOssFileStorage extends AbstractFileStorage<AliyunOssStoragePr
             log.error("下载文件失败：文件名 = " + fileMetadata.getFilename() + "，错误信息 = " + e.getMessage(), e);
             throw e;  // 抛出异常以便上层处理
         }
-    }
-
-    /**
-     * 获取存储平台的名称。
-     *
-     * @return 返回存储平台的名称，使用枚举表示
-     */
-    @Override
-    public String platform() {
-        // 返回存储平台枚举
-        return FileStoragePlatformEnum.OSS.name();
     }
 }

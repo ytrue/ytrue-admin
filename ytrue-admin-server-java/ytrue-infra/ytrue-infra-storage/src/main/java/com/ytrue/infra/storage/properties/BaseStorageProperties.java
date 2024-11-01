@@ -13,7 +13,7 @@ public class BaseStorageProperties {
 
     /**
      * 公共域名，用于访问存储在该平台上的文件。
-     * <p>此属性用于构建访问URL，使得用户能够通过域名直接访问存储的文件。</p>
+     * <p>此属性用于构建访问 URL，使得用户能够通过域名直接访问存储的文件。</p>
      */
     protected String domain;
 
@@ -25,11 +25,15 @@ public class BaseStorageProperties {
 
     /**
      * 所属平台
+     * <p>此属性表示当前配置所对应的存储平台。</p>
      *
      * @see com.ytrue.infra.storage.enums.FileStoragePlatformEnum
      */
     protected String platform;
 
-
+    /**
+     * 是否启用该存储平台的配置。
+     * <p>此属性用于控制是否激活该存储配置，便于在运行时管理存储服务。</p>
+     */
     protected boolean enabled = Boolean.TRUE;
 }

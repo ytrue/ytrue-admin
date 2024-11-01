@@ -1,7 +1,6 @@
-package com.ytrue.infra.storage;
+package com.ytrue.infra.storage.factory;
 
 import com.ytrue.infra.storage.platform.FileStorage;
-import org.springframework.context.ApplicationContext;
 
 import java.util.Collections;
 import java.util.Map;
@@ -15,10 +14,14 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class FileStorageFactory {
 
-    // 存储所有 FileStorage 实例的线程安全 Map
+    /**
+     * 存储所有 FileStorage 实例的线程安全 Map
+     */
     private static final Map<String, FileStorage> STORAGE_INSTANCES = new ConcurrentHashMap<>();
 
-    // 标志位
+    /**
+     * 标志位
+     */
     private static boolean initialized = false;
 
 
@@ -33,33 +36,25 @@ public class FileStorageFactory {
 
 
     /**
-     * 从 Spring 容器中获取所有 FileStorage 类型的 Bean，并将其注册到 STORAGE_INSTANCES 中。
+     * 从给定的 FileStorage 映射中注册所有 FileStorage 实例到 STORAGE_INSTANCES。
      * 该方法应由 FileStorageSmartInitializingSingleton 调用，确保在所有单例 Bean 初始化完成后执行。
      *
-     * @param applicationContext Spring 应用上下文
+     * @param fileStorageMap 包含所有 FileStorage 实例的映射
      * @throws IllegalStateException 如果已经初始化过
      */
-    public static void initializeFileStoragesFromApplicationContext(ApplicationContext applicationContext) {
+    public static void initializeFileStoragesFromFileStorageMap(Map<String, FileStorage> fileStorageMap) {
         if (initialized) {
             throw new IllegalStateException("FileStorage 实例已经初始化过，不可重复调用。");
         }
-
-        // 获取所有 FileStorage 类型的 Bean
-        Map<String, FileStorage> fileStorageMap = applicationContext.getBeansOfType(FileStorage.class);
-
-        for (String beanName : fileStorageMap.keySet()) {
-            String key = extractKeyFromBeanName(beanName);
-
-            // 检查是否已存在相同的 key
-            if (STORAGE_INSTANCES.containsKey(key)) {
-                throw new IllegalStateException("键已存在: " + key);
+        if (fileStorageMap != null) {
+            for (Map.Entry<String, FileStorage> entry : fileStorageMap.entrySet()) {
+                registerFileStorage(entry.getKey(), entry.getValue());
             }
-
-            registerFileStorage(key, fileStorageMap.get(beanName));
         }
         // 设置为已初始化
         initialized = true;
     }
+
 
     /**
      * 根据给定的 key 获取对应的 FileStorage 实例。

@@ -1,4 +1,4 @@
-package com.ytrue.infra.storage.factory;
+package com.ytrue.infra.storage.factory.client;
 
 /**
  * 文件存储客户端工厂接口。

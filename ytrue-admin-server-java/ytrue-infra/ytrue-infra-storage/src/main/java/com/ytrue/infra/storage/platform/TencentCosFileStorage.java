@@ -6,8 +6,7 @@ import com.qcloud.cos.model.ObjectMetadata;
 import com.qcloud.cos.model.PutObjectRequest;
 import com.ytrue.infra.storage.entity.FileMetadata;
 import com.ytrue.infra.storage.entity.UploadFileContext;
-import com.ytrue.infra.storage.enums.FileStoragePlatformEnum;
-import com.ytrue.infra.storage.factory.TencentCosFileStorageClientFactory;
+import com.ytrue.infra.storage.factory.client.TencentCosFileStorageClientFactory;
 import com.ytrue.infra.storage.properties.TencentCosStorageProperties;
 import com.ytrue.infra.storage.util.StringJoinerUtil;
 import com.ytrue.infra.storage.wrapper.FileWrapper;
@@ -149,15 +148,5 @@ public class TencentCosFileStorage extends AbstractFileStorage<TencentCosStorage
             log.error("下载文件失败：文件名 = " + fileMetadata.getFilename() + "，错误信息 = " + e.getMessage(), e);
             throw e;  // 抛出异常以便上层处理
         }
-    }
-
-    /**
-     * 获取存储平台的名称。
-     *
-     * @return 返回存储平台的名称，使用枚举表示
-     */
-    @Override
-    public String platform() {
-        return FileStoragePlatformEnum.COS.name();  // 返回存储平台枚举
     }
 }
